@@ -53,7 +53,8 @@
             }
         ],
         "no-use-before-define": "off",
-        "@typescript-eslint/no-use-before-define": "error"
+        "@typescript-eslint/no-use-before-define": "error",
+        "no-magic-numbers": "warn"
     },
     "globals": {
         "React": true,

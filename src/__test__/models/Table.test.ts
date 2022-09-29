@@ -7,7 +7,6 @@ describe(
     test(
       'Definition',
       () => {
-        // eslint-disable-next-line no-magic-numbers
         expect(1).toStrictEqual(1)
       }
     )
