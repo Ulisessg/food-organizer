@@ -1,6 +1,6 @@
 export default class Table {
   private readonly id: TId
-  constructor (id: TId) {
+  constructor (id: TId = null) {
     this.id = id
   }
 

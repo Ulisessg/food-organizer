@@ -6,8 +6,8 @@ describe(
     test(
       'Definition',
       () => {
-        const tableWithId = new Table(1)
-        expect(typeof tableWithId.getId()).toStrictEqual('number')
+        const tableWithId = new Table()
+        expect(tableWithId.getId()).toStrictEqual(null)
         expect(tableWithId.setId).toBeDefined()
         expect(tableWithId.isValid()).toStrictEqual(true)
         expect(tableWithId.getInsertSqlScript()).toStrictEqual('')
