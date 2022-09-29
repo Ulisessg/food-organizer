@@ -1,22 +1,23 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
+import Head from 'next/head'
 
-const Home: NextPage = () => {
-  return (
-    <div>
-      <Head>
-        <title>Food Organizer</title>
+export default function Home (): JSX.Element {
+  return <div >
+    <Head key={0}>
+        <title>
+            Food Organizer
+        </title>
+
         <meta
-          name='description'
-          content='Aministra tus comidas eficientemente'
+            content="Aministra tus comidas eficientemente"
+            name="description"
         />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
 
-      <main role='main'></main>
-    </div>
-  );
-};
+        <link
+            href="/favicon.ico"
+            rel="icon"
+        />
+    </Head>
 
-export default Home;
+    <main role="main" />
+  </div>
+}

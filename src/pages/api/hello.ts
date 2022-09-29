@@ -1,13 +1,13 @@
-import type { NextApiResponse, NextApiRequest } from "next";
-import dotenv from "dotenv";
-dotenv.config();
+/* eslint-disable no-magic-numbers */
+/* No-magic-numbers is disabled to void error with http request status  */
+import type { NextApiRequest, NextApiResponse } from 'next'
+import dotenv from 'dotenv'
+dotenv.config()
 
-function handler(req: NextApiRequest, res: NextApiResponse<TResponse>) {
-  res.status(200).json({ ok: true });
+export default function handler (_req: NextApiRequest, res: NextApiResponse<TResponse>): void {
+  res.status(204).json({ ok: true })
 }
 
-export default handler;
-
-type TResponse = {
-  ok: boolean;
-};
+interface TResponse {
+  ok: boolean
+}
