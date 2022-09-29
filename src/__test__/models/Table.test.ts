@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import React from 'react'
+import Table from '../../models/Table'
 
 describe(
   'models/Table',
@@ -7,7 +6,14 @@ describe(
     test(
       'Definition',
       () => {
-        expect(1).toStrictEqual(1)
+        const tableWithId = new Table(1)
+        expect(typeof tableWithId.getId()).toStrictEqual('number')
+        expect(tableWithId.setId).toBeDefined()
+        expect(tableWithId.isValid()).toStrictEqual(true)
+        expect(tableWithId.getInsertSqlScript()).toStrictEqual('')
+        expect(tableWithId.getUpdateSqlScript()).toStrictEqual('')
+        expect(tableWithId.getSelectSqlScript()).toStrictEqual('')
+        expect(tableWithId.getDeleteSqlScript()).toStrictEqual('')
       }
     )
   }
