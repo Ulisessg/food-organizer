@@ -19,17 +19,6 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": "./src",
-    "paths": {
-      "@/controllers/*": [
-        "./controllers/*"
-      ],
-      "@/models/*": [
-        "./models/*"
-      ],
-      "@/pages/*": [
-        "./pages/*"
-      ]
-    }
   },
   "include": [
     "next-env.d.ts",
