@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint --fix -d src",
     "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watch --coverage",
+    "test:coverage": "jest --coverage",
     "cypress": "cypress open",
     "cypress:headless": "cypress run",
     "e2e": "start-server-and-test start http://localhost:3000 cypress",
@@ -17,6 +18,7 @@
   },
   "dependencies": {
     "d-system": "file:../design-system",
+    "dayjs": "1.11.5",
     "dotenv": "16.0.2",
     "mysql2": "2.3.3",
     "next": "12.3.1",
