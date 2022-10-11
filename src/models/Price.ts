@@ -29,6 +29,7 @@ abstract class Price extends Table {
   }
 
   setValue (value: number): number {
+    this.preventModifications()
     if (typeof value !== 'number') {
       throw new Error(`Invalid value, only decimals allowed, value: ${value as string}`)
     }
@@ -45,6 +46,7 @@ abstract class Price extends Table {
   }
 
   setPriceDate (date: string): string {
+    this.preventModifications()
     if (!dayjs(date).isValid()) {
       throw new Error('Invalid date')
     }

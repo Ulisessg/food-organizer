@@ -84,7 +84,7 @@ describe(
       () => {
         const value = 100.00
         const pr = new Price(
-          false,
+          true,
           1,
           'pr',
           value,
@@ -102,7 +102,7 @@ describe(
       () => {
         const value = 100.00
         const pr = new Price(
-          false,
+          true,
           1,
           'pr',
           value,
@@ -137,7 +137,7 @@ describe(
       () => {
         const date = dayjs().toISOString()
         const pr = new Price(
-          false,
+          true,
           1,
           'pr',
           100.00,
@@ -161,7 +161,7 @@ describe(
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const pr = new Price(
-            false,
+            true,
             1,
             'pr',
             100.00,

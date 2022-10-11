@@ -124,7 +124,7 @@ abstract class Table {
     return this.tableName
   }
 
-  private preventModifications (): void {
+  protected preventModifications (): void {
     if (!this.allowModifications) {
       throw new Error('Class modifications not allowed')
     }
