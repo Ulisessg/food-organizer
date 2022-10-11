@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 /* eslint-disable max-len */
 /* eslint-disable max-lines */
 /* eslint-disable max-statements */
@@ -119,19 +120,17 @@ describe(
     test(
       'Table constructor, table name error',
       () => {
+        let tableWNameError = null
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-          const tableWNameError = new ExtendedTable(
+          tableWNameError = new ExtendedTable(
             false,
             null,
             'Table1'
           )
-          throw new Error('Table constructor is allowing non letter chars in "TableName" param')
         } catch (error) {
-          if (error instanceof Error) {
-            // eslint-disable-next-line max-len
-            expect(error.message).toStrictEqual('"tableName" only accept letters upper and lower case, NO spaces: [A-Za-z]')
-          }
+          const err: Error = error as Error
+          expect(err.message).toStrictEqual('"tableName" only accept letters upper and lower case and underscore, NO spaces: /^[\\p{L}_]+$/u')
         }
       }
     )

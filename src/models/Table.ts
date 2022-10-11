@@ -1,5 +1,7 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-len */
 import dayjs from 'dayjs'
+import { lettersAndUnderscore } from '../utils/RegExps'
 
 abstract class Table {
   private id: number | null
@@ -30,8 +32,8 @@ abstract class Table {
     }
 
     // Avoid sql injection
-    if (tableName.match(/^[A-Za-z]+$/u) === null) {
-      throw new Error('"tableName" only accept letters upper and lower case, NO spaces: [A-Za-z]')
+    if (tableName.match(lettersAndUnderscore) === null) {
+      throw new Error('"tableName" only accept letters upper and lower case and underscore, NO spaces: /^[\\p{L}_]+$/u')
     }
 
     this.id = id
@@ -45,7 +47,6 @@ abstract class Table {
    * @returns {boolean} boolean
    */
   public static isValid (): boolean {
-    console.warn('Please override isValid method')
     return true
   }
 
@@ -89,34 +90,18 @@ abstract class Table {
   }
 
   public get getInsertSqlScript (): string {
-    console.warn(
-      'Please override this method :): ',
-      this.tableName
-    )
     return 'Please override this method :)'
   }
 
   public get getUpdateSqlScript (): string {
-    console.log(
-      'Table Name: ',
-      this.tableName
-    )
     return 'Please override this method :)'
   }
 
   public get getSelectSqlScript (): string {
-    console.log(
-      'Table Name: ',
-      this.tableName
-    )
     return 'Please override this method :)'
   }
 
   public get getDeleteSqlScript (): string {
-    console.log(
-      'Table Name: ',
-      this.tableName
-    )
     return 'Please override this method :)'
   }
 
