@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+/* eslint-disable no-magic-numbers */
 import Pr from 'models/Price'
 import dayjs from 'dayjs'
 
