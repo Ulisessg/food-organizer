@@ -170,6 +170,27 @@ describe(
     )
 
     test(
+      'setName preventModifications',
+      () => {
+        try {
+          const uom = new UnitsOfMeasure(
+            false,
+            1,
+            // Missing 'n' letter
+            'Grados Fahreheit',
+            '°F',
+            1
+          )
+          uom.setName('Grados Fahrenheit')
+          throw new Error('setName is allowing modifications')
+        } catch (error) {
+          const err: Error = error as Error
+          expect(err.message).toStrictEqual('Class modifications not allowed')
+        }
+      }
+    )
+
+    test(
       'setName',
       () => {
         const uom = instance()
@@ -216,6 +237,26 @@ describe(
     )
 
     test(
+      'setAbbreviation preventModifications',
+      () => {
+        try {
+          const uom = new UnitsOfMeasure(
+            false,
+            1,
+            'Grados Centigrados',
+            '°F',
+            1
+          )
+          uom.setAbbreviation('°C')
+          throw new Error('setAbbreviation is allowing modifications')
+        } catch (error) {
+          const err: Error = error as Error
+          expect(err.message).toStrictEqual('Class modifications not allowed')
+        }
+      }
+    )
+
+    test(
       'setAbbreviation: invalid "abbreviation" type',
       () => {
         const uom = instance()
@@ -255,6 +296,26 @@ describe(
     )
 
     test(
+      'setUomtId preventModifications',
+      () => {
+        try {
+          const uom = new UnitsOfMeasure(
+            false,
+            1,
+            'Grados Centigrados',
+            '°C',
+            2
+          )
+          uom.setUomtId(1)
+          throw new Error('setUomtId is allowing modifications')
+        } catch (error) {
+          const err: Error = error as Error
+          expect(err.message).toStrictEqual('Class modifications not allowed')
+        }
+      }
+    )
+
+    test(
       'setUomtId: invalid "id" type',
       () => {
         const uom = instance()
@@ -276,7 +337,7 @@ describe(
 )
 
 const instance = (): UnitsOfMeasure => new UnitsOfMeasure(
-  false,
+  true,
   1,
   'Grados Centigrados',
   '°C',

@@ -1,5 +1,6 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-len */
+/* eslint-disable max-statements */
 /* eslint-disable no-magic-numbers */
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from '../../utils/ErrorMessages'
 import PurchasePlaces from 'models/PurchasePlaces'
@@ -65,7 +66,7 @@ describe(
     test(
       'Constructor invalid address',
       () => {
-        const addressProp = '!Invalid Address'
+        const addressProp: string = '!Invalid Address'
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const pp = new PurchasePlaces(
@@ -77,7 +78,6 @@ describe(
           throw new Error('Constructor is allowing invalid "address"')
         } catch (error) {
           const err: Error = error as Error
-
           expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
             'address',
             addressProp,
@@ -125,6 +125,26 @@ describe(
         expect(pp.getAddress).toStrictEqual('Address 22')
       }
     )
+
+    test(
+      'setAddress preventModifications',
+      () => {
+        try {
+          const pp = new PurchasePlaces(
+            false,
+            1,
+            'Merca',
+            'Address 33'
+          )
+          pp.setAddress('Address 22')
+          throw new Error('setAddress is allowing modifications')
+        } catch (error) {
+          const err: Error = error as Error
+          expect(err.message).toStrictEqual('Class modifications not allowed')
+        }
+      }
+    )
+
     test(
       'setAddress success',
       () => {
@@ -134,6 +154,26 @@ describe(
         expect(pp.getAddress).toStrictEqual('Reforma N° 12')
       }
     )
+
+    test(
+      'setName preventModifications',
+      () => {
+        try {
+          const pp = new PurchasePlaces(
+            false,
+            1,
+            'Merca',
+            'Address 33'
+          )
+          pp.setName('Sardiana express')
+          throw new Error('setName is allowing modifications')
+        } catch (error) {
+          const err: Error = error as Error
+          expect(err.message).toStrictEqual('Class modifications not allowed')
+        }
+      }
+    )
+
     test(
       'setName success',
       () => {

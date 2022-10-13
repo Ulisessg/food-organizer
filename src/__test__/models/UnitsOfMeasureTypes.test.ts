@@ -75,6 +75,25 @@ describe(
         }
       }
     )
+
+    test(
+      'setName preventModifications',
+      () => {
+        const uomt = new UnitsOfMeasureTypes(
+          false,
+          1,
+          'Liquidos'
+        )
+        try {
+          uomt.setName('Temperaturas')
+          throw new Error('setName is allowing modifications')
+        } catch (error) {
+          const err: Error = error as Error
+          expect(err.message).toStrictEqual('Class modifications not allowed')
+        }
+      }
+    )
+
     test(
       'setName success',
       () => {

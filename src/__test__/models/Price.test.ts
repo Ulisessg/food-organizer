@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable no-magic-numbers */
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
@@ -92,6 +93,28 @@ describe(
     )
 
     test(
+      'setValue preventModifications',
+      () => {
+        const value = 100.00
+        const pr = new Price(
+          false,
+          1,
+          'pr',
+          value,
+          dayjs().toISOString()
+        )
+        const nValue = 200.00
+        try {
+          pr.setValue(nValue)
+          throw new Error('setValue is allowing modifications')
+        } catch (error) {
+          const err: Error = error as Error
+          expect(err.message).toStrictEqual('Class modifications not allowed')
+        }
+      }
+    )
+
+    test(
       'setValue',
       () => {
         const value = 100.00
@@ -149,6 +172,33 @@ describe(
         expect(pr.getPriceDate()).toStrictEqual(date)
       }
     )
+
+    test(
+      'setPriceDate preventModifications',
+      () => {
+        const value = 100.00
+        const pr = new Price(
+          false,
+          1,
+          'pr',
+          value,
+          dayjs().toISOString()
+        )
+        setTimeout(
+          () => {
+            try {
+              pr.setPriceDate(dayjs().toISOString())
+              throw new Error('setPriceDate is allowing modifications')
+            } catch (error) {
+              const err: Error = error as Error
+              expect(err.message).toStrictEqual('Class modifications not allowed')
+            }
+          },
+          100
+        )
+      }
+    )
+
     test(
       'setPriceDate',
       () => {

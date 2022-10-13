@@ -35,6 +35,7 @@ class UnitsOfMeasureTypes extends Table {
    * @returns {string} name
    */
   setName (name: string): string {
+    this.preventModifications()
     this.verifyProperties(name)
     this.name = name
     return this.name

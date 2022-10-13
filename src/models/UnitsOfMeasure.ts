@@ -40,18 +40,21 @@ class UnitsOfMeasure extends Table {
   }
 
   public setName (name: string): string {
+    this.preventModifications()
     this.verifyProperties({ abbreviation: this.abbreviation, name, uomtId: this.uomtId })
     this.name = name
     return this.name
   }
 
   public setAbbreviation (abbreviation: string): string {
+    this.preventModifications()
     this.verifyProperties({ abbreviation, name: this.name, uomtId: this.uomtId })
     this.abbreviation = abbreviation
     return this.abbreviation
   }
 
   public setUomtId (id: number): number {
+    this.preventModifications()
     this.verifyProperties({ abbreviation: this.abbreviation, name: this.name, uomtId: id })
     this.uomtId = id
     return this.uomtId
@@ -65,7 +68,8 @@ class UnitsOfMeasure extends Table {
         abbreviation,
         'only string allowed'
       ))
-    } else if (abbreviation.match(lettersAndDegrees) === null) {
+    }
+    if (abbreviation.match(lettersAndDegrees) === null) {
       throw new Error(invalidPropertyErrorMessage(
         'abbreviation',
         abbreviation,

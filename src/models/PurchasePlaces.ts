@@ -23,6 +23,7 @@ class PurchasePlaces extends Table {
   }
 
   setName (name: string): string {
+    this.preventModifications()
     this.verifyProperties({ address: this.address, name })
     this.name = name
     return this.name
@@ -33,6 +34,7 @@ class PurchasePlaces extends Table {
   }
 
   setAddress (address: string): string {
+    this.preventModifications()
     this.verifyProperties({ address, name: this.name })
     this.address = address
     return this.address
@@ -65,7 +67,7 @@ class PurchasePlaces extends Table {
           'only letters and spaces allowed'
         ))
       }
-    } else if (typeof address !== 'undefined' || typeof address !== 'string') {
+    } else if (typeof address !== 'string' || typeof address !== 'undefined') {
       // eslint-disable-next-line max-len
       throw new Error(invalidPropertyTypeErrorMessage(
         'address',
