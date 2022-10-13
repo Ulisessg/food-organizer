@@ -35,7 +35,7 @@ describe(
           throw new Error('Constructor is allowing invalid "name" type')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "name" type, only strings allowed. Received: object')
+          expect(err.message).toStrictEqual('Invalid "name" type, only string allowed. Received: object')
         }
       }
     )
@@ -75,7 +75,7 @@ describe(
           throw new Error('Constructor is allowing invalid "name" type')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "abbreviation" type, only strings allowed. Received: number')
+          expect(err.message).toStrictEqual('Invalid "abbreviation" type, only string allowed. Received: number')
         }
       }
     )
@@ -203,7 +203,7 @@ describe(
           throw new Error('Constructor is allowing invalid "abbreviation"')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "name", only letters and degree symbol (°). Received: !°C')
+          expect(err.message).toStrictEqual('Invalid "abbreviation", only letters and degree symbol (°). Received: !°C')
         }
       }
     )

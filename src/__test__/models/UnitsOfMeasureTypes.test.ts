@@ -43,11 +43,7 @@ describe(
           )
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual(`
-Invalid name, only allowed letters and spaces.
-name: Liquidos1
-name type: string
-`)
+          expect(err.message).toStrictEqual('"name" param type invalid, only letters with spaces')
         }
       }
     )
@@ -64,11 +60,7 @@ name type: string
           throw new Error('Constructor is allowing invalid "name" param')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual(`
-Invalid name, only allowed letters and spaces.
-name: null
-name type: object
-`)
+          expect(err.message).toStrictEqual('"name" param type invalid, only strings allowed')
         }
       }
     )

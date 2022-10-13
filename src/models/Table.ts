@@ -114,6 +114,8 @@ abstract class Table {
       throw new Error('Class modifications not allowed')
     }
   }
+
+  protected abstract verifyProperties (prop: any): void
 }
 
 export default Table

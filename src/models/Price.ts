@@ -18,12 +18,10 @@ abstract class Price extends Table {
       id,
       tableName
     )
-    if (!dayjs(priceDate).isValid()) {
-      throw new Error('Invalid date')
-    }
-    if (typeof value !== 'number') {
-      throw new Error(`Invalid value, only decimals allowed, value: ${value as string}`)
-    }
+    this.verifyProperties({
+      priceDate,
+      value
+    })
     this.value = value
     this.priceDate = priceDate
   }
@@ -53,6 +51,18 @@ abstract class Price extends Table {
     this.priceDate = date
     return this.priceDate
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  protected verifyProperties ({ priceDate, value }: verifyPropertiesParam): void {
+    if (!dayjs(priceDate).isValid()) {
+      throw new Error('Invalid date')
+    }
+    if (typeof value !== 'number') {
+      throw new Error(`Invalid value, only decimals allowed, value: ${value as string}`)
+    }
+  }
 }
+
+interface verifyPropertiesParam { priceDate: string, value: number }
 
 export default Price
