@@ -1,4 +1,5 @@
 /* eslint-disable no-invalid-this */
+import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import Table from './Table'
 import { lettersWithSpaces } from '../utils/RegExps'
 
@@ -42,9 +43,17 @@ class UnitsOfMeasureTypes extends Table {
   // eslint-disable-next-line class-methods-use-this
   protected verifyProperties (name: verifyPropertiesParam): void {
     if (typeof name !== 'string') {
-      throw new Error('"name" param type invalid, only strings allowed')
+      throw new Error(invalidPropertyTypeErrorMessage(
+        'name',
+        name,
+        'only string allowed'
+      ))
     } else if (name.match(lettersWithSpaces) === null) {
-      throw new Error('"name" param type invalid, only letters with spaces')
+      throw new Error(invalidPropertyErrorMessage(
+        'name',
+        name,
+        'only letters with spaces allowed'
+      ))
     }
   }
 }

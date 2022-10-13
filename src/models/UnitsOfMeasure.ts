@@ -1,6 +1,7 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-len */
 /* eslint-disable max-params */
+import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import { lettersAndDegrees, lettersWithSpaces } from '../utils/RegExps'
 import Table from './Table'
 
@@ -51,7 +52,7 @@ class UnitsOfMeasure extends Table {
   }
 
   public setUomtId (id: number): number {
-    if (!Number.isInteger(id)) throw new Error(`Invalid "id" type, only numbers allowed. Received: ${typeof id}`)
+    this.verifyProperties({ abbreviation: this.abbreviation, name: this.name, uomtId: id })
     this.uomtId = id
     return this.uomtId
   }
@@ -59,18 +60,40 @@ class UnitsOfMeasure extends Table {
   // eslint-disable-next-line class-methods-use-this
   protected verifyProperties ({ abbreviation, name, uomtId }: verifyPropertiesParam): void {
     if (typeof abbreviation !== 'string') {
-      throw new Error(`Invalid "abbreviation" type, only string allowed. Received: ${typeof abbreviation}`)
+      throw new Error(invalidPropertyTypeErrorMessage(
+        'abbreviation',
+        abbreviation,
+        'only string allowed'
+      ))
     } else if (abbreviation.match(lettersAndDegrees) === null) {
-      throw new Error(`Invalid "abbreviation", only letters and degree symbol (°). Received: ${abbreviation}`)
+      throw new Error(invalidPropertyErrorMessage(
+        'abbreviation',
+        abbreviation,
+        'only letters and degree symbol (°)'
+      ))
     }
 
     if (typeof name !== 'string') {
-      throw new Error(`Invalid "name" type, only string allowed. Received: ${typeof name}`)
+      throw new Error(invalidPropertyTypeErrorMessage(
+        'name',
+        name,
+        'only string allowed'
+      ))
     } else if (name.match(lettersWithSpaces) === null) {
-      throw new Error(`Invalid "name", only letters and spaces. Received: ${name}`)
+      throw new Error(invalidPropertyErrorMessage(
+        'name',
+        name,
+        'only letters and spaces allowed'
+      ))
     }
 
-    if (!Number.isInteger(uomtId)) throw new Error(`Invalid "uomtId" type, only numbers allowed. Received: ${typeof uomtId}`)
+    if (!Number.isInteger(uomtId)) {
+      throw new Error(invalidPropertyTypeErrorMessage(
+        'uomtId',
+        uomtId,
+        'only numbers allowed'
+      ))
+    }
   }
 }
 

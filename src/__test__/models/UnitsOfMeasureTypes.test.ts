@@ -2,6 +2,7 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-lines */
 /* eslint-disable max-statements */
+import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import UnitsOfMeasureTypes from 'models/UnitsOfMeasureTypes'
 
 describe(
@@ -34,33 +35,43 @@ describe(
     test(
       'UnitsOfMeasureTypes constructor: name invalid',
       () => {
+        const nameProp = 'Liquidos1'
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const uomt = new UnitsOfMeasureTypes(
             true,
             1,
-            'Liquidos1'
+            nameProp
           )
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('"name" param type invalid, only letters with spaces')
+          expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
+            'name',
+            nameProp,
+            'only letters with spaces allowed'
+          ))
         }
       }
     )
     test(
       'UnitsOfMeasureTypes constructor: name invalid type',
       () => {
+        const nameProp = null as unknown as string
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const uomt = new UnitsOfMeasureTypes(
             true,
             1,
-            null as unknown as string
+            nameProp
           )
           throw new Error('Constructor is allowing invalid "name" param')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('"name" param type invalid, only strings allowed')
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'name',
+            nameProp,
+            'only string allowed'
+          ))
         }
       }
     )
@@ -82,34 +93,44 @@ describe(
     test(
       'setName name type error',
       () => {
+        const nameProp = {} as unknown as string
         try {
           const uomt = new UnitsOfMeasureTypes(
             true,
             1,
             'Liquidos'
           )
-          uomt.setName({} as unknown as string)
+          uomt.setName(nameProp)
           throw new Error('setName method is allowing non string types')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('"name" param type invalid, only strings allowed')
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'name',
+            nameProp,
+            'only string allowed'
+          ))
         }
       }
     )
     test(
       'setName invalid name',
       () => {
+        const nameProp = 'Distancias_Lineales'
         try {
           const uomt = new UnitsOfMeasureTypes(
             true,
             1,
             'Liquidos'
           )
-          uomt.setName('Distancias_Lineales')
+          uomt.setName(nameProp)
           throw new Error('setName method is allowing invalid names')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('"name" param type invalid, only letters with spaces')
+          expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
+            'name',
+            nameProp,
+            'only letters with spaces allowed'
+          ))
         }
       }
     )

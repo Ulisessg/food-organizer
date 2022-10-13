@@ -1,4 +1,5 @@
 /* eslint-disable max-params */
+import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import Table from './Table'
 import dayjs from 'dayjs'
 
@@ -28,9 +29,7 @@ abstract class Price extends Table {
 
   setValue (value: number): number {
     this.preventModifications()
-    if (typeof value !== 'number') {
-      throw new Error(`Invalid value, only decimals allowed, value: ${value as string}`)
-    }
+    this.verifyProperties({ priceDate: this.priceDate, value })
     this.value = value
     return this.value
   }
@@ -45,9 +44,7 @@ abstract class Price extends Table {
 
   setPriceDate (date: string): string {
     this.preventModifications()
-    if (!dayjs(date).isValid()) {
-      throw new Error('Invalid date')
-    }
+    this.verifyProperties({ priceDate: date, value: this.value })
     this.priceDate = date
     return this.priceDate
   }
@@ -55,10 +52,18 @@ abstract class Price extends Table {
   // eslint-disable-next-line class-methods-use-this
   protected verifyProperties ({ priceDate, value }: verifyPropertiesParam): void {
     if (!dayjs(priceDate).isValid()) {
-      throw new Error('Invalid date')
+      throw new Error(invalidPropertyErrorMessage(
+        'priceDate',
+        priceDate,
+        'only ISO string format allowed'
+      ))
     }
     if (typeof value !== 'number') {
-      throw new Error(`Invalid value, only decimals allowed, value: ${value as string}`)
+      throw new Error(invalidPropertyTypeErrorMessage(
+        'value',
+        value,
+        'only numbers allowed'
+      ))
     }
   }
 }

@@ -3,6 +3,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-statements */
+import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import UnitsOfMeasure from 'models/UnitsOfMeasure'
 
 describe(
@@ -23,19 +24,24 @@ describe(
     test(
       'Constructor: invalid "name" type',
       () => {
+        const nameProp = {} as unknown as string
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const uom = new UnitsOfMeasure(
             true,
             1,
-            {} as unknown as string,
+            nameProp,
             '°C',
             1
           )
           throw new Error('Constructor is allowing invalid "name" type')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "name" type, only string allowed. Received: object')
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'name',
+            nameProp,
+            'only string allowed'
+          ))
         }
       }
     )
@@ -43,19 +49,24 @@ describe(
     test(
       'Constructor: invalid "name"',
       () => {
+        const nameProp = 'Grados23'
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const uom = new UnitsOfMeasure(
             true,
             1,
-            'Grados23',
+            nameProp,
             '°C',
             1
           )
           throw new Error('Constructor is allowing invalid "name"')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "name", only letters and spaces. Received: Grados23')
+          expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
+            'name',
+            nameProp,
+            'only letters and spaces allowed'
+          ))
         }
       }
     )
@@ -63,19 +74,24 @@ describe(
     test(
       'Constructor: invalid "abbreviation" type',
       () => {
+        const abbreviationProp = 33 as unknown as string
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const uom = new UnitsOfMeasure(
             true,
             1,
             'Grados Centgrados',
-            33 as unknown as string,
+            abbreviationProp,
             1
           )
           throw new Error('Constructor is allowing invalid "name" type')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "abbreviation" type, only string allowed. Received: number')
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'abbreviation',
+            abbreviationProp,
+            'only string allowed'
+          ))
         }
       }
     )
@@ -83,19 +99,24 @@ describe(
     test(
       'Constructor: invalid "abbreviation"',
       () => {
+        const abbreviationProp = '!°C'
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const uom = new UnitsOfMeasure(
             true,
             1,
             'Grados Centgrados',
-            '!°C',
+            abbreviationProp,
             1
           )
           throw new Error('Constructor is allowing invalid "abbreviation"')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "abbreviation", only letters and degree symbol (°). Received: !°C')
+          expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
+            'abbreviation',
+            abbreviationProp,
+            'only letters and degree symbol (°)'
+          ))
         }
       }
     )
@@ -103,6 +124,8 @@ describe(
     test(
       'Constructor: invalid "uomtId" type',
       () => {
+        // eslint-disable-next-line no-undefined
+        const uomtId = undefined as unknown as number
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const uom = new UnitsOfMeasure(
@@ -110,13 +133,16 @@ describe(
             1,
             'Grados Centgrados',
             '°C',
-            // eslint-disable-next-line no-undefined
-            undefined as unknown as number
+            uomtId
           )
           throw new Error('Constructor is allowing invalid "uomtId" type')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "uomtId" type, only numbers allowed. Received: undefined')
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'uomtId',
+            uomtId,
+            'only numbers allowed'
+          ))
         }
       }
     )
@@ -155,12 +181,17 @@ describe(
       'setName invalid "name" type',
       () => {
         const uom = instance()
+        const nameProp = null as unknown as string
         try {
-          uom.setName(null as unknown as string)
+          uom.setName(nameProp)
           throw new Error('setName is allowing invalid data type')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "name" type, only string allowed. Received: object')
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'name',
+            nameProp,
+            'only string allowed'
+          ))
         }
       }
     )
@@ -169,12 +200,17 @@ describe(
       'setName: invalid "name"',
       () => {
         const uom = instance()
+        const nameProp = 'Grad0s!'
         try {
-          uom.setName('Grad0s!')
+          uom.setName(nameProp)
           throw new Error('setName is allowing invalid "name"')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "name", only letters and spaces. Received: Grad0s!')
+          expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
+            'name',
+            nameProp,
+            'only letters and spaces allowed'
+          ))
         }
       }
     )
@@ -183,12 +219,17 @@ describe(
       'setAbbreviation: invalid "abbreviation" type',
       () => {
         const uom = instance()
+        const abbreviationProp = null as unknown as string
         try {
-          uom.setAbbreviation(null as unknown as string)
+          uom.setAbbreviation(abbreviationProp)
           throw new Error('setAbbreviation is allowing invalid data type')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "abbreviation" type, only string allowed. Received: object')
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'abbreviation',
+            abbreviationProp,
+            'only string allowed'
+          ))
         }
       }
     )
@@ -196,14 +237,19 @@ describe(
     test(
       'setAbbreviation: invalid "abbreviation"',
       () => {
+        const abbreviationProp = '!°C'
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const uom = instance()
-          uom.setAbbreviation('!°C')
+          uom.setAbbreviation(abbreviationProp)
           throw new Error('Constructor is allowing invalid "abbreviation"')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "abbreviation", only letters and degree symbol (°). Received: !°C')
+          expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
+            'abbreviation',
+            abbreviationProp,
+            'only letters and degree symbol (°)'
+          ))
         }
       }
     )
@@ -212,12 +258,17 @@ describe(
       'setUomtId: invalid "id" type',
       () => {
         const uom = instance()
+        const uomtId = null as unknown as number
         try {
-          uom.setUomtId(null as unknown as number)
+          uom.setUomtId(uomtId)
           throw new Error('setUomtId is allowing invalid data type')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid "id" type, only numbers allowed. Received: object')
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'uomtId',
+            uomtId,
+            'only numbers allowed'
+          ))
         }
       }
     )

@@ -1,5 +1,6 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable no-magic-numbers */
+import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import Pr from 'models/Price'
 import dayjs from 'dayjs'
 
@@ -29,6 +30,7 @@ describe(
     test(
       'constructor, invalid date',
       () => {
+        const priceDateProp = 'Invalid Date'
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const pr = new Price(
@@ -36,31 +38,40 @@ describe(
             1,
             'pr',
             100.00,
-            'Invalid Date'
+            priceDateProp
           )
           throw new Error('Class is allowing invalid dates')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid date')
+          expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
+            'priceDate',
+            priceDateProp,
+            'only ISO string format allowed'
+          ))
         }
       }
     )
     test(
-      'constructor, invalid price',
+      'constructor, invalid price type',
       () => {
+        const value = 'Cien' as unknown as number
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const pr = new Price(
             false,
             1,
             'pr',
-            'Cien' as unknown as number,
+            value,
             dayjs().toISOString()
           )
-          throw new Error('Class is allowing invalid dates')
+          throw new Error('Class is allowing invalid price')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid value, only decimals allowed, value: Cien')
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'value',
+            value,
+            'only numbers allowed'
+          ))
         }
       }
     )
@@ -109,12 +120,17 @@ describe(
           value,
           dayjs().toISOString()
         )
+        const nValue = 'Cow' as unknown as number
         try {
-          pr.setValue('Cow' as unknown as number)
+          pr.setValue(nValue)
           throw new Error('Class is allowing invalid values')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid value, only decimals allowed, value: Cow')
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'value',
+            nValue,
+            'only numbers allowed'
+          ))
         }
       }
     )
@@ -159,6 +175,7 @@ describe(
     test(
       'setPriceDate, invalid date',
       () => {
+        const nPDate = 'Invalid Price Date'
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const pr = new Price(
@@ -168,11 +185,15 @@ describe(
             100.00,
             dayjs().toISOString()
           )
-          pr.setPriceDate('invalid date')
+          pr.setPriceDate(nPDate)
           throw new Error('Class is allowing invalid dates')
         } catch (error) {
           const err: Error = error as Error
-          expect(err.message).toStrictEqual('Invalid date')
+          expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
+            'priceDate',
+            nPDate,
+            'only ISO string format allowed'
+          ))
         }
       }
     )

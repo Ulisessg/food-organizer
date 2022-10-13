@@ -5,7 +5,12 @@
 import Table from '../../models/Table'
 import dayjs from 'dayjs'
 
-class ExtendedTable extends Table {}
+class ExtendedTable extends Table {
+  // eslint-disable-next-line class-methods-use-this
+  protected verifyProperties (prop: any): void {
+    throw new Error('Method not implemented.')
+  }
+}
 
 describe(
   'models/Table',
