@@ -3,7 +3,7 @@
 /* eslint-disable max-len */
 /* eslint-disable max-lines */
 /* eslint-disable max-statements */
-import IngredientsPurchasePlaces from 'models/IngredientsPurchasePlaces'
+import IngredientsPurchasePlaces from 'models/IngredientPurchasePlace'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 
 describe(

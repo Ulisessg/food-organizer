@@ -4,7 +4,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-statements */
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
-import Ingredients from 'models/Ingredients'
+import Ingredients from 'models/Ingredient'
 
 describe(
   'models/Ingredients',

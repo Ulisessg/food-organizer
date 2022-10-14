@@ -3,7 +3,7 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-magic-numbers */
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from '../../utils/ErrorMessages'
-import PurchasePlaces from 'models/PurchasePlaces'
+import PurchasePlaces from 'models/PurchasePlace'
 
 describe(
   'models/PurchasePlaces',

@@ -4,7 +4,7 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-statements */
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
-import UnitsOfMeasure from 'models/UnitsOfMeasure'
+import UnitsOfMeasure from 'models/UnitOfMeasure'
 
 describe(
   'models/UnitsOfMeasure',
