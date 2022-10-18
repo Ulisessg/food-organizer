@@ -27,7 +27,30 @@ class Food extends Table {
       id,
       'foods'
     )
-    this.verifyProperties({ foodTypeId, image, name, preparationTime, score, usedCounter })
+    this.verifyProperties(
+      'foodTypeId',
+      foodTypeId
+    )
+    this.verifyProperties(
+      'image',
+      image
+    )
+    this.verifyProperties(
+      'name',
+      name
+    )
+    this.verifyProperties(
+      'preparationTime',
+      preparationTime
+    )
+    this.verifyProperties(
+      'score',
+      score
+    )
+    this.verifyProperties(
+      'usedCounter',
+      usedCounter
+    )
     this.name = name
     this.usedCounter = usedCounter
     this.preparationTime = preparationTime
@@ -39,84 +62,60 @@ class Food extends Table {
   // Setters
   setName (name: string): string {
     this.preventModifications()
-    this.verifyProperties({
-      foodTypeId: this.foodTypeId,
-      image: this.image,
-      name,
-      preparationTime: this.preparationTime,
-      score: this.score,
-      usedCounter: this.usedCounter
-    })
+    this.verifyProperties(
+      'name',
+      name
+    )
     this.name = name
     return this.name
   }
 
   setUsedCounter (usedCounter: number): number {
     this.preventModifications()
-    this.verifyProperties({
-      foodTypeId: this.foodTypeId,
-      image: this.image,
-      name: this.name,
-      preparationTime: this.preparationTime,
-      score: this.score,
+    this.verifyProperties(
+      'usedCounter',
       usedCounter
-    })
+    )
     this.usedCounter = usedCounter
     return this.usedCounter
   }
 
   setPreparationTime (preparationTime: number): number {
     this.preventModifications()
-    this.verifyProperties({
-      foodTypeId: this.foodTypeId,
-      image: this.image,
-      name: this.name,
-      preparationTime,
-      score: this.score,
-      usedCounter: this.usedCounter
-    })
+    this.verifyProperties(
+      'preparationTime',
+      preparationTime
+    )
     this.preparationTime = preparationTime
     return this.preparationTime
   }
 
   setScore (score: number): number {
     this.preventModifications()
-    this.verifyProperties({
-      foodTypeId: this.foodTypeId,
-      image: this.image,
-      name: this.name,
-      preparationTime: this.preparationTime,
-      score,
-      usedCounter: this.usedCounter
-    })
+    this.verifyProperties(
+      'score',
+      score
+    )
     this.score = score
     return this.score
   }
 
   setFoodTypeId (foodTypeId: number): number {
     this.preventModifications()
-    this.verifyProperties({
-      foodTypeId,
-      image: this.image,
-      name: this.name,
-      preparationTime: this.preparationTime,
-      score: this.score,
-      usedCounter: this.usedCounter
-    })
+    this.verifyProperties(
+      'foodTypeId',
+      foodTypeId
+    )
     this.foodTypeId = foodTypeId
     return this.foodTypeId
   }
 
   setImage (url: string): string {
     this.preventModifications()
-    this.verifyProperties({
-      foodTypeId: this.foodTypeId,
-      image: url,
-      name: this.name,
-      preparationTime: this.preparationTime,
-      score: this.score,
-      usedCounter: this.usedCounter
-    })
+    this.verifyProperties(
+      'image',
+      url
+    )
     this.image = url
     return this.image
   }
@@ -147,14 +146,13 @@ class Food extends Table {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  protected verifyProperties ({
-    foodTypeId,
-    image,
-    name,
-    preparationTime,
-    score,
-    usedCounter
-  }: verifyPropertiesParam): void {
+  protected verifyProperties (propName: verifyProps, value: any): void {
+    verifications[propName](value)
+  }
+}
+
+const verifications: verifyObj = {
+  foodTypeId: (foodTypeId) => {
     if (typeof foodTypeId !== 'number') {
       throw new TypeError(invalidPropertyTypeErrorMessage(
         'foodTypeId',
@@ -162,27 +160,8 @@ class Food extends Table {
         'only number allowed'
       ))
     }
-    if (typeof preparationTime !== 'number') {
-      throw new TypeError(invalidPropertyTypeErrorMessage(
-        'preparationTime',
-        preparationTime,
-        'only number allowed'
-      ))
-    }
-    if (typeof score !== 'number') {
-      throw new TypeError(invalidPropertyTypeErrorMessage(
-        'score',
-        score,
-        'only number allowed'
-      ))
-    }
-    if (typeof usedCounter !== 'number') {
-      throw new TypeError(invalidPropertyTypeErrorMessage(
-        'usedCounter',
-        usedCounter,
-        'only number allowed'
-      ))
-    }
+  },
+  image: (image: string) => {
     if (typeof image === 'string') {
       if (image.match(urlRegExp) === null) {
         throw new Error(invalidPropertyErrorMessage(
@@ -198,6 +177,8 @@ class Food extends Table {
         'only url allowed'
       ))
     }
+  },
+  name: (name: string) => {
     if (typeof name !== 'string') {
       throw new Error(invalidPropertyTypeErrorMessage(
         'name',
@@ -212,16 +193,40 @@ class Food extends Table {
         'only letters and spaces allowed'
       ))
     }
+  },
+  preparationTime: (preparationTime: number) => {
+    if (typeof preparationTime !== 'number') {
+      throw new TypeError(invalidPropertyTypeErrorMessage(
+        'preparationTime',
+        preparationTime,
+        'only number allowed'
+      ))
+    }
+  },
+  score: (score: number) => {
+    if (typeof score !== 'number') {
+      throw new TypeError(invalidPropertyTypeErrorMessage(
+        'score',
+        score,
+        'only number allowed'
+      ))
+    }
+  },
+  usedCounter: (usedCounter: number) => {
+    if (typeof usedCounter !== 'number') {
+      throw new TypeError(invalidPropertyTypeErrorMessage(
+        'usedCounter',
+        usedCounter,
+        'only number allowed'
+      ))
+    }
   }
 }
 
-interface verifyPropertiesParam {
-  name: string
-  usedCounter: number
-  preparationTime: number
-  score: number
-  foodTypeId: number
-  image: string | null
+type verifyProps = 'name' | 'usedCounter' | 'preparationTime' | 'foodTypeId' | 'image' | 'score'
+
+type verifyObj = {
+  [k in verifyProps]: (p: any) => void
 }
 
 export default Food

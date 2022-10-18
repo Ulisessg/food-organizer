@@ -25,7 +25,22 @@ class Ingredients extends Table {
       'ingredients'
     )
 
-    this.verifyProperties({ image, name, preferredPurchasePlaceId, uomtId })
+    this.verifyProperties(
+      'image',
+      image
+    )
+    this.verifyProperties(
+      'name',
+      name
+    )
+    this.verifyProperties(
+      'preferredPurchasePlaceId',
+      preferredPurchasePlaceId
+    )
+    this.verifyProperties(
+      'uomtId',
+      uomtId
+    )
 
     this.name = name
     this.preferredPurchasePlaceId = preferredPurchasePlaceId
@@ -51,89 +66,52 @@ class Ingredients extends Table {
 
   setName (name: string): string {
     this.preventModifications()
-    this.verifyProperties({
-      image: this.image,
-      name,
-      preferredPurchasePlaceId: this.preferredPurchasePlaceId,
-      uomtId: this.uomtId
-    })
+    this.verifyProperties(
+      'name',
+      name
+    )
     this.name = name
     return this.name
   }
 
   setPreferredPurchasePlaceId (id: number): number {
     this.preventModifications()
-    this.verifyProperties({
-      image: this.image,
-      name: this.name,
-      preferredPurchasePlaceId: id,
-      uomtId: this.uomtId
-    })
+    this.verifyProperties(
+      'preferredPurchasePlaceId',
+      id
+    )
     this.preferredPurchasePlaceId = id
     return this.preferredPurchasePlaceId
   }
 
   setUomtId (id: number): number {
     this.preventModifications()
-    this.verifyProperties({
-      image: this.image,
-      name: this.name,
-      preferredPurchasePlaceId: this.preferredPurchasePlaceId,
-      uomtId: id
-    })
+    this.verifyProperties(
+      'uomtId',
+      id
+    )
     this.uomtId = id
     return this.uomtId
   }
 
   setImage (url: string): string {
     this.preventModifications()
-    this.verifyProperties({
-      image: url,
-      name: this.name,
-      preferredPurchasePlaceId: this.preferredPurchasePlaceId,
-      uomtId: this.uomtId
-    })
+    this.verifyProperties(
+      'image',
+      url
+    )
     this.image = url
     return this.image
   }
 
   // eslint-disable-next-line class-methods-use-this
-  protected verifyProperties ({
-    name,
-    preferredPurchasePlaceId,
-    uomtId,
-    image
-  }: verifyPropertiesParam): void {
-    // Types validation
-    if (typeof name !== 'string') {
-      throw new TypeError(invalidPropertyTypeErrorMessage(
-        'name',
-        name,
-        'only string allowed'
-      ))
-    }
-    if (typeof preferredPurchasePlaceId !== 'number') {
-      throw new TypeError(invalidPropertyTypeErrorMessage(
-        'preferredPurchasePlaceId',
-        preferredPurchasePlaceId,
-        'only number allowed'
-      ))
-    }
-    if (typeof uomtId !== 'number') {
-      throw new TypeError(invalidPropertyTypeErrorMessage(
-        'uomtId',
-        uomtId,
-        'only number allowed'
-      ))
-    }
-    // String validations
-    if (name.match(lettersWithSpaces) === null) {
-      throw new Error(invalidPropertyErrorMessage(
-        'name',
-        name,
-        'only letters and spaces allowed'
-      ))
-    }
+  protected verifyProperties (propName: verifyProps, value: any): void {
+    verifications[propName](value)
+  }
+}
+
+const verifications: verifyObj = {
+  image: (image: string) => {
     if (typeof image === 'string') {
       if (image.match(urlRegExp) === null) {
         throw new Error(invalidPropertyErrorMessage(
@@ -149,14 +127,46 @@ class Ingredients extends Table {
         'only string or null allowed'
       ))
     }
+  },
+  name: (name: string) => {
+    if (typeof name !== 'string') {
+      throw new TypeError(invalidPropertyTypeErrorMessage(
+        'name',
+        name,
+        'only string allowed'
+      ))
+    }
+    if (name.match(lettersWithSpaces) === null) {
+      throw new Error(invalidPropertyErrorMessage(
+        'name',
+        name,
+        'only letters and spaces allowed'
+      ))
+    }
+  },
+  preferredPurchasePlaceId: (preferredPurchasePlaceId: number) => {
+    if (typeof preferredPurchasePlaceId !== 'number') {
+      throw new TypeError(invalidPropertyTypeErrorMessage(
+        'preferredPurchasePlaceId',
+        preferredPurchasePlaceId,
+        'only number allowed'
+      ))
+    }
+  },
+  uomtId: (uomtId: number) => {
+    if (typeof uomtId !== 'number') {
+      throw new TypeError(invalidPropertyTypeErrorMessage(
+        'uomtId',
+        uomtId,
+        'only number allowed'
+      ))
+    }
   }
 }
 
-interface verifyPropertiesParam {
-  image: string | null
-  name: string
-  preferredPurchasePlaceId: number
-  uomtId: number
+type verifyProps = 'image' | 'name' | 'preferredPurchasePlaceId' | 'uomtId'
+type verifyObj = {
+  [k in verifyProps]: (prop: any) => void
 }
 
 export default Ingredients

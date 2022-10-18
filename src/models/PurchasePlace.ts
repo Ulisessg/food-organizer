@@ -7,25 +7,26 @@ class PurchasePlaces extends Table {
   private name: string
   private address: TAddress
   // eslint-disable-next-line max-params
-  constructor (allowModifications: boolean, id: number | null, name: string, address?: string) {
+  constructor (allowModifications: boolean, id: number | null, name: string, address: string | null) {
     super(
       allowModifications,
       id,
       'purchase_places'
     )
-    this.verifyProperties({ address, name })
+    this.verifyProperties(
+      'address',
+      address
+    )
+    this.verifyProperties(
+      'name',
+      name
+    )
+
     this.address = address
     this.name = name
   }
 
   get getName (): string {
-    return this.name
-  }
-
-  setName (name: string): string {
-    this.preventModifications()
-    this.verifyProperties({ address: this.address, name })
-    this.name = name
     return this.name
   }
 
@@ -35,14 +36,53 @@ class PurchasePlaces extends Table {
 
   setAddress (address: string): string {
     this.preventModifications()
-    this.verifyProperties({ address, name: this.name })
+    this.verifyProperties(
+      'address',
+      address
+    )
     this.address = address
     return this.address
   }
 
+  setName (name: string): string {
+    this.preventModifications()
+    this.verifyProperties(
+      'name',
+      name
+    )
+    this.name = name
+    return this.name
+  }
+
   // eslint-disable-next-line class-methods-use-this
-  protected verifyProperties ({ address, name }: verifyPropertiesParam): void {
-    // eslint-disable-next-line max-len
+  protected verifyProperties (propName: verifyProp, value: any): void {
+    verifications[propName](value)
+  }
+}
+
+const verifications: verifyObj = {
+  address: (address: string | null) => {
+    if (typeof address !== 'string') {
+      if (address !== null) {
+        throw new Error(invalidPropertyTypeErrorMessage(
+          'address',
+          address,
+          'only string or undefined allowed'
+        ))
+      }
+    }
+    if (typeof address === 'string') {
+      const add: string = address
+      if (add.match(addressRegexp) === null) {
+        throw new Error(invalidPropertyErrorMessage(
+          'address',
+          address,
+          'only letters and spaces allowed'
+        ))
+      }
+    }
+  },
+  name: (name: string) => {
     if (typeof name !== 'string') {
       throw new Error(invalidPropertyTypeErrorMessage(
         'name',
@@ -57,32 +97,14 @@ class PurchasePlaces extends Table {
         'only letters and spaces allowed'
       ))
     }
-
-    if (typeof address === 'string') {
-      const add: string = address
-      if (add.match(addressRegexp) === null) {
-        throw new Error(invalidPropertyErrorMessage(
-          'address',
-          address,
-          'only letters and spaces allowed'
-        ))
-      }
-    } else if (typeof address !== 'string' || typeof address !== 'undefined') {
-      // eslint-disable-next-line max-len
-      throw new Error(invalidPropertyTypeErrorMessage(
-        'address',
-        address,
-        'only string or undefined allowed'
-      ))
-    }
   }
 }
 
-interface verifyPropertiesParam {
-  name: string
-  address: string | undefined
+type verifyProp = 'name' | 'address'
+type verifyObj = {
+  [k in verifyProp]: (value: any) => void
 }
 
-type TAddress = string | undefined
+type TAddress = string | null
 
 export default PurchasePlaces

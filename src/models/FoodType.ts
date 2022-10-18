@@ -26,7 +26,7 @@ class FoodType extends Table {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  protected verifyProperties (name: verifyPropertiesParam): void {
+  protected verifyProperties (name: string): void {
     if (typeof name !== 'string') {
       throw new TypeError(invalidPropertyTypeErrorMessage(
         'name',
@@ -43,7 +43,5 @@ class FoodType extends Table {
     }
   }
 }
-
-type verifyPropertiesParam = string
 
 export default FoodType

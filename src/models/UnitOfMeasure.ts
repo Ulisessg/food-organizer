@@ -21,7 +21,18 @@ class UnitsOfMeasure extends Table {
       id,
       'units_of_measure'
     )
-    this.verifyProperties({ abbreviation, name, uomtId })
+    this.verifyProperties(
+      'name',
+      name
+    )
+    this.verifyProperties(
+      'abbreviation',
+      abbreviation
+    )
+    this.verifyProperties(
+      'uomtId',
+      uomtId
+    )
     this.abbreviation = abbreviation
     this.uomtId = uomtId
     this.name = name
@@ -41,27 +52,42 @@ class UnitsOfMeasure extends Table {
 
   public setName (name: string): string {
     this.preventModifications()
-    this.verifyProperties({ abbreviation: this.abbreviation, name, uomtId: this.uomtId })
+    this.verifyProperties(
+      'name',
+      name
+    )
     this.name = name
     return this.name
   }
 
   public setAbbreviation (abbreviation: string): string {
     this.preventModifications()
-    this.verifyProperties({ abbreviation, name: this.name, uomtId: this.uomtId })
+    this.verifyProperties(
+      'abbreviation',
+      abbreviation
+    )
     this.abbreviation = abbreviation
     return this.abbreviation
   }
 
   public setUomtId (id: number): number {
     this.preventModifications()
-    this.verifyProperties({ abbreviation: this.abbreviation, name: this.name, uomtId: id })
+    this.verifyProperties(
+      'uomtId',
+      id
+    )
     this.uomtId = id
     return this.uomtId
   }
 
   // eslint-disable-next-line class-methods-use-this
-  protected verifyProperties ({ abbreviation, name, uomtId }: verifyPropertiesParam): void {
+  protected verifyProperties (propName: verifyProp, value: any): void {
+    verifications[propName](value)
+  }
+}
+
+const verifications: verifyObj = {
+  abbreviation: (abbreviation) => {
     if (typeof abbreviation !== 'string') {
       throw new Error(invalidPropertyTypeErrorMessage(
         'abbreviation',
@@ -76,21 +102,24 @@ class UnitsOfMeasure extends Table {
         'only letters and degree symbol (°)'
       ))
     }
-
+  },
+  name: (name: string) => {
     if (typeof name !== 'string') {
       throw new Error(invalidPropertyTypeErrorMessage(
         'name',
         name,
         'only string allowed'
       ))
-    } else if (name.match(lettersWithSpaces) === null) {
+    }
+    if (name.match(lettersWithSpaces) === null) {
       throw new Error(invalidPropertyErrorMessage(
         'name',
         name,
         'only letters and spaces allowed'
       ))
     }
-
+  },
+  uomtId: (uomtId: number) => {
     if (!Number.isInteger(uomtId)) {
       throw new Error(invalidPropertyTypeErrorMessage(
         'uomtId',
@@ -101,10 +130,9 @@ class UnitsOfMeasure extends Table {
   }
 }
 
-interface verifyPropertiesParam {
-  name: string
-  abbreviation: string
-  uomtId: number
+type verifyProp = 'name' | 'abbreviation' | 'uomtId'
+type verifyObj = {
+  [k in verifyProp]: (value: any) => void
 }
 
 export default UnitsOfMeasure

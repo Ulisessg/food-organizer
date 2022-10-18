@@ -17,7 +17,14 @@ class IngredientsPurchasePlaces extends Table {
       id,
       'ingredients_purchase_places'
     )
-    this.verifyProperties({ ingredientId, purchasePlaceId })
+    this.verifyProperties(
+      'ingredientId',
+      ingredientId
+    )
+    this.verifyProperties(
+      'purchasePlaceId',
+      purchasePlaceId
+    )
     this.ingredientId = ingredientId
     this.purchasePlaceId = purchasePlaceId
   }
@@ -32,7 +39,10 @@ class IngredientsPurchasePlaces extends Table {
 
   setIngredientId (ingredientId: number): number {
     this.preventModifications()
-    this.verifyProperties({ ingredientId, purchasePlaceId: this.purchasePlaceId })
+    this.verifyProperties(
+      'ingredientId',
+      ingredientId
+    )
     this.ingredientId = ingredientId
 
     return this.ingredientId
@@ -40,13 +50,22 @@ class IngredientsPurchasePlaces extends Table {
 
   setPurchasePlaceId (purchasePlaceId: number): number {
     this.preventModifications()
-    this.verifyProperties({ ingredientId: this.ingredientId, purchasePlaceId })
+    this.verifyProperties(
+      'purchasePlaceId',
+      purchasePlaceId
+    )
     this.purchasePlaceId = purchasePlaceId
     return this.purchasePlaceId
   }
 
   // eslint-disable-next-line class-methods-use-this
-  protected verifyProperties ({ ingredientId, purchasePlaceId }: verifyPropertiesParam): void {
+  protected verifyProperties (propName: verifyProps, value: any): void {
+    verifications[propName](value)
+  }
+}
+
+const verifications: verifyObj = {
+  ingredientId: (ingredientId: number) => {
     if (!Number.isInteger(ingredientId)) {
       throw new Error(invalidPropertyTypeErrorMessage(
         'ingredientId',
@@ -54,6 +73,8 @@ class IngredientsPurchasePlaces extends Table {
         'only number allowed'
       ))
     }
+  },
+  purchasePlaceId: (purchasePlaceId: number) => {
     if (!Number.isInteger(purchasePlaceId)) {
       throw new Error(invalidPropertyTypeErrorMessage(
         'purchasePlaceId',
@@ -64,9 +85,9 @@ class IngredientsPurchasePlaces extends Table {
   }
 }
 
-interface verifyPropertiesParam {
-  ingredientId: number
-  purchasePlaceId: number
+type verifyProps = 'ingredientId' | 'purchasePlaceId'
+type verifyObj = {
+  [k in verifyProps]: (value: any) => void
 }
 
 export default IngredientsPurchasePlaces

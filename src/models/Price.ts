@@ -19,17 +19,24 @@ abstract class Price extends Table {
       id,
       tableName
     )
-    this.verifyProperties({
-      priceDate,
+    this.verifyProperties(
+      'priceDate',
+      priceDate
+    )
+    this.verifyProperties(
+      'value',
       value
-    })
+    )
     this.value = value
     this.priceDate = priceDate
   }
 
   setValue (value: number): number {
     this.preventModifications()
-    this.verifyProperties({ priceDate: this.priceDate, value })
+    this.verifyProperties(
+      'value',
+      value
+    )
     this.value = value
     return this.value
   }
@@ -44,13 +51,22 @@ abstract class Price extends Table {
 
   setPriceDate (date: string): string {
     this.preventModifications()
-    this.verifyProperties({ priceDate: date, value: this.value })
+    this.verifyProperties(
+      'priceDate',
+      date
+    )
     this.priceDate = date
     return this.priceDate
   }
 
   // eslint-disable-next-line class-methods-use-this
-  protected verifyProperties ({ priceDate, value }: verifyPropertiesParam): void {
+  protected verifyProperties (propName: verifyProp, value: any): void {
+    verifications[propName](value)
+  }
+}
+
+const verifications: verifyObj = {
+  priceDate: (priceDate: string) => {
     if (!dayjs(priceDate).isValid()) {
       throw new Error(invalidPropertyErrorMessage(
         'priceDate',
@@ -58,6 +74,8 @@ abstract class Price extends Table {
         'only ISO string format allowed'
       ))
     }
+  },
+  value: (value: number) => {
     if (typeof value !== 'number') {
       throw new Error(invalidPropertyTypeErrorMessage(
         'value',
@@ -68,6 +86,9 @@ abstract class Price extends Table {
   }
 }
 
-interface verifyPropertiesParam { priceDate: string, value: number }
+type verifyProp = 'priceDate' | 'value'
+type verifyObj = {
+  [k in verifyProp]: (value: any) => void
+}
 
 export default Price

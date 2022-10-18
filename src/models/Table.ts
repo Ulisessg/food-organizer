@@ -115,7 +115,7 @@ abstract class Table {
     }
   }
 
-  protected abstract verifyProperties (prop: any): void
+  protected abstract verifyProperties (propName: any, value: any): void
 }
 
 export default Table

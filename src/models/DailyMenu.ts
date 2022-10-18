@@ -18,7 +18,19 @@ class DailyMenu extends Table {
       id,
       'daily_menus'
     )
-    this.verifyProperties({ carbohydratesId, meatId, vegetableId })
+    this.verifyProperties(
+      'carbohydratesId',
+      carbohydratesId
+    )
+    this.verifyProperties(
+      'meatId',
+      meatId
+    )
+    this.verifyProperties(
+      'vegetableId',
+      vegetableId
+    )
+
     this.carbohydratesId = carbohydratesId
     this.vegetableId = vegetableId
     this.meatId = meatId
@@ -38,44 +50,43 @@ class DailyMenu extends Table {
 
   setVegetableId (vegetableId: number): number {
     this.preventModifications()
-    this.verifyProperties({
-      carbohydratesId: this.carbohydratesId,
-      meatId: this.meatId,
+    this.verifyProperties(
+      'vegetableId',
       vegetableId
-    })
+    )
     this.vegetableId = vegetableId
     return this.vegetableId
   }
 
   setCarbohydratesId (carbohydratesId: number): number {
     this.preventModifications()
-    this.verifyProperties({
-      carbohydratesId,
-      meatId: this.meatId,
-      vegetableId: this.vegetableId
-    })
+    this.verifyProperties(
+      'carbohydratesId',
+      carbohydratesId
+    )
     this.carbohydratesId = carbohydratesId
     return this.carbohydratesId
   }
 
   setMeatId (meatId: number): number {
     this.preventModifications()
-    this.verifyProperties({
-      carbohydratesId: this.carbohydratesId,
-      meatId,
-      vegetableId: this.vegetableId
-    })
+    this.verifyProperties(
+      'meatId',
+      meatId
+    )
     this.meatId = meatId
     return this.meatId
   }
 
   // eslint-disable-next-line class-methods-use-this
-  protected verifyProperties ({
-    carbohydratesId,
-    meatId,
-    vegetableId
-  }: verifyPropertiesParam): void {
-    const propertyRule = 'only number allowed'
+  protected verifyProperties (propName: verifyProps, value: any): void {
+    verifications[propName](value)
+  }
+}
+
+const propertyRule = 'only number allowed'
+const verifications: verifyObj = {
+  carbohydratesId: (carbohydratesId: number) => {
     if (typeof carbohydratesId !== 'number') {
       throw new TypeError(invalidPropertyTypeErrorMessage(
         'carbohydratesId',
@@ -83,6 +94,8 @@ class DailyMenu extends Table {
         propertyRule
       ))
     }
+  },
+  meatId: (meatId: number) => {
     if (typeof meatId !== 'number') {
       throw new TypeError(invalidPropertyTypeErrorMessage(
         'meatId',
@@ -90,6 +103,8 @@ class DailyMenu extends Table {
         propertyRule
       ))
     }
+  },
+  vegetableId: (vegetableId: number) => {
     if (typeof vegetableId !== 'number') {
       throw new TypeError(invalidPropertyTypeErrorMessage(
         'vegetableId',
@@ -100,10 +115,10 @@ class DailyMenu extends Table {
   }
 }
 
-interface verifyPropertiesParam {
-  vegetableId: number
-  carbohydratesId: number
-  meatId: number
+type verifyProps = 'vegetableId' | 'meatId' | 'carbohydratesId'
+
+type verifyObj = {
+  [k in verifyProps]: (p: any) => void
 }
 
 export default DailyMenu

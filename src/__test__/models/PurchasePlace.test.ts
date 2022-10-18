@@ -27,7 +27,8 @@ describe(
           const pp = new PurchasePlaces(
             false,
             1,
-            nameProp
+            nameProp,
+            null
           )
           throw new Error('Constructor is allowing invalid "name"')
         } catch (error) {
@@ -49,7 +50,8 @@ describe(
           const pp = new PurchasePlaces(
             false,
             1,
-            nameProp
+            nameProp,
+            null
           )
           throw new Error('Constructor is allowing invalid "name" type')
         } catch (error) {
