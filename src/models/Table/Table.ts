@@ -83,22 +83,6 @@ abstract class Table {
     return this.allowModifications
   }
 
-  public get getInsertSqlScript (): string {
-    return 'Please override this method :)'
-  }
-
-  public get getUpdateSqlScript (): string {
-    return 'Please override this method :)'
-  }
-
-  public get getSelectSqlScript (): string {
-    return 'Please override this method :)'
-  }
-
-  public get getDeleteSqlScript (): string {
-    return 'Please override this method :)'
-  }
-
   public get getTableName (): string {
     return this.tableName
   }

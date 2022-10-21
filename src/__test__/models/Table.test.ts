@@ -36,10 +36,6 @@ describe(
         expect(tab.getId).toBeDefined()
         expect(tab.getCreationDate).toBeDefined()
         expect(tab.getAllowModifications).toBeDefined()
-        expect(tab.getInsertSqlScript).toBeDefined()
-        expect(tab.getUpdateSqlScript).toBeDefined()
-        expect(tab.getSelectSqlScript).toBeDefined()
-        expect(tab.getDeleteSqlScript).toBeDefined()
         expect(tab.getTableName).toBeDefined()
 
         // Static Methods
@@ -422,43 +418,6 @@ describe(
       () => {
         const tb = instance()
         expect(tb.getTableName).toStrictEqual('table')
-      }
-    )
-
-    const returnSqlMethods: string = 'Please override this method :)'
-
-    test(
-      'getInsertSqlScript',
-      () => {
-        const tbInstance = instance()
-        expect(tbInstance.getInsertSqlScript).toStrictEqual(returnSqlMethods)
-      }
-    )
-    test(
-      'getUpdateSqlScript',
-      () => {
-        const tbInstance: Table = instance()
-        expect(tbInstance.getUpdateSqlScript).toStrictEqual(returnSqlMethods)
-      }
-    )
-    test(
-      'getSelectSqlScript',
-      () => {
-        const tbInstance: Table = instance()
-        expect(tbInstance.getSelectSqlScript).toStrictEqual(returnSqlMethods)
-      }
-    )
-    test(
-      'getDeleteSqlScript',
-      () => {
-        const tbInstance: Table = instance()
-        expect(tbInstance.getDeleteSqlScript).toStrictEqual(returnSqlMethods)
-      }
-    )
-    test(
-      'isValid static method',
-      () => {
-        expect(ExtendedTable.isValid()).toStrictEqual(true)
       }
     )
   }
