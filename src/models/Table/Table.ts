@@ -1,13 +1,14 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable max-len */
 import dayjs from 'dayjs'
-import { lettersAndUnderscore } from '../utils/RegExps'
+import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
+import verifications from './tableVerifications'
 
 abstract class Table {
   private id: number | null
   private creationDate: string
   public readonly allowModifications: boolean
-  private readonly tableName: string
+  private tableName: string
 
   /**
    * @param {boolean} allowModifications allow or not instance modifications
@@ -15,27 +16,11 @@ abstract class Table {
    * @param {string} tableName Tame of Table
    *
    */
+  // eslint-disable-next-line max-statements
   public constructor (allowModifications: boolean, id: number | null, tableName: string) {
-    // Constructor verifications
-    if (
-      typeof allowModifications !== 'boolean' ||
-      !(!Number.isInteger(id) || id !== null) ||
-      typeof tableName !== 'string'
-    ) {
-      throw new TypeError(`
-"allowModifications", "id" and "tableName" params must required as "boolean", "number" and "string" type resp.
-
-"allowModifications" type: ${typeof allowModifications}
-"id" type: ${typeof id}
-"tableName" type: ${typeof tableName}
-`)
-    }
-
-    // Avoid sql injection
-    if (tableName.match(lettersAndUnderscore) === null) {
-      throw new Error('"tableName" only accept letters upper and lower case and underscore, NO spaces: /^[\\p{L}_]+$/u')
-    }
-
+    verifications.allowModifications(allowModifications)
+    verifications.id(id)
+    verifications.tableName(tableName)
     this.id = id
     this.allowModifications = allowModifications
     this.tableName = tableName
@@ -54,14 +39,36 @@ abstract class Table {
    * Set a new Id
    * @param {number} id
    */
-  public setId (id: number): void {
+  public setId (id: number): number {
     this.preventModifications()
-
-    if (!Number.isInteger(id)) {
-      throw new TypeError(`id param must be integer: id=${typeof id}`)
-    }
-
+    verifications.id(id)
     this.id = id
+    return this.id
+  }
+
+  public updateCreationDate (date: string | null): string {
+    this.preventModifications()
+    if (date === null) {
+      this.creationDate = dayjs().toISOString()
+      return this.creationDate
+    }
+    if (typeof date !== 'string') {
+      throw new TypeError(invalidPropertyTypeErrorMessage(
+        'creationDate',
+        date,
+        'only string allowed'
+      ))
+    }
+    verifications.creationDate(date)
+    this.creationDate = date
+    return this.creationDate
+  }
+
+  public setTableName (name: string): string {
+    this.preventModifications()
+    verifications.tableName(name)
+    this.tableName = name
+    return this.tableName
   }
 
   public get getId (): number | null {
@@ -69,19 +76,6 @@ abstract class Table {
   }
 
   public get getCreationDate (): string {
-    return this.creationDate
-  }
-
-  public updateCreationDate (date: string | null): string {
-    this.preventModifications()
-    if (dayjs(date).isValid()) {
-      this.creationDate = date as string
-    } else if (date === null) {
-      this.creationDate = dayjs().toISOString()
-    } else {
-      throw new Error(`Unknown date. Date: "${date}" date type: ${typeof date}`)
-    }
-
     return this.creationDate
   }
 

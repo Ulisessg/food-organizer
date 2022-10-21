@@ -1,8 +1,11 @@
+/* eslint-disable func-style */
+/* eslint-disable max-lines-per-function */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable max-len */
 /* eslint-disable max-lines */
 /* eslint-disable max-statements */
-import Table from '../../models/Table'
+import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
+import Table from '../../models/Table/Table'
 import dayjs from 'dayjs'
 
 class ExtendedTable extends Table {
@@ -25,10 +28,13 @@ describe(
           id,
           'Test'
         )
-        expect(tab.getId).toBeDefined()
+        // Setters
         expect(tab.setId).toBeDefined()
-        expect(tab.getCreationDate).toBeDefined()
+        expect(tab.setTableName).toBeDefined()
         expect(tab.updateCreationDate).toBeDefined()
+        // Getters
+        expect(tab.getId).toBeDefined()
+        expect(tab.getCreationDate).toBeDefined()
         expect(tab.getAllowModifications).toBeDefined()
         expect(tab.getInsertSqlScript).toBeDefined()
         expect(tab.getUpdateSqlScript).toBeDefined()
@@ -40,194 +46,314 @@ describe(
         expect(Table.isValid).toBeDefined()
       }
     )
-    test(
-      'Class Table constructor with Id',
-      () => {
-      // With id
-        const id = 1
-        const tableWithIdAndNoModifications = new ExtendedTable(
-          false,
-          id,
-          'TableConstructorWithId'
-        )
-        expect(tableWithIdAndNoModifications.getId).toStrictEqual(id)
-        expect(tableWithIdAndNoModifications.getAllowModifications).toStrictEqual(false)
 
-        const tableWithIdAndModifications = new ExtendedTable(
-          true,
-          id,
-          'TableConstructorWithId'
-        )
-        expect(tableWithIdAndModifications.getId).toStrictEqual(id)
-        expect(tableWithIdAndModifications.getAllowModifications).toStrictEqual(true)
-      }
-    )
+    // Constructor
+
+    /* Constructor invalid type */
+
+    let err: Error | null = null
 
     test(
-      'Table constructor Without Id',
+      'Table constructor: invalid "allowModifications"',
       () => {
-        // Without id
-        const tableNoIdNoMod = new ExtendedTable(
-          false,
-          null,
-          'TableConstructorNoId'
-        )
-        expect(tableNoIdNoMod.getId).toStrictEqual(null)
-        expect(tableNoIdNoMod.getAllowModifications).toStrictEqual(false)
-
-        const tableNoIdMod = new ExtendedTable(
-          true,
-          null,
-          'TableConstructorNoId'
-        )
-        expect(tableNoIdMod.getId).toStrictEqual(null)
-        expect(tableNoIdMod.getAllowModifications).toStrictEqual(true)
+        const invalidAllowModifications: boolean = 'Invalid allow modifications' as unknown as boolean
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+          const et = new ExtendedTable(
+            invalidAllowModifications,
+            1,
+            'any'
+          )
+          throw new Error('Constructor is allowing invalid "allowModifications" param')
+        } catch (error) {
+          err = error as TypeError
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'allowModifications',
+            invalidAllowModifications,
+            'only boolean allowed'
+          ))
+        }
+        err = null
       }
     )
 
     test(
       'Table constructor: Id type error',
       () => {
-        // eslint-disable-next-line init-declarations
-        let tableIdError
+        const invalidId: number = 'Invalid ID' as unknown as number
         try {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-          tableIdError = new ExtendedTable(
+          const et = new ExtendedTable(
             false,
-            'Invalid ID' as unknown as number,
+            invalidId,
             'TableConstructorNoId'
           )
+          throw new Error('Constructor is allowing invalid "id" param')
         } catch (error) {
-          expect(tableIdError).toThrowError(TypeError(`
-"allowModifications" and "tableName" params must required as "boolean" and "string" type resp.
-          
-"allowModifications" type: boolean
-"id" type: string
-"tableName" type: string
-`))
-          tableIdError = null
+          err = error as TypeError
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'id',
+            invalidId,
+            'only number or null allowed'
+          ))
         }
+        err = null
       }
     )
 
     test(
-      'Table constructor, table name correct',
+      'Table constructor, invalid "tableName" type',
       () => {
-        const tableNameCorrect = new ExtendedTable(
-          false,
-          null,
-          'Score'
-        )
-        expect(tableNameCorrect.getTableName).toStrictEqual('Score')
-      }
-    )
-
-    test(
-      'Table constructor, table name error',
-      () => {
-        let tableWNameError = null
+        const invalidTableNameType: string = 45 as unknown as string
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-          tableWNameError = new ExtendedTable(
+          const tableWNameError = new ExtendedTable(
             false,
-            null,
-            'Table1'
+            1,
+            invalidTableNameType
           )
+          throw new Error('Table constructor is allowing invalid "tableName" param')
         } catch (error) {
-          const err: Error = error as Error
-          expect(err.message).toStrictEqual('"tableName" only accept letters upper and lower case and underscore, NO spaces: /^[\\p{L}_]+$/u')
+          err = error as TypeError
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'tableName',
+            invalidTableNameType,
+            'only string allowed'
+          ))
         }
+        err = null
       }
     )
 
+    /* Constructor invalid format */
+
     test(
-      'Table constructor, table name data type error',
+      'Table constructor, invalid "tableName" format',
       () => {
+        const invalidTableName: string = '!Invalid Table name'
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           const tableWNameError = new ExtendedTable(
             false,
             null,
-            45 as unknown as string
+            invalidTableName
           )
-          throw new Error('Table constructor is allowing non number data in "id" param')
+          throw new Error('Table constructor is allowing invalid "tableName" format')
         } catch (error) {
-          if (error instanceof Error) {
-            expect(error.message).toStrictEqual(`
-"allowModifications", "id" and "tableName" params must required as "boolean", "number" and "string" type resp.
-
-"allowModifications" type: boolean
-"id" type: object
-"tableName" type: number
-`)
-          }
+          err = error as Error
+          expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
+            'tableName',
+            invalidTableName,
+            'only accept letters upper and lower case and underscore, NO spaces'
+          ))
         }
+        err = null
       }
     )
 
     test(
-      'Allow Modifications in class',
+      'Table constructor invalid id: non integer',
       () => {
-        const id = 1
-        const tb = new ExtendedTable(
-          true,
-          id,
-          'AllowModifications'
-        )
-        // Timeout to ensure js is using different dates
-        setTimeout(
-          () => {
-            const newId = 2
-            const initialCreationDate = tb.getCreationDate
-            tb.setId(newId)
-            tb.updateCreationDate(null)
-
-            expect(tb.getId).toStrictEqual(newId)
-            expect(tb.getCreationDate).not.toBe(initialCreationDate)
-          },
-          500
-        )
-      }
-    )
-
-    test(
-      'No allow modifications in class',
-      () => {
-        const id = 1
-        const tabNoAllowMods = new ExtendedTable(
-          false,
-          id,
-          'NoModifications'
-        )
+        const invalidId = 2.2
         try {
-          const newId = 2
-          tabNoAllowMods.setId(newId)
-          throw new Error('Class modified or priv method \'preventModifications\' is not working.')
+          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+          const tb = new ExtendedTable(
+            true,
+            invalidId,
+            'some'
+          )
+          throw new Error('Table constructor is allowing non integer "id"')
         } catch (error) {
-          if (error instanceof Error) {
-            expect(error.message).toStrictEqual('Class modifications not allowed')
-          } else {
-            throw new Error('Unknown Error instance')
-          }
+          err = error as TypeError
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'id',
+            invalidId,
+            'only integer number allowed'
+          ))
         }
       }
     )
 
+    // Setters
+
+    /* Invalid format */
+
     test(
-      'setId method',
+      'updateCreationDate invalid format',
       () => {
-        const tb: Table = new ExtendedTable(
-          true,
-          1,
-          'setId'
-        )
-        const prevCreationDate: string = tb.getCreationDate
+        const invalidISO8601Date = '2012-03-01T00:00:00Z'
+        try {
+          const tb = instance()
+          tb.updateCreationDate(invalidISO8601Date)
+          throw new Error('updateCreationDate is allowing invalid "ISO 8601" date')
+        } catch (error) {
+          err = error as Error
+          expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
+            'creationDate',
+            invalidISO8601Date,
+            'only ISO8601 date allowed, such as: 2019-01-25T02:00:00.000Z'
+          ))
+        }
+        err = null
+      }
+    )
+
+    test(
+      'setTableName invalid format',
+      () => {
+        const tb = instance()
+        const invalidTableName = '2012-03-01T00:00:00Z'
+        try {
+          tb.setTableName(invalidTableName)
+          throw new Error('setTableName is allowing invalid "tableName"')
+        } catch (error) {
+          err = error as Error
+          expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
+            'tableName',
+            invalidTableName,
+            'only accept letters upper and lower case and underscore, NO spaces'
+          ))
+        }
+        err = null
+      }
+    )
+
+    /* Prevent modifications */
+
+    test(
+      'updateCreationDate preventModifications',
+      () => {
+        try {
+          const tb = instance(false)
+          tb.updateCreationDate(dayjs().toISOString())
+          throw new Error('UpdateCreationDate method is not preventing modifications')
+        } catch (error) {
+          err = error as Error
+          expect(err.message).toStrictEqual('Class modifications not allowed')
+        }
+        err = null
+      }
+    )
+    test(
+      'setId preventModifications',
+      () => {
+        try {
+          const tb = instance(false)
+          tb.setId(33)
+          throw new Error('setId method is not preventing modifications')
+        } catch (error) {
+          err = error as Error
+          expect(err.message).toStrictEqual('Class modifications not allowed')
+        }
+        err = null
+      }
+    )
+
+    test(
+      'setTableName preventModifications',
+      () => {
+        try {
+          const tb = instance(false)
+          tb.setTableName('Any')
+          throw new Error('setTableName method is not preventing modifications')
+        } catch (error) {
+          err = error as Error
+          expect(err.message).toStrictEqual('Class modifications not allowed')
+        }
+        err = null
+      }
+    )
+
+    /* Invalid type */
+
+    test(
+      'setId invalid "Id" type',
+      () => {
+        const tb = instance()
+        const invalidId: number = '1' as unknown as number
+        try {
+          tb.setId(invalidId)
+          throw new Error('setId is allowing invalid "id" type')
+        } catch (error) {
+          err = error as TypeError
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'id',
+            invalidId,
+            'only number or null allowed'
+          ))
+        }
+        err = null
+      }
+    )
+
+    test(
+      'setId invalid "Id" type: non integer',
+      () => {
+        const tb = instance()
+        const nId = 1.1
+        try {
+          tb.setId(nId)
+          throw new Error('setId is allowing non integer numbers')
+        } catch (error) {
+          err = error as TypeError
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'id',
+            nId,
+            'only integer number allowed'
+          ))
+        }
+      }
+    )
+    test(
+      'setTableName invalid type',
+      () => {
+        const tb = instance()
+        const invalidTableName: string = {} as unknown as string
+        try {
+          tb.setTableName(invalidTableName)
+          throw new Error('setTableName is allowing invalid type')
+        } catch (error) {
+          err = error as TypeError
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'tableName',
+            invalidTableName,
+            'only string allowed'
+          ))
+        }
+        err = null
+      }
+    )
+
+    test(
+      'updateCreationDate invalid type',
+      () => {
+        const invalidDateType: string = {} as unknown as string
+        try {
+          const tb = instance()
+          tb.updateCreationDate(invalidDateType)
+          throw new Error('UpdateCreationDate method is allowing invalid date type')
+        } catch (error) {
+          err = error as Error
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'creationDate',
+            invalidDateType,
+            'only string allowed'
+          ))
+        }
+        err = null
+      }
+    )
+
+    /* Success */
+    test(
+      'setId success',
+      () => {
+        const tb: Table = instance()
         expect(tb.getId).toStrictEqual(1)
         setTimeout(
           () => {
-            tb.setId(2)
+            expect(tb.setId(2)).toStrictEqual(2)
             expect(tb.getId).toStrictEqual(2)
-            expect(tb.getCreationDate).not.toStrictEqual(prevCreationDate)
           },
           0
         )
@@ -235,70 +361,9 @@ describe(
     )
 
     test(
-      'setId validations',
+      'updateCreationDate without params success',
       () => {
-        const tb = new ExtendedTable(
-          true,
-          null,
-          'SetIdValidations'
-        )
-        // Id as no number type
-        try {
-          tb.setId('1' as unknown as number)
-        } catch (error) {
-          const err: TypeError = error as TypeError
-          expect(err.message).toStrictEqual('id param must be integer: id=string')
-        }
-      }
-    )
-
-    test(
-      'Update Creation Date method: modifications not allowed',
-      () => {
-        const id = 1
-        const tb = new ExtendedTable(
-          false,
-          id,
-          'UpateDate'
-        )
-        try {
-          tb.updateCreationDate(dayjs().toISOString())
-          throw new Error('UpdateCreationDate method is not preventing modifications')
-        } catch (error) {
-          const err: Error = error as Error
-          expect(err.message).toStrictEqual('Class modifications not allowed')
-        }
-      }
-    )
-
-    test(
-      'Update Creation Date method: invalid date param',
-      () => {
-        const id = 1
-        const tb = new ExtendedTable(
-          true,
-          id,
-          'UpateDate'
-        )
-        try {
-          tb.updateCreationDate('Invalid Date')
-          throw new Error('UpdateCreationDate method is allowing invalid dates')
-        } catch (error) {
-          const err: Error = error as Error
-          expect(err.message).toStrictEqual('Unknown date. Date: "Invalid Date" date type: string')
-        }
-      }
-    )
-
-    test(
-      'Update Creation Date method without params',
-      () => {
-        const id = 1
-        const tb = new ExtendedTable(
-          true,
-          id,
-          'UpateDate'
-        )
+        const tb = instance()
         // Timeout to ensure js is using different dates
         setTimeout(
           () => {
@@ -313,19 +378,14 @@ describe(
     )
 
     test(
-      'Update Creation Date method with params',
+      'updateCreationDate with params success',
       () => {
-        const id = 1
-        const tb = new ExtendedTable(
-          true,
-          id,
-          'UpdateDate'
-        )
+        const tb = instance()
         // Timeout to ensure js is using different dates
         setTimeout(
           () => {
             const creationDateParam: string = dayjs().toISOString()
-            tb.updateCreationDate(creationDateParam)
+            expect(tb.updateCreationDate(creationDateParam)).toStrictEqual(creationDateParam)
             expect(tb.getCreationDate).toStrictEqual(creationDateParam)
           },
           500
@@ -334,23 +394,34 @@ describe(
     )
 
     test(
-      'Update Creation Date return',
+      'setTableName success',
       () => {
-        const id = 1
-        const tb = new ExtendedTable(
-          true,
-          id,
-          'UpdateDate'
-        )
-        // Timeout to ensure js is using different dates
-        const creationDateParam: string = dayjs().toISOString()
-        setTimeout(
-          () => {
-            const methodReturn = tb.updateCreationDate(creationDateParam)
-            expect(methodReturn).toStrictEqual(creationDateParam)
-          },
-          500
-        )
+        const tb = instance()
+        expect(tb.setTableName('newTable_name')).toStrictEqual('newTable_name')
+        expect(tb.getTableName).toStrictEqual('newTable_name')
+      }
+    )
+
+    // Getters
+    test(
+      'getId',
+      () => {
+        const tb = instance()
+        expect(tb.getId).toStrictEqual(1)
+      }
+    )
+    test(
+      'getAllowModifications',
+      () => {
+        const tb = instance()
+        expect(tb.getAllowModifications).toStrictEqual(true)
+      }
+    )
+    test(
+      'getTableName',
+      () => {
+        const tb = instance()
+        expect(tb.getTableName).toStrictEqual('table')
       }
     )
 
@@ -359,44 +430,28 @@ describe(
     test(
       'getInsertSqlScript',
       () => {
-        const tbInstance: Table = new ExtendedTable(
-          true,
-          5,
-          'getInsertSqlScript'
-        )
+        const tbInstance = instance()
         expect(tbInstance.getInsertSqlScript).toStrictEqual(returnSqlMethods)
       }
     )
     test(
       'getUpdateSqlScript',
       () => {
-        const tbInstance: Table = new ExtendedTable(
-          false,
-          1,
-          'getUpdateSqlScript'
-        )
+        const tbInstance: Table = instance()
         expect(tbInstance.getUpdateSqlScript).toStrictEqual(returnSqlMethods)
       }
     )
     test(
       'getSelectSqlScript',
       () => {
-        const tbInstance: Table = new ExtendedTable(
-          false,
-          6,
-          'getSelectSqlScript'
-        )
+        const tbInstance: Table = instance()
         expect(tbInstance.getSelectSqlScript).toStrictEqual(returnSqlMethods)
       }
     )
     test(
       'getDeleteSqlScript',
       () => {
-        const tbInstance: Table = new ExtendedTable(
-          false,
-          6,
-          'getDeleteSqlScript'
-        )
+        const tbInstance: Table = instance()
         expect(tbInstance.getDeleteSqlScript).toStrictEqual(returnSqlMethods)
       }
     )
@@ -406,22 +461,20 @@ describe(
         expect(ExtendedTable.isValid()).toStrictEqual(true)
       }
     )
-
-    test(
-      'updateCreationDate method: prevent modifications',
-      () => {
-        try {
-          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-          const tbInstance: Table = new ExtendedTable(
-            false,
-            5,
-            'preventModifications'
-          )
-        } catch (error) {
-          const err: Error = error as Error
-          expect(err.message).toStrictEqual('Class modifications not allowed')
-        }
-      }
-    )
   }
 )
+
+function instance (allowModifications: boolean = true): ExtendedTable {
+  if (allowModifications) {
+    return new ExtendedTable(
+      true,
+      1,
+      'table'
+    )
+  }
+  return new ExtendedTable(
+    false,
+    1,
+    'table'
+  )
+}
