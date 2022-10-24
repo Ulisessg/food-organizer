@@ -2,6 +2,15 @@ import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'ut
 import { lettersWithSpaces, urlRegExp } from 'utils/RegExps'
 
 const verifications: verifyObj = {
+  comment: (comment: string) => {
+    if (typeof comment !== 'string') {
+      throw new TypeError(invalidPropertyTypeErrorMessage(
+        'comment',
+        comment,
+        'only string allowed'
+      ))
+    }
+  },
   image: (image: string) => {
     if (typeof image === 'string') {
       if (image.match(urlRegExp) === null) {
@@ -55,7 +64,7 @@ const verifications: verifyObj = {
   }
 }
 
-export type verifyProps = 'image' | 'name' | 'preferredPurchasePlaceId' | 'uomtId'
+export type verifyProps = 'image' | 'name' | 'preferredPurchasePlaceId' | 'uomtId' | 'comment'
 type verifyObj = {
   [k in verifyProps]: (prop: any) => void
 }

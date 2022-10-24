@@ -8,6 +8,7 @@ class Ingredient extends Table {
   private preferredPurchasePlaceId: number
   private uomtId: number
   private image: string | null
+  private comment: string | null
 
   // eslint-disable-next-line max-params
   constructor (
@@ -16,7 +17,8 @@ class Ingredient extends Table {
     name: string,
     preferredPurchasePlaceId: number,
     uomtId: number,
-    image: string | null
+    image: string | null,
+    comments: string | null
   ) {
     super(
       allowModifications,
@@ -40,11 +42,16 @@ class Ingredient extends Table {
       'uomtId',
       uomtId
     )
+    this.verifyProperties(
+      'comment',
+      comments
+    )
 
     this.name = name
     this.preferredPurchasePlaceId = preferredPurchasePlaceId
     this.uomtId = uomtId
     this.image = image
+    this.comment = comments
   }
 
   get getName (): string {
@@ -61,6 +68,10 @@ class Ingredient extends Table {
 
   get getImage (): string | null {
     return this.image
+  }
+
+  get getComment (): string | null {
+    return this.comment
   }
 
   setName (name: string): string {
@@ -101,6 +112,16 @@ class Ingredient extends Table {
     )
     this.image = url
     return this.image
+  }
+
+  setComment (comment: string): string {
+    this.preventModifications()
+    this.verifyProperties(
+      'comment',
+      comment
+    )
+    this.comment = comment
+    return this.comment
   }
 
   // eslint-disable-next-line class-methods-use-this

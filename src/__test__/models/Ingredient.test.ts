@@ -14,12 +14,14 @@ describe(
       () => {
         const ing = instance()
         expect(ing.getName).toBeDefined()
-        expect(ing.setName).toBeDefined()
-        expect(ing.getPreferredPurchasePlaceId).toBeDefined()
-        expect(ing.setPreferredPurchasePlaceId).toBeDefined()
         expect(ing.getUomtId).toBeDefined()
-        expect(ing.setUomtId).toBeDefined()
         expect(ing.getImage).toBeDefined()
+        expect(ing.getComment).toBeDefined()
+        expect(ing.getPreferredPurchasePlaceId).toBeDefined()
+        expect(ing.setName).toBeDefined()
+        expect(ing.setPreferredPurchasePlaceId).toBeDefined()
+        expect(ing.setUomtId).toBeDefined()
+        expect(ing.setComment).toBeDefined()
         expect(ing.setImage).toBeDefined()
       }
     )
@@ -51,6 +53,14 @@ describe(
       () => {
         const ing = instance()
         expect(ing.getImage).toStrictEqual('https://jsonplaceholder.typicode.com/')
+      }
+    )
+
+    test(
+      'getComment',
+      () => {
+        const ing = instance()
+        expect(ing.getComment).toStrictEqual('With no salt')
       }
     )
 
@@ -107,6 +117,19 @@ describe(
         }
       }
     )
+    test(
+      'setComment preventModifications',
+      () => {
+        const ing = instance(false)
+        try {
+          ing.setComment('Any message')
+          throw new Error('setComment is allowing modifications')
+        } catch (error) {
+          const err: Error = error as Error
+          expect(err.message).toStrictEqual('Class modifications not allowed')
+        }
+      }
+    )
 
     // Setters success
 
@@ -140,6 +163,14 @@ describe(
         const ing = instance()
         expect(ing.setImage('https://jsonplaceholder.typicode.com/post')).toStrictEqual('https://jsonplaceholder.typicode.com/post')
         expect(ing.getImage).toStrictEqual('https://jsonplaceholder.typicode.com/post')
+      }
+    )
+    test(
+      'setComment success',
+      () => {
+        const ing = instance()
+        expect(ing.setComment('With no bread')).toStrictEqual('With no bread')
+        expect(ing.getComment).toStrictEqual('With no bread')
       }
     )
     // Setters invalid type
@@ -215,6 +246,25 @@ describe(
         }
       }
     )
+
+    test(
+      'setComment invalid type',
+      () => {
+        const ing = instance()
+        const invalidComment: string = {} as unknown as string
+        try {
+          ing.setComment(invalidComment)
+          throw new Error('setComment is allowing invalid type')
+        } catch (error) {
+          const err = error as TypeError
+          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
+            'comment',
+            invalidComment,
+            'only string allowed'
+          ))
+        }
+      }
+    )
     // Setters invalids
     test(
       'setName invalid',
@@ -264,7 +314,8 @@ function instance (allowModifications: boolean = true): Ingredients {
       'Jitomate',
       1,
       1,
-      'https://jsonplaceholder.typicode.com/'
+      'https://jsonplaceholder.typicode.com/',
+      'With no salt'
     )
   }
   return new Ingredients(
@@ -273,6 +324,7 @@ function instance (allowModifications: boolean = true): Ingredients {
     'Jitomate',
     1,
     1,
-    'https://jsonplaceholder.typicode.com/'
+    'https://jsonplaceholder.typicode.com/',
+    'With no salt'
   )
 }
