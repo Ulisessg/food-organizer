@@ -1,13 +1,14 @@
 /* eslint-disable max-len */
 import { addressRegexp, lettersWithSpaces } from '../utils/RegExps'
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from '../utils/ErrorMessages'
+import { TId } from 'models/commonTables'
 import Table from './Table'
 
 class PurchasePlaces extends Table {
   private name: string
   private address: TAddress
   // eslint-disable-next-line max-params
-  constructor (allowModifications: boolean, id: number | null, name: string, address: string | null) {
+  constructor (allowModifications: boolean, id: TId, name: string, address: string | null) {
     super(
       allowModifications,
       id,

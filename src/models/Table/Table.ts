@@ -1,11 +1,12 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable max-len */
+import { TId } from 'models/commonTables'
 import dayjs from 'dayjs'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import verifications from './tableVerifications'
 
 abstract class Table {
-  private id: number | null
+  private id: TId
   private creationDate: string
   public readonly allowModifications: boolean
   private tableName: string
@@ -17,7 +18,7 @@ abstract class Table {
    *
    */
   // eslint-disable-next-line max-statements
-  public constructor (allowModifications: boolean, id: number | null, tableName: string) {
+  public constructor (allowModifications: boolean, id: TId, tableName: string) {
     verifications.allowModifications(allowModifications)
     verifications.id(id)
     verifications.tableName(tableName)

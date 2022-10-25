@@ -1,3 +1,4 @@
+import { TId } from 'models/commonTables'
 import Table from './Table'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 
@@ -8,7 +9,7 @@ class DailyMenu extends Table {
   // eslint-disable-next-line max-params
   constructor (
     allowModifications: boolean,
-    id: number | null,
+    id: TId,
     vegetableId: number,
     carbohydratesId: number,
     meatId: number

@@ -1,3 +1,4 @@
+import { TId } from 'models/commonTables'
 import Table from './Table'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 
@@ -13,7 +14,7 @@ class WeeklyMenu extends Table {
   // eslint-disable-next-line max-params, max-lines-per-function, max-statements
   constructor (
     allowModifications: boolean,
-    id: number | null,
+    id: TId,
     mondayMenuId: number,
     tuesdayMenuId: number,
     wednesdayMenuId: number,

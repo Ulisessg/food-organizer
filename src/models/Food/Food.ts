@@ -1,6 +1,7 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-statements */
 import verifications, { verifyProps } from './foodVerifications'
+import { TId } from 'models/commonTables'
 import Table from 'models/Table'
 
 class Food extends Table {
@@ -13,7 +14,7 @@ class Food extends Table {
   // eslint-disable-next-line max-params
   public constructor (
     allowModifications: boolean,
-    id: number | null,
+    id: TId,
     name: string,
     usedCounter: number,
     preparationTime: number,

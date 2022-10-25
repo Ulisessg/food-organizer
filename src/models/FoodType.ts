@@ -1,10 +1,11 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
+import { TId } from 'models/commonTables'
 import Table from './Table'
 import { lettersWithSpaces } from '../utils/RegExps'
 
 class FoodType extends Table {
   private name: string
-  constructor (allowModifications: boolean, id: number | null, name: string) {
+  constructor (allowModifications: boolean, id: TId, name: string) {
     super(
       allowModifications,
       id,

@@ -1,4 +1,5 @@
 import Price from './Price'
+import { TId } from 'models/commonTables'
 import dayjs from 'dayjs'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 
@@ -7,7 +8,7 @@ class IngredientPrice extends Price {
   // eslint-disable-next-line max-params
   constructor (
     allowModifications: boolean,
-    id: number | null,
+    id: TId,
     ingredientId: number,
     value: number
   ) {

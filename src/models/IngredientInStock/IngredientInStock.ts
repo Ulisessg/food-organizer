@@ -1,5 +1,5 @@
 import verifications, { verifyProps } from './ingredientInStockVerifications'
-import { TId } from '../commonTables'
+import { TId } from 'models/commonTables'
 import Table from '../Table'
 
 class IngredientInStock extends Table {

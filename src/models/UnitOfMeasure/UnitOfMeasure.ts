@@ -2,6 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable max-params */
 import verifications, { verifyProp } from 'models/UnitOfMeasure/unitOfMeasureVerifications'
+import { TId } from 'models/commonTables'
 import Table from 'models/Table'
 
 class UnitOfMeasure extends Table {
@@ -10,7 +11,7 @@ class UnitOfMeasure extends Table {
   private uomtId: number
   public constructor (
     allowModifications: boolean,
-    id: number | null,
+    id: TId,
     name: string,
     abbreviation: string,
     uomtId: number

@@ -1,5 +1,6 @@
 /* eslint-disable max-params */
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
+import { TId } from 'models/commonTables'
 import Table from './Table'
 import dayjs from 'dayjs'
 
@@ -9,7 +10,7 @@ abstract class Price extends Table {
 
   public constructor (
     allowModifications: boolean,
-    id: number | null,
+    id: TId,
     tableName: string,
     value: number,
     priceDate: string

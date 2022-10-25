@@ -1,5 +1,6 @@
 /* eslint-disable no-invalid-this */
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
+import { TId } from 'models/commonTables'
 import Table from './Table'
 import { lettersWithSpaces } from '../utils/RegExps'
 
@@ -13,7 +14,7 @@ class UnitsOfMeasureTypes extends Table {
    */
   constructor (
     allowModifications: boolean,
-    id: number | null,
+    id: TId,
     name: string
   ) {
     super(
