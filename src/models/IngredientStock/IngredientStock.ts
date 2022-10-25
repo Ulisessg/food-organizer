@@ -1,8 +1,8 @@
-import verifications, { verifyProps } from './ingredientInStockVerifications'
+import verifications, { verifyProps } from './ingredientStockVerifications'
 import { TId } from 'models/commonTables'
 import Table from '../Table'
 
-class IngredientInStock extends Table {
+class IngredientStock extends Table {
   private ingredientId: number
   private uomId: number
   private comment: string | null
@@ -84,4 +84,4 @@ class IngredientInStock extends Table {
   }
 }
 
-export default IngredientInStock
+export default IngredientStock

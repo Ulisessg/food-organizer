@@ -4,17 +4,17 @@
 /* eslint-disable max-len */
 /* eslint-disable max-lines */
 /* eslint-disable max-statements */
-import IngredientInStock from 'models/IngredientInStock'
+import IngredientStock from 'models/IngredientStock'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 
 describe(
-  'models/IngredientInStock',
+  'models/IngredientStock',
   () => {
     const comInstanceAllowMod = instance()
     const comInstanceNoMod = instance(false)
     let err: Error | null = null
     test(
-      'IngredientInStock has required methods',
+      'IngredientStock has required methods',
       () => {
         expect(comInstanceAllowMod.setIngredientId).toBeDefined()
         expect(comInstanceAllowMod.setUomId).toBeDefined()
@@ -34,7 +34,7 @@ describe(
         const invalidIngredientId: number = {} as unknown as number
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-          const iis = new IngredientInStock(
+          const iis = new IngredientStock(
             true,
             1,
             invalidIngredientId,
@@ -59,7 +59,7 @@ describe(
         const invalidUomId: number = {} as unknown as number
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-          const iis = new IngredientInStock(
+          const iis = new IngredientStock(
             true,
             1,
             1,
@@ -84,7 +84,7 @@ describe(
         const invalidComment: string = {} as unknown as string
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-          const iis = new IngredientInStock(
+          const iis = new IngredientStock(
             true,
             1,
             1,
@@ -252,9 +252,9 @@ describe(
   }
 )
 
-function instance (allowModifications: boolean = true): IngredientInStock {
+function instance (allowModifications: boolean = true): IngredientStock {
   if (allowModifications) {
-    return new IngredientInStock(
+    return new IngredientStock(
       true,
       1,
       1,
@@ -262,7 +262,7 @@ function instance (allowModifications: boolean = true): IngredientInStock {
       'Expiration Date: yesterday :('
     )
   }
-  return new IngredientInStock(
+  return new IngredientStock(
     false,
     1,
     1,
