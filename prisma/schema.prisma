@@ -1,0 +1,213 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model daily_menu_prices {
+  id            Int         @id @default(autoincrement())
+  value         Decimal     @db.Decimal(10, 2)
+  price_date    DateTime    @db.DateTime(0)
+  menu_id       Int
+  creation_date DateTime    @db.DateTime(0)
+  daily_menus   daily_menus @relation(fields: [menu_id], references: [id], map: "fk_menu_id")
+
+  @@index([menu_id], map: "fk_menu_id_idx")
+}
+
+model daily_menus {
+  id                                                       Int                 @id @default(autoincrement())
+  vegetables_id                                            Int
+  carbohidrates_id                                         Int
+  meat_id                                                  Int
+  creation_date                                            DateTime            @db.DateTime(0)
+  foods_daily_menus_carbohidrates_idTofoods                foods               @relation("daily_menus_carbohidrates_idTofoods", fields: [carbohidrates_id], references: [id], map: "fk_carbohidrates_id")
+  foods_daily_menus_meat_idTofoods                         foods               @relation("daily_menus_meat_idTofoods", fields: [meat_id], references: [id], map: "fk_meat_id")
+  foods_daily_menus_vegetables_idTofoods                   foods               @relation("daily_menus_vegetables_idTofoods", fields: [vegetables_id], references: [id], map: "fk_vegetables_id")
+  daily_menu_prices                                        daily_menu_prices[]
+  weekly_menus_daily_menusToweekly_menus_friday_menu_id    weekly_menus[]      @relation("daily_menusToweekly_menus_friday_menu_id")
+  weekly_menus_daily_menusToweekly_menus_monday_menu_id    weekly_menus[]      @relation("daily_menusToweekly_menus_monday_menu_id")
+  weekly_menus_daily_menusToweekly_menus_saturday_menu_id  weekly_menus[]      @relation("daily_menusToweekly_menus_saturday_menu_id")
+  weekly_menus_daily_menusToweekly_menus_sunday_menu_id    weekly_menus[]      @relation("daily_menusToweekly_menus_sunday_menu_id")
+  weekly_menus_daily_menusToweekly_menus_thursday_menu_id  weekly_menus[]      @relation("daily_menusToweekly_menus_thursday_menu_id")
+  weekly_menus_daily_menusToweekly_menus_tuesday_menu_id   weekly_menus[]      @relation("daily_menusToweekly_menus_tuesday_menu_id")
+  weekly_menus_daily_menusToweekly_menus_wednesday_menu_id weekly_menus[]      @relation("daily_menusToweekly_menus_wednesday_menu_id")
+
+  @@index([carbohidrates_id], map: "fk_carbohidrates_id_idx")
+  @@index([meat_id], map: "fk_meat_id_idx")
+  @@index([vegetables_id], map: "fk_vegetables_id_idx")
+}
+
+model food_ingredients {
+  id            Int         @id @default(autoincrement())
+  food_id       Int
+  ingredient_id Int
+  creation_date DateTime    @db.DateTime(0)
+  foods         foods       @relation(fields: [food_id], references: [id], map: "fk_f_ingr_food_id")
+  ingredients   ingredients @relation(fields: [ingredient_id], references: [id], map: "fk_f_ingr_ingredient_id")
+
+  @@index([food_id], map: "fk_f_ingr_food_id_idx")
+  @@index([ingredient_id], map: "fk_f_ingr_ingredient_id_idx")
+}
+
+model food_prices {
+  id            Int      @id @default(autoincrement())
+  value         Decimal  @db.Decimal(10, 2)
+  price_date    DateTime @db.DateTime(0)
+  food_id       Int
+  creation_date DateTime @db.DateTime(0)
+  foods         foods    @relation(fields: [food_id], references: [id], map: "fk_f_prices_food_id")
+
+  @@index([food_id], map: "fk_f_prices_food_id_idx")
+}
+
+model food_types {
+  id            Int      @id @default(autoincrement())
+  name          String   @unique(map: "name") @db.Char(50)
+  creation_date DateTime @db.DateTime(0)
+  foods         foods[]
+}
+
+model foods {
+  id                                              Int                @id @default(autoincrement())
+  name                                            String             @unique(map: "name") @db.VarChar(50)
+  used_counter                                    Int?               @default(0)
+  preparation_time                                Int?               @default(0) @db.SmallInt
+  score                                           Int?               @default(0) @db.SmallInt
+  food_type_id                                    Int
+  image                                           String?            @db.Char(50)
+  creation_date                                   DateTime           @db.DateTime(0)
+  food_types                                      food_types         @relation(fields: [food_type_id], references: [id], map: "fk_foods_food_type_id_idx")
+  daily_menus_daily_menus_carbohidrates_idTofoods daily_menus[]      @relation("daily_menus_carbohidrates_idTofoods")
+  daily_menus_daily_menus_meat_idTofoods          daily_menus[]      @relation("daily_menus_meat_idTofoods")
+  daily_menus_daily_menus_vegetables_idTofoods    daily_menus[]      @relation("daily_menus_vegetables_idTofoods")
+  food_ingredients                                food_ingredients[]
+  food_prices                                     food_prices[]
+
+  @@index([food_type_id], map: "fk_foods_food_type_id_idx")
+}
+
+model ingredient_prices {
+  id            Int         @id @default(autoincrement())
+  value         Decimal     @db.Decimal(10, 2)
+  price_date    DateTime    @db.DateTime(0)
+  ingredient_id Int
+  creation_date DateTime    @db.DateTime(0)
+  ingredients   ingredients @relation(fields: [ingredient_id], references: [id], map: "fk_price_ingredient_id")
+
+  @@index([ingredient_id], map: "fk_price_ingredient_id_idx")
+}
+
+model ingredient_purchase_places {
+  id                Int             @id @default(autoincrement())
+  ingredient_id     Int
+  purchase_place_id Int
+  creation_date     DateTime        @db.DateTime(0)
+  ingredients       ingredients     @relation(fields: [ingredient_id], references: [id], map: "fk_ingredient_id")
+  purchase_places   purchase_places @relation(fields: [purchase_place_id], references: [id], map: "fk_purchase_place_id")
+
+  @@index([ingredient_id], map: "fk_ingredient_id_idx")
+  @@index([purchase_place_id], map: "fk_purchase_place_id_idx")
+}
+
+model ingredient_stock {
+  id               Int              @id @default(autoincrement())
+  ingredient_id    Int              @unique(map: "ingredient_id")
+  uom_id           Int
+  comment          String?          @db.VarChar(100)
+  ingredients      ingredients      @relation(fields: [ingredient_id], references: [id], map: "fk_ing_id")
+  units_of_measure units_of_measure @relation(fields: [uom_id], references: [id], map: "fk_is_uom_id")
+
+  @@index([ingredient_id], map: "fk_is_ingredient_id")
+  @@index([uom_id], map: "fk_is_uom_id")
+}
+
+model ingredients {
+  id                         Int                          @id @default(autoincrement())
+  name                       String                       @unique(map: "name") @db.VarChar(20)
+  prefered_purchase_place_id Int
+  uom_id                     Int
+  image                      String?                      @db.Char(50)
+  creation_date              DateTime                     @db.DateTime(0)
+  comment                    String?                      @db.VarChar(100)
+  purchase_places            purchase_places              @relation(fields: [prefered_purchase_place_id], references: [id], map: "fk_pref_purch_place_id")
+  units_of_measure           units_of_measure             @relation(fields: [uom_id], references: [id], map: "fk_uom_id")
+  food_ingredients           food_ingredients[]
+  ingredient_prices          ingredient_prices[]
+  ingredient_purchase_places ingredient_purchase_places[]
+  ingredient_stock           ingredient_stock?
+
+  @@index([prefered_purchase_place_id], map: "fk_pref_purch_place_id_idx")
+  @@index([uom_id], map: "fk_uom_id_idx")
+}
+
+model purchase_places {
+  id                         Int                          @id @default(autoincrement())
+  name                       String                       @unique(map: "name") @db.Char(50)
+  address                    String?                      @db.VarChar(50)
+  creation_date              DateTime                     @db.DateTime(0)
+  ingredient_purchase_places ingredient_purchase_places[]
+  ingredients                ingredients[]
+}
+
+model units_of_measure {
+  id                     Int                    @id @default(autoincrement())
+  name                   String                 @unique(map: "name") @db.VarChar(20)
+  abbreviation           String                 @unique(map: "abbreviation") @db.Char(5)
+  creation_date          DateTime               @db.DateTime(0)
+  uomt_id                Int
+  units_of_measure_types units_of_measure_types @relation(fields: [uomt_id], references: [id], map: "fk_uomt_id")
+  ingredient_stock       ingredient_stock[]
+  ingredients            ingredients[]
+
+  @@index([uomt_id], map: "fk_uomt_id_idx")
+}
+
+model units_of_measure_types {
+  id               Int                @id @default(autoincrement())
+  name             String             @unique(map: "name") @db.VarChar(20)
+  creation_date    DateTime           @db.DateTime(0)
+  units_of_measure units_of_measure[]
+}
+
+model weekly_menu_prices {
+  id             Int          @id @default(autoincrement())
+  value          Decimal      @db.Decimal(10, 2)
+  price_date     DateTime     @db.DateTime(0)
+  weekly_menu_id Int
+  creation_date  DateTime     @db.DateTime(0)
+  weekly_menus   weekly_menus @relation(fields: [weekly_menu_id], references: [id], map: "fk_weekly_menu_id")
+
+  @@index([weekly_menu_id], map: "fk_weekly_menu_id")
+}
+
+model weekly_menus {
+  id                                                      Int                  @id @default(autoincrement())
+  monday_menu_id                                          Int
+  tuesday_menu_id                                         Int
+  wednesday_menu_id                                       Int
+  thursday_menu_id                                        Int
+  friday_menu_id                                          Int
+  saturday_menu_id                                        Int
+  sunday_menu_id                                          Int
+  creation_date                                           DateTime             @db.DateTime(0)
+  daily_menus_daily_menusToweekly_menus_friday_menu_id    daily_menus          @relation("daily_menusToweekly_menus_friday_menu_id", fields: [friday_menu_id], references: [id], map: "fk_friday_menu_id")
+  daily_menus_daily_menusToweekly_menus_monday_menu_id    daily_menus          @relation("daily_menusToweekly_menus_monday_menu_id", fields: [monday_menu_id], references: [id], map: "fk_monday_menu_id")
+  daily_menus_daily_menusToweekly_menus_saturday_menu_id  daily_menus          @relation("daily_menusToweekly_menus_saturday_menu_id", fields: [saturday_menu_id], references: [id], map: "fk_saturday_menu_id")
+  daily_menus_daily_menusToweekly_menus_sunday_menu_id    daily_menus          @relation("daily_menusToweekly_menus_sunday_menu_id", fields: [sunday_menu_id], references: [id], map: "fk_sunday_menu_id")
+  daily_menus_daily_menusToweekly_menus_thursday_menu_id  daily_menus          @relation("daily_menusToweekly_menus_thursday_menu_id", fields: [thursday_menu_id], references: [id], map: "fk_thursday_menu_id")
+  daily_menus_daily_menusToweekly_menus_tuesday_menu_id   daily_menus          @relation("daily_menusToweekly_menus_tuesday_menu_id", fields: [tuesday_menu_id], references: [id], map: "fk_tuesday_menu_id")
+  daily_menus_daily_menusToweekly_menus_wednesday_menu_id daily_menus          @relation("daily_menusToweekly_menus_wednesday_menu_id", fields: [wednesday_menu_id], references: [id], map: "fk_wednesday_menu_id")
+  weekly_menu_prices                                      weekly_menu_prices[]
+
+  @@index([friday_menu_id], map: "fk_friday_menu_id_idx")
+  @@index([monday_menu_id], map: "fk_monday_menu_id_idx")
+  @@index([saturday_menu_id], map: "fk_saturday_menu_id_idx")
+  @@index([sunday_menu_id], map: "fk_sunday_menu_id_idx")
+  @@index([thursday_menu_id], map: "fk_thursday_menu_id_idx")
+  @@index([tuesday_menu_id], map: "fk_tuesday_menu_id_idx")
+  @@index([wednesday_menu_id], map: "fk_wednesday_menu_id_idx")
+}
