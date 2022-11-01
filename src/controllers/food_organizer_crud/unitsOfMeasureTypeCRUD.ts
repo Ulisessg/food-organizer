@@ -35,16 +35,42 @@ export const insertUOMT = async (
 
 export const getUOMT = async (
   _req: NextApiRequest,
-  res: NextApiResponse<units_of_measure_types[] | response<null>>
+  res: NextApiResponse< response<units_of_measure_types[] >>
 ): Promise<void> => {
   try {
     const result = await prisma.units_of_measure_types.findMany({
       orderBy: { name: 'asc' }
     })
-    res.status(200).send(result)
+    res.status(200).send({ data: result, error: false })
   } catch (error) {
     console.error(error)
     res.status(500).send({
+      data: null,
+      error: true
+    })
+  }
+}
+
+export const updateUOMT = async (
+  req: InsertUOMTBody,
+  res: NextApiResponse<response<units_of_measure_types>>
+): Promise<void> => {
+  const { creation_date, name } = req.body
+  try {
+    unitOfMeasureTypeVerification({ creationDate: creation_date as unknown as string, name })
+    const result = await prisma.units_of_measure_types.update({
+      data: {
+        creation_date,
+        name
+      },
+      where: {
+        name
+      }
+    })
+    res.status(200).send({ data: result, error: false })
+  } catch (error) {
+    console.error(error)
+    res.status(400).send({
       data: null,
       error: true
     })
