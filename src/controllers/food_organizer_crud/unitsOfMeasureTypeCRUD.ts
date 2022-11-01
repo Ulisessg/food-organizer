@@ -33,6 +33,24 @@ export const insertUOMT = async (
   }
 }
 
+export const getUOMT = async (
+  _req: NextApiRequest,
+  res: NextApiResponse<units_of_measure_types[] | response<null>>
+): Promise<void> => {
+  try {
+    const result = await prisma.units_of_measure_types.findMany({
+      orderBy: { name: 'asc' }
+    })
+    res.status(200).send(result)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({
+      data: null,
+      error: true
+    })
+  }
+}
+
 interface InsertUOMTBody extends NextApiRequest {
   body: units_of_measure_types
 }
