@@ -20,7 +20,6 @@ describe(
           ingredientValidations({
             comment: null,
             creationDate,
-            id,
             image: null,
             name: nName,
             preferredPurchasePlaceId: id,
@@ -45,7 +44,6 @@ describe(
           ingredientValidations({
             comment: null,
             creationDate,
-            id,
             image: null,
             name: 'any',
             preferredPurchasePlaceId: nId,
@@ -70,7 +68,6 @@ describe(
           ingredientValidations({
             comment: null,
             creationDate,
-            id,
             image: null,
             name: 'any',
             preferredPurchasePlaceId: id,
@@ -95,7 +92,6 @@ describe(
           ingredientValidations({
             comment: null,
             creationDate,
-            id,
             image: nImg,
             name: 'any',
             preferredPurchasePlaceId: id,
@@ -121,7 +117,6 @@ describe(
           ingredientValidations({
             comment: invalidComment,
             creationDate,
-            id,
             image: null,
             name: 'any',
             preferredPurchasePlaceId: id,
@@ -147,7 +142,6 @@ describe(
           ingredientValidations({
             comment: null,
             creationDate,
-            id,
             image: null,
             name: nName,
             preferredPurchasePlaceId: id,
@@ -172,7 +166,6 @@ describe(
           ingredientValidations({
             comment: null,
             creationDate,
-            id,
             image: nImage,
             name: 'any',
             preferredPurchasePlaceId: id,

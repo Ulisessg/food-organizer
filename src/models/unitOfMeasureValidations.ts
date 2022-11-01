@@ -46,8 +46,7 @@ const validations: verifyObj = {
 
 const unitOfMeasureValidations = (unitOfMeasure: unitOfMeasureParam): void => {
   tableValidations({
-    creationDate: unitOfMeasure.creationDate,
-    id: unitOfMeasure.id
+    creationDate: unitOfMeasure.creationDate
   })
   validations.abbreviation(unitOfMeasure.abbreviation)
   validations.name(unitOfMeasure.name)

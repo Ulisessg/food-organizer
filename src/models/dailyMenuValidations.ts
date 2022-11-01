@@ -24,8 +24,7 @@ const validations: verifyObj = {
 
 const dailyMenuValidations = (dailyMenu: dailyMenuParam): void => {
   tableValidations({
-    creationDate: dailyMenu.creationDate,
-    id: dailyMenu.id
+    creationDate: dailyMenu.creationDate
   })
   validations.carbohydratesId(dailyMenu.carbohydratesId)
   validations.meatId(dailyMenu.meatId)

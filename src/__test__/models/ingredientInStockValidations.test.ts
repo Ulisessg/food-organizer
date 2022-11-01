@@ -23,7 +23,6 @@ describe(
           ingredientStockValidations({
             comment: invalidComment,
             creationDate,
-            id,
             ingredientId: id,
             uomId: id
 
@@ -48,7 +47,6 @@ describe(
           ingredientStockValidations({
             comment: null,
             creationDate,
-            id,
             ingredientId: invalidId,
             uomId: id
           })
@@ -72,7 +70,6 @@ describe(
           ingredientStockValidations({
             comment: null,
             creationDate,
-            id,
             ingredientId: id,
             uomId: invalidId
           })

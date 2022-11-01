@@ -1,7 +1,6 @@
 // Generic for all tables
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import { ISO8601Date } from 'utils/RegExps'
-import idValidation from './idValidation'
 // Remove id, all ids are set automatically
 const tableValidations = (table: tableProps): void => {
   if (typeof table.creationDate !== 'string') {
@@ -18,15 +17,9 @@ const tableValidations = (table: tableProps): void => {
       'only ISO8601 date allowed, such as: 2019-01-25T02:00:00.000Z'
     ))
   }
-
-  idValidation({
-    id: table.id,
-    idName: 'id'
-  })
 }
 
 export interface tableProps {
-  id: number
   creationDate: string
 }
 

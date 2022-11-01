@@ -48,8 +48,7 @@ const validations: verifyObj = {
 
 const PurchasePlaceValidations = (purchasePlace: purchasePlaceParam): void => {
   tableValidations({
-    creationDate: purchasePlace.creationDate,
-    id: purchasePlace.id
+    creationDate: purchasePlace.creationDate
   })
   validations.address(purchasePlace.address)
   validations.name(purchasePlace.name)

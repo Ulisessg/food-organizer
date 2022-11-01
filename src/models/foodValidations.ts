@@ -77,8 +77,7 @@ const validations: verifyObj = {
 
 const foodValidations = (food: foodParam): void => {
   tableValidations({
-    creationDate: food.creationDate,
-    id: food.id
+    creationDate: food.creationDate
   })
   validations.foodTypeId(food.foodTypeId)
   validations.image(food.image)

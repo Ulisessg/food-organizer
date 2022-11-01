@@ -64,8 +64,7 @@ const validations: verifyObj = {
 
 const ingredientValidations = (ingredient: ingredientParam): void => {
   tableValidations({
-    creationDate: ingredient.creationDate,
-    id: ingredient.id
+    creationDate: ingredient.creationDate
   })
   validations.comment(ingredient.comment)
   validations.image(ingredient.image)

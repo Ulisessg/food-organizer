@@ -10,7 +10,6 @@ describe(
   'models/unitOfMeasureTypeValidations',
   () => {
     const creationDate = dayjs().toISOString()
-    const id = 1
 
     test(
       'name invalid type',
@@ -19,7 +18,6 @@ describe(
         try {
           unitOfMeasureTypeValidations({
             creationDate,
-            id,
             name: nameProp
           })
           throw new Error('setName method is allowing non string types')
@@ -40,7 +38,6 @@ describe(
         try {
           unitOfMeasureTypeValidations({
             creationDate,
-            id,
             name: nameProp
           })
           throw new Error('setName method is allowing invalid names')

@@ -19,8 +19,7 @@ const validations: verifyObj = {
 const IngredientPurchasePlaceValidations = (ingredientPurchasePlace:
 IngredientPurchasePlaceParam): void => {
   tableValidations({
-    creationDate: ingredientPurchasePlace.creationDate,
-    id: ingredientPurchasePlace.id
+    creationDate: ingredientPurchasePlace.creationDate
   })
   validations.ingredientId(ingredientPurchasePlace.ingredientId)
   validations.purchasePlaceId(ingredientPurchasePlace.purchasePlaceId)

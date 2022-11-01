@@ -37,6 +37,7 @@ type priceParam = tableProps & {
   priceDate: string
   value: number
   idName: priceTables
+  id: number
 }
 
 export default priceValidations

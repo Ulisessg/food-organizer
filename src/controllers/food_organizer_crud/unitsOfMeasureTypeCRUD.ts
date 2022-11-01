@@ -13,7 +13,7 @@ export const insertUOMT = async (
   try {
     const { creation_date, name } = req.body
     // Id value set as 1 to not crash validations
-    unitOfMeasureTypeVerification({ creationDate: creation_date as unknown as string, id: 1, name })
+    unitOfMeasureTypeVerification({ creationDate: creation_date as unknown as string, name })
     const result = await prisma.units_of_measure_types.create({
       data: {
         creation_date,

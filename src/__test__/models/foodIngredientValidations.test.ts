@@ -22,7 +22,6 @@ describe(
           foodIngredientValidations({
             creationDate,
             foodId: nId,
-            id,
             ingredientId: id
           })
           throw new Error('foodId is allowing invalid type')
@@ -43,7 +42,7 @@ describe(
       () => {
         const nId: number = {} as unknown as number
         try {
-          foodIngredientValidations({ creationDate, foodId: id, id, ingredientId: nId })
+          foodIngredientValidations({ creationDate, foodId: id, ingredientId: nId })
           throw new Error('ingredientId is allowing invalid type')
         } catch (error) {
           err = error as TypeError

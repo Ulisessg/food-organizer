@@ -4,8 +4,7 @@ import { lettersWithSpaces } from '../utils/RegExps'
 
 const foodTypeValidations = (foodType: foodTypeParam): void => {
   tableValidations({
-    creationDate: foodType.creationDate,
-    id: foodType.id
+    creationDate: foodType.creationDate
   })
   if (typeof foodType.name !== 'string') {
     throw new TypeError(invalidPropertyTypeErrorMessage(

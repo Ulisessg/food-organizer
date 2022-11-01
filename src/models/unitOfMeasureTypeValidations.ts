@@ -4,8 +4,7 @@ import { lettersWithSpaces } from 'utils/RegExps'
 
 const unitOfMeasureTypeVerification = (unitOfMeasureType: unitOfMeasureTypeParam): void => {
   tableValidations({
-    creationDate: unitOfMeasureType.creationDate,
-    id: unitOfMeasureType.id
+    creationDate: unitOfMeasureType.creationDate
   })
   if (typeof unitOfMeasureType.name !== 'string') {
     throw new Error(invalidPropertyTypeErrorMessage(

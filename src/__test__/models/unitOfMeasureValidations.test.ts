@@ -20,7 +20,6 @@ describe(
           unitOfMeasureValidations({
             abbreviation: '°C',
             creationDate,
-            id,
             name: invalidName,
             uomtId: id
           })
@@ -44,7 +43,6 @@ describe(
           unitOfMeasureValidations({
             abbreviation: '°C',
             creationDate,
-            id,
             name: invalidName,
             uomtId: id
           })
@@ -68,7 +66,6 @@ describe(
           unitOfMeasureValidations({
             abbreviation: abbreviationProp,
             creationDate,
-            id,
             name: 'any',
             uomtId: id
           })
@@ -94,7 +91,6 @@ describe(
           unitOfMeasureValidations({
             abbreviation: abbreviationProp,
             creationDate,
-            id,
             name: 'any',
             uomtId: id
           })
@@ -118,7 +114,6 @@ describe(
           unitOfMeasureValidations({
             abbreviation: '°C',
             creationDate,
-            id,
             name: 'any',
             uomtId
           })

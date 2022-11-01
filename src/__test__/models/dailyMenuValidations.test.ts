@@ -19,7 +19,7 @@ describe(
       () => {
         const nId: number = null as unknown as number
         try {
-          dailyMenuValidations({ carbohydratesId: id, creationDate, id, meatId: id, vegetableId: nId })
+          dailyMenuValidations({ carbohydratesId: id, creationDate, meatId: id, vegetableId: nId })
           throw new Error('vegetablesId is allowing invalid id type')
         } catch (error) {
           err = error as TypeError
@@ -38,7 +38,7 @@ describe(
       () => {
         const nId: number = null as unknown as number
         try {
-          dailyMenuValidations({ carbohydratesId: nId, creationDate, id, meatId: id, vegetableId: id })
+          dailyMenuValidations({ carbohydratesId: nId, creationDate, meatId: id, vegetableId: id })
           throw new Error('carbohydratesId is allowing invalid id type')
         } catch (error) {
           err = error as TypeError
@@ -60,7 +60,7 @@ describe(
           dailyMenuValidations({
             carbohydratesId: id,
             creationDate,
-            id,
+
             meatId: nId,
             vegetableId: id
           })

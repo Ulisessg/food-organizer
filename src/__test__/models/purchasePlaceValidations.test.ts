@@ -9,7 +9,6 @@ import purchasePlaceValidations from 'models/purchasePlaceValidations'
 describe(
   'models/purchasePlaceValidations',
   () => {
-    const id = 1
     const creationDate = dayjs().toISOString()
     test(
       'invalid name format',
@@ -19,7 +18,6 @@ describe(
           purchasePlaceValidations({
             address: null,
             creationDate,
-            id,
             name: nameProp
           })
           throw new Error('validations is allowing invalid "name"')
@@ -41,7 +39,6 @@ describe(
           purchasePlaceValidations({
             address: null,
             creationDate,
-            id,
             name: nameProp
           })
           throw new Error('verifications is allowing invalid "name" type')
@@ -64,7 +61,6 @@ describe(
           purchasePlaceValidations({
             address: addressProp,
             creationDate,
-            id,
             name: 'any'
           })
           throw new Error('validations is allowing invalid "address"')
@@ -86,7 +82,6 @@ describe(
           purchasePlaceValidations({
             address: addressProp,
             creationDate,
-            id,
             name: 'any'
           })
           throw new Error('validations is allowing invalid "address" type')

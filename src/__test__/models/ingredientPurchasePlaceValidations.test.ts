@@ -19,7 +19,6 @@ describe(
         try {
           ingredientsPurchasePlacesValidations({
             creationDate,
-            id,
             ingredientId,
             purchasePlaceId: id
           })
@@ -41,7 +40,6 @@ describe(
         try {
           ingredientsPurchasePlacesValidations({
             creationDate,
-            id,
             ingredientId: id,
             purchasePlaceId
           })

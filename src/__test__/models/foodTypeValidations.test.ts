@@ -12,7 +12,6 @@ describe(
   'modles/foodTypeValidations',
   () => {
     const creationDate = dayjs().toISOString()
-    const id = 1
     test(
       'invalid "name"',
       () => {
@@ -20,7 +19,6 @@ describe(
         try {
           foodTypeValidations({
             creationDate,
-            id,
             name: nName
           })
           throw new Error('name is allowing invalid "name"')
@@ -41,7 +39,6 @@ describe(
         try {
           foodTypeValidations({
             creationDate,
-            id,
             name: nName
           })
           throw new Error('name is allowing invalid "name" type')

@@ -22,7 +22,6 @@ describe(
           weeklyMenuValidations({
             creationDate,
             fridayMenuId: id,
-            id,
             mondayMenuId: nId,
             saturdayMenuId: id,
             sundayMenuId: id,
@@ -51,7 +50,6 @@ describe(
           weeklyMenuValidations({
             creationDate,
             fridayMenuId: id,
-            id,
             mondayMenuId: id,
             saturdayMenuId: id,
             sundayMenuId: id,
@@ -80,7 +78,6 @@ describe(
           weeklyMenuValidations({
             creationDate,
             fridayMenuId: id,
-            id,
             mondayMenuId: id,
             saturdayMenuId: id,
             sundayMenuId: id,
@@ -109,7 +106,6 @@ describe(
           weeklyMenuValidations({
             creationDate,
             fridayMenuId: id,
-            id,
             mondayMenuId: id,
             saturdayMenuId: id,
             sundayMenuId: id,
@@ -138,7 +134,6 @@ describe(
           weeklyMenuValidations({
             creationDate,
             fridayMenuId: nId,
-            id,
             mondayMenuId: id,
             saturdayMenuId: id,
             sundayMenuId: id,
@@ -166,7 +161,6 @@ describe(
           weeklyMenuValidations({
             creationDate,
             fridayMenuId: id,
-            id,
             mondayMenuId: id,
             saturdayMenuId: nId,
             sundayMenuId: id,
@@ -194,7 +188,6 @@ describe(
           weeklyMenuValidations({
             creationDate,
             fridayMenuId: id,
-            id,
             mondayMenuId: id,
             saturdayMenuId: id,
             sundayMenuId: nId,

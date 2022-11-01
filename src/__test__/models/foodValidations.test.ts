@@ -22,7 +22,6 @@ describe(
           foodValidations({
             creationDate,
             foodTypeId: id,
-            id,
             image: null,
             name: nm,
             preparationTime: id,
@@ -50,7 +49,6 @@ describe(
           foodValidations({
             creationDate,
             foodTypeId: id,
-            id,
             image: null,
             name: 'some',
             preparationTime: id,
@@ -78,7 +76,6 @@ describe(
           foodValidations({
             creationDate,
             foodTypeId: id,
-            id,
             image: null,
             name: 'some',
             preparationTime: prepTime,
@@ -107,7 +104,6 @@ describe(
           foodValidations({
             creationDate,
             foodTypeId: id,
-            id,
             image: null,
             name: 'some',
             preparationTime: id,
@@ -136,7 +132,6 @@ describe(
           foodValidations({
             creationDate,
             foodTypeId,
-            id,
             image: null,
             name: 'some',
             preparationTime: id,
@@ -164,7 +159,6 @@ describe(
           foodValidations({
             creationDate,
             foodTypeId: id,
-            id,
             image,
             name: 'some',
             preparationTime: id,
@@ -195,7 +189,6 @@ describe(
           foodValidations({
             creationDate,
             foodTypeId: id,
-            id,
             image,
             name: 'any',
             preparationTime: id,
@@ -223,7 +216,6 @@ describe(
           foodValidations({
             creationDate,
             foodTypeId: id,
-            id,
             image: null,
             name: invalidName,
             preparationTime: id,

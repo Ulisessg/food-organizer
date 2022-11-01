@@ -45,8 +45,7 @@ const validations: weeklyMenuObj = {
 
 const weeklyMenuValidations = (weeklyMenu: weeklyMenuParam): void => {
   tableValidations({
-    creationDate: weeklyMenu.creationDate,
-    id: weeklyMenu.id
+    creationDate: weeklyMenu.creationDate
   })
   validations.fridayMenuId(weeklyMenu.fridayMenuId)
   validations.mondayMenuId(weeklyMenu.mondayMenuId)
