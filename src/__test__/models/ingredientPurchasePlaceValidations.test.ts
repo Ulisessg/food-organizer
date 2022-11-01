@@ -17,12 +17,12 @@ describe(
       () => {
         const ingredientId = {} as unknown as number
         try {
-          ingredientsPurchasePlacesValidations(
-            'ingredientId',
-            ingredientId,
+          ingredientsPurchasePlacesValidations({
             creationDate,
-            id
-          )
+            id,
+            ingredientId,
+            purchasePlaceId: id
+          })
           throw new Error('ingredientId is allowing invalid "ingredientId" type')
         } catch (error) {
           const err: Error = error as Error
@@ -39,12 +39,12 @@ describe(
       () => {
         const purchasePlaceId = {} as unknown as number
         try {
-          ingredientsPurchasePlacesValidations(
-            'purchasePlaceId',
-            purchasePlaceId,
+          ingredientsPurchasePlacesValidations({
             creationDate,
-            id
-          )
+            id,
+            ingredientId: id,
+            purchasePlaceId
+          })
           throw new Error('setPurchasePlaceId is allowing invalid "purchasePlaceId" type')
         } catch (error) {
           const err: Error = error as Error

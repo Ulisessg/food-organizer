@@ -22,10 +22,10 @@ describe(
       () => {
         const invalidISO8601Date = '2012-03-01T00:00:00Z'
         try {
-          tableValidations(
-            invalidISO8601Date,
+          tableValidations({
+            creationDate: invalidISO8601Date,
             id
-          )
+          })
           throw new Error('creationDate is allowing invalid "ISO 8601" date')
         } catch (error) {
           err = error as Error
@@ -46,10 +46,10 @@ describe(
       () => {
         const invalidId: number = '1' as unknown as number
         try {
-          tableValidations(
+          tableValidations({
             creationDate,
-            invalidId
-          )
+            id: invalidId
+          })
           throw new Error('id is allowing invalid "id" type')
         } catch (error) {
           err = error as TypeError
@@ -68,10 +68,10 @@ describe(
       () => {
         const nId = 1.1
         try {
-          tableValidations(
+          tableValidations({
             creationDate,
-            nId
-          )
+            id: nId
+          })
           throw new Error('id is allowing non integer numbers')
         } catch (error) {
           err = error as TypeError
@@ -89,10 +89,10 @@ describe(
       () => {
         const invalidDateType: string = {} as unknown as string
         try {
-          tableValidations(
-            invalidDateType,
+          tableValidations({
+            creationDate: invalidDateType,
             id
-          )
+          })
           throw new Error('creationDate method is allowing invalid date type')
         } catch (error) {
           err = error as Error

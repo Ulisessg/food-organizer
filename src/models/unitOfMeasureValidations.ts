@@ -1,7 +1,7 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import { lettersAndDegrees, lettersWithSpaces } from 'utils/RegExps'
+import tableValidations, { tableProps } from './tableValidations'
 import idValidation from './idValidation'
-import tableValidations from './tableValidations'
 
 const validations: verifyObj = {
   abbreviation: (abbreviation) => {
@@ -37,30 +37,31 @@ const validations: verifyObj = {
     }
   },
   uomtId: (uomtId: number) => {
-    idValidation(
-      uomtId,
-      'uomtId'
-    )
+    idValidation({
+      id: uomtId,
+      idName: 'uomtId'
+    })
   }
 }
 
-const unitOfMeasureValidations = (
-  propName: verifyProp,
-  propValue: any,
-  creationDate: string,
-  id: number
-// eslint-disable-next-line max-params
-): void => {
-  tableValidations(
-    creationDate,
-    id
-  )
-  validations[propName](propValue)
-}
-
-export type verifyProp = 'name' | 'abbreviation' | 'uomtId'
-type verifyObj = {
-  [k in verifyProp]: (value: any) => void
+const unitOfMeasureValidations = (unitOfMeasure: unitOfMeasureParam): void => {
+  tableValidations({
+    creationDate: unitOfMeasure.creationDate,
+    id: unitOfMeasure.id
+  })
+  validations.abbreviation(unitOfMeasure.abbreviation)
+  validations.name(unitOfMeasure.name)
+  validations.uomtId(unitOfMeasure.uomtId)
 }
 
 export default unitOfMeasureValidations
+
+export type verifyProp = 'name' | 'abbreviation' | 'uomtId'
+type unitOfMeasureParam = tableProps & {
+  name: string
+  abbreviation: string
+  uomtId: number
+}
+type verifyObj = {
+  [k in verifyProp]: (value: any) => void
+}

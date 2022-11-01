@@ -12,10 +12,10 @@ describe(
       () => {
         const invalidIdName: string = null as unknown as string
         try {
-          idValidation(
+          idValidation({
             id,
-            invalidIdName
-          )
+            idName: invalidIdName
+          })
         } catch (error) {
           err = error as TypeError
           expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
@@ -33,10 +33,10 @@ describe(
       () => {
         const invalidId: number = [] as unknown as number
         try {
-          idValidation(
-            invalidId,
+          idValidation({
+            id: invalidId,
             idName
-          )
+          })
         } catch (error) {
           err = error as TypeError
           expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(

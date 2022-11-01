@@ -1,6 +1,6 @@
+import tableValidations, { tableProps } from './tableValidations'
 import idValidation from './idValidation'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
-import tableValidations from './tableValidations'
 
 const validations: verifyObj = {
   comment: (comment: string) => {
@@ -15,37 +15,39 @@ const validations: verifyObj = {
     }
   },
   ingredientId: (id: number) => {
-    idValidation(
+    idValidation({
       id,
-      'ingredientId'
-    )
+      idName: 'ingredientId'
+    })
   },
   uomId: (id: number) => {
-    idValidation(
+    idValidation({
       id,
-      'uomId'
-    )
+      idName: 'uomId'
+    })
   }
 }
 
-const ingredientStockVerifications = (
-  propName: verifyProps,
-  propValue: any,
-  creationDate: string,
-  id: number
-// eslint-disable-next-line max-params
-): void => {
-  tableValidations(
-    creationDate,
-    id
-  )
-  validations[propName](propValue)
+const ingredientStockVerifications = (ingredientStock: ingredientStockParam): void => {
+  tableValidations({
+    creationDate: ingredientStock.creationDate,
+    id: ingredientStock.id
+  })
+  validations.comment(ingredientStock.comment)
+  validations.ingredientId(ingredientStock.ingredientId)
+  validations.uomId(ingredientStock.uomId)
 }
+
+export default ingredientStockVerifications
 
 type verifyObj = {
   [k in verifyProps]: (value: any) => void
 }
 
-export type verifyProps = 'ingredientId' | 'uomId' | 'comment'
+type ingredientStockParam = tableProps & {
+  ingredientId: number
+  uomId: number
+  comment: string | null
+}
 
-export default ingredientStockVerifications
+export type verifyProps = 'ingredientId' | 'uomId' | 'comment'

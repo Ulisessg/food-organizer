@@ -17,12 +17,15 @@ describe(
       () => {
         const nName: string = null as unknown as string
         try {
-          ingredientValidations(
-            'name',
-            nName,
+          ingredientValidations({
+            comment: null,
             creationDate,
-            id
-          )
+            id,
+            image: null,
+            name: nName,
+            preferredPurchasePlaceId: id,
+            uomtId: id
+          })
           throw new Error('name is allowing invalid "name" type')
         } catch (error) {
           const err: Error = error as Error
@@ -39,12 +42,15 @@ describe(
       () => {
         const nId: number = 'Cien' as unknown as number
         try {
-          ingredientValidations(
-            'preferredPurchasePlaceId',
-            nId,
+          ingredientValidations({
+            comment: null,
             creationDate,
-            id
-          )
+            id,
+            image: null,
+            name: 'any',
+            preferredPurchasePlaceId: nId,
+            uomtId: id
+          })
           throw new Error('preferredPurchasePlaceId is allowing invalid "preferredPurchasePlaceId" type')
         } catch (error) {
           const err: Error = error as Error
@@ -61,12 +67,15 @@ describe(
       () => {
         const nId: number = 'Treinta' as unknown as number
         try {
-          ingredientValidations(
-            'uomtId',
-            nId,
+          ingredientValidations({
+            comment: null,
             creationDate,
-            id
-          )
+            id,
+            image: null,
+            name: 'any',
+            preferredPurchasePlaceId: id,
+            uomtId: nId
+          })
           throw new Error('uomtId is allowing invalid "uomtId" type')
         } catch (error) {
           const err: Error = error as Error
@@ -83,12 +92,15 @@ describe(
       () => {
         const nImg: string = {} as unknown as string
         try {
-          ingredientValidations(
-            'image',
-            nImg,
+          ingredientValidations({
+            comment: null,
             creationDate,
-            id
-          )
+            id,
+            image: nImg,
+            name: 'any',
+            preferredPurchasePlaceId: id,
+            uomtId: id
+          })
           throw new Error('image is allowing invalid "image" type')
         } catch (error) {
           const err: Error = error as Error
@@ -106,19 +118,22 @@ describe(
       () => {
         const invalidComment: string = {} as unknown as string
         try {
-          ingredientValidations(
-            'comment',
-            invalidComment,
+          ingredientValidations({
+            comment: invalidComment,
             creationDate,
-            id
-          )
+            id,
+            image: null,
+            name: 'any',
+            preferredPurchasePlaceId: id,
+            uomtId: id
+          })
           throw new Error('comment is allowing invalid type')
         } catch (error) {
           const err = error as TypeError
           expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
             'comment',
             invalidComment,
-            'only string allowed'
+            'only string or null allowed'
           ))
         }
       }
@@ -129,12 +144,15 @@ describe(
       () => {
         const nName: string = 'Papas!'
         try {
-          ingredientValidations(
-            'name',
-            nName,
+          ingredientValidations({
+            comment: null,
             creationDate,
-            id
-          )
+            id,
+            image: null,
+            name: nName,
+            preferredPurchasePlaceId: id,
+            uomtId: id
+          })
           throw new Error('name is allowing invalid "name" type')
         } catch (error) {
           const err: Error = error as Error
@@ -151,12 +169,15 @@ describe(
       () => {
         const nImage: string = 'fakeulr!'
         try {
-          ingredientValidations(
-            'image',
-            nImage,
+          ingredientValidations({
+            comment: null,
             creationDate,
-            id
-          )
+            id,
+            image: nImage,
+            name: 'any',
+            preferredPurchasePlaceId: id,
+            uomtId: id
+          })
           throw new Error('image is allowing invalid "Image" type')
         } catch (error) {
           const err: Error = error as Error

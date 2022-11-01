@@ -18,11 +18,11 @@ describe(
       () => {
         const nName: string = '!Vegetales/'
         try {
-          foodTypeValidations(
-            nName,
+          foodTypeValidations({
             creationDate,
-            id
-          )
+            id,
+            name: nName
+          })
           throw new Error('name is allowing invalid "name"')
         } catch (error) {
           const err: Error = error as Error
@@ -39,11 +39,11 @@ describe(
       () => {
         const nName: string = 34 as unknown as string
         try {
-          foodTypeValidations(
-            nName,
+          foodTypeValidations({
             creationDate,
-            id
-          )
+            id,
+            name: nName
+          })
           throw new Error('name is allowing invalid "name" type')
         } catch (error) {
           const err: Error = error as Error

@@ -4,7 +4,7 @@ import {
   invalidPropertyErrorMessage,
   invalidPropertyTypeErrorMessage
 } from '../utils/ErrorMessages'
-import tableValidations from './tableValidations'
+import tableValidations, { tableProps } from './tableValidations'
 
 const validations: verifyObj = {
   address: (address: string | null) => {
@@ -13,7 +13,7 @@ const validations: verifyObj = {
         throw new Error(invalidPropertyTypeErrorMessage(
           'address',
           address,
-          'only string or undefined allowed'
+          'only string or null allowed'
         ))
       }
     }
@@ -46,23 +46,22 @@ const validations: verifyObj = {
   }
 }
 
-const PurchasePlaceValidations = (
-  propName: verifyProp,
-  propValue: any,
-  creationDate: string,
-  id: number
-// eslint-disable-next-line max-params
-): void => {
-  tableValidations(
-    creationDate,
-    id
-  )
-  validations[propName](propValue)
-}
-
-type verifyProp = 'name' | 'address'
-type verifyObj = {
-  [k in verifyProp]: (value: any) => void
+const PurchasePlaceValidations = (purchasePlace: purchasePlaceParam): void => {
+  tableValidations({
+    creationDate: purchasePlace.creationDate,
+    id: purchasePlace.id
+  })
+  validations.address(purchasePlace.address)
+  validations.name(purchasePlace.name)
 }
 
 export default PurchasePlaceValidations
+
+type verifyProp = 'name' | 'address'
+type purchasePlaceParam = tableProps & {
+  name: string
+  address: string | null
+}
+type verifyObj = {
+  [k in verifyProp]: (value: any) => void
+}

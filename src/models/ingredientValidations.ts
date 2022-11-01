@@ -1,19 +1,21 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import { lettersWithSpaces, urlRegExp } from 'utils/RegExps'
+import tableValidations, { tableProps } from './tableValidations'
 import idValidation from './idValidation'
-import tableValidations from './tableValidations'
 
 const validations: verifyObj = {
-  comment: (comment: string) => {
+  comment: (comment: string | null) => {
     if (typeof comment !== 'string') {
-      throw new TypeError(invalidPropertyTypeErrorMessage(
-        'comment',
-        comment,
-        'only string allowed'
-      ))
+      if (comment !== null) {
+        throw new TypeError(invalidPropertyTypeErrorMessage(
+          'comment',
+          comment,
+          'only string or null allowed'
+        ))
+      }
     }
   },
-  image: (image: string) => {
+  image: (image: string | null) => {
     if (typeof image === 'string') {
       if (image.match(urlRegExp) === null) {
         throw new Error(invalidPropertyErrorMessage(
@@ -47,36 +49,41 @@ const validations: verifyObj = {
     }
   },
   preferredPurchasePlaceId: (preferredPurchasePlaceId: number) => {
-    idValidation(
-      preferredPurchasePlaceId,
-      'preferredPurchasePlaceId'
-    )
+    idValidation({
+      id: preferredPurchasePlaceId,
+      idName: 'preferredPurchasePlaceId'
+    })
   },
   uomtId: (uomtId: number) => {
-    idValidation(
-      uomtId,
-      'uomtId'
-    )
+    idValidation({
+      id: uomtId,
+      idName: 'uomtId'
+    })
   }
 }
 
-const ingredientValidations = (
-  propName: verifyProps,
-  propValue: any,
-  creationDate: string,
-  id: number
-// eslint-disable-next-line max-params
-): void => {
-  tableValidations(
-    creationDate,
-    id
-  )
-  validations[propName](propValue)
-}
-
-export type verifyProps = 'image' | 'name' | 'preferredPurchasePlaceId' | 'uomtId' | 'comment'
-type verifyObj = {
-  [k in verifyProps]: (prop: any) => void
+const ingredientValidations = (ingredient: ingredientParam): void => {
+  tableValidations({
+    creationDate: ingredient.creationDate,
+    id: ingredient.id
+  })
+  validations.comment(ingredient.comment)
+  validations.image(ingredient.image)
+  validations.name(ingredient.name)
+  validations.preferredPurchasePlaceId(ingredient.preferredPurchasePlaceId)
+  validations.uomtId(ingredient.uomtId)
 }
 
 export default ingredientValidations
+
+export type verifyProps = 'image' | 'name' | 'preferredPurchasePlaceId' | 'uomtId' | 'comment'
+type ingredientParam = tableProps & {
+  image: string | null
+  name: string
+  preferredPurchasePlaceId: number
+  uomtId: number
+  comment: string | null
+}
+type verifyObj = {
+  [k in verifyProps]: (prop: any) => void
+}

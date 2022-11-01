@@ -20,12 +20,14 @@ describe(
       () => {
         const invalidComment: string = {} as unknown as string
         try {
-          ingredientStockValidations(
-            'comment',
-            invalidComment,
+          ingredientStockValidations({
+            comment: invalidComment,
             creationDate,
-            id
-          )
+            id,
+            ingredientId: id,
+            uomId: id
+
+          })
           throw new Error('comment is allowing invalid "comment"')
         } catch (error) {
           err = error as TypeError
@@ -43,12 +45,13 @@ describe(
       () => {
         const invalidId: number = {} as unknown as number
         try {
-          ingredientStockValidations(
-            'ingredientId',
-            invalidId,
+          ingredientStockValidations({
+            comment: null,
             creationDate,
-            id
-          )
+            id,
+            ingredientId: invalidId,
+            uomId: id
+          })
           throw new Error('ingredientId is allowing invalid "id"')
         } catch (error) {
           err = error as TypeError
@@ -66,12 +69,13 @@ describe(
       () => {
         const invalidId: number = {} as unknown as number
         try {
-          ingredientStockValidations(
-            'uomId',
-            invalidId,
+          ingredientStockValidations({
+            comment: null,
             creationDate,
-            id
-          )
+            id,
+            ingredientId: id,
+            uomId: invalidId
+          })
           throw new Error('uomId is allowing invalid "id"')
         } catch (error) {
           err = error as TypeError

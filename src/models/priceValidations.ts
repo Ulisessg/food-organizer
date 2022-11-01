@@ -6,30 +6,25 @@ import {
 } from 'utils/ErrorMessages'
 import dayjs from 'dayjs'
 import idValidation from './idValidation'
+import { tableProps } from './tableValidations'
 
-const priceValidations = (
-  priceDate: string,
-  value: number,
-  id: number,
-  idName: priceTables
-// eslint-disable-next-line max-params
-): void => {
-  idValidation(
-    id,
-    idName
-  )
-  if (!dayjs(priceDate).isValid()) {
+const priceValidations = (price: priceParam): void => {
+  idValidation({
+    id: price.id,
+    idName: price.idName
+  })
+  if (!dayjs(price.priceDate).isValid()) {
     throw new Error(invalidPropertyErrorMessage(
       'priceDate',
-      priceDate,
+      price.priceDate,
       invalidDateMessage
     ))
   }
 
-  if (typeof value !== 'number') {
+  if (typeof price.value !== 'number') {
     throw new Error(invalidPropertyTypeErrorMessage(
       'value',
-      value,
+      price.value,
       'only numbers allowed'
     ))
   }
@@ -37,5 +32,11 @@ const priceValidations = (
 
 // Current 'price' tables
 type priceTables = 'dailyMenuPrice' | 'weeklyMenuPrice' | 'ingredientPrice' | 'foodPrice' | 'none'
+
+type priceParam = tableProps & {
+  priceDate: string
+  value: number
+  idName: priceTables
+}
 
 export default priceValidations

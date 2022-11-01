@@ -1,45 +1,48 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import { lettersWithSpaces, urlRegExp } from 'utils/RegExps'
+import tableValidations, { tableProps } from './tableValidations'
 import idValidation from './idValidation'
-import tableValidations from './tableValidations'
 
 const validations: verifyObj = {
   foodTypeId: (foodTypeId) => {
-    idValidation(
-      foodTypeId,
-      'foodTypeId'
-    )
+    idValidation({
+      id: foodTypeId,
+      idName: 'foodTypeId'
+    })
   },
-  image: (image: string) => {
-    if (typeof image === 'string') {
-      if (image.match(urlRegExp) === null) {
+  image: (img: string) => {
+    if (typeof img === 'string') {
+      if (img.match(urlRegExp) === null) {
         throw new Error(invalidPropertyErrorMessage(
           'image',
-          image,
+          img,
           'only url allowed'
         ))
       }
-    } else if (image !== null) {
-      throw new Error(invalidPropertyTypeErrorMessage(
+    }
+    if (img !== null) {
+      throw new TypeError(invalidPropertyTypeErrorMessage(
         'image',
-        image,
-        'only url allowed'
+        img,
+        'only string or null allowed'
       ))
     }
   },
-  name: (name: string) => {
-    if (typeof name !== 'string') {
+  name: (nameValue: string) => {
+    if (typeof nameValue === 'string') {
+      const result = nameValue.match(lettersWithSpaces)
+      if (result === null) {
+        throw new Error(invalidPropertyErrorMessage(
+          'name',
+          nameValue,
+          'only letters and spaces allowed'
+        ))
+      }
+    } else {
       throw new Error(invalidPropertyTypeErrorMessage(
         'name',
-        name,
+        nameValue,
         'only string allowed'
-      ))
-    }
-    if (name.match(lettersWithSpaces) === null) {
-      throw new Error(invalidPropertyErrorMessage(
-        'name',
-        name,
-        'only letters and spaces allowed'
       ))
     }
   },
@@ -52,7 +55,7 @@ const validations: verifyObj = {
       ))
     }
   },
-  score: (score: number) => {
+  score: (score) => {
     if (typeof score !== 'number') {
       throw new TypeError(invalidPropertyTypeErrorMessage(
         'score',
@@ -61,7 +64,7 @@ const validations: verifyObj = {
       ))
     }
   },
-  usedCounter: (usedCounter: number) => {
+  usedCounter: (usedCounter) => {
     if (typeof usedCounter !== 'number') {
       throw new TypeError(invalidPropertyTypeErrorMessage(
         'usedCounter',
@@ -72,25 +75,32 @@ const validations: verifyObj = {
   }
 }
 
-const foodValidations = (
-  propName: verifyProps,
-  propValue: number | string | null,
-  creationDate: string,
-  id: number
-// eslint-disable-next-line max-params
-): void => {
-  tableValidations(
-    creationDate,
-    id
-  )
-  validations[propName](propValue)
+const foodValidations = (food: foodParam): void => {
+  tableValidations({
+    creationDate: food.creationDate,
+    id: food.id
+  })
+  validations.foodTypeId(food.foodTypeId)
+  validations.image(food.image)
+  validations.name(food.name)
+  validations.preparationTime(food.preparationTime)
+  validations.score(food.score)
+  validations.usedCounter(food.usedCounter)
 }
 
+export default foodValidations
 export type verifyProps =
 'name' | 'usedCounter' | 'preparationTime' | 'foodTypeId' | 'image' | 'score'
+
+type foodParam = tableProps & {
+  name: string
+  usedCounter: number
+  preparationTime: number
+  foodTypeId: number
+  image: string | null
+  score: number
+}
 
 type verifyObj = {
   [k in verifyProps]: (p: any) => void
 }
-
-export default foodValidations

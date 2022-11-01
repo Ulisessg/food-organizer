@@ -17,20 +17,24 @@ describe(
     test(
       'name invalid type',
       () => {
-        const name: string = {} as unknown as string
+        const nm: string = [] as unknown as string
         try {
-          foodValidations(
-            'name',
-            name,
+          foodValidations({
             creationDate,
-            id
-          )
+            foodTypeId: id,
+            id,
+            image: null,
+            name: nm,
+            preparationTime: id,
+            score: id,
+            usedCounter: id
+          })
           throw new Error('name is allowing invalid type')
         } catch (error) {
           err = error as Error
           expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
             'name',
-            name,
+            nm,
             'only string allowed'
           ))
         }
@@ -43,12 +47,16 @@ describe(
       () => {
         const usedCounter: number = {} as unknown as number
         try {
-          foodValidations(
-            'usedCounter',
-            usedCounter,
+          foodValidations({
             creationDate,
-            id
-          )
+            foodTypeId: id,
+            id,
+            image: null,
+            name: 'some',
+            preparationTime: id,
+            score: id,
+            usedCounter
+          })
           throw new Error('usedCounter is allowing invalid type')
         } catch (error) {
           err = error as Error
@@ -67,12 +75,16 @@ describe(
       () => {
         const prepTime: number = null as unknown as number
         try {
-          foodValidations(
-            'preparationTime',
-            prepTime,
+          foodValidations({
             creationDate,
-            id
-          )
+            foodTypeId: id,
+            id,
+            image: null,
+            name: 'some',
+            preparationTime: prepTime,
+            score: id,
+            usedCounter: id
+          })
           throw new Error('preparationTime is allowing invalid type')
         } catch (error) {
           err = error as Error
@@ -92,12 +104,16 @@ describe(
       () => {
         const score: number = null as unknown as number
         try {
-          foodValidations(
-            'score',
-            score,
+          foodValidations({
             creationDate,
-            id
-          )
+            foodTypeId: id,
+            id,
+            image: null,
+            name: 'some',
+            preparationTime: id,
+            score,
+            usedCounter: id
+          })
           throw new Error('score is allowing invalid type')
         } catch (error) {
           err = error as Error
@@ -117,12 +133,16 @@ describe(
       () => {
         const foodTypeId: number = null as unknown as number
         try {
-          foodValidations(
-            'foodTypeId',
-            foodTypeId,
+          foodValidations({
             creationDate,
-            id
-          )
+            foodTypeId,
+            id,
+            image: null,
+            name: 'some',
+            preparationTime: id,
+            score: id,
+            usedCounter: id
+          })
           throw new Error('foodTypeId is allowing invalid type')
         } catch (error) {
           err = error as Error
@@ -141,36 +161,23 @@ describe(
       () => {
         const image: string = {} as unknown as string
         try {
-          foodValidations(
-            'image',
-            image,
+          foodValidations({
             creationDate,
-            id
-          )
+            foodTypeId: id,
+            id,
+            image,
+            name: 'some',
+            preparationTime: id,
+            score: id,
+            usedCounter: id
+          })
           throw new Error('image is allowing invalid type')
         } catch (error) {
           err = error as Error
           expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
             'image',
             image,
-            'only url allowed'
-          ))
-        }
-        const image2: string = 43 as unknown as string
-        try {
-          foodValidations(
-            'image',
-            image2,
-            creationDate,
-            id
-          )
-          throw new Error('image is allowing invalid type')
-        } catch (error) {
-          err = error as Error
-          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
-            'image',
-            image2,
-            'only url allowed'
+            'only string or null allowed'
           ))
         }
         err = null
@@ -185,12 +192,16 @@ describe(
       () => {
         const image: string = '!° Invalid Url'
         try {
-          foodValidations(
-            'image',
-            image,
+          foodValidations({
             creationDate,
-            id
-          )
+            foodTypeId: id,
+            id,
+            image,
+            name: 'any',
+            preparationTime: id,
+            score: id,
+            usedCounter: id
+          })
           throw new Error('image is allowing invalid url')
         } catch (error) {
           err = error as Error
@@ -207,20 +218,24 @@ describe(
     test(
       'name invalid name format',
       () => {
-        const name: string = '!° Invalid nam3'
+        const invalidName: string = '!° Invalid nam3'
         try {
-          foodValidations(
-            'name',
-            name,
+          foodValidations({
             creationDate,
-            id
-          )
+            foodTypeId: id,
+            id,
+            image: null,
+            name: invalidName,
+            preparationTime: id,
+            score: id,
+            usedCounter: id
+          })
           throw new Error('name is allowing invalid name')
         } catch (error) {
           err = error as Error
           expect(err.message).toStrictEqual(invalidPropertyErrorMessage(
             'name',
-            name,
+            invalidName,
             'only letters and spaces allowed'
           ))
         }

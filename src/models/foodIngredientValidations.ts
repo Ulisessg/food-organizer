@@ -1,40 +1,36 @@
+import tableValidations, { tableProps } from './tableValidations'
 import idValidation from './idValidation'
-import tableValidations from './tableValidations'
 
 const validations: verifyObj = {
   foodId: (foodId: number): void => {
-    idValidation(
-      foodId,
-      'foodId'
-    )
+    idValidation({
+      id: foodId,
+      idName: 'foodId'
+    })
   },
   ingredientId: (ingredientId: number) => {
-    idValidation(
-      ingredientId,
-      'ingredientId'
-    )
+    idValidation({
+      id: ingredientId,
+      idName: 'ingredientId'
+    })
   }
 }
 
-const foodIngredientValidations = (
-  propName: verifyProps,
-  propValue: number,
-  creationDate: string,
-  id: number
-// eslint-disable-next-line max-params
-): void => {
-  tableValidations(
-    creationDate,
-    id
-  )
-
-  validations[propName](propValue)
-}
-
-type verifyProps = 'foodId' | 'ingredientId'
-
-type verifyObj = {
-  [k in verifyProps]: (p: any) => void
+const foodIngredientValidations = (foodIngredient: foodIngredientParam): void => {
+  tableValidations({
+    creationDate: foodIngredient.creationDate,
+    id: foodIngredient.id
+  })
+  validations.foodId(foodIngredient.foodId)
+  validations.ingredientId(foodIngredient.ingredientId)
 }
 
 export default foodIngredientValidations
+
+type verifyProps = 'foodId' | 'ingredientId'
+type foodIngredientParam = tableProps & {
+  [k in verifyProps]: number
+}
+type verifyObj = {
+  [k in verifyProps]: (p: any) => void
+}

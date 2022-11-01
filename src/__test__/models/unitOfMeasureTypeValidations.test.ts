@@ -17,11 +17,11 @@ describe(
       () => {
         const nameProp = {} as unknown as string
         try {
-          unitOfMeasureTypeValidations(
-            nameProp,
+          unitOfMeasureTypeValidations({
             creationDate,
-            id
-          )
+            id,
+            name: nameProp
+          })
           throw new Error('setName method is allowing non string types')
         } catch (error) {
           const err: Error = error as Error
@@ -38,11 +38,11 @@ describe(
       () => {
         const nameProp = 'Distancias_Lineales'
         try {
-          unitOfMeasureTypeValidations(
-            nameProp,
+          unitOfMeasureTypeValidations({
             creationDate,
-            id
-          )
+            id,
+            name: nameProp
+          })
           throw new Error('setName method is allowing invalid names')
         } catch (error) {
           const err: Error = error as Error

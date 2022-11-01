@@ -17,12 +17,13 @@ describe(
       () => {
         const invalidName = null as unknown as string
         try {
-          unitOfMeasureValidations(
-            'name',
-            invalidName,
+          unitOfMeasureValidations({
+            abbreviation: '°C',
             creationDate,
-            id
-          )
+            id,
+            name: invalidName,
+            uomtId: id
+          })
           throw new Error('name is allowing invalid data type')
         } catch (error) {
           const err: Error = error as Error
@@ -40,12 +41,13 @@ describe(
       () => {
         const invalidName = 'Grad0s!'
         try {
-          unitOfMeasureValidations(
-            'name',
-            invalidName,
+          unitOfMeasureValidations({
+            abbreviation: '°C',
             creationDate,
-            id
-          )
+            id,
+            name: invalidName,
+            uomtId: id
+          })
           throw new Error('name is allowing invalid "name"')
         } catch (error) {
           const err: Error = error as Error
@@ -63,12 +65,13 @@ describe(
       () => {
         const abbreviationProp = null as unknown as string
         try {
-          unitOfMeasureValidations(
-            'abbreviation',
-            abbreviationProp,
+          unitOfMeasureValidations({
+            abbreviation: abbreviationProp,
             creationDate,
-            id
-          )
+            id,
+            name: 'any',
+            uomtId: id
+          })
           throw new Error('abbreviation is allowing invalid data type')
         } catch (error) {
           const err: Error = error as Error
@@ -88,12 +91,13 @@ describe(
         try {
           // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 
-          unitOfMeasureValidations(
-            'abbreviation',
-            abbreviationProp,
+          unitOfMeasureValidations({
+            abbreviation: abbreviationProp,
             creationDate,
-            id
-          )
+            id,
+            name: 'any',
+            uomtId: id
+          })
           throw new Error('abbreviation is allowing invalid format')
         } catch (error) {
           const err: Error = error as Error
@@ -111,12 +115,13 @@ describe(
       () => {
         const uomtId = null as unknown as number
         try {
-          unitOfMeasureValidations(
-            'uomtId',
-            uomtId,
+          unitOfMeasureValidations({
+            abbreviation: '°C',
             creationDate,
-            id
-          )
+            id,
+            name: 'any',
+            uomtId
+          })
           throw new Error('uomtId is allowing invalid data type')
         } catch (error) {
           const err: Error = error as Error

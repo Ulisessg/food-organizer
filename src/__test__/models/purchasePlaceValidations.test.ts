@@ -16,12 +16,12 @@ describe(
       () => {
         const nameProp = 'Mercadito!'
         try {
-          purchasePlaceValidations(
-            'name',
-            nameProp,
+          purchasePlaceValidations({
+            address: null,
             creationDate,
-            id
-          )
+            id,
+            name: nameProp
+          })
           throw new Error('validations is allowing invalid "name"')
         } catch (error) {
           const err: Error = error as Error
@@ -38,12 +38,12 @@ describe(
       () => {
         const nameProp: string = {} as unknown as string
         try {
-          purchasePlaceValidations(
-            'name',
-            nameProp,
+          purchasePlaceValidations({
+            address: null,
             creationDate,
-            id
-          )
+            id,
+            name: nameProp
+          })
           throw new Error('verifications is allowing invalid "name" type')
         } catch (error) {
           const err: Error = error as Error
@@ -61,12 +61,12 @@ describe(
       () => {
         const addressProp: string = '!Invalid Address'
         try {
-          purchasePlaceValidations(
-            'address',
-            addressProp,
+          purchasePlaceValidations({
+            address: addressProp,
             creationDate,
-            id
-          )
+            id,
+            name: 'any'
+          })
           throw new Error('validations is allowing invalid "address"')
         } catch (error) {
           const err: Error = error as Error
@@ -83,12 +83,12 @@ describe(
       () => {
         const addressProp = 44 as unknown as string
         try {
-          purchasePlaceValidations(
-            'address',
-            addressProp,
+          purchasePlaceValidations({
+            address: addressProp,
             creationDate,
-            id
-          )
+            id,
+            name: 'any'
+          })
           throw new Error('validations is allowing invalid "address" type')
         } catch (error) {
           const err: Error = error as Error
@@ -96,7 +96,7 @@ describe(
           expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
             'address',
             addressProp,
-            'only string or undefined allowed'
+            'only string or null allowed'
           ))
         }
       }

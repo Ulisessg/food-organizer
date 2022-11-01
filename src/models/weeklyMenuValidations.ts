@@ -1,26 +1,63 @@
-import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
-import tableValidations from './tableValidations'
+import tableValidations, { tableProps } from './tableValidations'
+import idValidation from './idValidation'
 
-const weeklyMenuValidations = (
-  propName: verifyProp,
-  value: number,
-  creationDate: string,
-  id: number
-// eslint-disable-next-line max-params
-): void => {
-  tableValidations(
-    creationDate,
-    id
-  )
-  // As all properties are id (numbers) will share same validation
-  if (typeof value !== 'number') {
-    throw new TypeError(invalidPropertyTypeErrorMessage(
-      propName,
-      value,
-      'only integer number allowed'
-    ))
+const validations: weeklyMenuObj = {
+  fridayMenuId: (fridayMenuId: number) => {
+    idValidation({
+      id: fridayMenuId,
+      idName: 'fridayMenuId'
+    })
+  },
+  mondayMenuId: (mondayMenuId: number) => {
+    idValidation({ id: mondayMenuId, idName: 'mondayMenuId' })
+  },
+  saturdayMenuId: (saturdayMenuId: number) => {
+    idValidation({
+      id: saturdayMenuId,
+      idName: 'saturdayMenuId'
+    })
+  },
+  sundayMenuId: (sundayMenuId: number) => {
+    idValidation({
+      id: sundayMenuId,
+      idName: 'sundayMenuId'
+    })
+  },
+  thursdayMenuId: (thursdayMenuId: number) => {
+    idValidation({
+      id: thursdayMenuId,
+      idName: 'thursdayMenuId'
+    })
+  },
+  tuesdayMenuId: (tuesdayMenuId: number) => {
+    idValidation({
+      id: tuesdayMenuId,
+      idName: 'tuesdayMenuId'
+    })
+  },
+  wednesdayMenuId: (wednesdayMenuId: number) => {
+    idValidation({
+      id: wednesdayMenuId,
+      idName: 'wednesdayMenuId'
+    })
   }
 }
+
+const weeklyMenuValidations = (weeklyMenu: weeklyMenuParam): void => {
+  tableValidations({
+    creationDate: weeklyMenu.creationDate,
+    id: weeklyMenu.id
+  })
+  validations.fridayMenuId(weeklyMenu.fridayMenuId)
+  validations.mondayMenuId(weeklyMenu.mondayMenuId)
+  validations.saturdayMenuId(weeklyMenu.saturdayMenuId)
+  validations.sundayMenuId(weeklyMenu.sundayMenuId)
+  validations.thursdayMenuId(weeklyMenu.thursdayMenuId)
+  validations.tuesdayMenuId(weeklyMenu.tuesdayMenuId)
+  validations.wednesdayMenuId(weeklyMenu.wednesdayMenuId)
+}
+
+export default weeklyMenuValidations
 
 type verifyProp =
 'mondayMenuId'
@@ -31,4 +68,9 @@ type verifyProp =
 | 'saturdayMenuId'
 | 'sundayMenuId'
 
-export default weeklyMenuValidations
+type weeklyMenuObj = {
+  [k in verifyProp]: (id: number) => void
+}
+type weeklyMenuParam = tableProps & {
+  [k in verifyProp]: number
+}

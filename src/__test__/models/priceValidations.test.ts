@@ -20,12 +20,13 @@ describe(
       () => {
         const invalidValue: number = 'Cow' as unknown as number
         try {
-          priceValidations(
-            priceDate,
-            invalidValue,
+          priceValidations({
+            creationDate: priceDate,
             id,
-            'none'
-          )
+            idName: 'none',
+            priceDate,
+            value: invalidValue
+          })
           throw new Error('Class is allowing invalid values')
         } catch (error) {
           const err: Error = error as Error
@@ -43,12 +44,13 @@ describe(
       () => {
         const invalidPriceDate = 'Invalid Price Date'
         try {
-          priceValidations(
-            invalidPriceDate,
-            value,
+          priceValidations({
+            creationDate: priceDate,
             id,
-            'none'
-          )
+            idName: 'none',
+            priceDate: invalidPriceDate,
+            value
+          })
           throw new Error('Class is allowing invalid dates')
         } catch (error) {
           const err: Error = error as Error

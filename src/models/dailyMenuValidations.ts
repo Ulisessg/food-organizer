@@ -1,46 +1,43 @@
+import tableValidations, { tableProps } from './tableValidations'
 import idValidation from './idValidation'
-import tableValidations from './tableValidations'
 
 const validations: verifyObj = {
   carbohydratesId: (carbohydratesId: number) => {
-    idValidation(
-      carbohydratesId,
-      'carbohydratesId'
-    )
+    idValidation({
+      id: carbohydratesId,
+      idName: 'carbohydratesId'
+    })
   },
   meatId: (meatId: number) => {
-    idValidation(
-      meatId,
-      'meatId'
-    )
+    idValidation({
+      id: meatId,
+      idName: 'meatId'
+    })
   },
   vegetableId: (vegetableId: number) => {
-    idValidation(
-      vegetableId,
-      'vegetableId'
-    )
+    idValidation({
+      id: vegetableId,
+      idName: 'vegetableId'
+    })
   }
 }
 
-const dailyMenuValidations = (
-  verifyProp: verifyProps,
-  propValue: number,
-  id: number,
-  creationDate: string
-// eslint-disable-next-line max-params
-): void => {
-  tableValidations(
-    creationDate,
-    id
-  )
-
-  validations[verifyProp](propValue)
-}
-
-type verifyProps = 'vegetableId' | 'meatId' | 'carbohydratesId'
-
-type verifyObj = {
-  [k in verifyProps]: (p: any) => void
+const dailyMenuValidations = (dailyMenu: dailyMenuParam): void => {
+  tableValidations({
+    creationDate: dailyMenu.creationDate,
+    id: dailyMenu.id
+  })
+  validations.carbohydratesId(dailyMenu.carbohydratesId)
+  validations.meatId(dailyMenu.meatId)
+  validations.vegetableId(dailyMenu.vegetableId)
 }
 
 export default dailyMenuValidations
+
+type verifyProps = 'vegetableId' | 'meatId' | 'carbohydratesId'
+type dailyMenuParam = tableProps & {
+  [j in verifyProps]: number
+}
+type verifyObj = {
+  [k in verifyProps]: (p: any) => void
+}

@@ -3,26 +3,31 @@ import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'ut
 import { ISO8601Date } from 'utils/RegExps'
 import idValidation from './idValidation'
 
-const tableValidations = (creationDate: string, id: number): void => {
-  if (typeof creationDate !== 'string') {
+const tableValidations = (table: tableProps): void => {
+  if (typeof table.creationDate !== 'string') {
     throw new TypeError(invalidPropertyTypeErrorMessage(
       'creationDate',
-      creationDate,
+      table.creationDate,
       'only string allowed'
     ))
   }
-  if (creationDate.match(ISO8601Date) === null) {
+  if (table.creationDate.match(ISO8601Date) === null) {
     throw new Error(invalidPropertyErrorMessage(
       'creationDate',
-      creationDate,
+      table.creationDate,
       'only ISO8601 date allowed, such as: 2019-01-25T02:00:00.000Z'
     ))
   }
 
-  idValidation(
-    id,
-    'id'
-  )
+  idValidation({
+    id: table.id,
+    idName: 'id'
+  })
+}
+
+export interface tableProps {
+  id: number
+  creationDate: string
 }
 
 export default tableValidations

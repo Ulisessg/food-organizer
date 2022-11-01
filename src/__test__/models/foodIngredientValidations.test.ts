@@ -19,12 +19,12 @@ describe(
       () => {
         const nId: number = {} as unknown as number
         try {
-          foodIngredientValidations(
-            'foodId',
-            nId,
+          foodIngredientValidations({
             creationDate,
-            id
-          )
+            foodId: nId,
+            id,
+            ingredientId: id
+          })
           throw new Error('foodId is allowing invalid type')
         } catch (error) {
           err = error as TypeError
@@ -43,12 +43,7 @@ describe(
       () => {
         const nId: number = {} as unknown as number
         try {
-          foodIngredientValidations(
-            'ingredientId',
-            nId,
-            creationDate,
-            id
-          )
+          foodIngredientValidations({ creationDate, foodId: id, id, ingredientId: nId })
           throw new Error('ingredientId is allowing invalid type')
         } catch (error) {
           err = error as TypeError

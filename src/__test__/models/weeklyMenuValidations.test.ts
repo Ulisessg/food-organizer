@@ -19,12 +19,17 @@ describe(
       () => {
         const nId: number = null as unknown as number
         try {
-          weeklyMenuValidations(
-            'mondayMenuId',
-            nId,
+          weeklyMenuValidations({
             creationDate,
-            id
-          )
+            fridayMenuId: id,
+            id,
+            mondayMenuId: nId,
+            saturdayMenuId: id,
+            sundayMenuId: id,
+            thursdayMenuId: id,
+            tuesdayMenuId: id,
+            wednesdayMenuId: id
+          })
           throw new Error('mondayMenuId is allowing invalid type')
         } catch (error) {
           err = error as TypeError
@@ -43,12 +48,17 @@ describe(
       () => {
         const nId: number = {} as unknown as number
         try {
-          weeklyMenuValidations(
-            'tuesdayMenuId',
-            nId,
+          weeklyMenuValidations({
             creationDate,
-            id
-          )
+            fridayMenuId: id,
+            id,
+            mondayMenuId: id,
+            saturdayMenuId: id,
+            sundayMenuId: id,
+            thursdayMenuId: id,
+            tuesdayMenuId: nId,
+            wednesdayMenuId: id
+          })
           throw new Error('tuesdayMenuId is allowing invalid type')
         } catch (error) {
           err = error as TypeError
@@ -67,12 +77,17 @@ describe(
       () => {
         const nId: number = {} as unknown as number
         try {
-          weeklyMenuValidations(
-            'wednesdayMenuId',
-            nId,
+          weeklyMenuValidations({
             creationDate,
-            id
-          )
+            fridayMenuId: id,
+            id,
+            mondayMenuId: id,
+            saturdayMenuId: id,
+            sundayMenuId: id,
+            thursdayMenuId: id,
+            tuesdayMenuId: id,
+            wednesdayMenuId: nId
+          })
           throw new Error('wednesdayMenuId is allowing invalid type')
         } catch (error) {
           err = error as TypeError
@@ -91,12 +106,17 @@ describe(
       () => {
         const nId: number = {} as unknown as number
         try {
-          weeklyMenuValidations(
-            'thursdayMenuId',
-            nId,
+          weeklyMenuValidations({
             creationDate,
-            id
-          )
+            fridayMenuId: id,
+            id,
+            mondayMenuId: id,
+            saturdayMenuId: id,
+            sundayMenuId: id,
+            thursdayMenuId: nId,
+            tuesdayMenuId: id,
+            wednesdayMenuId: id
+          })
           throw new Error('thursdayMenuId is allowing invalid type')
         } catch (error) {
           err = error as TypeError
@@ -115,12 +135,17 @@ describe(
       () => {
         const nId: number = {} as unknown as number
         try {
-          weeklyMenuValidations(
-            'fridayMenuId',
-            nId,
+          weeklyMenuValidations({
             creationDate,
-            id
-          )
+            fridayMenuId: nId,
+            id,
+            mondayMenuId: id,
+            saturdayMenuId: id,
+            sundayMenuId: id,
+            thursdayMenuId: id,
+            tuesdayMenuId: id,
+            wednesdayMenuId: id
+          })
           throw new Error('fridayMenuId is allowing invalid type')
         } catch (error) {
           err = error as TypeError
@@ -138,12 +163,17 @@ describe(
       () => {
         const nId: number = {} as unknown as number
         try {
-          weeklyMenuValidations(
-            'saturdayMenuId',
-            nId,
+          weeklyMenuValidations({
             creationDate,
-            id
-          )
+            fridayMenuId: id,
+            id,
+            mondayMenuId: id,
+            saturdayMenuId: nId,
+            sundayMenuId: id,
+            thursdayMenuId: id,
+            tuesdayMenuId: id,
+            wednesdayMenuId: id
+          })
           throw new Error('saturdayMenuId is allowing invalid type')
         } catch (error) {
           err = error as TypeError
@@ -161,12 +191,17 @@ describe(
       () => {
         const nId: number = {} as unknown as number
         try {
-          weeklyMenuValidations(
-            'sundayMenuId',
-            nId,
+          weeklyMenuValidations({
             creationDate,
-            id
-          )
+            fridayMenuId: id,
+            id,
+            mondayMenuId: id,
+            saturdayMenuId: id,
+            sundayMenuId: nId,
+            thursdayMenuId: id,
+            tuesdayMenuId: id,
+            wednesdayMenuId: id
+          })
           throw new Error('sundayMenuId is allowing invalid type')
         } catch (error) {
           err = error as TypeError

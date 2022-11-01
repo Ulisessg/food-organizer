@@ -1,21 +1,26 @@
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 
-const idValidation = (id: number, idName: string): void => {
-  if (typeof idName !== 'string') {
+const idValidation = (idParam: idValidationParam): void => {
+  if (typeof idParam.idName !== 'string') {
     throw new TypeError(invalidPropertyTypeErrorMessage(
       'idName param',
-      idName,
+      idParam.idName,
       'only string allowed'
     ))
   }
 
-  if (!Number.isInteger(id)) {
+  if (!Number.isInteger(idParam.id)) {
     throw new TypeError(invalidPropertyTypeErrorMessage(
-      idName,
-      id,
+      idParam.idName,
+      idParam.id,
       'only integer number allowed'
     ))
   }
+}
+
+interface idValidationParam {
+  id: number
+  idName: string
 }
 
 export default idValidation
