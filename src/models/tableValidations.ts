@@ -2,7 +2,7 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import { ISO8601Date } from 'utils/RegExps'
 import idValidation from './idValidation'
-
+// Remove id, all ids are set automatically
 const tableValidations = (table: tableProps): void => {
   if (typeof table.creationDate !== 'string') {
     throw new TypeError(invalidPropertyTypeErrorMessage(
