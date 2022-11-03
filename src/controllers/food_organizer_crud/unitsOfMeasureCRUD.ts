@@ -46,8 +46,9 @@ export const getUOM = async (
     const result = await prisma.$queryRaw<GetUOM[]>`SELECT 
 units_of_measure_types.id,units_of_measure_types.name as uomt_name,
 JSON_ARRAYAGG(JSON_OBJECT(
+'abbreviation', units_of_measure.abbreviation,
 'name', units_of_measure.name,
-'abbreviation', units_of_measure.abbreviation
+'id', units_of_measure.id
 )) AS uom
 FROM units_of_measure_types
 INNER JOIN units_of_measure ON units_of_measure_types.id = units_of_measure.uomt_id
@@ -71,7 +72,7 @@ export const updateUOM = async (
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { abbreviation, name, uomt_id, creation_date } = req.body
+    const { abbreviation, name, uomt_id, creation_date, id } = req.body
     unitOfMeasureValidations({
       abbreviation,
       creationDate: creation_date as unknown as string,
@@ -81,7 +82,8 @@ export const updateUOM = async (
     await prisma.$executeRaw`UPDATE IGNORE units_of_measure SET
 name = ${name},
 abbreviation = ${abbreviation},
-uomt_id = ${uomt_id}`
+uomt_id = ${uomt_id}
+WHERE units_of_measure.id = ${id}`
     res.status(200).send({
       data: 'successful update',
       error: false
