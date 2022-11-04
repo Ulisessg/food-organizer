@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
-import ingredientPurchasePlaceValidations from 'models/ingredientPurchasePlaceValidations'
+import ingredientPurchasePlaceValidations, {
+  validations
+} from 'models/ingredientPurchasePlaceValidations'
 import type { ingredient_purchase_places } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { response } from 'controllers/response'
@@ -66,12 +68,9 @@ export const updateIngredientPurchasePlace = async (
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { creation_date, id, ingredient_id, purchase_place_id } = req.body
-    ingredientPurchasePlaceValidations({
-      creationDate: creation_date as unknown as string,
-      ingredientId: ingredient_id,
-      purchasePlaceId: purchase_place_id
-    })
+    const { id, ingredient_id, purchase_place_id } = req.body
+    validations.ingredientId(ingredient_id)
+    validations.purchasePlaceId(purchase_place_id)
     await prisma.$executeRaw`UPDATE IGNORE ingredient_purchase_places SET
 ingredient_id = ${ingredient_id},
 purchase_place_id = ${purchase_place_id}

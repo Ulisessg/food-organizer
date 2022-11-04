@@ -3,7 +3,7 @@ import { lettersAndDegrees, lettersWithSpaces } from 'utils/RegExps'
 import tableValidations, { tableProps } from './tableValidations'
 import idValidation from './idValidation'
 
-const validations: verifyObj = {
+export const validations: verifyObj = {
   abbreviation: (abbreviation) => {
     if (typeof abbreviation !== 'string') {
       throw new Error(invalidPropertyTypeErrorMessage(

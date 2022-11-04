@@ -2,7 +2,7 @@ import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'ut
 import tableValidations, { tableProps } from './tableValidations'
 import { lettersWithSpaces } from '../utils/RegExps'
 
-const foodTypeValidations = (foodType: foodTypeParam): void => {
+export const foodTypeValidations = (foodType: foodTypeParam): void => {
   tableValidations({
     creationDate: foodType.creationDate
   })

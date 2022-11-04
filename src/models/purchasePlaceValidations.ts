@@ -6,7 +6,7 @@ import {
 } from '../utils/ErrorMessages'
 import tableValidations, { tableProps } from './tableValidations'
 
-const validations: verifyObj = {
+export const validations: verifyObj = {
   address: (address: string | null) => {
     if (typeof address !== 'string') {
       if (address !== null) {

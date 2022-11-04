@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
+import purchasePlaceValidations, { validations } from 'models/purchasePlaceValidations'
 import prisma from 'lib/prisma'
-import purchasePlaceValidations from 'models/purchasePlaceValidations'
 import type { purchase_places } from '@prisma/client'
 import { response } from 'controllers/response'
 
@@ -65,10 +65,9 @@ export const updatePurchasePlace = async (
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { address, name, creation_date, id } = req.body
-    purchasePlaceValidations({
-      address, creationDate: creation_date as unknown as string, name
-    })
+    const { address, name, id } = req.body
+    validations.address(address)
+    validations.name(name)
     await prisma.$executeRaw`UPDATE IGNORE purchase_places SET
 address = ${address},
 name = ${name}

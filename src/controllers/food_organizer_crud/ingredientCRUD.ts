@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
-import ingredientValidations from 'models/ingredientValidations'
+import ingredientValidations, { validations } from 'models/ingredientValidations'
 import type { ingredients } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { response } from 'controllers/response'
@@ -71,20 +71,18 @@ ORDER BY ingredients.creation_date
   }
 }
 
+// eslint-disable-next-line max-statements
 export const updateIngredient = async (
   req: CreateIngredient,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { comment, creation_date, image, name, prefered_purchase_place_id, uom_id, id } = req.body
-    ingredientValidations({
-      comment,
-      creationDate: creation_date as unknown as string,
-      image,
-      name,
-      preferredPurchasePlaceId: prefered_purchase_place_id,
-      uomtId: uom_id
-    })
+    const { comment, image, name, prefered_purchase_place_id, uom_id, id } = req.body
+    validations.comment(comment)
+    validations.image(image)
+    validations.name(name)
+    validations.preferredPurchasePlaceId(prefered_purchase_place_id)
+    validations.uomtId(uom_id)
     await prisma.ingredients.update({
       data: {
         comment, image, name, prefered_purchase_place_id, uom_id

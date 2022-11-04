@@ -1,7 +1,7 @@
 import tableValidations, { tableProps } from './tableValidations'
 import idValidation from './idValidation'
 
-const validations: verifyObj = {
+export const validations: verifyObj = {
   foodId: (foodId: number): void => {
     idValidation({
       id: foodId,

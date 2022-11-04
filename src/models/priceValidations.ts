@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 import idValidation from './idValidation'
 import { tableProps } from './tableValidations'
 
-const priceValidations = (price: priceParam): void => {
+export const priceValidations = (price: priceParam): void => {
   idValidation({
     id: price.id,
     idName: price.idName

@@ -2,7 +2,7 @@ import tableValidations, { tableProps } from './tableValidations'
 import idValidation from './idValidation'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 
-const validations: verifyObj = {
+export const validations: verifyObj = {
   comment: (comment: string) => {
     if (typeof comment !== 'string') {
       if (comment !== null) {

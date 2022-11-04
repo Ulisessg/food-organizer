@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from 'next'
+import unitOfMeasureValidations, { validations } from 'models/unitOfMeasureValidations'
 import prisma from 'lib/prisma'
 import { response } from 'controllers/response'
-import unitOfMeasureValidations from 'models/unitOfMeasureValidations'
 import { units_of_measure } from '@prisma/client'
 
 export const createUOM = async (
@@ -72,13 +72,12 @@ export const updateUOM = async (
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { abbreviation, name, uomt_id, creation_date, id } = req.body
-    unitOfMeasureValidations({
-      abbreviation,
-      creationDate: creation_date as unknown as string,
-      name,
-      uomtId: uomt_id
-    })
+    const { abbreviation, name, uomt_id, id } = req.body
+
+    validations.abbreviation(abbreviation)
+    validations.name(name)
+    validations.uomtId(uomt_id)
+
     await prisma.$executeRaw`UPDATE IGNORE units_of_measure SET
 name = ${name},
 abbreviation = ${abbreviation},
