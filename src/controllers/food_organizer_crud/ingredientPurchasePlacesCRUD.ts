@@ -13,6 +13,7 @@ export const createIngredientPurchasePlace = async (
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
+    if (req.body.length > 10) throw new Error('not more of 10 purchase places')
     for (const purchasePlace of req.body) {
       ingredientPurchasePlaceValidations({
         creationDate: purchasePlace.creation_date as unknown as string,
