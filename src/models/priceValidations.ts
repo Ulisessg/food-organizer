@@ -8,26 +8,40 @@ import dayjs from 'dayjs'
 import idValidation from './idValidation'
 import { tableProps } from './tableValidations'
 
-export const priceValidations = (price: priceParam): void => {
-  idValidation({
-    id: price.id,
-    idName: price.idName
-  })
-  if (!dayjs(price.priceDate).isValid()) {
-    throw new Error(invalidPropertyErrorMessage(
-      'priceDate',
-      price.priceDate,
-      invalidDateMessage
-    ))
+export const validations = {
+  id: (id: number, idName: priceTables) => {
+    idValidation({
+      id,
+      idName
+    })
+  },
+  price: (value: number) => {
+    if (typeof value !== 'number') {
+      throw new Error(invalidPropertyTypeErrorMessage(
+        'value',
+        value,
+        'only numbers allowed'
+      ))
+    }
+  },
+  priceDate: (date: string) => {
+    if (!dayjs(date).isValid()) {
+      throw new Error(invalidPropertyErrorMessage(
+        'priceDate',
+        date,
+        invalidDateMessage
+      ))
+    }
   }
+}
 
-  if (typeof price.value !== 'number') {
-    throw new Error(invalidPropertyTypeErrorMessage(
-      'value',
-      price.value,
-      'only numbers allowed'
-    ))
-  }
+export const priceValidations = (price: priceParam): void => {
+  validations.id(
+    price.id,
+    price.idName
+  )
+  validations.price(price.value)
+  validations.priceDate(price.priceDate)
 }
 
 // Current 'price' tables
