@@ -11,13 +11,13 @@ export const createIngredient = async (
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { comment, creation_date, image, name, prefered_purchase_place_id, uom_id } = req.body
+    const { comment, creation_date, image, name, preferred_purchase_place_id, uom_id } = req.body
     ingredientValidations({
       comment,
       creationDate: creation_date as unknown as string,
       image,
       name,
-      preferredPurchasePlaceId: prefered_purchase_place_id,
+      preferredPurchasePlaceId: preferred_purchase_place_id,
       uomtId: uom_id
     })
     await prisma.ingredients.create({
@@ -26,7 +26,7 @@ export const createIngredient = async (
         creation_date,
         image,
         name: name.toLowerCase(),
-        prefered_purchase_place_id,
+        preferred_purchase_place_id,
         uom_id
       }
     })
@@ -54,7 +54,7 @@ ingredients.id, ingredients.name, ingredients.image,
 ingredients.comment, purchase_places.name AS preferred_purchase_place_name,
 units_of_measure.name AS uom_name, units_of_measure.abbreviation
 FROM ingredients
-INNER JOIN purchase_places ON ingredients.prefered_purchase_place_id = purchase_places.id
+INNER JOIN purchase_places ON ingredients.preferred_purchase_place_id = purchase_places.id
 INNER JOIN units_of_measure ON ingredients.uom_id = units_of_measure.id
 ORDER BY ingredients.creation_date
 `
@@ -77,15 +77,15 @@ export const updateIngredient = async (
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { comment, image, name, prefered_purchase_place_id, uom_id, id } = req.body
+    const { comment, image, name, preferred_purchase_place_id, uom_id, id } = req.body
     validations.comment(comment)
     validations.image(image)
     validations.name(name)
-    validations.preferredPurchasePlaceId(prefered_purchase_place_id)
+    validations.preferredPurchasePlaceId(preferred_purchase_place_id)
     validations.uomtId(uom_id)
     await prisma.ingredients.update({
       data: {
-        comment, image, name, prefered_purchase_place_id, uom_id
+        comment, image, name, preferred_purchase_place_id, uom_id
       },
       where: {
         id

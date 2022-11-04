@@ -12,65 +12,21 @@ describe(
   'models/dailyMenuValidations',
   () => {
     let err: Error | null = null
-    const id = 1
     const creationDate = dayjs().toISOString()
+
     test(
-      'vegetableId invalid type',
+      'comment invalid type',
       () => {
-        const nId: number = null as unknown as number
+        const invalidComment: null = {} as unknown as null
         try {
-          dailyMenuValidations({ carbohydratesId: id, creationDate, meatId: id, vegetableId: nId })
-          throw new Error('vegetablesId is allowing invalid id type')
+          dailyMenuValidations({ comment: invalidComment, creationDate })
+          throw new Error('comment is allowing invalid id type')
         } catch (error) {
           err = error as TypeError
           expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
-            'vegetableId',
-            nId,
-            'only integer number allowed'
-          ))
-        }
-        err = null
-      }
-    )
-
-    test(
-      'carbohydratesId invalid type',
-      () => {
-        const nId: number = null as unknown as number
-        try {
-          dailyMenuValidations({ carbohydratesId: nId, creationDate, meatId: id, vegetableId: id })
-          throw new Error('carbohydratesId is allowing invalid id type')
-        } catch (error) {
-          err = error as TypeError
-          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
-            'carbohydratesId',
-            nId,
-            'only integer number allowed'
-          ))
-        }
-        err = null
-      }
-    )
-
-    test(
-      'meatId invalid type',
-      () => {
-        const nId: number = null as unknown as number
-        try {
-          dailyMenuValidations({
-            carbohydratesId: id,
-            creationDate,
-
-            meatId: nId,
-            vegetableId: id
-          })
-          throw new Error('meatId is allowing invalid id type')
-        } catch (error) {
-          err = error as TypeError
-          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
-            'meatId',
-            nId,
-            'only integer number allowed'
+            'comment',
+            invalidComment,
+            'only string or null allowed'
           ))
         }
         err = null
