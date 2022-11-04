@@ -25,7 +25,7 @@ export const createIngredientPurchasePlace = async (
       skipDuplicates: true
     })
     res.status(201).send({
-      data: 'purchase places created',
+      data: 'ingredient purchase place created',
       error: false
     })
   } catch (error) {
