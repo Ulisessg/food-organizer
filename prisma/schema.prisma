@@ -21,6 +21,7 @@ model daily_menu_prices {
 model daily_menus {
   id                                                       Int                 @id @default(autoincrement())
   comment                                                  String?             @db.VarChar(100)
+  creation_date                                            DateTime            @db.DateTime(0)
   daily_menu_foods                                         daily_menu_foods[]
   daily_menu_prices                                        daily_menu_prices[]
   weekly_menus_daily_menusToweekly_menus_friday_menu_id    weekly_menus[]      @relation("daily_menusToweekly_menus_friday_menu_id")
