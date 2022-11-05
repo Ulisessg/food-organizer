@@ -206,6 +206,7 @@ model daily_menu_foods {
   id            Int         @id @default(autoincrement())
   daily_menu_id Int
   food_id       Int
+  creation_date DateTime    @db.DateTime(0)
   daily_menus   daily_menus @relation(fields: [daily_menu_id], references: [id], map: "fk_dmf_daily_menu_id")
   foods         foods       @relation(fields: [food_id], references: [id], map: "fk_dmf_food_id")
 

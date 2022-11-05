@@ -1,31 +1,31 @@
 import tableValidations, { tableProps } from './tableValidations'
-import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
+import idValidation from './idValidation'
 
 export const validations: verifyObj = {
-  comment: (comment: string | null) => {
-    if (typeof comment !== 'string') {
-      if (comment !== null) {
-        throw new TypeError(invalidPropertyTypeErrorMessage(
-          'comment',
-          comment,
-          'only string or null allowed'
-        ))
-      }
-    }
+  daily_menu_id: (id: number) => {
+    idValidation({ id, idName: 'daily_menu_id' })
+  },
+  food_id: (id: number) => {
+    idValidation({
+      id,
+      idName: 'food_id'
+    })
   }
 }
 
 const dailyMenuFoodsValidations = (dailyMenuFoods: dailyMenuFoodsValidationsParam): void => {
   tableValidations({ creationDate: dailyMenuFoods.creationDate })
-  validations.comment(dailyMenuFoods.comment)
+  validations.daily_menu_id(dailyMenuFoods.daily_menu_id)
+  validations.food_id(dailyMenuFoods.food_id)
 }
 
 export default dailyMenuFoodsValidations
 
 type dailyMenuFoodsValidationsParam = tableProps & {
-  comment: string | null
+  food_id: number
+  daily_menu_id: number
 }
-type verifyProps = 'comment'
+type verifyProps = 'food_id' | 'daily_menu_id'
 type verifyObj = {
   [k in verifyProps]: (value: any) => void
 }
