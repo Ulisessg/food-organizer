@@ -1,5 +1,6 @@
 import tableValidations, { tableProps } from './tableValidations'
 import idValidation from './idValidation'
+import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 
 export const validations: verifyObj = {
   foodId: (foodId: number): void => {
@@ -13,6 +14,15 @@ export const validations: verifyObj = {
       id: ingredientId,
       idName: 'ingredientId'
     })
+  },
+  ingredient_qty: (qty) => {
+    if (typeof qty !== 'number') {
+      throw new TypeError(invalidPropertyTypeErrorMessage(
+        'ingredient_qty',
+        qty,
+        'only number allowed'
+      ))
+    }
   }
 }
 
@@ -26,7 +36,7 @@ const foodIngredientValidations = (foodIngredient: foodIngredientParam): void =>
 
 export default foodIngredientValidations
 
-type verifyProps = 'foodId' | 'ingredientId'
+type verifyProps = 'foodId' | 'ingredientId' | 'ingredient_qty'
 type foodIngredientParam = tableProps & {
   [k in verifyProps]: number
 }

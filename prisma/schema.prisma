@@ -34,12 +34,13 @@ model daily_menus {
 }
 
 model food_ingredients {
-  id            Int         @id @default(autoincrement())
-  food_id       Int
-  ingredient_id Int
-  creation_date DateTime    @db.DateTime(0)
-  foods         foods       @relation(fields: [food_id], references: [id], map: "fk_f_ingr_food_id")
-  ingredients   ingredients @relation(fields: [ingredient_id], references: [id], map: "fk_f_ingr_ingredient_id")
+  id             Int         @id @default(autoincrement())
+  food_id        Int
+  ingredient_id  Int
+  creation_date  DateTime    @db.DateTime(0)
+  ingredient_qty Decimal     @db.Decimal(10, 2)
+  foods          foods       @relation(fields: [food_id], references: [id], map: "fk_f_ingr_food_id")
+  ingredients    ingredients @relation(fields: [ingredient_id], references: [id], map: "fk_f_ingr_ingredient_id")
 
   @@index([food_id], map: "fk_f_ingr_food_id_idx")
   @@index([ingredient_id], map: "fk_f_ingr_ingredient_id_idx")
