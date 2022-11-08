@@ -19,8 +19,7 @@
         ]
     },
     "plugins": [
-        "react",
-        "@next/eslint-plugin-next"
+        "react"
     ],
     "settings": {
         "react": {

@@ -18,11 +18,11 @@
   },
   "dependencies": {
     "@prisma/client": "4.5.0",
-    "d-system": "file:../design-system",
+    "d-system": "0.18.4",
     "dayjs": "1.11.6",
     "dotenv": "16.0.3",
     "mysql2": "2.3.3",
-    "next": "12.3.1",
+    "next": "13.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "5.3.6"
@@ -39,7 +39,7 @@
     "@typescript-eslint/eslint-plugin": "5.41.0",
     "cypress": "10.10.0",
     "eslint": "8.26.0",
-    "eslint-config-next": "12.3.1",
+    "eslint-config-next": "13.0.2",
     "eslint-config-standard-with-typescript": "23.0.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-n": "15.3.0",
