@@ -9,6 +9,8 @@ const CardStyles = styled.section`
   align-content: center;
   border: 1.3px solid ${({ theme }) => theme.colors.dark2};
   min-height: 120px;
+  font-size: 18px;
+  padding: 2px;
   border-radius: 25px;
   box-shadow: 1px 1px 3px 2px ${({ theme }) => theme.colors.shadow};
 `
