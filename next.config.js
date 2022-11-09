@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compiler: {
+    styledComponents: true
+  },
   // eslint-disable-next-line require-await, space-before-function-paren
   async headers() {
     return [
