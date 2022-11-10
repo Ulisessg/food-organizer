@@ -40,11 +40,11 @@ export const createUOM = async (
 
 export const getUOM = async (
   _req: NextApiRequest,
-  res: NextApiResponse<response<GetUOM[]>>
+  res: NextApiResponse<response<GetUOM>>
 ): Promise<void> => {
   try {
-    const result = await prisma.$queryRaw<GetUOM[]>`SELECT 
-units_of_measure_types.id,units_of_measure_types.name as uomt_name,
+    const result = await prisma.$queryRaw<GetUOM>`SELECT 
+units_of_measure_types.id AS uomt_id,units_of_measure_types.name AS uomt_name,
 JSON_ARRAYAGG(JSON_OBJECT(
 'abbreviation', units_of_measure.abbreviation,
 'name', units_of_measure.name,
@@ -100,11 +100,12 @@ interface CreateUOM extends NextApiRequest {
   body: units_of_measure
 }
 
-interface GetUOM {
-  id: number
+export type GetUOM = Array<{
+  uomt_id: number
   uomt_name: string
   uom: Array<{
+    id: number
     name: string
     abbreviation: string
   }>
-}
+}>
