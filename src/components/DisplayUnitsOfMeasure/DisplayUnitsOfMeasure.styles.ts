@@ -11,7 +11,3 @@ width: 200px;
 export const Button = styled(BTN)`
   width: 100%;
 `
-
-export const Td = styled.td`
-text-align: center;
-`

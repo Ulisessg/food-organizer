@@ -1,7 +1,8 @@
 /* eslint-disable max-lines-per-function */
-import { EditButtonsStyles, Td } from './DisplayUnitsOfMeasure.styles'
 import React, { FC, useState } from 'react'
 import { Button } from 'd-system'
+import { EditButtonsStyles } from './DisplayUnitsOfMeasure.styles'
+import Td from 'components/common/Td'
 
 const Rows: FC<Props> = ({
   uomAbbreviation,
