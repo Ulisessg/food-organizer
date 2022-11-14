@@ -21,14 +21,21 @@ export const createIngredientPurchasePlace = async (
         purchasePlaceId: purchasePlace.purchase_place_id
       })
     }
-    await prisma.ingredient_purchase_places.createMany({
+    const result = await prisma.ingredient_purchase_places.createMany({
       data: req.body,
       skipDuplicates: true
     })
-    res.status(201).send({
-      data: 'ingredient purchase place created',
-      error: false
-    })
+    if (result.count === 0) {
+      res.status(400).send({
+        data: 'error creating purchase place',
+        error: true
+      })
+    } else {
+      res.status(201).send({
+        data: 'ingredient purchase place created',
+        error: false
+      })
+    }
   } catch (error) {
     console.error(error)
     res.status(400).send({
