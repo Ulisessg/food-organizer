@@ -56,8 +56,8 @@
         ],
         "no-use-before-define": "off",
         "@typescript-eslint/no-use-before-define": "error",
-        "no-magic-numbers": "warn",
-        "no-console": "warn"
+        "no-magic-numbers": "off",
+        "no-console": "off"
     },
     "globals": {
         "React": true,
