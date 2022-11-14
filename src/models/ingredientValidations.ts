@@ -48,16 +48,10 @@ export const validations: verifyObj = {
       ))
     }
   },
-  preferredPurchasePlaceId: (preferredPurchasePlaceId: number) => {
-    idValidation({
-      id: preferredPurchasePlaceId,
-      idName: 'preferredPurchasePlaceId'
-    })
-  },
-  uomtId: (uomtId: number) => {
+  uomId: (uomtId: number) => {
     idValidation({
       id: uomtId,
-      idName: 'uomtId'
+      idName: 'uomId'
     })
   }
 }
@@ -69,18 +63,16 @@ const ingredientValidations = (ingredient: ingredientParam): void => {
   validations.comment(ingredient.comment)
   validations.image(ingredient.image)
   validations.name(ingredient.name)
-  validations.preferredPurchasePlaceId(ingredient.preferredPurchasePlaceId)
-  validations.uomtId(ingredient.uomtId)
+  validations.uomId(ingredient.uomId)
 }
 
 export default ingredientValidations
 
-export type verifyProps = 'image' | 'name' | 'preferredPurchasePlaceId' | 'uomtId' | 'comment'
+export type verifyProps = 'image' | 'name' | 'uomId' | 'comment'
 type ingredientParam = tableProps & {
   image: string | null
   name: string
-  preferredPurchasePlaceId: number
-  uomtId: number
+  uomId: number
   comment: string | null
 }
 type verifyObj = {

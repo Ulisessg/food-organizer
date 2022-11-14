@@ -22,8 +22,7 @@ describe(
             creationDate,
             image: null,
             name: nName,
-            preferredPurchasePlaceId: id,
-            uomtId: id
+            uomId: id
           })
           throw new Error('name is allowing invalid "name" type')
         } catch (error) {
@@ -37,31 +36,7 @@ describe(
       }
     )
     test(
-      'preferredPurchasePlaceId invalid type',
-      () => {
-        const nId: number = 'Cien' as unknown as number
-        try {
-          ingredientValidations({
-            comment: null,
-            creationDate,
-            image: null,
-            name: 'any',
-            preferredPurchasePlaceId: nId,
-            uomtId: id
-          })
-          throw new Error('preferredPurchasePlaceId is allowing invalid "preferredPurchasePlaceId" type')
-        } catch (error) {
-          const err: Error = error as Error
-          expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
-            'preferredPurchasePlaceId',
-            nId,
-            'only integer number allowed'
-          ))
-        }
-      }
-    )
-    test(
-      'uomtId invalid type',
+      'uomId invalid type',
       () => {
         const nId: number = 'Treinta' as unknown as number
         try {
@@ -70,14 +45,13 @@ describe(
             creationDate,
             image: null,
             name: 'any',
-            preferredPurchasePlaceId: id,
-            uomtId: nId
+            uomId: nId
           })
-          throw new Error('uomtId is allowing invalid "uomtId" type')
+          throw new Error('uomId is allowing invalid "uomId" type')
         } catch (error) {
           const err: Error = error as Error
           expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
-            'uomtId',
+            'uomId',
             nId,
             'only integer number allowed'
           ))
@@ -94,8 +68,7 @@ describe(
             creationDate,
             image: nImg,
             name: 'any',
-            preferredPurchasePlaceId: id,
-            uomtId: id
+            uomId: id
           })
           throw new Error('image is allowing invalid "image" type')
         } catch (error) {
@@ -119,8 +92,7 @@ describe(
             creationDate,
             image: null,
             name: 'any',
-            preferredPurchasePlaceId: id,
-            uomtId: id
+            uomId: id
           })
           throw new Error('comment is allowing invalid type')
         } catch (error) {
@@ -144,8 +116,7 @@ describe(
             creationDate,
             image: null,
             name: nName,
-            preferredPurchasePlaceId: id,
-            uomtId: id
+            uomId: id
           })
           throw new Error('name is allowing invalid "name" type')
         } catch (error) {
@@ -168,8 +139,7 @@ describe(
             creationDate,
             image: nImage,
             name: 'any',
-            preferredPurchasePlaceId: id,
-            uomtId: id
+            uomId: id
           })
           throw new Error('image is allowing invalid "Image" type')
         } catch (error) {
