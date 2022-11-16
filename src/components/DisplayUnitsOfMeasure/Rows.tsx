@@ -1,7 +1,6 @@
 /* eslint-disable max-lines-per-function */
-import React, { FC, useState } from 'react'
-import { Button } from 'd-system'
-import { EditButtonsStyles } from './DisplayUnitsOfMeasure.styles'
+import React, { FC } from 'react'
+import EditTableButtons from 'components/common/EditTableButtons'
 import Td from 'components/common/Td'
 
 const Rows: FC<Props> = ({
@@ -9,61 +8,22 @@ const Rows: FC<Props> = ({
   uomName, uomtName,
   rowSpan
 }: Props) => {
-  const [
-    edit,
-    setEdit
-  ] = useState<boolean>(false)
-  const handleEdit = (): void => setEdit(!edit)
-
+  const onUpdate = (): void => {
+    console.log('Update function! :D')
+  }
   if (typeof rowSpan === 'number') {
     return <tr>
       <Td rowSpan={rowSpan}>{uomtName}</Td>
       <Td>{uomName}</Td>
       <Td>{uomAbbreviation}</Td>
-      <Td>
-      <EditButtonsStyles>
-          {edit && <>
-            <Button colorMessage="continue" size="100%" text="Actualizar" type="button" />
-            <Button
-              colorMessage="cancel"
-              size="100%"
-              text="Cancelar"
-              type="button"
-              onClick={handleEdit} />
-          </>}
-          {!edit && <Button
-            colorMessage="info"
-            size="100%"
-            text="Editar"
-            type="button"
-            onClick={handleEdit} />}
-      </EditButtonsStyles>
-      </Td>
+
+      <EditTableButtons onUpdate={onUpdate} />
     </tr>
   }
   return <tr>
     <Td>{uomName}</Td>
     <Td>{uomAbbreviation}</Td>
-    <Td>
-    <EditButtonsStyles>
-      {edit && <>
-        <Button colorMessage="continue" size="100%" text="Actualizar" type="button" />
-        <Button
-          colorMessage="cancel"
-          size="100%"
-          text="Cancelar"
-          type="button"
-          onClick={handleEdit} />
-      </>}
-      {!edit && <Button
-        colorMessage="info"
-        size="100%"
-        text="Editar"
-        type="button"
-        onClick={handleEdit}
-        />}
-    </EditButtonsStyles>
-  </Td>
+    <EditTableButtons onUpdate={onUpdate} />
 </tr>
 }
 
