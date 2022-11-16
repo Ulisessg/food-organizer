@@ -11,14 +11,13 @@ export const createIngredient = async (
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { comment, creation_date, image, name, preferred_purchase_place_id, uom_id } = req.body
+    const { comment, creation_date, image, name, uom_id } = req.body
     ingredientValidations({
       comment,
       creationDate: creation_date as unknown as string,
       image,
       name,
-      preferredPurchasePlaceId: preferred_purchase_place_id,
-      uomtId: uom_id
+      uomId: uom_id
     })
     await prisma.ingredients.create({
       data: {
@@ -26,7 +25,6 @@ export const createIngredient = async (
         creation_date,
         image,
         name: name.toLowerCase(),
-        preferred_purchase_place_id,
         uom_id
       }
     })
@@ -48,16 +46,25 @@ export const getIngredients = async (
   res: NextApiResponse<response<GetIngredients[] | string>>
 ): Promise<void> => {
   try {
-    // TABLES: ingredients, purchase places and units of measure
     const result = await prisma.$queryRaw<GetIngredients[]>`SELECT
-ingredients.id, ingredients.name, ingredients.image,
-ingredients.comment, purchase_places.name AS preferred_purchase_place_name,
-units_of_measure.name AS uom_name, units_of_measure.abbreviation
-FROM ingredients
-INNER JOIN purchase_places ON ingredients.preferred_purchase_place_id = purchase_places.id
-INNER JOIN units_of_measure ON ingredients.uom_id = units_of_measure.id
-ORDER BY ingredients.creation_date
+ingredients.id AS ingredient_id,
+ingredients.name AS ingredient_name,
+ingredients.image AS image,
+ingredients.comment AS comment,
+units_of_measure.name AS uom_name,
+JSON_ARRAYAGG(JSON_OBJECT(
+'ingredient_purchase_place_id', ingredient_purchase_places.id,
+'purchase_place_id', purchase_places.id,
+'purchase_place_name', purchase_places.name
+)) AS ingr_purchase_places
+FROM ingredient_purchase_places
+JOIN ingredients ON ingredients.id = ingredient_purchase_places.ingredient_id
+JOIN purchase_places ON purchase_places.id = ingredient_purchase_places.purchase_place_id
+JOIN units_of_measure ON units_of_measure.id = ingredients.uom_id
+GROUP BY ingredient_name
+ORDER BY ingredient_name;
 `
+
     res.status(200).send({
       data: result,
       error: false
@@ -65,7 +72,7 @@ ORDER BY ingredients.creation_date
   } catch (error) {
     console.error(error)
     res.status(400).send({
-      data: 'error creating ingredient',
+      data: 'error getting ingredients',
       error: true
     })
   }
@@ -77,15 +84,14 @@ export const updateIngredient = async (
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { comment, image, name, preferred_purchase_place_id, uom_id, id } = req.body
+    const { comment, image, name, uom_id, id } = req.body
     validations.comment(comment)
     validations.image(image)
     validations.name(name)
-    validations.preferredPurchasePlaceId(preferred_purchase_place_id)
-    validations.uomtId(uom_id)
+    validations.uomId(uom_id)
     await prisma.ingredients.update({
       data: {
-        comment, image, name, preferred_purchase_place_id, uom_id
+        comment, image, name, uom_id
       },
       where: {
         id
@@ -107,12 +113,16 @@ export const updateIngredient = async (
 interface CreateIngredient extends NextApiRequest {
   body: ingredients
 }
-interface GetIngredients {
-  id: number
-  name: string
-  image: string | null
-  comment: string
-  preferred_purchase_place_name: string
+export type GetIngredients = Array<{
+  ingredient_id: number
+  ingredient_name: string
+  image?: string
+  comment?: string
   uom_name: string
-  abbreviation: string
-}
+  ingr_purchase_places: Array<
+  {
+    purchase_place_id: number
+    purchase_place_name: string
+    ingredient_purchase_place_id: number
+  }>
+}>
