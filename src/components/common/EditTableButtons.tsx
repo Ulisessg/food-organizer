@@ -2,14 +2,14 @@ import React, { FC, useState } from 'react'
 import { Button } from 'd-system'
 import styled from 'styled-components'
 
-const EditTableButtons: FC<Props> = ({ onUpdate }) => {
+const EditTableButtons: FC<Props> = ({ onUpdate, className }) => {
   const [
     edit,
     setEdit
   ] = useState<boolean>(false)
   const handleEdit = (): void => setEdit(!edit)
 
-  return <EditButtonsContainer>
+  return <EditButtonsContainer data-is-active={edit} className={className}>
    {edit && <>
             <Button
               colorMessage="continue"
@@ -36,17 +36,14 @@ const EditTableButtons: FC<Props> = ({ onUpdate }) => {
 
 interface Props {
   onUpdate: () => void
+  className?: string
 }
 
 const EditButtonsContainer = styled.td`
 display: grid;
 grid-auto-flow: column;
-grid-gap: 3px;
-width: 220px;
-justify-items: center;
-align-items: center;
-align-content: center;
-align-self: center;
+grid-gap: 10px;
+width: 250px;
 `
 
 export default EditTableButtons
