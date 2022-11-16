@@ -18,9 +18,9 @@ const CreateUnitsOfMeasureForm: FC<CreateUomFormProps> = ({ unitsOfMeasureTypes 
     <TextInput
       id="uom_abbreviation"
       inputMode="text"
-      label="Nombre de la unidad de medida"
-      name="uom"
-      placeholder="Litros, piezas, gramos..."
+      label="Abreviación de la unidad de medida"
+      name="uom_abbreviation"
+      placeholder="Lt, pz, gr, ml..."
       type="text"
     />
     <LabelSelect htmlFor="create_uomt_select">
