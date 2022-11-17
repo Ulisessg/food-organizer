@@ -1,4 +1,3 @@
-import { Container, Summary } from './CreateUnitsOfMeasure.styles'
 import CreateUnitsOfMeasureForm, { CreateUomFormProps } from './CreateUnitsOfMeasureForm'
 import React, { FC } from 'react'
 import CreateUnitsOfMeasureTypeForm from './CreateUnitsOfMeasureTypeForm'
@@ -8,17 +7,14 @@ import Details from 'components/common/Details'
  *  Forms to create 'units of measure' and 'units of measure type'
  * @returns {JSX.Element}
  */
-const CreateUnitsOfMeasure: FC<CreateUomFormProps> = ({ unitsOfMeasureTypes }): JSX.Element => (
-    <Container>
-      <Details>
-        <Summary>Crear tipo de unidad de medida</Summary>
+const CreateUnitsOfMeasure: FC<CreateUomFormProps> = ({ unitsOfMeasureTypes }): JSX.Element => (<>
+      <Details summary="Crear tipo de unidad de medida">
         <CreateUnitsOfMeasureTypeForm />
       </Details>
-      <Details>
-        <Summary>Crear unidad de medida</Summary>
+      <Details summary="Crear unidad de medida">
         <CreateUnitsOfMeasureForm unitsOfMeasureTypes={unitsOfMeasureTypes}/>
       </Details>
-    </Container>
+</>
 )
 
 export default CreateUnitsOfMeasure
