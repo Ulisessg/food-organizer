@@ -39,10 +39,10 @@ export const createPurchasePlace = async (
 
 export const getPurchasePlaces = async (
   req: NextApiRequest,
-  res: NextApiResponse<response<purchase_places[]>>
+  res: NextApiResponse<response<GetPurchasePlaces>>
 ): Promise<void> => {
   try {
-    const result = await prisma.$queryRaw<purchase_places[]>`SELECT 
+    const result = await prisma.$queryRaw<GetPurchasePlaces>`SELECT 
 purchase_places.id, purchase_places.name, purchase_places.address
 FROM purchase_places
 ORDER BY purchase_places.name
@@ -82,6 +82,12 @@ WHERE purchase_places.id = ${id}
     res.status(400).send({ data: 'error updating purchase place', error: true })
   }
 }
+
+export type GetPurchasePlaces = Array<{
+  id: number
+  name: string
+  address: string | null
+}>
 
 interface CreatePurchasePlace extends NextApiRequest {
   body: purchase_places
