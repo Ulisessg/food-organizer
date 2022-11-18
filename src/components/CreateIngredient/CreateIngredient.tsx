@@ -1,20 +1,17 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable camelcase */
 import { Button, FileInput, Form, LoadingSpinner, TextInput } from 'd-system'
-import React, { FC, Fragment } from 'react'
-import Details from './common/Details'
-import ErrorMessage from './common/ErrorMessage'
+import React, { FC } from 'react'
+import Details from '../common/Details'
+import ErrorMessage from '../common/ErrorMessage'
 import { GetPurchasePlaces } from 'controllers/food_organizer_crud/purchasePlaceCRUD'
 import { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
-import Select from './common/Select'
+import PurchasePlaces from './PurchasePlaces'
+import UnitsOfMeasure from './UnitsOfMeasure'
 import useGetRequest from 'hooks/useGetRequest'
 
 // eslint-disable-next-line max-lines-per-function
 const CreateIngredient: FC = () => {
   const { data, error, isLoading } = useGetRequest<GetPurchasePlaces>('/api/purchase')
   const { data: uomData, error: uomError, isLoading: uomIsLoading } = useGetRequest('/api/uom')
-  const dta = data as GetPurchasePlaces
-  const uomList = uomData as GetUOM
 
   return <>
   <Details summary="Crear ingrediente">
@@ -36,13 +33,7 @@ const CreateIngredient: FC = () => {
         />
       }
       {isLoading && <LoadingSpinner size="small" />}
-
-      {(!isLoading && !error) &&
-      <Select id="select_purchase_place" labelText="Selecciona un lugar de compra">
-        {dta.map(({ id, name }) => <Fragment key={id}>
-          <option value={name}>{name}</option>
-        </Fragment>)}
-      </Select> }
+      {(!isLoading && !error) && <PurchasePlaces data={data as GetPurchasePlaces} /> }
 
       {/* Units Of Measure */}
 
@@ -52,16 +43,7 @@ const CreateIngredient: FC = () => {
           action="intenta de nuevo mas tarde"
         />
       }
-      {(!uomIsLoading && !uomError) &&
-      <Select id="select_uom" labelText="Selecciona una unidad de medida">
-       {uomList.map(({ uomt_id, uomt_name, uom }) => <Fragment key={uomt_id}>
-          <optgroup label={uomt_name}>
-            {uom.map(({ id, name }) => <Fragment key={id}>
-              <option value={name}>{name}</option>
-            </Fragment>)}
-          </optgroup>
-       </Fragment>)}
-      </Select> }
+      {(!uomIsLoading && !uomError) && <UnitsOfMeasure data={uomData as GetUOM} />}
       <TextInput
         id="ingredient_comment"
         inputMode="text"
@@ -86,7 +68,9 @@ const CreateIngredient: FC = () => {
         type="button"
       />
     </Form>
+
   </Details>
 </>
 }
+
 export default CreateIngredient
