@@ -25,11 +25,17 @@ const SelectStyles = styled.select`
   border-radius: 5px;
   text-transform: capitalize;
   border: 1px solid ${({ theme }) => theme.colors.dark2};
+  &:hover {
+    cursor: pointer;
+  }
   &:valid {
     border: 1px solid ${({ theme }) => theme.colors.dark2};
   }
   option {
     padding: 12px;
+    &:hover {
+      cursor: pointer;
+    }
   }
 `
 const LabelSelect = styled.label`
