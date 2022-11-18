@@ -29,24 +29,8 @@ const DetailsStyles = styled.details`
   width: 90%;
   form {
     width: auto;
-    padding: 20px 10px;
+    padding: 20px 40px;
     margin: 20px 0px;
-    justify-content: center;
-    & > p {
-      text-align: center;
-    }
-    /* Form content */
-    & > div {
-      align-content: space-between;
-      justify-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 80%;
-      padding: 20px 0;
-    }
-    & > label {
-      margin: 10px 0px;
-    }
     & button {
       margin-top: 30px;
     }
