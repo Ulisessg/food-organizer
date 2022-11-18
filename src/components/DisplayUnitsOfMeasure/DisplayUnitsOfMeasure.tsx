@@ -1,10 +1,9 @@
 /* eslint-disable max-lines-per-function */
 import React, { FC, Fragment } from 'react'
+import { Table, Th } from 'd-system'
 import type { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import Rows from './Rows'
-import { Table } from 'd-system'
 import TableContainer from 'components/common/TableContainer'
-import Th from 'components/common/Th'
 
 const DisplayUnitsOfMeasure: FC<Props> =
 ({

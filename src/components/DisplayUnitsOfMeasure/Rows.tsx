@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { FC } from 'react'
 import EditTableButtons from 'components/common/EditTableButtons'
-import Td from 'components/common/Td'
+import { Td } from 'd-system'
 
 const Rows: FC<Props> = ({
   uomAbbreviation,

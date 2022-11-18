@@ -2,12 +2,10 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { FC, Fragment } from 'react'
+import { Table, Td, Th } from 'd-system'
 import EditTableButtons from 'components/common/EditTableButtons'
 import type { GetIngredients } from 'controllers/food_organizer_crud/ingredientCRUD'
-import { Table } from 'd-system'
 import TableContainer from 'components/common/TableContainer'
-import Td from 'components/common/Td'
-import Th from 'components/common/Th'
 import styled from 'styled-components'
 
 const onUpdate = (): void => {
