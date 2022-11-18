@@ -31,6 +31,9 @@ const DetailsStyles = styled.details`
     width: auto;
     padding: 20px 40px;
     margin: 20px 0px;
+    & label {
+      margin-bottom: 20px;
+    }
     & button {
       margin-top: 30px;
     }
