@@ -20,11 +20,14 @@ export const validations: verifyObj = {
       idName: 'ingredientId'
     })
   },
-  uomId: (id: number) => {
-    idValidation({
-      id,
-      idName: 'uomId'
-    })
+  ingredient_qty: (qty: number) => {
+    if (typeof qty !== 'number') {
+      throw new TypeError(invalidPropertyTypeErrorMessage(
+        'ingredient_qty',
+        qty,
+        'only number allowed'
+      ))
+    }
   }
 }
 
@@ -34,7 +37,7 @@ const ingredientStockVerifications = (ingredientStock: ingredientStockParam): vo
   })
   validations.comment(ingredientStock.comment)
   validations.ingredientId(ingredientStock.ingredientId)
-  validations.uomId(ingredientStock.uomId)
+  validations.ingredient_qty(ingredientStock.ingredient_qty)
 }
 
 export default ingredientStockVerifications
@@ -45,8 +48,8 @@ type verifyObj = {
 
 type ingredientStockParam = tableProps & {
   ingredientId: number
-  uomId: number
+  ingredient_qty: number
   comment: string | null
 }
 
-export type verifyProps = 'ingredientId' | 'uomId' | 'comment'
+export type verifyProps = 'ingredientId' | 'ingredient_qty' | 'comment'

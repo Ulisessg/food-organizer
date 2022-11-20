@@ -24,7 +24,7 @@ describe(
             comment: invalidComment,
             creationDate,
             ingredientId: id,
-            uomId: id
+            ingredient_qty: id
 
           })
           throw new Error('comment is allowing invalid "comment"')
@@ -42,20 +42,20 @@ describe(
     test(
       'ingredientId invalid type',
       () => {
-        const invalidId: number = {} as unknown as number
+        const invalidQty: number = {} as unknown as number
         try {
           ingredientStockValidations({
             comment: null,
             creationDate,
-            ingredientId: invalidId,
-            uomId: id
+            ingredientId: invalidQty,
+            ingredient_qty: id
           })
-          throw new Error('ingredientId is allowing invalid "id"')
+          throw new Error('ingredientId is allowing invalid "qty"')
         } catch (error) {
           err = error as TypeError
           expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
             'ingredientId',
-            invalidId,
+            invalidQty,
             'only integer number allowed'
           ))
         }
@@ -63,23 +63,23 @@ describe(
       }
     )
     test(
-      'uomId invalid type',
+      'ingredient_qty invalid type',
       () => {
-        const invalidId: number = {} as unknown as number
+        const invalidQty: number = {} as unknown as number
         try {
           ingredientStockValidations({
             comment: null,
             creationDate,
             ingredientId: id,
-            uomId: invalidId
+            ingredient_qty: invalidQty
           })
-          throw new Error('uomId is allowing invalid "id"')
+          throw new Error('ingredient_qty is allowing invalid "qty"')
         } catch (error) {
           err = error as TypeError
           expect(err.message).toStrictEqual(invalidPropertyTypeErrorMessage(
-            'uomId',
-            invalidId,
-            'only integer number allowed'
+            'ingredient_qty',
+            invalidQty,
+            'only number allowed'
           ))
         }
         err = null
