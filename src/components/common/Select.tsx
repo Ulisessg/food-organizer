@@ -1,9 +1,15 @@
 import React, { FC, ReactNode } from 'react'
 import styled from 'styled-components'
 
-const Select: FC<Props> = ({ id, labelText, children }) => <LabelSelect htmlFor={id}>
+const Select: FC<Props> = ({
+  id,
+  labelText,
+  children,
+  onChange,
+  value
+}) => <LabelSelect htmlFor={id}>
   <p>{labelText}</p>
-  <SelectStyles id={id} defaultValue="Selecciona una opcion">
+  <SelectStyles id={id} onChange={onChange} value={value}>
   <option value="Selecciona una opcion" disabled>-- Selecciona una opcion --</option>
   {children}
   </SelectStyles>
@@ -15,6 +21,8 @@ interface Props {
 
   /** Options */
   children: ReactNode
+  onChange?: (ev: React.ChangeEvent<HTMLSelectElement>) => void
+  value?: string
 }
 
 const SelectStyles = styled.select`

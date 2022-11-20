@@ -33,7 +33,9 @@ const CreateIngredient: FC = () => {
         />
       }
       {isLoading && <LoadingSpinner size="small" />}
-      {(!isLoading && !error) && <PurchasePlaces data={data as GetPurchasePlaces} /> }
+      {(!isLoading && !error) && <PurchasePlaces
+        data={data as GetPurchasePlaces}
+        initialSelectId="143123" /> }
 
       {/* Units Of Measure */}
 
