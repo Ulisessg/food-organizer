@@ -54,15 +54,23 @@ export const createFood = async (
 
 export const getFoods = async (
   _req: NextApiRequest,
-  res: NextApiResponse<response<foods[] | string>>
+  res: NextApiResponse<response<GetFoods | string>>
 ): Promise<void> => {
   try {
-    const result = await prisma.$queryRaw<foods[]>`SELECT
-foods.id, foods.name, foods.used_counter, foods.preparation_time,
-foods.score,foods.food_type_id, foods.image,
-food_types.name AS food_type_name
-FROM foods
-INNER JOIN food_types ON food_types.id = foods.food_type_id
+    const result = await prisma.$queryRaw<GetFoods>`SELECT
+food_types.id AS food_type_id,
+food_types.name AS food_type_name,
+JSON_ARRAYAGG(JSON_OBJECT(
+  'food_id', foods.id,
+  'food_name', foods.name,
+  'preparation_time', foods.preparation_time,
+  'score', foods.score,
+  'image', foods.image
+)) AS foods
+FROM food_types
+JOIN foods ON foods.food_type_id = food_types.id
+GROUP BY food_type_name
+ORDER BY food_type_name
 `
     res.status(200).send({
       data: result,
@@ -123,3 +131,15 @@ WHERE foods.id = ${id}`
 interface CreateFood extends NextApiRequest {
   body: foods
 }
+
+export type GetFoods = Array<{
+  food_type_id: number
+  food_type_name: string
+  foods: Array<{
+    image: string | null
+    score: number
+    food_id: number
+    food_name: string
+    preparation_time: number
+  }>
+}>
