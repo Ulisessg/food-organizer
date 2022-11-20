@@ -13,5 +13,6 @@ const CardStyles = styled.section`
   padding: 2px;
   border-radius: 25px;
   box-shadow: 1px 1px 3px 2px ${({ theme }) => theme.colors.shadow};
+  margin-bottom: 20px;
 `
 export default CardStyles
