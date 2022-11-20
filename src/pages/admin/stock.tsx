@@ -1,3 +1,4 @@
+import CreateIngredientStock from 'components/CreateIngredientStock'
 import DisplayIngredientsStock from 'components/DisplayIngredientsStock'
 import ErrorMessage from 'components/common/ErrorMessage'
 import { GetIngredientStock } from 'controllers/food_organizer_crud/ingredientStockCRUD'
@@ -22,6 +23,8 @@ const IngredientsStock: NextPage = () => {
     <title>Ingredientes disponibles</title>
   </Head>
   <Title>Administrar ingredientes disponibles</Title>
+  <CreateIngredientStock />
+  <p>Para eliminar un ingrediente disponible pon la cantidad en 0</p>
   <DisplayIngredientsStock ingredients={data as GetIngredientStock} />
 </>
 }
