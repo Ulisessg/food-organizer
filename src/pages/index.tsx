@@ -21,6 +21,9 @@ export default function Home (): JSX.Element {
         <Title>Food Organizer</Title>
         <CardsContainer>
           <Card>
+            <Link href="/admin/stock" text="Ingredientes disponibles" />
+          </Card>
+          <Card>
             <Link href="/admin/unidades" text="Administar unidades de medida" />
           </Card>
           <Card>
