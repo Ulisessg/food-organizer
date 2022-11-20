@@ -1,7 +1,8 @@
-import IndexContainer, { CardsContainer, Title } from 'styles/pages/index.styles'
+import IndexContainer, { CardsContainer } from 'styles/pages/index.styles'
 import Card from 'components/Card'
 import Head from 'next/head'
 import { Link } from 'd-system'
+import Title from 'components/common/Title'
 
 export default function Home (): JSX.Element {
   return (
@@ -21,6 +22,9 @@ export default function Home (): JSX.Element {
         <CardsContainer>
           <Card>
             <Link href="/admin/unidades" text="Administar unidades de medida" />
+          </Card>
+          <Card>
+            <Link href="/admin/ingredientes" text="Administar ingredientes" />
           </Card>
         </CardsContainer>
       </IndexContainer>
