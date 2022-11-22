@@ -31,13 +31,14 @@ const DisplayFoods: FC<Props> = ({ foodsOrderByType }) => (<>
             image,
             preparation_time,
             score
-          }, index) => <Fragment key={food_id}> {index === 0 && <>
+          }, index) => <Fragment key={food_id}>{index === 0 && <>
                 <Rows food_name={food_name} food_type_name={food_type_name}
                   image={image}
                   preparation_time={preparation_time}
                   score={score}
                   rowSpan={foods.length} />
-              </>} {index !== 0 && <>
+              </>}
+              {index !== 0 && <>
                 <Rows food_name={food_name} food_type_name={food_type_name}
                   image={image}
                   preparation_time={preparation_time}

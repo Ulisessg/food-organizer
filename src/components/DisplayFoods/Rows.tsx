@@ -14,14 +14,12 @@ const Rows: FC<RowsProps> = ({
   if (typeof rowSpan === 'number') {
     return <>
       <tr>
-        <Td rowSpan={rowSpan}>
-          {food_type_name}
-        </Td>
+        <Td rowSpan={rowSpan}>{food_type_name}</Td>
         <Td>{food_name}</Td>
         <Td>{preparation_time}</Td>
         <Td>{score}</Td>
-        {image !== null && <img src={image} alt={`${food_name} imagen`} />}
-        <Td>{image === null && 'N/A'}</Td>
+        {image === null && <Td>N/A</Td>}
+        {image !== null && <Td><img src={image} alt={`${food_name} imagen`} /></Td>}
         <EditTableButtons onUpdate={handleUpdate}/>
       </tr>
     </>
@@ -31,8 +29,8 @@ const Rows: FC<RowsProps> = ({
       <Td>{food_name}</Td>
       <Td>{preparation_time}</Td>
       <Td>{score}</Td>
-        {image !== null && <img src={image} alt={`${food_name} imagen`} />}
-      <Td>{image === null && 'N/A'}</Td>
+      {image === null && <Td>N/A</Td>}
+      {image !== null && <img src={image} alt={`${food_name} imagen`} />}
       <EditTableButtons onUpdate={handleUpdate}/>
     </tr>
 </>
