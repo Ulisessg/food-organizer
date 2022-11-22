@@ -68,7 +68,7 @@ model foods {
   id               Int                @id @default(autoincrement())
   name             String             @unique(map: "name") @db.VarChar(50)
   used_counter     Int?               @default(0)
-  preparation_time Int?               @default(0) @db.SmallInt
+  preparation_time Int                @db.SmallInt
   score            Int?               @default(0) @db.SmallInt
   food_type_id     Int
   image            String?            @db.Char(50)
@@ -201,6 +201,7 @@ model daily_menu_foods {
   id            Int         @id @default(autoincrement())
   daily_menu_id Int
   food_id       Int
+  creation_date DateTime?   @db.DateTime(0)
   daily_menus   daily_menus @relation(fields: [daily_menu_id], references: [id], map: "fk_dmf_daily_menu_id")
   foods         foods       @relation(fields: [food_id], references: [id], map: "fk_dmf_food_id")
 

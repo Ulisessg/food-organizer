@@ -34,12 +34,21 @@ export const createDailyMenu = async (
 
 export const getDailyMenus = async (
   req: CreateDailyMenu,
-  res: NextApiResponse<response<daily_menus[] | string>>
+  res: NextApiResponse<response<GetDailyMenus | string>>
 ): Promise<void> => {
   try {
-    const result = await prisma.$queryRaw<daily_menus[]>`SELECT
-daily_menus.id, daily_menus.comment
-FROM daily_menus
+    const result = await prisma.$queryRaw<GetDailyMenus>`SELECT
+daily_menus.id, daily_menus.comment,
+JSON_ARRAYAGG(JSON_OBJECT(
+  'food_id', foods.id,
+  'food_name', foods.name,
+  'preparation_time', foods.preparation_time,
+  'image', foods.image
+)) AS menu_foods
+FROM daily_menu_foods
+JOIN daily_menus ON daily_menus.id = daily_menu_foods.daily_menu_id
+JOIN foods ON foods.id = daily_menu_foods.food_id
+GROUP BY daily_menus.id
 `
     res.status(200).send({
       data: result,
@@ -88,3 +97,14 @@ WHERE daily_menus.id = ${id}
 interface CreateDailyMenu extends NextApiRequest {
   body: daily_menus
 }
+
+export type GetDailyMenus = Array<{
+  id: number
+  comment: string
+  menu_foods: Array<{
+    image: null | string
+    food_id: number
+    food_name: string
+    preparation_time: number
+  }>
+}>
