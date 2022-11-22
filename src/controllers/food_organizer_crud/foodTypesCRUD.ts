@@ -34,10 +34,10 @@ export const createFoodType = async (
 
 export const getFoodTypes = async (
   _req: NextApiRequest,
-  res: NextApiResponse<response<food_types[]>>
+  res: NextApiResponse<response<GetFoodTypes>>
 ): Promise<void> => {
   try {
-    const result = await prisma.$queryRaw<food_types[]>`SELECT
+    const result = await prisma.$queryRaw<GetFoodTypes>`SELECT
 food_types.id, food_types.name
 FROM food_types
 ORDER BY food_types.name ASC
@@ -86,3 +86,8 @@ WHERE food_types.id = ${id}
 interface CreateFoodType extends NextApiRequest {
   body: food_types
 }
+
+export type GetFoodTypes = Array<{
+  id: number
+  name: string
+}>
