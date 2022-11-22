@@ -1,4 +1,5 @@
 import CreateFood from 'components/CreateFood'
+import CreateFoodType from 'components/CreateFoodType'
 import DisplayFoods from 'components/DisplayFoods'
 import ErrorMessage from 'components/common/ErrorMessage'
 import { GetFoods } from 'controllers/food_organizer_crud/foodsCRUD'
@@ -24,6 +25,7 @@ const Foods: NextPage = () => {
   </Head>
   <Title>Administrar comidas</Title>
   <CreateFood />
+  <CreateFoodType />
   <DisplayFoods foodsOrderByType={data as GetFoods} />
 </>
 }
