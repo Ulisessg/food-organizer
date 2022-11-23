@@ -6,6 +6,12 @@ import type { foods } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { response } from 'controllers/response'
 
+// Allow Count() in sql query
+// eslint-disable-next-line func-names
+(BigInt.prototype as any).toJSON = function () {
+  return Number(this)
+}
+
 export const createFood = async (
   req: CreateFood,
   res: NextApiResponse<response<string>>
@@ -60,6 +66,7 @@ export const getFoods = async (
     const result = await prisma.$queryRaw<GetFoods>`SELECT
 food_types.id AS food_type_id,
 food_types.name AS food_type_name,
+COUNT(foods.id) AS total_foods,
 JSON_ARRAYAGG(JSON_OBJECT(
   'food_id', foods.id,
   'food_name', foods.name,
@@ -135,6 +142,7 @@ interface CreateFood extends NextApiRequest {
 export type GetFoods = Array<{
   food_type_id: number
   food_type_name: string
+  total_foods: number
   foods: Array<{
     image: string | null
     score: number
