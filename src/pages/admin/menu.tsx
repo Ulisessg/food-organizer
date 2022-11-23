@@ -1,3 +1,4 @@
+import DisplayDailyMenus from 'components/DisplayDailyMenus'
 import ErrorMessage from 'components/common/ErrorMessage'
 import type { GetDailyMenus } from 'controllers/food_organizer_crud/dailyMenuCRUD'
 import Head from 'next/head'
@@ -21,6 +22,8 @@ const Menu: NextPage = () => {
     <title>Administrar menús</title>
   </Head>
   <Title>Administrar menús</Title>
+
+  <DisplayDailyMenus menus={data as GetDailyMenus} />
 </>
 }
 
