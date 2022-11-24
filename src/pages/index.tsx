@@ -21,6 +21,9 @@ export default function Home (): JSX.Element {
         <Title>Food Organizer</Title>
         <CardsContainer>
           <Card>
+            <Link href="/admin/week" text="Administrar los menús de la semana" />
+          </Card>
+          <Card>
             <Link href="/admin/menu" text="Administrar menús" />
           </Card>
           <Card>
