@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
-  createWeeklyMenu, getWeeklyMenu, updateWeeklyMenu
+  createWeeklyMenu, getWeeklyMenu
 } from 'controllers/food_organizer_crud/weeklyMenuCRUD'
 import { response } from 'controllers/response'
 
@@ -23,19 +23,12 @@ const handler = async (
         res
       )
       break
-    case 'PATCH':
-      await updateWeeklyMenu(
-        req,
-        res
-      )
-      break
     default:
       res.setHeader(
         'Allow',
         [
           'POST',
-          'GET',
-          'PATCH'
+          'GET'
         ]
       )
       res.status(405).send({

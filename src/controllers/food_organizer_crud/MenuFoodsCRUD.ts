@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
-import dailyMenuFoodsValidations, { validations } from 'models/dailyMenuFoodsValidations'
-import type { daily_menu_foods } from '@prisma/client'
+import menuFoodsValidations, { validations } from 'models/menuFoodsValidations'
+import type { menu_foods } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { response } from 'controllers/response'
 
@@ -13,14 +13,14 @@ export const createDailyMenuFoods = async (
   try {
     if (!Array.isArray(req.body)) throw new Error('Invalid body: not array')
     if (req.body.length > 10) throw new Error('you cannot add more than 10 registers at same time')
-    for (const { creation_date, daily_menu_id, food_id } of req.body) {
-      dailyMenuFoodsValidations({
+    for (const { creation_date, menu_id, food_id } of req.body) {
+      menuFoodsValidations({
         creationDate: creation_date as unknown as string,
-        daily_menu_id,
-        food_id
+        food_id,
+        menu_id
       })
     }
-    await prisma.daily_menu_foods.createMany({
+    await prisma.menu_foods.createMany({
       data: [...req.body]
     })
     res.status(201).send({
@@ -38,10 +38,10 @@ export const createDailyMenuFoods = async (
 
 export const getDailyMenuFoods = async (
   _req: NextApiRequest,
-  res: NextApiResponse<response<daily_menu_foods[] | string>>
+  res: NextApiResponse<response<menu_foods[] | string>>
 ): Promise<void> => {
   try {
-    const result = await prisma.daily_menu_foods.findMany()
+    const result = await prisma.menu_foods.findMany()
     res.status(200).send({
       data: result,
       error: false
@@ -60,13 +60,13 @@ export const updateDailyMenuFoods = async (
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { daily_menu_id, food_id, id } = req.body
-    validations.daily_menu_id(daily_menu_id)
+    const { menu_id, food_id, id } = req.body
+    validations.menu_id(menu_id)
     validations.food_id(food_id)
-    const rowsAffected = await prisma.$executeRaw`UPDATE IGNORE daily_menu_foods SET
-daily_menu_id = ${daily_menu_id},
+    const rowsAffected = await prisma.$executeRaw`UPDATE IGNORE menu_foods SET
+menu_id = ${menu_id},
 food_id = ${food_id}
-WHERE daily_menu_foods.id = ${id}
+WHERE menu_foods.id = ${id}
 `
     if (rowsAffected === 0) {
       res.status(400).send({
@@ -89,9 +89,9 @@ WHERE daily_menu_foods.id = ${id}
 }
 
 interface CreateDailyMenuFoods extends NextApiRequest {
-  body: daily_menu_foods[]
+  body: menu_foods[]
 }
 
 interface UpdateDailyMenuFoods extends NextApiRequest {
-  body: daily_menu_foods
+  body: menu_foods
 }

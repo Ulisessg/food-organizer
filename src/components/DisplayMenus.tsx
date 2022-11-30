@@ -3,7 +3,7 @@
 import React, { FC, Fragment } from 'react'
 import { Table, Td, Th } from 'd-system'
 import EditTableButtons from './common/EditTableButtons'
-import { GetDailyMenus } from 'controllers/food_organizer_crud/dailyMenuCRUD'
+import { GetMenus } from 'controllers/food_organizer_crud/MenuCRUD'
 import TableContainer from './common/TableContainer'
 
 const DisplayDailyMenus: FC<DisplayDailyMenusProps> = ({ menus }) => {
@@ -49,7 +49,7 @@ const DisplayDailyMenus: FC<DisplayDailyMenusProps> = ({ menus }) => {
 }
 
 interface DisplayDailyMenusProps {
-  menus: GetDailyMenus
+  menus: GetMenus
 }
 
 export default DisplayDailyMenus

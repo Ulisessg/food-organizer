@@ -45,7 +45,7 @@ export const priceValidations = (price: priceParam): void => {
 }
 
 // Current 'price' tables
-type priceTables = 'dailyMenuPrice' | 'weeklyMenuPrice' | 'ingredientPrice' | 'foodPrice' | 'none'
+type priceTables = 'menuPrice' | 'weeklyMenuPrice' | 'ingredientPrice' | 'foodPrice' | 'none'
 
 type priceParam = tableProps & {
   priceDate: string

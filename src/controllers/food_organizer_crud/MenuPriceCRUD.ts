@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import priceValidations, { validations } from 'models/priceValidations'
-import type { daily_menu_prices } from '@prisma/client'
+import type { menu_prices } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { response } from 'controllers/response'
 
@@ -15,11 +15,11 @@ export const createDailyMenuPrice = async (
     priceValidations({
       creationDate: creation_date as unknown as string,
       id: menu_id,
-      idName: 'dailyMenuPrice',
+      idName: 'menuPrice',
       priceDate: price_date as unknown as string,
       value: value as unknown as number
     })
-    await prisma.daily_menu_prices.create({
+    await prisma.menu_prices.create({
       data: { ...req.body }
     })
     res.status(201).send({
@@ -37,10 +37,10 @@ export const createDailyMenuPrice = async (
 
 export const getDailyMenuPrices = async (
   _req: CreateDailyMenuPrice,
-  res: NextApiResponse< response<daily_menu_prices[] | string>>
+  res: NextApiResponse< response<menu_prices[] | string>>
 ): Promise<void> => {
   try {
-    const result = await prisma.daily_menu_prices.findMany()
+    const result = await prisma.menu_prices.findMany()
     res.status(200).send({
       data: result,
       error: false
@@ -55,17 +55,17 @@ export const getDailyMenuPrices = async (
 }
 export const updateDailyMenuPrice = async (
   req: CreateDailyMenuPrice,
-  res: NextApiResponse< response<daily_menu_prices[] | string>>
+  res: NextApiResponse< response<menu_prices[] | string>>
 ): Promise<void> => {
   try {
     const { id, menu_id, price_date, value } = req.body
     validations.id(
       menu_id,
-      'dailyMenuPrice'
+      'menuPrice'
     )
     validations.price(value as unknown as number)
     validations.priceDate(price_date as unknown as string)
-    await prisma.daily_menu_prices.update({
+    await prisma.menu_prices.update({
       data: {
         menu_id,
         price_date,
@@ -89,5 +89,5 @@ export const updateDailyMenuPrice = async (
 }
 
 interface CreateDailyMenuPrice extends NextApiRequest {
-  body: daily_menu_prices
+  body: menu_prices
 }

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
-  createDailyMenuPrice, getDailyMenuPrices, updateDailyMenuPrice
-} from 'controllers/food_organizer_crud/dailyMenuPriceCRUD'
+  createDailyMenuFoods, getDailyMenuFoods, updateDailyMenuFoods
+} from 'controllers/food_organizer_crud/MenuFoodsCRUD'
 import { response } from 'controllers/response'
 
 const handler = async (
@@ -12,19 +12,19 @@ const handler = async (
 
   switch (method) {
     case 'POST':
-      await createDailyMenuPrice(
+      await createDailyMenuFoods(
         req,
         res
       )
       break
     case 'GET':
-      await getDailyMenuPrices(
+      await getDailyMenuFoods(
         req,
         res
       )
       break
     case 'PATCH':
-      await updateDailyMenuPrice(
+      await updateDailyMenuFoods(
         req,
         res
       )

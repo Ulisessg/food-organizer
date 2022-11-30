@@ -4,12 +4,12 @@
 /* eslint-disable max-len */
 /* eslint-disable max-lines */
 /* eslint-disable max-statements */
-import dailyMenuValidations from 'models/dailyMenuValidations'
 import dayjs from 'dayjs'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
+import menuValidations from 'models/menuValidations'
 
 describe(
-  'models/dailyMenuValidations',
+  'models/menuValidations',
   () => {
     let err: Error | null = null
     const creationDate = dayjs().toISOString()
@@ -19,7 +19,7 @@ describe(
       () => {
         const invalidComment: null = {} as unknown as null
         try {
-          dailyMenuValidations({ comment: invalidComment, creationDate })
+          menuValidations({ comment: invalidComment, creationDate })
           throw new Error('comment is allowing invalid id type')
         } catch (error) {
           err = error as TypeError

@@ -12,24 +12,10 @@ export const createWeeklyMenu = async (
 ): Promise<void> => {
   try {
     const {
-      creation_date,
-      friday_menu_id,
-      monday_menu_id,
-      saturday_menu_id,
-      sunday_menu_id,
-      thursday_menu_id,
-      tuesday_menu_id,
-      wednesday_menu_id
+      creation_date
     } = req.body
     weeklyMenuValidations({
-      creationDate: creation_date as unknown as string,
-      fridayMenuId: friday_menu_id,
-      mondayMenuId: monday_menu_id,
-      saturdayMenuId: saturday_menu_id,
-      sundayMenuId: sunday_menu_id,
-      thursdayMenuId: thursday_menu_id,
-      tuesdayMenuId: tuesday_menu_id,
-      wednesdayMenuId: wednesday_menu_id
+      creationDate: creation_date as unknown as string
     })
     await prisma.weekly_menus.create({
       data: { ...req.body }
@@ -69,60 +55,6 @@ export const getWeeklyMenu = async (
     console.error(error)
     res.status(400).send({
       data: 'error getting weekly menu',
-      error: true
-    })
-  }
-}
-
-// eslint-disable-next-line max-lines-per-function
-export const updateWeeklyMenu = async (
-  req: CreateWeeklyMenu,
-  res: NextApiResponse<response<string>>
-): Promise<void> => {
-  try {
-    const {
-      creation_date,
-      friday_menu_id,
-      id,
-      monday_menu_id,
-      saturday_menu_id,
-      sunday_menu_id,
-      thursday_menu_id,
-      tuesday_menu_id,
-      wednesday_menu_id
-    } = req.body
-    weeklyMenuValidations({
-      creationDate: creation_date as unknown as string,
-      fridayMenuId: friday_menu_id,
-      mondayMenuId: monday_menu_id,
-      saturdayMenuId: saturday_menu_id,
-      sundayMenuId: sunday_menu_id,
-      thursdayMenuId: thursday_menu_id,
-      tuesdayMenuId: tuesday_menu_id,
-      wednesdayMenuId: wednesday_menu_id
-    })
-    await prisma.weekly_menus.update({
-      data: {
-        friday_menu_id,
-        monday_menu_id,
-        saturday_menu_id,
-        sunday_menu_id,
-        thursday_menu_id,
-        tuesday_menu_id,
-        wednesday_menu_id
-      },
-      where: {
-        id
-      }
-    })
-    res.status(201).send({
-      data: 'weekly menu updated',
-      error: false
-    })
-  } catch (error) {
-    console.error(error)
-    res.status(400).send({
-      data: 'error updating weekly menu',
       error: true
     })
   }

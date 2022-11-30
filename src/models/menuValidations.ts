@@ -15,17 +15,17 @@ export const validations: verifyObj = {
   }
 }
 
-const dailyMenuValidations = (dailyMenu: dailyMenuParam): void => {
+const menuValidations = (menu: menuParam): void => {
   tableValidations({
-    creationDate: dailyMenu.creationDate
+    creationDate: menu.creationDate
   })
-  validations.comment(dailyMenu.comment)
+  validations.comment(menu.comment)
 }
 
-export default dailyMenuValidations
+export default menuValidations
 
 type verifyProps = 'comment'
-type dailyMenuParam = tableProps & {
+type menuParam = tableProps & {
   [j in verifyProps]: any
 }
 type verifyObj = {
