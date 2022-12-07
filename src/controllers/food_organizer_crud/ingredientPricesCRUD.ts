@@ -11,7 +11,7 @@ export const createIngredientPrice = async (
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { creation_date, ingredient_id, price_date, value } = req.body
+    const { creation_date, ingredient_id, price_date, value, purchase_place_id } = req.body
     priceValidations({
       creationDate: creation_date as unknown as string,
       id: ingredient_id,
@@ -20,7 +20,7 @@ export const createIngredientPrice = async (
       value: value as unknown as number
     })
     await prisma.ingredient_prices.create({
-      data: { creation_date, ingredient_id, price_date, value }
+      data: { creation_date, ingredient_id, price_date, purchase_place_id, value }
     })
     res.status(201).send({
       data: 'ingredient price created',
