@@ -33,20 +33,132 @@ export const createWeeklyMenu = async (
   }
 }
 
+// eslint-disable-next-line max-lines-per-function
 export const getWeeklyMenu = async (
-  req: GetWeeklyMenu,
-  res: NextApiResponse<response<weekly_menus | weekly_menus[] | string>>
+  _req: any,
+  res: NextApiResponse<response<GetWeeklyMenu | string>>
 ): Promise<void> => {
   try {
-    const { id } = req.body
-    // eslint-disable-next-line init-declarations
-    let result
-    if (typeof id === 'number') {
-      result = await
-      prisma.$queryRaw<weekly_menus>`SELECT * FROM weekly_menus WHERE weekly_menus.id = ${id}`
-    } else {
-      result = await prisma.$queryRaw<weekly_menus>`SELECT * FROM weekly_menus`
-    }
+    const result = await prisma.$queryRaw<GetWeeklyMenu>`
+  SELECT
+weekly_menus.id,
+(SELECT
+  JSON_ARRAYAGG(JSON_OBJECT(
+    'menu_id', weekly_menu_days.menu_id,
+      'foods', (SELECT JSON_ARRAYAGG(JSON_OBJECT(
+        'food_id', foods.id,
+        'food_name', foods.name
+      ))
+      FROM menu_foods
+      INNER JOIN foods ON foods.id = menu_foods.food_id
+      WHERE menu_foods.menu_id = weekly_menu_days.menu_id
+      )
+  ))
+  FROM weekly_menu_days
+  WHERE weekly_menu_days.weekly_menu_id = weekly_menus.id AND weekly_menu_days.day_id = 1
+) AS monday,
+(SELECT
+  JSON_ARRAYAGG(JSON_OBJECT(
+    'menu_id', weekly_menu_days.menu_id,
+    'foods', (SELECT JSON_ARRAYAGG(JSON_OBJECT(
+      'food_id', foods.id,
+      'food_name', foods.name
+    ))
+    FROM menu_foods
+    INNER JOIN foods ON foods.id = menu_foods.food_id
+    WHERE menu_foods.menu_id = weekly_menu_days.menu_id
+    )
+  ))
+  FROM weekly_menu_days
+  WHERE weekly_menu_days.weekly_menu_id = weekly_menus.id AND weekly_menu_days.day_id = 2
+) AS tuesday,
+(SELECT
+  JSON_ARRAYAGG(JSON_OBJECT(
+    'menu_id', weekly_menu_days.menu_id,
+    'foods', (SELECT
+      JSON_ARRAYAGG(JSON_OBJECT(
+        'food_id', foods.id,
+        'food_name', foods.name
+      ))
+      FROM menu_foods
+      INNER JOIN foods ON foods.id = menu_foods.food_id
+      WHERE menu_foods.menu_id = weekly_menu_days.menu_id
+      )
+  ))
+  FROM weekly_menu_days
+  WHERE weekly_menu_days.weekly_menu_id = weekly_menus.id AND weekly_menu_days.day_id = 3
+) AS wednesday,
+(SELECT
+  JSON_ARRAYAGG(JSON_OBJECT(
+    'menu_id', weekly_menu_days.menu_id,
+    'foods', (SELECT
+      JSON_ARRAYAGG(JSON_OBJECT(
+        'food_id', foods.id,
+        'food_name', foods.name
+      ))
+      FROM menu_foods
+      INNER JOIN foods ON foods.id = menu_foods.food_id
+      WHERE menu_foods.menu_id = weekly_menu_days.menu_id
+      )
+  ))
+  FROM weekly_menu_days
+  WHERE weekly_menu_days.weekly_menu_id = weekly_menus.id AND weekly_menu_days.day_id = 4
+) AS thursday,
+(SELECT
+  JSON_ARRAYAGG(JSON_OBJECT(
+    'menu_id', weekly_menu_days.menu_id,
+    'foods', (SELECT
+      JSON_ARRAYAGG(JSON_OBJECT(
+        'food_id', foods.id,
+        'food_name', foods.name
+      ))
+      FROM menu_foods
+      INNER JOIN foods ON foods.id = menu_foods.food_id
+      WHERE menu_foods.menu_id = weekly_menu_days.menu_id
+      )
+  ))
+  FROM weekly_menu_days
+  WHERE weekly_menu_days.weekly_menu_id = weekly_menus.id AND weekly_menu_days.day_id = 5
+) AS friday,
+(SELECT
+  JSON_ARRAYAGG(JSON_OBJECT(
+    'menu_id', weekly_menu_days.menu_id,
+    'foods', (SELECT
+      JSON_ARRAYAGG(JSON_OBJECT(
+        'food_id', foods.id,
+        'food_name', foods.name
+      ))
+      FROM menu_foods
+      INNER JOIN foods ON foods.id = menu_foods.food_id
+      WHERE menu_foods.menu_id = weekly_menu_days.menu_id
+      )
+    ))
+    FROM weekly_menu_days
+    WHERE weekly_menu_days.weekly_menu_id = weekly_menus.id AND weekly_menu_days.day_id = 6
+) AS saturday,
+(SELECT
+  JSON_ARRAYAGG(JSON_OBJECT(
+    'menu_id', weekly_menu_days.menu_id,
+    'foods', (SELECT
+      JSON_ARRAYAGG(JSON_OBJECT(
+        'food_id', foods.id,
+        'food_name', foods.name
+      ))
+      FROM menu_foods
+      INNER JOIN foods ON foods.id = menu_foods.food_id
+      WHERE menu_foods.menu_id = weekly_menu_days.menu_id
+      )
+    ))
+    FROM weekly_menu_days
+    WHERE weekly_menu_days.weekly_menu_id = weekly_menus.id AND weekly_menu_days.day_id = 7
+) AS sunday
+FROM weekly_menus
+GROUP BY weekly_menus.id
+ORDER BY weekly_menus.creation_date
+LIMIT 1
+;
+`
+
     res.status(200).send({
       data: result,
       error: false
@@ -64,8 +176,22 @@ interface CreateWeeklyMenu extends NextApiRequest {
   body: weekly_menus
 }
 
-interface GetWeeklyMenu extends NextApiRequest {
-  body: {
-    id?: number
-  }
+export type GetWeeklyMenu = Array<{
+  monday: TDay
+  tuesday: TDay
+  wednesday: TDay
+  thursday: TDay
+  friday: TDay
+  saturday: TDay
+  sunday: TDay
+}>
+
+type TDay = Array<{
+  menu_id: number
+  foods: Food[]
+}>
+
+interface Food {
+  food_id: number
+  food_name: string
 }
