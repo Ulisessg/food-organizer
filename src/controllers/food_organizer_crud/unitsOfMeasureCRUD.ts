@@ -2,6 +2,7 @@
 /* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from 'next'
 import unitOfMeasureValidations, { validations } from 'models/unitOfMeasureValidations'
+import capitalize from 'utils/capitalize'
 import prisma from 'lib/prisma'
 import { response } from 'controllers/response'
 import { units_of_measure } from '@prisma/client'
@@ -20,9 +21,9 @@ export const createUOM = async (
     })
     const result = await prisma.units_of_measure.create({
       data: {
-        abbreviation: abbreviation.toLocaleLowerCase(),
+        abbreviation: capitalize(abbreviation),
         creation_date,
-        name: name.toLocaleLowerCase(),
+        name: capitalize(name),
         uomt_id
       }
     })
@@ -79,8 +80,8 @@ export const updateUOM = async (
     validations.uomtId(uomt_id)
 
     await prisma.$executeRaw`UPDATE IGNORE units_of_measure SET
-name = ${name},
-abbreviation = ${abbreviation},
+name = ${capitalize(name)},
+abbreviation = ${capitalize(abbreviation)},
 uomt_id = ${uomt_id}
 WHERE units_of_measure.id = ${id}`
     res.status(200).send({

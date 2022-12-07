@@ -2,10 +2,12 @@
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import purchasePlaceValidations, { validations } from 'models/purchasePlaceValidations'
+import capitalize from 'utils/capitalize'
 import prisma from 'lib/prisma'
 import type { purchase_places } from '@prisma/client'
 import { response } from 'controllers/response'
 
+// eslint-disable-next-line max-statements
 export const createPurchasePlace = async (
   req: CreatePurchasePlace,
   res: NextApiResponse<response<string>>
@@ -17,11 +19,15 @@ export const createPurchasePlace = async (
       creationDate: creation_date as unknown as string,
       name
     })
+    let modifiedAddress: string | null = null
+    if (typeof address === 'string') {
+      modifiedAddress = capitalize(address)
+    }
     await prisma.purchase_places.create({
       data: {
-        address,
+        address: modifiedAddress,
         creation_date,
-        name
+        name: capitalize(name)
       }
     })
     res.status(201).send({
@@ -60,6 +66,7 @@ ORDER BY purchase_places.name
   }
 }
 
+// eslint-disable-next-line max-statements
 export const updatePurchasePlace = async (
   req: CreatePurchasePlace,
   res: NextApiResponse<response<string>>
@@ -68,9 +75,13 @@ export const updatePurchasePlace = async (
     const { address, name, id } = req.body
     validations.address(address)
     validations.name(name)
+    let modifiedAddress: string | null = null
+    if (typeof address === 'string') {
+      modifiedAddress = capitalize(address)
+    }
     await prisma.$executeRaw`UPDATE IGNORE purchase_places SET
-address = ${address},
-name = ${name}
+address = ${modifiedAddress},
+name = ${capitalize(name)}
 WHERE purchase_places.id = ${id}
 `
     res.status(200).send({

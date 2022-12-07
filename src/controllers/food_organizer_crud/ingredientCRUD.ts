@@ -2,6 +2,7 @@
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import ingredientValidations, { validations } from 'models/ingredientValidations'
+import capitalize from 'utils/capitalize'
 import type { ingredients } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { response } from 'controllers/response'
@@ -24,7 +25,7 @@ export const createIngredient = async (
         comment,
         creation_date,
         image,
-        name: name.toLowerCase(),
+        name: capitalize(name),
         uom_id
       }
     })
@@ -91,7 +92,7 @@ export const updateIngredient = async (
     validations.uomId(uom_id)
     await prisma.ingredients.update({
       data: {
-        comment, image, name, uom_id
+        comment, image, name: capitalize(name), uom_id
       },
       where: {
         id

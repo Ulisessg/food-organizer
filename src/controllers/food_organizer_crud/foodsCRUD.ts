@@ -2,6 +2,7 @@
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import foodValidations, { validations } from 'models/foodValidations'
+import capitalize from 'utils/capitalize'
 import type { foods } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { response } from 'controllers/response'
@@ -39,7 +40,7 @@ export const createFood = async (
         creation_date,
         food_type_id,
         image,
-        name,
+        name: capitalize(name),
         preparation_time,
         score,
         used_counter
@@ -116,7 +117,7 @@ export const updateFood = async (
     const rowsAffected = await prisma.$executeRaw`UPDATE IGNORE foods SET
 food_type_id = ${food_type_id},
 image = ${image},
-name = ${name},
+name = ${capitalize(name)},
 preparation_time = ${preparation_time},
 score = ${score},
 used_counter = ${used_counter}

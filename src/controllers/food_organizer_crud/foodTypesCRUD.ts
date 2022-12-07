@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
+import capitalize from 'utils/capitalize'
 import foodTypeValidations from 'models/foodTypeValidations'
 import type { food_types } from '@prisma/client'
 import prisma from 'lib/prisma'
@@ -17,7 +18,7 @@ export const createFoodType = async (
       name
     })
     await prisma.food_types.create({
-      data: { creation_date, name: name.toLowerCase() }
+      data: { creation_date, name: capitalize(name) }
     })
     res.status(201).send({
       data: 'food type created successful',
@@ -66,7 +67,7 @@ export const updateFoodTypes = async (
       name
     })
     const result = await prisma.$executeRaw`UPDATE IGNORE food_types SET
-name = ${name.toLowerCase()}
+name = ${capitalize(name)}
 WHERE food_types.id = ${id}
 `
     console.log(result)

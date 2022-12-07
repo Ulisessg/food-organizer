@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from 'next'
+import capitalize from 'utils/capitalize'
 import prisma from 'lib/prisma'
 import { response } from 'controllers/response'
 import unitOfMeasureTypeVerification from 'models/unitOfMeasureTypeValidations'
@@ -17,7 +18,7 @@ export const insertUOMT = async (
     const result = await prisma.units_of_measure_types.create({
       data: {
         creation_date,
-        name: name.toLowerCase()
+        name: capitalize(name)
       }
     })
     res.status(201).send({
@@ -61,7 +62,7 @@ export const updateUOMT = async (
     const result = await prisma.units_of_measure_types.update({
       data: {
         creation_date,
-        name
+        name: capitalize(name)
       },
       where: {
         name
