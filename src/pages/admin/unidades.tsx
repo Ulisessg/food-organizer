@@ -2,12 +2,12 @@
 import { Description, DescriptionContainer, Title } from 'styles/pages/unidades.styles'
 import React, { FC, ReactNode } from 'react'
 import CreateUnitsOfMeasure from 'components/CreateUnitsOfMeasure'
+import CreateUnitsOfMeasureType from 'components/CreateUnitsOfMeasureType'
 import DisplayUnitsOfMeasure from 'components/DisplayUnitsOfMeasure'
 import ErrorMessage from 'components/common/ErrorMessage'
 import type { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
-import getUomtFromRequest from 'utils/getUomtFromRequest'
 import useGetRequest from 'hooks/useGetRequest'
 
 const Unidades: FC = () => {
@@ -26,25 +26,6 @@ const Unidades: FC = () => {
 
   return <Common>
     <>
-      <h2>Instrucciones</h2>
-
-      <DescriptionContainer>
-        <Description>
-          1. Utiliza la tabla de abajo, solo debes presionar el boton&nbsp;
-          <b>&quot;Editar&quot;</b>
-        </Description>
-
-        <Description>
-          2. Para confirmar los cambios presiona el boton&nbsp;
-          <b>&quot;Actualizar&quot;</b>
-        </Description>
-
-        <Description>
-          3. Si te arrepientes y no quieres cambiar nada solo presiona el boton&nbsp;
-          <b>&quot;Cancelar&quot;</b>
-        </Description>
-      </DescriptionContainer>
-      <CreateUnitsOfMeasure unitsOfMeasureTypes={getUomtFromRequest(data as GetUOM)} />
       <DisplayUnitsOfMeasure unitsOfMeasureTypes={data as GetUOM} />
     </>
   </Common>
@@ -64,6 +45,28 @@ const Common: FC<CommonProps> = ({ children }: CommonProps) => <>
     o eliminar las que no utilices siempre que desees!
     </Description>
   </DescriptionContainer>
+
+  <h2>Instrucciones</h2>
+
+  <DescriptionContainer>
+    <Description>
+      1. Utiliza la tabla de abajo, solo debes presionar el boton&nbsp;
+      <b>&quot;Editar&quot;</b>
+    </Description>
+
+    <Description>
+      2. Para confirmar los cambios presiona el boton&nbsp;
+      <b>&quot;Actualizar&quot;</b>
+    </Description>
+
+    <Description>
+      3. Si te arrepientes y no quieres cambiar nada solo presiona el boton&nbsp;
+      <b>&quot;Cancelar&quot;</b>
+    </Description>
+  </DescriptionContainer>
+
+  <CreateUnitsOfMeasure />
+  <CreateUnitsOfMeasureType />
   {children}
 </>
 

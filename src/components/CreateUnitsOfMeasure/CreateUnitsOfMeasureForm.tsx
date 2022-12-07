@@ -1,11 +1,17 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Button, Form, TextInput } from 'd-system'
+import { Button, Form, LoadingSpinner, TextInput } from 'd-system'
 import React, { FC, Fragment } from 'react'
-import { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
+import ErrorMessage from 'components/common/ErrorMessage'
+import { GetUOMT } from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
 import Select from 'components/common/Select'
+import useGetRequest from 'hooks/useGetRequest'
 
-const CreateUnitsOfMeasureForm: FC<CreateUomFormProps> = ({ unitsOfMeasureTypes }) => <>
+const CreateUnitsOfMeasureForm: FC = () => {
+  const { data, error, isLoading } = useGetRequest<GetUOMT>('/api/uomt')
+  const unitsOfMeasureTypes = data as GetUOMT
+
+  return <>
   <Form title="Crear unidad de medida">
     <TextInput
       id="uom_name"
@@ -23,22 +29,23 @@ const CreateUnitsOfMeasureForm: FC<CreateUomFormProps> = ({ unitsOfMeasureTypes 
       placeholder="Lt, pz, gr, ml..."
       type="text"
     />
-      <Select
-      labelText="Selecciona a que tipo de unidad de medida pertenece"
-        id="create_uomt_select"
-      >
-        <>
-        {unitsOfMeasureTypes.map(({ uomt_id, uomt_name }) => <Fragment key={uomt_id}>
-            <option value={uomt_name}>{uomt_name}</option>
+      {isLoading && <LoadingSpinner size="large" />}
+      {error && <ErrorMessage
+      message="Ocurrió un error obteniendo los tipo de unidad de medida"
+      action="Intenta de nuevo más tarde" />}
+      {(!error && !isLoading) && <>
+        <Select
+          labelText="Selecciona a que tipo de unidad de medida pertenece"
+          id="create_uomt_select"
+        >
+          {unitsOfMeasureTypes.map(({ id, name }) => <Fragment key={id}>
+            <option value={name}>{name}</option>
           </Fragment>)}
-        </>
-      </Select>
+        </Select>
+      </>}
     <Button colorMessage="continue" size="100%" type="button" text="Crear unidad de medida" />
   </Form>
 </>
-
-export interface CreateUomFormProps {
-  unitsOfMeasureTypes: Array<Pick<GetUOM[0], 'uomt_id' | 'uomt_name'>>
 }
 
 export default CreateUnitsOfMeasureForm

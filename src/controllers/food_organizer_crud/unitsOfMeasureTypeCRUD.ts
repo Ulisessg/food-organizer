@@ -81,3 +81,8 @@ export const updateUOMT = async (
 interface InsertUOMTBody extends NextApiRequest {
   body: units_of_measure_types
 }
+
+export type GetUOMT = Array<{
+  id: number
+  name: string
+}>
