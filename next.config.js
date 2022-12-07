@@ -3,6 +3,7 @@ const nextConfig = {
   compiler: {
     styledComponents: true
   },
+  distDir: 'build',
   // eslint-disable-next-line require-await, space-before-function-paren
   async headers() {
     return [
