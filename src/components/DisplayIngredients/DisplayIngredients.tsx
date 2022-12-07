@@ -40,7 +40,7 @@ const DisplayIngredients: FC<Props> = ({ ingredients }) => <TableContainer>
               { comment?.length === 0 && <Td>N/A</Td>}
               <Td>{uom_name}</Td>
               {/* Purchase places */}
-              {ingr_purchase_places.map(({
+              {ingr_purchase_places?.map(({
                 ingredient_purchase_place_id,
                 purchase_place_name
               }) => <Fragment key={ingredient_purchase_place_id}>
@@ -48,6 +48,7 @@ const DisplayIngredients: FC<Props> = ({ ingredients }) => <TableContainer>
                   className="ingredient_purchase_places"
                   >{purchase_place_name}</Td>
                 </Fragment>)}
+                {!Array.isArray(ingr_purchase_places) && <Td>N/A</Td>}
                 <EditTableButtons className="no_grid" onUpdate={onUpdate} />
             </TrStyles>
           </Fragment>)}
