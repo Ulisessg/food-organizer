@@ -1,9 +1,12 @@
+import axios, { AxiosRequestConfig } from 'axios'
 import { useCallback, useEffect, useState } from 'react'
-import axios from 'axios'
 import { response } from 'controllers/response'
 
 // eslint-disable-next-line max-lines-per-function
-const useGetRequest = <ReturnT>(url: string): IUseRequestReturn<ReturnT> => {
+const useGetRequest = <ReturnT>(
+  url: string,
+  requestConfig?: AxiosRequestConfig
+): IUseRequestReturn<ReturnT> => {
   const [
     useRequest,
     setUseRequest
@@ -14,37 +17,35 @@ const useGetRequest = <ReturnT>(url: string): IUseRequestReturn<ReturnT> => {
   })
 
   const getData = useCallback(
-    async (): Promise<void> => {
-      try {
-        const result = await axios.get<response<ReturnT>>(
-          url,
-          {
-            method: 'GET'
-          }
-        )
-        setUseRequest({
-          ...useRequest,
-          data: result.data.data as ReturnT,
-          error: result.data.error,
+    () => {
+      axios.get<response<ReturnT>>(
+        url,
+        {
+          ...requestConfig,
+          method: 'GET'
+        }
+      ).then((res) => {
+        setUseRequest((prev) => ({
+          ...prev,
+          data: res.data.data as ReturnT,
+          error: res.data.error,
           isLoading: false
+        }))
+      })
+        .catch((err: Error) => {
+          setUseRequest((prev) => ({
+            ...prev,
+            data: err.message,
+            error: true,
+            isLoading: false
+          }))
         })
-      } catch (error) {
-        const err = error as Error
-        setUseRequest({
-          ...useRequest,
-          data: err.message,
-          error: true,
-          isLoading: false
-        })
-      }
     },
-    [url]
+    []
   )
   useEffect(
     () => {
-      void (async () => {
-        await getData()
-      })()
+      getData()
     },
     [getData]
   )
