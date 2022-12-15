@@ -19,7 +19,7 @@
   "dependencies": {
     "@prisma/client": "4.7.1",
     "axios": "1.2.1",
-    "d-system": "0.24.1",
+    "d-system": "0.24.3",
     "dayjs": "1.11.7",
     "dotenv": "16.0.3",
     "mysql2": "2.3.3",
