@@ -15,7 +15,7 @@ const CreateIngredient: FC = () => {
 
   return <>
   <Details summary="Crear ingrediente">
-    <Form title="Crear ingrediente">
+    <Form formTitle="Crear ingrediente">
       <TextInput
         id="ingredient_name"
         inputMode="text"

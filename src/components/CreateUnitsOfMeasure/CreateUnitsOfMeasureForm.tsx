@@ -12,7 +12,7 @@ const CreateUnitsOfMeasureForm: FC = () => {
   const unitsOfMeasureTypes = data as GetUOMT
 
   return <>
-  <Form title="Crear unidad de medida">
+  <Form formTitle="Crear unidad de medida">
     <TextInput
       id="uom_name"
       inputMode="text"

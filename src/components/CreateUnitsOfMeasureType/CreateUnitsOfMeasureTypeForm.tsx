@@ -47,7 +47,7 @@ const CreateUnitsOfMeasureTypeForm: FC = () => {
   }
 
   return <>
-  <Form title="Crear tipo de unidad de medida">
+  <Form formTitle="Crear tipo de unidad de medida">
     <TextInput
       id="create_uomt_uom_name"
       inputMode="text"

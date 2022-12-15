@@ -4,7 +4,7 @@ import Details from 'components/common/Details'
 
 const CreatePurchasePlace: FC = () => <>
   <Details summary="Crear lugar de compra">
-  <Form title="Crear lugar de compra">
+  <Form formTitle="Crear lugar de compra">
     <TextInput
       id="name"
       inputMode="text"

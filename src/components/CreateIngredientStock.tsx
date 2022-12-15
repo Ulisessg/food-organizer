@@ -37,7 +37,7 @@ const CreateIngredientStock: FC = () => {
 
   return <>
   <Details summary="Añadir ingrediente disponible">
-      <Form title="Informacion del ingrediente">
+      <Form formTitle="Informacion del ingrediente">
         {isLoading && <LoadingSpinner size="large" />}
         {error && <ErrorMessage
           message="Error obteniendo ingredientes"

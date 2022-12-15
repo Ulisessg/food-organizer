@@ -41,7 +41,7 @@ const CreateFood: FC = () => {
   ChangeEvent<HTMLSelectElement>): void => setFoodTypeSelected(currentTarget.value)
   return <>
   <Details summary="Crear comida">
-    <Form title="Crear comida">
+    <Form formTitle="Crear comida">
       <TextInput
         id="food_name"
         inputMode="text"

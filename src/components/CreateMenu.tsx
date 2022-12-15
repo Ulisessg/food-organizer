@@ -42,7 +42,7 @@ const CreateMenu: FC = () => {
       {error &&
       <ErrorMessage message="Error obteniendo las comidas" action="intenta de nuevo más tarde"/>}
 
-      {(!error && !isLoading) && <Form title="Información del menú">
+      {(!error && !isLoading) && <Form formTitle="Información del menú">
         {selectsData.selects.map(({ selectId }, index) => <Fragment key={selectId}>
           {/* Required select */}
           {index === 0 &&

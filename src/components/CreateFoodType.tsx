@@ -4,7 +4,7 @@ import Details from './common/Details'
 
 const CreateFoodType: FC = () => (
   <Details summary="Crear tipo de comida">
-    <Form title="Tipo de comida">
+    <Form formTitle="Tipo de comida">
       <TextInput
         id="food_type_name"
         inputMode="text"
