@@ -9,20 +9,20 @@ import type { units_of_measure_types } from '@prisma/client'
 
 export const insertUOMT = async (
   req: InsertUOMTBody,
-  res: NextApiResponse<response<string>>
+  res: NextApiResponse<response<units_of_measure_types | string>>
 ): Promise<void> => {
   try {
     const { creation_date, name } = req.body
     // Id value set as 1 to not crash validations
     unitOfMeasureTypeVerification({ creationDate: creation_date as unknown as string, name })
-    await prisma.units_of_measure_types.create({
+    const creationResponse = await prisma.units_of_measure_types.create({
       data: {
         creation_date,
         name: capitalize(name)
       }
     })
     res.status(201).send({
-      data: 'Tipo de unidad de medida creada con éxito',
+      data: creationResponse,
       error: false
     })
   } catch (error) {

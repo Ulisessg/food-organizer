@@ -10,37 +10,37 @@ const useGetRequest = <ReturnT>(
   const [
     useRequest,
     setUseRequest
-  ] = useState<IUseRequestReturn<ReturnT>>({
+  ] = useState<Omit<IUseRequestReturn<ReturnT>, 'getData'>>({
     data: '',
     error: false,
     isLoading: true
   })
-
-  const getData = useCallback(
-    () => {
-      axios.get<response<ReturnT>>(
-        url,
-        {
-          ...requestConfig,
-          method: 'GET'
-        }
-      ).then((res) => {
+  const gData = (): void => {
+    axios.get<response<ReturnT>>(
+      url,
+      {
+        ...requestConfig,
+        method: 'GET'
+      }
+    ).then((res) => {
+      setUseRequest((prev) => ({
+        ...prev,
+        data: res.data.data as ReturnT,
+        error: res.data.error,
+        isLoading: false
+      }))
+    })
+      .catch((err: Error) => {
         setUseRequest((prev) => ({
           ...prev,
-          data: res.data.data as ReturnT,
-          error: res.data.error,
+          data: err.message,
+          error: true,
           isLoading: false
         }))
       })
-        .catch((err: Error) => {
-          setUseRequest((prev) => ({
-            ...prev,
-            data: err.message,
-            error: true,
-            isLoading: false
-          }))
-        })
-    },
+  }
+  const getData = useCallback(
+    gData,
     []
   )
   useEffect(
@@ -53,6 +53,7 @@ const useGetRequest = <ReturnT>(
   return {
     data: useRequest.data,
     error: useRequest.error,
+    getData,
     isLoading: useRequest.isLoading
   }
 }
@@ -63,4 +64,5 @@ interface IUseRequestReturn<T> {
   data: T | string
   error: boolean
   isLoading: boolean
+  getData: () => void
 }

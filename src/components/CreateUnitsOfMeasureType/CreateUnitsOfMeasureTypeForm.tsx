@@ -1,13 +1,25 @@
-import { Button, Form, LoadingSpinner, TextInput } from 'd-system'
-import React, { ChangeEvent, FC, MouseEvent, useState } from 'react'
-import styled from 'styled-components'
+/* eslint-disable max-lines-per-function */
+/* eslint-disable max-statements */
+import { Button, Form, LoadingSpinner, TextInput, useInputs } from 'd-system'
+import React, { ChangeEvent, FC, FormEvent, MouseEvent, useContext, useState } from 'react'
+import usePostRequest, { CallbacksResponse } from 'hooks/usePostRequest'
+import type { GetUOMT } from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
+import { LoadingSpinnerContainer } from 'components/common/FormInDetailsStyles'
+import RequestResultStyles from 'components/common/RequestResultStyles'
+import { UnitsOfMeasureContext } from 'context/unitsOfMeasureContext'
 import transformPostData from 'utils/transformPostData'
-import usePostRequest from 'hooks/usePostRequest'
+import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
-// eslint-disable-next-line max-lines-per-function
 const CreateUnitsOfMeasureTypeForm: FC = () => {
+  const { inputsData, inputsErrors, onBlur, onChange, restartInputs } = useInputs(
+    {
+      uomt: ''
+    },
+    true
+  )
+  const uomContext = useContext(UnitsOfMeasureContext)
   const { error, postData, requestEnd, requestInit, response } =
-  usePostRequest<UomtDataRequest>(
+  usePostRequest<UomtDataRequest, GetUOMT[0]>(
     '/api/uomt',
     { method: 'POST' }
   )
@@ -16,60 +28,82 @@ const CreateUnitsOfMeasureTypeForm: FC = () => {
     hideRequestMessage,
     setHideRequestMessage
   ] = useState<boolean>(false)
-  const [
-    uomt,
-    setUomt
-  ] = useState<string>('')
+
   const [
     disableButton,
     setDisableButton
   ] = useState<boolean>(true)
+  const { isRepeated, searchIsRepeated } = useValueIsRepeated<GetUOMT[0]>()
 
   const handleChange = (ev: ChangeEvent<HTMLInputElement>): void => {
+    onChange(ev)
     const { value } = ev.currentTarget
-    setUomt(value)
     if (ev.currentTarget.validity.valid) {
       setDisableButton(false)
     } else {
       setDisableButton(true)
       setHideRequestMessage(true)
     }
+    searchIsRepeated(
+      uomContext.unitsOfMeasureTypes,
+      'name',
+      value
+    )
   }
 
-  const sendUomt = (ev: MouseEvent<HTMLButtonElement>): void => {
+  const updateUomt = (res: CallbacksResponse<GetUOMT[0]>): void => {
+    uomContext.updateUomt(res.data?.data as GetUOMT[0])
+  }
+
+  const sendUomt = (ev: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>): void => {
+    ev.preventDefault()
     if (ev.currentTarget.form?.checkValidity() === true) {
       setHideRequestMessage(false)
       const data = transformPostData({
-        name: uomt
+        name: inputsData.uomt
       })
-      postData(data)
+      postData(
+        data,
+        updateUomt
+      )
     }
+    restartInputs('uomt')
+    setDisableButton(true)
+    ev.currentTarget.parentNode?.querySelector('input')?.focus()
+    setTimeout(
+      () => {
+        setHideRequestMessage(true)
+      },
+      1500
+    )
   }
 
   return <>
-  <Form formTitle="Crear tipo de unidad de medida">
+  <Form formTitle="Crear tipo de unidad de medida" onSubmit={sendUomt as any}>
     <TextInput
       id="create_uomt_uom_name"
       inputMode="text"
       label="Nombre del tipo de unidad de medida:"
-      name="create_uomt_uom_name"
+      name="uomt"
       type="text"
       required
       pattern="^[\p{L}\s]+$"
       acceptanceCriteria="Solo letras y espacios"
       maxLength={20}
       minLength={1}
-      value={uomt}
-      onChange={handleChange}
+      onChange={handleChange as any}
       style={{ textTransform: 'capitalize' }}
+      inputInvalid={inputsErrors.uomt}
+      value={inputsData.uomt}
+      onBlur={onBlur}
     />
     <Button
       colorMessage="continue"
       size="100%"
       type="button"
       text="Crear tipo de unidad de medida"
-      disabled={disableButton || requestInit}
-      onClick={sendUomt}
+      disabled={disableButton || requestInit || isRepeated}
+      onClick={sendUomt as any}
     />
 
     {requestInit && <LoadingSpinnerContainer>
@@ -83,29 +117,25 @@ const CreateUnitsOfMeasureTypeForm: FC = () => {
       hidden={hideRequestMessage}
       aria-live="assertive"
       isError={error}
+      role="alert"
       >
-        {requestEnd && response}
+        {(requestEnd && !error) && 'Tipo de unidad creada'}
+        {(requestEnd && error) && response as string}
       </RequestResultStyles>
+
+      <RequestResultStyles
+        isError={isRepeated}
+        aria-hidden={!isRepeated}
+        hidden={!isRepeated}
+        aria-live="assertive"
+        role="alert"
+      >
+        {isRepeated && 'Ese tipo de unidad ya existe'}
+      </RequestResultStyles>
+
   </Form>
 </>
 }
-
-const RequestResultStyles = styled.span<{ isError: boolean }>`
-  color: ${({ theme, isError }) => {
-    if (isError) return theme.colors.error
-    return theme.colors.light2
-  }};
-  font-size: 20px;
-  text-align: center;
-  margin-top: 40px;
-`
-
-const LoadingSpinnerContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  margin-top: 40px;
-`
 
 interface UomtDataRequest {
   creation_date: string

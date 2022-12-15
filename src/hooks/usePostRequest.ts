@@ -1,24 +1,28 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import type { response } from 'controllers/response'
 import { useState } from 'react'
 
 // eslint-disable-next-line max-lines-per-function
-const usePostRequest = <DataSend>
+const usePostRequest = <DataSend, Res>
   (
     url: string,
     axiosConfig?: AxiosRequestConfig<DataSend>
-  ): UsePostRequestReturn<DataSend> => {
+  ): UsePostRequestReturn<DataSend, Res> => {
   const [
     requestInfo,
     setRequestInfo
-  ] = useState<UsePostRequestInfo>({
+  ] = useState<UsePostRequestInfo<Res>>({
     error: false,
     requestEnd: false,
     requestInit: false,
     response: ''
   })
 
-  const postData = (data: DataSend): void => {
+  const postData = (
+    data: DataSend,
+    successCallback?: (res: CallbacksResponse<Res>) => void,
+    errorCallback?: (res: CallbacksResponse<Res>) => void
+  ): void => {
     setRequestInfo((prev) => ({
       ...prev,
       error: false,
@@ -26,7 +30,7 @@ const usePostRequest = <DataSend>
       requestInit: true,
       response: ''
     }))
-    axios.post<response<string>>(
+    axios.post<response<string | Res>>(
       url,
       data,
       { ...axiosConfig }
@@ -38,6 +42,7 @@ const usePostRequest = <DataSend>
         requestInit: false,
         response: resp.data.data as string
       }))
+      if (typeof successCallback !== 'undefined') successCallback(resp as any)
     })
       .catch((err) => {
         setRequestInfo((prev) => ({
@@ -47,6 +52,7 @@ const usePostRequest = <DataSend>
           requestInit: false,
           response: err.response.data.data
         }))
+        if (typeof errorCallback !== 'undefined') errorCallback(err)
       })
   }
 
@@ -56,15 +62,20 @@ const usePostRequest = <DataSend>
   }
 }
 
-interface UsePostRequestReturn<Data> extends UsePostRequestInfo {
-  postData: (data: Data) => void
+interface UsePostRequestReturn<Data, Res> extends UsePostRequestInfo<Res> {
+  postData: (data: Data,
+    successCallback?: (rs: CallbacksResponse<Res>) => void,
+    errorCallback?: (rs: CallbacksResponse<Res>) => void
+  ) => void
 }
 
-interface UsePostRequestInfo {
+export type CallbacksResponse<T> = response<AxiosResponse<T>>
+
+interface UsePostRequestInfo<T> {
   requestInit: boolean
   requestEnd: boolean
   error: boolean
-  response: string
+  response: string | T
 }
 
 export default usePostRequest

@@ -8,6 +8,9 @@ import ErrorMessage from 'components/common/ErrorMessage'
 import type { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
+import {
+  UnitsOfMeasureContextProvider
+} from 'context/unitsOfMeasureContext'
 import useGetRequest from 'hooks/useGetRequest'
 
 const Unidades: FC = () => {
@@ -65,9 +68,11 @@ const Common: FC<CommonProps> = ({ children }: CommonProps) => <>
     </Description>
   </DescriptionContainer>
 
-  <CreateUnitsOfMeasure />
-  <CreateUnitsOfMeasureType />
-  {children}
+  <UnitsOfMeasureContextProvider>
+    <CreateUnitsOfMeasure />
+    <CreateUnitsOfMeasureType />
+    {children}
+  </UnitsOfMeasureContextProvider>
 </>
 
 interface CommonProps {
