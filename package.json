@@ -19,17 +19,17 @@
   "dependencies": {
     "@prisma/client": "4.7.1",
     "axios": "1.2.1",
-    "d-system": "0.24.3",
+    "d-system": "0.24.5",
     "dayjs": "1.11.7",
     "dotenv": "16.0.3",
     "mysql2": "2.3.3",
-    "next": "13.0.6",
+    "next": "13.0.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "5.3.6"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "13.0.6",
+    "@next/eslint-plugin-next": "13.0.7",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "13.4.0",
     "@testing-library/user-event": "14.4.3",
