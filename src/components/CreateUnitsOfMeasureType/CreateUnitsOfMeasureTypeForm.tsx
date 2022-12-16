@@ -49,6 +49,8 @@ const CreateUnitsOfMeasureTypeForm: FC = () => {
       'name',
       value
     )
+    ev.currentTarget.checkValidity()
+    ev.currentTarget.reportValidity()
   }
 
   const updateUomt = (res: CallbacksResponse<GetUOMT[0]>): void => {
@@ -93,7 +95,7 @@ const CreateUnitsOfMeasureTypeForm: FC = () => {
       minLength={1}
       onChange={handleChange as any}
       style={{ textTransform: 'capitalize' }}
-      inputInvalid={inputsErrors.uomt}
+      inputInvalid={inputsErrors.uomt || isRepeated}
       value={inputsData.uomt}
       onBlur={onBlur}
     />
