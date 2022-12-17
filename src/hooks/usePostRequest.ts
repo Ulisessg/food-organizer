@@ -18,11 +18,7 @@ const usePostRequest = <DataSend, Res>
     response: ''
   })
 
-  const postData = (
-    data: DataSend,
-    successCallback?: (res: CallbacksResponse<Res>) => void,
-    errorCallback?: (res: CallbacksResponse<Res>) => void
-  ): void => {
+  const postData = async (data: DataSend): Promise<AxiosResponse<response<Res | string>>> => {
     setRequestInfo((prev) => ({
       ...prev,
       error: false,
@@ -30,30 +26,31 @@ const usePostRequest = <DataSend, Res>
       requestInit: true,
       response: ''
     }))
-    axios.post<response<string | Res>>(
-      url,
-      data,
-      { ...axiosConfig }
-    ).then((resp) => {
+    try {
+      const result = await axios.post<response<string | Res>>(
+        url,
+        data,
+        { ...axiosConfig }
+      )
       setRequestInfo((prev) => ({
         ...prev,
         error: false,
         requestEnd: true,
         requestInit: false,
-        response: resp.data.data as string
+        response: result.data.data as string
       }))
-      if (typeof successCallback !== 'undefined') successCallback(resp as any)
-    })
-      .catch((err) => {
-        setRequestInfo((prev) => ({
-          ...prev,
-          error: true,
-          requestEnd: true,
-          requestInit: false,
-          response: err.response.data.data
-        }))
-        if (typeof errorCallback !== 'undefined') errorCallback(err)
-      })
+      return result
+    } catch (error) {
+      const err = error as any
+      setRequestInfo((prev) => ({
+        ...prev,
+        error: true,
+        requestEnd: true,
+        requestInit: false,
+        response: err.response.data.data
+      }))
+      return error as any
+    }
   }
 
   return {
@@ -63,10 +60,7 @@ const usePostRequest = <DataSend, Res>
 }
 
 interface UsePostRequestReturn<Data, Res> extends UsePostRequestInfo<Res> {
-  postData: (data: Data,
-    successCallback?: (rs: CallbacksResponse<Res>) => void,
-    errorCallback?: (rs: CallbacksResponse<Res>) => void
-  ) => void
+  postData: (data: Data) => Promise<AxiosResponse<response<Res | string>>>
 }
 
 export type CallbacksResponse<T> = response<AxiosResponse<T>>

@@ -6,7 +6,7 @@ import { Button, Form, LoadingSpinner, TextInput, useInputs } from 'd-system'
 import React, {
   ChangeEvent,
   FC,
-  Fragment, MouseEvent, useContext, useState
+  Fragment, MouseEvent, useContext, useRef, useState
 } from 'react'
 import AlertMessage from 'components/common/RequestResultStyles'
 import ErrorMessage from 'components/common/ErrorMessage'
@@ -21,6 +21,7 @@ import usePostRequest from 'hooks/usePostRequest'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
 const CreateUnitsOfMeasureForm: FC = () => {
+  const formRef = useRef<HTMLFormElement>(null)
   const uomContext = useContext(UnitsOfMeasureContext)
   const {
     isRepeated: uomIsRepeated,
@@ -94,22 +95,19 @@ const CreateUnitsOfMeasureForm: FC = () => {
         name: inputsData.uom_name,
         uomt_id: uomtId
       })
-      postData(
-        requestData
-        ,
-        (res) => {
-          setShowSuccessMessage(true)
-          restartInputs('all')
-          setDisableButton(true)
-          uomContext.updateUom(res.data?.data as units_of_measure)
-          setTimeout(
-            () => {
-              setShowSuccessMessage(false)
-            },
-            1500
-          )
-        },
-        () => {
+      postData(requestData).then((res) => {
+        setShowSuccessMessage(true)
+        restartInputs('all')
+        setDisableButton(true)
+        uomContext.updateUom(res.data?.data as units_of_measure)
+        setTimeout(
+          () => {
+            setShowSuccessMessage(false)
+          },
+          1500
+        )
+      })
+        .catch(() => {
           setShowRequestErrorMessage(true)
           setTimeout(
             () => {
@@ -117,13 +115,15 @@ const CreateUnitsOfMeasureForm: FC = () => {
             },
             1500
           )
-        }
-      )
+        })
+        .finally(() => {
+          formRef.current?.parentNode?.querySelector('summary')?.focus()
+        })
     }
   }
 
   return <>
-  <Form formTitle="Crear unidad de medida">
+  <Form formTitle="Crear unidad de medida" ref={formRef}>
     <TextInput
       id="uom_name"
       inputMode="text"

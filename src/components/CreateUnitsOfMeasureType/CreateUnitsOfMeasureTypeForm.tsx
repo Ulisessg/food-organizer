@@ -1,16 +1,17 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-statements */
 import { Button, Form, LoadingSpinner, TextInput, useInputs } from 'd-system'
-import React, { ChangeEvent, FC, FormEvent, MouseEvent, useContext, useState } from 'react'
-import usePostRequest, { CallbacksResponse } from 'hooks/usePostRequest'
+import React, { ChangeEvent, FC, FormEvent, MouseEvent, useContext, useRef, useState } from 'react'
 import type { GetUOMT } from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
 import { LoadingSpinnerContainer } from 'components/common/FormInDetailsStyles'
 import RequestResultStyles from 'components/common/RequestResultStyles'
 import { UnitsOfMeasureContext } from 'context/unitsOfMeasureContext'
 import transformPostData from 'utils/transformPostData'
+import usePostRequest from 'hooks/usePostRequest'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
 const CreateUnitsOfMeasureTypeForm: FC = () => {
+  const formRef = useRef<HTMLFormElement>(null)
   const { inputsData, inputsErrors, onBlur, onChange, restartInputs } = useInputs(
     {
       uomt: ''
@@ -53,8 +54,8 @@ const CreateUnitsOfMeasureTypeForm: FC = () => {
     ev.currentTarget.reportValidity()
   }
 
-  const updateUomt = (res: CallbacksResponse<GetUOMT[0]>): void => {
-    uomContext.updateUomt(res.data?.data as GetUOMT[0])
+  const updateUomt = (data: GetUOMT[0]): void => {
+    uomContext.updateUomt(data)
   }
 
   const sendUomt = (ev: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>): void => {
@@ -64,24 +65,29 @@ const CreateUnitsOfMeasureTypeForm: FC = () => {
       const data = transformPostData({
         name: inputsData.uomt
       })
-      postData(
-        data,
-        updateUomt
-      )
+      postData(data).then((res) => {
+        updateUomt(res.data.data as GetUOMT[0])
+      })
+        .finally(() => {
+          restartInputs('uomt')
+          setDisableButton(true)
+          const button = formRef.current?.querySelector('button') as HTMLButtonElement
+          button.blur()
+          const summary = formRef.current?.parentNode?.querySelector('summary')
+          summary?.focus()
+
+          setTimeout(
+            () => {
+              setHideRequestMessage(true)
+            },
+            1500
+          )
+        })
     }
-    restartInputs('uomt')
-    setDisableButton(true)
-    ev.currentTarget.parentNode?.querySelector('input')?.focus()
-    setTimeout(
-      () => {
-        setHideRequestMessage(true)
-      },
-      1500
-    )
   }
 
   return <>
-  <Form formTitle="Crear tipo de unidad de medida" onSubmit={sendUomt as any}>
+  <Form formTitle="Crear tipo de unidad de medida" onSubmit={sendUomt as any} ref={formRef}>
     <TextInput
       id="create_uomt_uom_name"
       inputMode="text"
