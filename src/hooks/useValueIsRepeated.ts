@@ -10,15 +10,6 @@ const useValueIsRepeated = <T extends Object>(): UseValueIsRepeatedReturn<T> => 
    (list, key, valueToSearch) => {
      let existValueRepeated: boolean = false
      list.forEach((element) => {
-       console.log(
-         'Element',
-         element
-       )
-       console.log(
-         'Key',
-         key
-       )
-       console.log(valueToSearch)
        const elementValue = element[key] as string
        if (elementValue.toLowerCase() === valueToSearch.toLowerCase()) {
          existValueRepeated = true

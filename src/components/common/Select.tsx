@@ -6,10 +6,12 @@ const Select: FC<Props> = ({
   labelText,
   children,
   onChange,
-  value
+  value,
+  name,
+  required
 }) => <LabelSelect htmlFor={id}>
   <p>{labelText}</p>
-  <SelectStyles id={id} onChange={onChange} value={value}>
+  <SelectStyles onChange={onChange} id={id} value={value} name={name} required={required}>
   <option value="Selecciona una opcion" disabled>-- Selecciona una opcion --</option>
   {children}
   </SelectStyles>
@@ -23,6 +25,8 @@ interface Props {
   children: ReactNode
   onChange?: (ev: React.ChangeEvent<HTMLSelectElement>) => void
   value?: string
+  name?: string
+  required?: boolean
 }
 
 const SelectStyles = styled.select`

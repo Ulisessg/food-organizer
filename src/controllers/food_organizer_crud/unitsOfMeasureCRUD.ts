@@ -9,7 +9,7 @@ import { units_of_measure } from '@prisma/client'
 
 export const createUOM = async (
   req: CreateUOM,
-  res: NextApiResponse<response<units_of_measure>>
+  res: NextApiResponse<response<units_of_measure | string>>
 ): Promise<void> => {
   try {
     const { abbreviation, creation_date, name, uomt_id } = req.body
@@ -33,7 +33,7 @@ export const createUOM = async (
   } catch (error) {
     console.error(error)
     res.status(400).send({
-      data: null,
+      data: 'Error creando unidad de medida',
       error: true
     })
   }

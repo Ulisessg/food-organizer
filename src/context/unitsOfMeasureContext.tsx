@@ -2,6 +2,7 @@
 import { FC, ReactNode, createContext, useEffect, useState } from 'react'
 import type { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import type { GetUOMT } from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
+import extractUomNames from 'utils/extractUnitsOfMeasure'
 import useGetRequest from 'hooks/useGetRequest'
 
 const initialValues: ContextValue = {
@@ -13,6 +14,7 @@ const initialValues: ContextValue = {
     error: false,
     message: ''
   },
+  unitsOfMeasure: [],
   unitsOfMeasureOrderByUomt: [],
   unitsOfMeasureTypes: [],
   uomIsLoading: true,
@@ -38,23 +40,26 @@ export const UnitsOfMeasureContextProvider: FC<ContextProps> = ({ children }) =>
     error: uomError,
     isLoading: uomIsLoading,
     getData: oumGetData
-  } = useGetRequest('/api/uom')
+  } = useGetRequest<GetUOM>('/api/uom')
 
   const {
     data: uomtData,
     error: uomtError,
     getData: uomtGetData,
     isLoading: uomtIsLoading
-  } = useGetRequest('/api/uomt')
+  } = useGetRequest<GetUOMT>('/api/uomt')
 
   const updateUom = (data: GetUOM[0]): void => {
-    setContextValues((prev) => ({
-      ...prev,
-      unitsOfMeasureOrderByUomt: [
-        ...prev.unitsOfMeasureOrderByUomt,
-        data
-      ]
-    }))
+
+    /*
+     * SetContextValues((prev) => ({
+     *   ...prev,
+     *   unitsOfMeasureOrderByUomt: [
+     *     ...prev.unitsOfMeasureOrderByUomt,
+     *     data
+     *   ]
+     * }))
+     */
   }
   const updateUomt = (data: GetUOMT[0]): void => {
     setContextValues((prev) => ({
@@ -70,14 +75,14 @@ export const UnitsOfMeasureContextProvider: FC<ContextProps> = ({ children }) =>
     () => {
       oumGetData()
     },
-    []
+    [oumGetData]
   )
 
   useEffect(
     () => {
       uomtGetData()
     },
-    []
+    [uomtGetData]
   )
 
   useEffect(
@@ -99,6 +104,7 @@ export const UnitsOfMeasureContextProvider: FC<ContextProps> = ({ children }) =>
               error: false,
               message: ''
             },
+            unitsOfMeasure: extractUomNames(uomData as GetUOM),
             unitsOfMeasureOrderByUomt: uomData as GetUOM,
             uomIsLoading: false
           }))
@@ -160,6 +166,7 @@ interface ContextProps {
 interface ContextValue {
   unitsOfMeasureTypes: GetUOMT
   unitsOfMeasureOrderByUomt: GetUOM
+  unitsOfMeasure: GetUOM[0]['uom']
   errorGettingUomt: {
     error: boolean
     message: string
