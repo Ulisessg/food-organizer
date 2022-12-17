@@ -1,17 +1,14 @@
 import { Button, FileInput, Form, LoadingSpinner, TextInput } from 'd-system'
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import Details from '../common/Details'
 import ErrorMessage from '../common/ErrorMessage'
-import { GetPurchasePlaces } from 'controllers/food_organizer_crud/purchasePlaceCRUD'
-import { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
+import { IngredientsContext } from 'context/ingredientsContext'
 import PurchasePlaces from './PurchasePlaces'
 import UnitsOfMeasure from './UnitsOfMeasure'
-import useGetRequest from 'hooks/useGetRequest'
 
 // eslint-disable-next-line max-lines-per-function
 const CreateIngredient: FC = () => {
-  const { data, error, isLoading } = useGetRequest<GetPurchasePlaces>('/api/purchase')
-  const { data: uomData, error: uomError, isLoading: uomIsLoading } = useGetRequest('/api/uom')
+  const ingredientsContext = useContext(IngredientsContext)
 
   return <>
   <Details summary="Crear ingrediente">
@@ -27,25 +24,27 @@ const CreateIngredient: FC = () => {
 
       {/* Purchase places */}
 
-      {error && <ErrorMessage
+      {ingredientsContext.errorGettingPurchasePlaces && <ErrorMessage
           message="Error obteniendo lugares de compra"
           action="intenta de nuevo mas tarde"
         />
       }
-      {isLoading && <LoadingSpinner size="small" />}
-      {(!isLoading && !error) && <PurchasePlaces
-        data={data as GetPurchasePlaces}
+      {ingredientsContext.purchasePlacesIsLoading && <LoadingSpinner size="small" />}
+      {(!ingredientsContext.purchasePlacesIsLoading &&
+      !ingredientsContext.errorGettingPurchasePlaces) && <PurchasePlaces
+        data={ingredientsContext.purchasePlaces}
         initialSelectId="143123" /> }
 
       {/* Units Of Measure */}
 
-      {uomIsLoading && <LoadingSpinner size="small" />}
-      {uomError && <ErrorMessage
+      {ingredientsContext.uomIsLoading && <LoadingSpinner size="small" />}
+      {ingredientsContext.errorGettingUom && <ErrorMessage
           message="Error obteniendo unidades de medida"
           action="intenta de nuevo mas tarde"
         />
       }
-      {(!uomIsLoading && !uomError) && <UnitsOfMeasure data={uomData as GetUOM} />}
+      {(!ingredientsContext.uomIsLoading && !ingredientsContext.errorGettingUom) &&
+       <UnitsOfMeasure data={ingredientsContext.unitsOfMeasure} />}
       <TextInput
         id="ingredient_comment"
         inputMode="text"
