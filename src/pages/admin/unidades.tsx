@@ -1,41 +1,15 @@
 /* eslint-disable max-lines-per-function */
 import { Description, DescriptionContainer, Title } from 'styles/pages/unidades.styles'
-import React, { FC, ReactNode } from 'react'
+import React, { FC } from 'react'
 import CreateUnitsOfMeasure from 'components/CreateUnitsOfMeasure'
 import CreateUnitsOfMeasureType from 'components/CreateUnitsOfMeasureType'
 import DisplayUnitsOfMeasure from 'components/DisplayUnitsOfMeasure'
-import ErrorMessage from 'components/common/ErrorMessage'
-import type { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import Head from 'next/head'
-import { LoadingSpinner } from 'd-system'
 import {
   UnitsOfMeasureContextProvider
 } from 'context/unitsOfMeasureContext'
-import useGetRequest from 'hooks/useGetRequest'
 
-const Unidades: FC = () => {
-  const { data, error, isLoading } = useGetRequest<GetUOM>('/api/uom')
-  if (isLoading) {
-    return <Common>
-        <LoadingSpinner size="large" />
-      </Common>
-  } else if (error) {
-    return <Common>
-        <ErrorMessage
-          message={data as string}
-          action="intenta de nuevo en unos momentos 😀"/>
-      </Common>
-  }
-
-  return <Common>
-    <>
-      <DisplayUnitsOfMeasure unitsOfMeasureTypes={data as GetUOM} />
-    </>
-  </Common>
-}
-
-const Common: FC<CommonProps> = ({ children }: CommonProps) => <>
-
+const Unidades: FC = () => <>
   <Head>
     <title>Administrar unidades de medida</title>
   </Head>
@@ -71,12 +45,9 @@ const Common: FC<CommonProps> = ({ children }: CommonProps) => <>
   <UnitsOfMeasureContextProvider>
     <CreateUnitsOfMeasure />
     <CreateUnitsOfMeasureType />
-    {children}
+    <DisplayUnitsOfMeasure />
   </UnitsOfMeasureContextProvider>
-</>
 
-interface CommonProps {
-  children: ReactNode
-}
+  </>
 
 export default Unidades
