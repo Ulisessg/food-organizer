@@ -97,10 +97,11 @@ const CreateUnitsOfMeasureForm: FC = () => {
       postData(
         requestData
         ,
-        () => {
+        (res) => {
           setShowSuccessMessage(true)
           restartInputs('all')
           setDisableButton(true)
+          uomContext.updateUom(res.data?.data as units_of_measure)
           setTimeout(
             () => {
               setShowSuccessMessage(false)

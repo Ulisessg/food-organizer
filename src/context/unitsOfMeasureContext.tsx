@@ -1,8 +1,11 @@
+/* eslint-disable camelcase */
 /* eslint-disable max-lines-per-function */
 import { FC, ReactNode, createContext, useEffect, useState } from 'react'
 import type { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import type { GetUOMT } from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
 import extractUomNames from 'utils/extractUnitsOfMeasure'
+import insertUnitOfMeasure from 'utils/insertUnitOfMeasure'
+import { units_of_measure } from '@prisma/client'
 import useGetRequest from 'hooks/useGetRequest'
 
 const initialValues: ContextValue = {
@@ -49,17 +52,25 @@ export const UnitsOfMeasureContextProvider: FC<ContextProps> = ({ children }) =>
     isLoading: uomtIsLoading
   } = useGetRequest<GetUOMT>('/api/uomt')
 
-  const updateUom = (data: GetUOM[0]): void => {
-
-    /*
-     * SetContextValues((prev) => ({
-     *   ...prev,
-     *   unitsOfMeasureOrderByUomt: [
-     *     ...prev.unitsOfMeasureOrderByUomt,
-     *     data
-     *   ]
-     * }))
-     */
+  const updateUom = (data: units_of_measure): void => {
+    setContextValues((prev) => ({
+      ...prev,
+      unitsOfMeasure: [
+        ...prev.unitsOfMeasure,
+        {
+          abbreviation: data.abbreviation,
+          id: data.id,
+          name: data.name
+        }
+      ],
+      unitsOfMeasureOrderByUomt: [
+        ...insertUnitOfMeasure(
+          prev.unitsOfMeasureOrderByUomt,
+          data,
+          prev.unitsOfMeasureTypes
+        )
+      ]
+    }))
   }
   const updateUomt = (data: GetUOMT[0]): void => {
     setContextValues((prev) => ({
@@ -178,5 +189,5 @@ interface ContextValue {
   uomIsLoading: boolean
   uomtIsLoading: boolean
   updateUomt: (data: GetUOMT[0]) => void
-  updateUom: (data: GetUOM[0]) => void
+  updateUom: (data: units_of_measure) => void
 }
