@@ -41,14 +41,12 @@ export const UnitsOfMeasureContextProvider: FC<ContextProps> = ({ children }) =>
   const {
     data: uomData,
     error: uomError,
-    isLoading: uomIsLoading,
-    getData: oumGetData
+    isLoading: uomIsLoading
   } = useGetRequest<GetUOM>('/api/uom')
 
   const {
     data: uomtData,
     error: uomtError,
-    getData: uomtGetData,
     isLoading: uomtIsLoading
   } = useGetRequest<GetUOMT>('/api/uomt')
 
@@ -84,20 +82,6 @@ export const UnitsOfMeasureContextProvider: FC<ContextProps> = ({ children }) =>
 
   useEffect(
     () => {
-      oumGetData()
-    },
-    [oumGetData]
-  )
-
-  useEffect(
-    () => {
-      uomtGetData()
-    },
-    [uomtGetData]
-  )
-
-  useEffect(
-    () => {
       if (!uomIsLoading) {
         if (uomError) {
           setContextValues((prev) => ({
@@ -108,18 +92,18 @@ export const UnitsOfMeasureContextProvider: FC<ContextProps> = ({ children }) =>
             },
             uomIsLoading: false
           }))
-        } else {
-          setContextValues((prev) => ({
-            ...prev,
-            errorGettingUom: {
-              error: false,
-              message: ''
-            },
-            unitsOfMeasure: extractUomNames(uomData as GetUOM),
-            unitsOfMeasureOrderByUomt: uomData as GetUOM,
-            uomIsLoading: false
-          }))
+          return
         }
+        setContextValues((prev) => ({
+          ...prev,
+          errorGettingUom: {
+            error: false,
+            message: ''
+          },
+          unitsOfMeasure: extractUomNames(uomData as GetUOM),
+          unitsOfMeasureOrderByUomt: uomData as GetUOM,
+          uomIsLoading: false
+        }))
       }
     },
     [

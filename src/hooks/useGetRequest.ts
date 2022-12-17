@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { response } from 'controllers/response'
 
 // eslint-disable-next-line max-lines-per-function
@@ -7,6 +7,9 @@ const useGetRequest = <ReturnT>(
   url: string,
   requestConfig?: AxiosRequestConfig
 ): IUseRequestReturn<ReturnT> => {
+  const reqConfigRef = useRef(requestConfig)
+  const urlRef = useRef(url)
+
   const [
     useRequest,
     setUseRequest
@@ -15,45 +18,42 @@ const useGetRequest = <ReturnT>(
     error: false,
     isLoading: true
   })
-  const gData = (): void => {
-    axios.get<response<ReturnT>>(
-      url,
-      {
-        ...requestConfig,
-        method: 'GET'
-      }
-    ).then((res) => {
-      setUseRequest((prev) => ({
-        ...prev,
-        data: res.data.data as ReturnT,
-        error: res.data.error,
-        isLoading: false
-      }))
-    })
-      .catch((err: Error) => {
-        setUseRequest((prev) => ({
-          ...prev,
-          data: err.message,
-          error: true,
-          isLoading: false
-        }))
-      })
-  }
-  const getData = useCallback(
-    gData,
-    []
-  )
+
   useEffect(
     () => {
-      getData()
+      const getData = async (): Promise<void> => {
+        try {
+          const res = await axios.get<response<ReturnT>>(
+            urlRef.current,
+            {
+              ...reqConfigRef.current,
+              method: 'GET'
+            }
+          )
+          setUseRequest((prev) => ({
+            ...prev,
+            data: res.data.data as ReturnT,
+            error: res.data.error,
+            isLoading: false
+          }))
+        } catch (error) {
+          const err = error as Error
+          setUseRequest((prev) => ({
+            ...prev,
+            data: err.message,
+            error: true,
+            isLoading: false
+          }))
+        }
+      }
+      void getData()
     },
-    [getData]
+    []
   )
 
   return {
     data: useRequest.data,
     error: useRequest.error,
-    getData,
     isLoading: useRequest.isLoading
   }
 }
@@ -64,5 +64,4 @@ interface IUseRequestReturn<T> {
   data: T | string
   error: boolean
   isLoading: boolean
-  getData: () => void
 }
