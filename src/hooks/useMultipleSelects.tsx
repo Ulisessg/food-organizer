@@ -1,5 +1,14 @@
 /* eslint-disable max-lines-per-function */
-import { ChangeEvent, MouseEvent, useState } from 'react'
+import {
+  ButtonAddSelect,
+  ButtonDeleteSelect,
+  Container as MultipleSelectsContainer
+} from 'components/common/MultipleSelects'
+import {
+  ChangeEvent,
+  ComponentPropsWithoutRef, FC, Fragment, MouseEvent, useState
+} from 'react'
+import Select from 'components/common/Select'
 import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
 
@@ -53,6 +62,22 @@ const useMultipleSelects = (): UseMultipleSelectsReturn => {
     }))
   }
 
+  const resetMultipleSelect = (): void => {
+    const resetSelectsData = [data.selects[0]]
+    setData((prev) => ({
+      ...prev,
+      selects: resetSelectsData,
+      selectsValues: [
+        {
+          ...prev.selectsValues[0],
+          prevValue: defaultSelectValue,
+          value: defaultSelectValue
+        }
+      ],
+      valuesUsed: []
+    }))
+  }
+
   const onChange = (ev: ChangeEvent<HTMLSelectElement>): void => {
     const selectId = ev.currentTarget.id
     const selectNextValue = ev.currentTarget.value
@@ -83,17 +108,75 @@ const useMultipleSelects = (): UseMultipleSelectsReturn => {
     }))
   }
 
+  const MultipleSelectsComponent: UseMultipleSelectsReturn['Component'] = (props) => <>
+    {data.selects.map(({ selectId }, indx) => <Fragment key={randomId()}>
+      {indx === 0 &&
+      <Select
+        {...props.selectProps}
+        id={data.selectsValues[indx].selectId}
+        labelText={props.label}
+        key={randomId()}
+        onChange={onChange}
+        value={data.selectsValues[indx].value}>
+          {props.options.map((opt) => {
+            const value = opt[props.optionValueKeyName]
+            return <option
+                {...props.optionProps}
+                key={randomId()}
+                value={opt[props.optionValueKeyName]}
+                disabled={typeof data.valuesUsed.find((vUsed) => vUsed === value) !== 'undefined'}
+                >
+                  {value}
+                </option>
+          })}
+      </Select>}
+      {indx !== 0 && <MultipleSelectsContainer key={randomId()}>
+          <Select
+            {...props.selectProps}
+            id={data.selectsValues[indx].selectId}
+            labelText={props.label}
+            key={randomId() + randomId()}
+            onChange={onChange}
+            value={data.selectsValues[indx].value}
+            >
+              {props.options.map((opt) => {
+                const value = opt[props.optionValueKeyName]
+                return <option
+                {...props.optionProps}
+                key={randomId()}
+                value={opt[props.optionValueKeyName]}
+                disabled={typeof data.valuesUsed.find((vUsed) => vUsed === value) !== 'undefined'}
+                >
+                  {value}
+                </option>
+              })}
+          </Select>
+          <ButtonDeleteSelect
+            data-select-id={selectId}
+            onClick={deleteSelect}
+          />
+        </MultipleSelectsContainer>}
+    </Fragment>)}
+    <ButtonAddSelect
+      disabled={data.selects.length === props.options.length}
+      text={props.addSelectButtonText}
+      onClick={addSelect}
+    />
+  </>
+
   return {
+    Component: MultipleSelectsComponent,
     addSelect,
     data,
     deleteSelect,
-    onChange
+    onChange,
+    resetMultipleSelect
   }
 }
 
 export default useMultipleSelects
 
-interface SelectsState {
+export interface SelectsState {
   selects: Array<{
     selectId: string
   }>
@@ -105,9 +188,22 @@ interface SelectsState {
   valuesUsed: string[]
 }
 
-interface UseMultipleSelectsReturn {
+export interface UseMultipleSelectsReturn {
   onChange: (ev: ChangeEvent<HTMLSelectElement>) => void
   addSelect: () => void
   deleteSelect: (ev: MouseEvent<HTMLButtonElement>) => void
   data: SelectsState
+  Component: FC<{
+    selectProps?: ComponentPropsWithoutRef<'select'>
+    optionProps?: ComponentPropsWithoutRef<'option'>
+    options: Array<{
+      id: number
+      [k: string]: any
+    }>
+    label: string
+    addSelectButtonText: string
+    // Indicates the property extracted from options object
+    optionValueKeyName: string
+  }>
+  resetMultipleSelect: () => void
 }
