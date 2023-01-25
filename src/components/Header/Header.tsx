@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { type FC } from 'react'
 import { Container } from './Header.styles'
 import { Link } from 'd-system'
 

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-const transformPostData = <DataType extends Object>(data: DataType):
+const transformPostData = <DataType extends Record<string, any>>(data: DataType):
 transformPostDataReturn<DataType> => {
   const creationDate: string = dayjs().toISOString()
   return {
@@ -9,6 +9,7 @@ transformPostDataReturn<DataType> => {
   }
 }
 
-type transformPostDataReturn<DataType extends {}> = DataType & { creation_date: string }
+type transformPostDataReturn<DataType extends Record<string, any>>
+= DataType & { creation_date: string }
 
 export default transformPostData

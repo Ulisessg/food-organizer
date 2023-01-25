@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 import unitOfMeasureValidations, { validations } from 'models/unitOfMeasureValidations'
 import capitalize from 'utils/capitalize'
 import prisma from 'lib/prisma'
-import { response } from 'controllers/response'
-import { units_of_measure } from '@prisma/client'
+import { type response } from 'controllers/response'
+import { type units_of_measure } from '@prisma/client'
 
 export const createUOM = async (
   req: CreateUOM,

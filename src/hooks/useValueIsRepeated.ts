@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const useValueIsRepeated = <T extends Object>(): UseValueIsRepeatedReturn<T> => {
+const useValueIsRepeated = <T extends Record<string, any>>(): UseValueIsRepeatedReturn<T> => {
   const [
     isRepeated,
     setIsRepeated
@@ -24,7 +24,7 @@ const useValueIsRepeated = <T extends Object>(): UseValueIsRepeatedReturn<T> => 
   }
 }
 
-interface UseValueIsRepeatedReturn <ObjType extends Object> {
+interface UseValueIsRepeatedReturn <ObjType extends Record<string, any>> {
   searchIsRepeated: (list: ObjType[], key: keyof ObjType, valueToSearch: string) => void
   isRepeated: boolean
 }

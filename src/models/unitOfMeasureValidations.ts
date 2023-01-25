@@ -1,6 +1,6 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import { lettersAndDegrees, lettersWithSpaces } from 'utils/RegExps'
-import tableValidations, { tableProps } from './tableValidations'
+import tableValidations, { type tableProps } from './tableValidations'
 import idValidation from './idValidation'
 
 export const validations: verifyObj = {

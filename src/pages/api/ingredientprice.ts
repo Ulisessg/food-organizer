@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 import {
   createIngredientPrice, getIngredientPrices, updateIngredientPrice
 } from 'controllers/food_organizer_crud/ingredientPricesCRUD'

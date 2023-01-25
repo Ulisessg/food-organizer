@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 import capitalize from 'utils/capitalize'
 import prisma from 'lib/prisma'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 import unitOfMeasureTypeVerification from 'models/unitOfMeasureTypeValidations'
 import type { units_of_measure_types } from '@prisma/client'
 

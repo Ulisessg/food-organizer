@@ -3,14 +3,14 @@
 /* eslint-disable sort-imports */
 import Details from './common/Details'
 import styled from 'styled-components'
-import React, { ChangeEvent, FC, Fragment, useState } from 'react'
+import React, { type ChangeEvent, type FC, Fragment, useState } from 'react'
 import { Button, FileInput, Form, LoadingSpinner, TextInput } from 'd-system'
 import Select from './common/Select'
 import useGetRequest from 'hooks/useGetRequest'
 import ErrorMessage from './common/ErrorMessage'
 import type { GetFoodTypes } from 'controllers/food_organizer_crud/foodTypesCRUD'
 import { defaultSelectValue } from 'utils/constants'
-import { GetIngredients } from 'controllers/food_organizer_crud/ingredientCRUD'
+import { type GetIngredients } from 'controllers/food_organizer_crud/ingredientCRUD'
 import { Container, ButtonDeleteSelect, ButtonAddSelect } from './common/MultipleSelects'
 import useMultipleSelects from 'hooks/useMultipleSelects'
 
@@ -38,7 +38,7 @@ const CreateFood: FC = () => {
   const ingredients = ingredientRequestData as GetIngredients
 
   const handleFoodTypeSelect = ({ currentTarget }:
-  ChangeEvent<HTMLSelectElement>): void => setFoodTypeSelected(currentTarget.value)
+  ChangeEvent<HTMLSelectElement>): void => { setFoodTypeSelected(currentTarget.value) }
   return <>
   <Details summary="Crear comida">
     <Form formTitle="Crear comida">

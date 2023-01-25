@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 import {
   createFoodIngredient, getFoodIngredients, updateFoodIngredient
 } from 'controllers/food_organizer_crud/foodIngredientsCRUD'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 
 const handler = async (
   req: NextApiRequest,

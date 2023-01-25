@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { type FC } from 'react'
 import CreateUnitsOfMeasureForm from './CreateUnitsOfMeasureForm'
 import Details from 'components/common/Details'
 

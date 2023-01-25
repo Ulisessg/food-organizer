@@ -1,4 +1,4 @@
-import { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
+import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 
 const extractUomNames = (uomList: GetUOM): GetUOM[0]['uom'] => {
   if (!Array.isArray(uomList)) throw new TypeError('Array type mus required')

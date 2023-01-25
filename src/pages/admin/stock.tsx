@@ -1,7 +1,7 @@
 import CreateIngredientStock from 'components/CreateIngredientStock'
 import DisplayIngredientsStock from 'components/DisplayIngredientsStock'
 import ErrorMessage from 'components/common/ErrorMessage'
-import { GetIngredientStock } from 'controllers/food_organizer_crud/ingredientStockCRUD'
+import { type GetIngredientStock } from 'controllers/food_organizer_crud/ingredientStockCRUD'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
 import type { NextPage } from 'next'

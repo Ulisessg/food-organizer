@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import React, { FC } from 'react'
+import React, { type FC } from 'react'
 import EditTableButtons from 'components/common/EditTableButtons'
 import { Td } from 'd-system'
 

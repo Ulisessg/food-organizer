@@ -1,4 +1,4 @@
-import { ComponentProps, FC } from 'react'
+import { type ComponentProps, type FC } from 'react'
 import { Button } from 'd-system'
 import styled from 'styled-components'
 

@@ -1,5 +1,5 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
-import tableValidations, { tableProps } from './tableValidations'
+import tableValidations, { type tableProps } from './tableValidations'
 import { lettersWithSpaces } from '../utils/RegExps'
 
 export const foodTypeValidations = (foodType: foodTypeParam): void => {

@@ -1,4 +1,4 @@
-import tableValidations, { tableProps } from './tableValidations'
+import tableValidations, { type tableProps } from './tableValidations'
 import idValidation from './idValidation'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 

@@ -1,6 +1,6 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { type AxiosRequestConfig } from 'axios'
 import { useEffect, useRef, useState } from 'react'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 
 // eslint-disable-next-line max-lines-per-function
 const useGetRequest = <ReturnT>(

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { FC } from 'react'
+import React, { type FC } from 'react'
 import EditTableButtons from 'components/common/EditTableButtons'
 import { Td } from 'd-system'
 
@@ -9,7 +9,9 @@ const Rows: FC<RowsProps> = ({
   food_name,
   food_type_name, image, preparation_time, score, rowSpan
 }) => {
-  const handleUpdate = (): void => console.log('Update')
+  const handleUpdate = (): void => {
+    console.log('Update')
+  }
 
   if (typeof rowSpan === 'number') {
     return <>

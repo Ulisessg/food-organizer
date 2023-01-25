@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import menuFoodsValidations, { validations } from 'models/menuFoodsValidations'
 import type { menu_foods } from '@prisma/client'
 import prisma from 'lib/prisma'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 
 export const createDailyMenuFoods = async (
   req: CreateDailyMenuFoods,

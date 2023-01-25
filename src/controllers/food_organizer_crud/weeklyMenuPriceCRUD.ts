@@ -3,7 +3,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import priceValidations, { validations } from 'models/priceValidations'
 import prisma from 'lib/prisma'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 import type { weekly_menu_prices } from '@prisma/client'
 
 export const createWeeklyMenuPrice = async (

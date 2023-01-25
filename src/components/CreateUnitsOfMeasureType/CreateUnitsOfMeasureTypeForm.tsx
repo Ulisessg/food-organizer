@@ -1,7 +1,14 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-statements */
 import { Button, Form, LoadingSpinner, TextInput, useInputs } from 'd-system'
-import React, { ChangeEvent, FC, FormEvent, MouseEvent, useContext, useRef, useState } from 'react'
+import React, {
+  type ChangeEvent,
+  type FC, type FormEvent,
+  type MouseEvent,
+  useContext,
+  useRef,
+  useState
+} from 'react'
 import type { GetUOMT } from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
 import { LoadingSpinnerContainer } from 'components/common/FormInDetailsStyles'
 import RequestResultStyles from 'components/common/RequestResultStyles'

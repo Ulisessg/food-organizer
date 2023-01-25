@@ -6,10 +6,10 @@ import {
   ButtonDeleteSelect,
   Container
 } from './common/MultipleSelects'
-import React, { FC, Fragment, useState } from 'react'
+import React, { type FC, Fragment, useState } from 'react'
 import Details from './common/Details'
 import ErrorMessage from './common/ErrorMessage'
-import { GetFoods } from 'controllers/food_organizer_crud/foodsCRUD'
+import { type GetFoods } from 'controllers/food_organizer_crud/foodsCRUD'
 import Select from './common/Select'
 import randomId from 'utils/randomId'
 import useGetRequest from 'hooks/useGetRequest'

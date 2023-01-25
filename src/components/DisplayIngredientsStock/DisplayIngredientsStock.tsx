@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { FC, Fragment } from 'react'
+import React, { type FC, Fragment } from 'react'
 import { Table, Td, Th } from 'd-system'
 import EditTableButtons from 'components/common/EditTableButtons'
 import type { GetIngredientStock } from 'controllers/food_organizer_crud/ingredientStockCRUD'
@@ -44,7 +44,7 @@ FC<DisplayIngredientsStockProps> = ({ ingredients }) => (<TableContainer>
               {image !== null && image}
             </Td>
 
-            <EditTableButtons onUpdate={() => console.log('Update')
+            <EditTableButtons onUpdate={() => { console.log('Update') }
             } />
           </tr>
           </Fragment>)

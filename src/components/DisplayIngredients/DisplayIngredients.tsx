@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { FC, Fragment } from 'react'
+import React, { type FC, Fragment } from 'react'
 import { Table, Td, Th } from 'd-system'
 import EditTableButtons from 'components/common/EditTableButtons'
 import type { GetIngredients } from 'controllers/food_organizer_crud/ingredientCRUD'

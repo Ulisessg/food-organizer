@@ -5,7 +5,7 @@ import ingredientValidations, { validations } from 'models/ingredientValidations
 import capitalize from 'utils/capitalize'
 import type { ingredients } from '@prisma/client'
 import prisma from 'lib/prisma'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 
 export const createIngredient = async (
   req: CreateIngredient,

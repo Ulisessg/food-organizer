@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios'
 import type { response } from 'controllers/response'
 import { useState } from 'react'
 

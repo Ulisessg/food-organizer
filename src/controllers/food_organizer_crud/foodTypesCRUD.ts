@@ -5,7 +5,7 @@ import capitalize from 'utils/capitalize'
 import foodTypeValidations from 'models/foodTypeValidations'
 import type { food_types } from '@prisma/client'
 import prisma from 'lib/prisma'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 
 export const createFoodType = async (
   req: CreateFoodType,

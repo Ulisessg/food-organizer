@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Button, Form, LoadingSpinner, TextInput } from 'd-system'
-import React, { ChangeEvent, FC, Fragment, useState } from 'react'
+import React, { type ChangeEvent, type FC, Fragment, useState } from 'react'
 import Details from './common/Details'
 import ErrorMessage from './common/ErrorMessage'
 import type { GetIngredients } from 'controllers/food_organizer_crud/ingredientCRUD'

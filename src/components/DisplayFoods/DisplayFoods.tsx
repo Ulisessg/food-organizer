@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-import React, { FC, Fragment } from 'react'
+import React, { type FC, Fragment } from 'react'
 import { Table, Th } from 'd-system'
-import { GetFoods } from 'controllers/food_organizer_crud/foodsCRUD'
+import { type GetFoods } from 'controllers/food_organizer_crud/foodsCRUD'
 import Rows from './Rows'
 import TableContainer from '../common/TableContainer'
 

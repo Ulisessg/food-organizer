@@ -5,7 +5,7 @@ import purchasePlaceValidations, { validations } from 'models/purchasePlaceValid
 import capitalize from 'utils/capitalize'
 import prisma from 'lib/prisma'
 import type { purchase_places } from '@prisma/client'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 
 // eslint-disable-next-line max-statements
 export const createPurchasePlace = async (

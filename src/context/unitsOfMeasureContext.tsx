@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
 /* eslint-disable max-lines-per-function */
-import { FC, ReactNode, createContext, useEffect, useState } from 'react'
+import { type FC, type ReactNode, createContext, useEffect, useState } from 'react'
 import type { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import type { GetUOMT } from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
 import extractUomNames from 'utils/extractUnitsOfMeasure'
 import insertUnitOfMeasure from 'utils/insertUnitOfMeasure'
-import { units_of_measure } from '@prisma/client'
+import { type units_of_measure } from '@prisma/client'
 import useGetRequest from 'hooks/useGetRequest'
 
 const initialValues: ContextValue = {

@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import React, { FC, Fragment, useContext } from 'react'
+import React, { type FC, Fragment, useContext } from 'react'
 import { Table, Th } from 'd-system'
 import Rows from './Rows'
 import TableContainer from 'components/common/TableContainer'

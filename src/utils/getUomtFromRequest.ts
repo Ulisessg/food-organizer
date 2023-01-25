@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-import { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
+import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 
 const getUomtFromRequest = (data: GetUOM): TGetUomtFromRequestReturn => {
   const result: TGetUomtFromRequestReturn = data.map(({ uomt_id, uomt_name }) => ({

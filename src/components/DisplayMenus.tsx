@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { FC, Fragment } from 'react'
+import React, { type FC, Fragment } from 'react'
 import { Table, Td, Th } from 'd-system'
 import EditTableButtons from './common/EditTableButtons'
-import { GetMenus } from 'controllers/food_organizer_crud/MenuCRUD'
+import { type GetMenus } from 'controllers/food_organizer_crud/MenuCRUD'
 import TableContainer from './common/TableContainer'
 
 const DisplayDailyMenus: FC<DisplayDailyMenusProps> = ({ menus }) => {

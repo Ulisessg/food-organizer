@@ -6,7 +6,7 @@ import {
 } from 'utils/ErrorMessages'
 import dayjs from 'dayjs'
 import idValidation from './idValidation'
-import { tableProps } from './tableValidations'
+import { type tableProps } from './tableValidations'
 
 export const validations = {
   id: (id: number, idName: priceTables) => {

@@ -4,7 +4,7 @@ import {
   invalidPropertyErrorMessage,
   invalidPropertyTypeErrorMessage
 } from '../utils/ErrorMessages'
-import tableValidations, { tableProps } from './tableValidations'
+import tableValidations, { type tableProps } from './tableValidations'
 
 export const validations: verifyObj = {
   address: (address: string | null) => {

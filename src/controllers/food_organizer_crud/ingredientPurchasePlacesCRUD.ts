@@ -6,7 +6,7 @@ import ingredientPurchasePlaceValidations, {
 } from 'models/ingredientPurchasePlaceValidations'
 import type { ingredient_purchase_places } from '@prisma/client'
 import prisma from 'lib/prisma'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 
 export const createIngredientPurchasePlace = async (
   req: CreateIngredientPurchasePlace,

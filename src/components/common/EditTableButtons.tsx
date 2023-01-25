@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { type FC, useState } from 'react'
 import { Button } from 'd-system'
 import styled from 'styled-components'
 
@@ -7,7 +7,9 @@ const EditTableButtons: FC<Props> = ({ onUpdate, className }) => {
     edit,
     setEdit
   ] = useState<boolean>(false)
-  const handleEdit = (): void => setEdit(!edit)
+  const handleEdit = (): void => {
+    setEdit(!edit)
+  }
 
   return <EditButtonsContainer data-is-active={edit} className={className}>
    {edit && <>

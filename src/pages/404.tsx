@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { type FC } from 'react'
 import { Page404 } from 'd-system'
 
 const ErrorPage: FC = () => <>

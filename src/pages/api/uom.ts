@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 import { createUOM, getUOM, updateUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {

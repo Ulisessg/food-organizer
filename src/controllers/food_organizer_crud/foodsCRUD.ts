@@ -5,7 +5,7 @@ import foodValidations, { validations } from 'models/foodValidations'
 import capitalize from 'utils/capitalize'
 import type { foods } from '@prisma/client'
 import prisma from 'lib/prisma'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 
 // Allow Count() in sql query
 // eslint-disable-next-line func-names

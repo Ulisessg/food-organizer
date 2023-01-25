@@ -1,5 +1,5 @@
 import { Button, Form, TextInput } from 'd-system'
-import React, { FC } from 'react'
+import React, { type FC } from 'react'
 import Details from 'components/common/Details'
 
 const CreatePurchasePlace: FC = () => <>

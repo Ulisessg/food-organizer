@@ -5,8 +5,8 @@ import {
   Container as MultipleSelectsContainer
 } from 'components/common/MultipleSelects'
 import {
-  ChangeEvent,
-  ComponentPropsWithoutRef, FC, Fragment, MouseEvent, useState
+  type ChangeEvent,
+  type ComponentPropsWithoutRef, type FC, Fragment, type MouseEvent, useState
 } from 'react'
 import Select from 'components/common/Select'
 import { defaultSelectValue } from 'utils/constants'

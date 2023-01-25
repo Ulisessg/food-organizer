@@ -4,13 +4,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Button, Form, LoadingSpinner, TextInput, useInputs } from 'd-system'
 import React, {
-  ChangeEvent,
-  FC,
-  Fragment, MouseEvent, useContext, useRef, useState
+  type ChangeEvent,
+  type FC,
+  Fragment, type MouseEvent, useContext, useRef, useState
 } from 'react'
 import AlertMessage from 'components/common/RequestResultStyles'
 import ErrorMessage from 'components/common/ErrorMessage'
-import { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
+import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import { LoadingSpinnerContainer } from 'components/common/FormInDetailsStyles'
 import Select from 'components/common/Select'
 import { UnitsOfMeasureContext } from 'context/unitsOfMeasureContext'

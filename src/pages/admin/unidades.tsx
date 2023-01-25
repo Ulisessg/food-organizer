@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { Description, DescriptionContainer, Title } from 'styles/pages/unidades.styles'
-import React, { FC, useContext } from 'react'
+import React, { type FC, useContext } from 'react'
 import {
   UnitsOfMeasureContext,
   UnitsOfMeasureContextProvider

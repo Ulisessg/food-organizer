@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 import ingredientStockValidations, { validations } from 'models/ingredientStockValidations'
-import { ingredient_stock } from '@prisma/client'
+import { type ingredient_stock } from '@prisma/client'
 import prisma from 'lib/prisma'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 
 export const createIngredientStock = async (
   req: CreateUOM,

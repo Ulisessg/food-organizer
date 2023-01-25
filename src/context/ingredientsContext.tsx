@@ -1,10 +1,10 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable camelcase */
-import { FC, ReactNode, createContext, useEffect, useState } from 'react'
-import { ingredients, purchase_places } from '@prisma/client'
-import { GetIngredients } from 'controllers/food_organizer_crud/ingredientCRUD'
-import { GetPurchasePlaces } from 'controllers/food_organizer_crud/purchasePlaceCRUD'
-import { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
+import { type FC, type ReactNode, createContext, useEffect, useState } from 'react'
+import { type ingredients, type purchase_places } from '@prisma/client'
+import { type GetIngredients } from 'controllers/food_organizer_crud/ingredientCRUD'
+import { type GetPurchasePlaces } from 'controllers/food_organizer_crud/purchasePlaceCRUD'
+import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import useGetRequest from 'hooks/useGetRequest'
 
 const initialState: IngredientsContextData = {

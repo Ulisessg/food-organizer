@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from 'lib/prisma'
-import { response } from 'controllers/response'
+import { type response } from 'controllers/response'
 import weeklyMenuValidations from 'models/weeklyMenuValidations'
 import type { weekly_menus } from '@prisma/client'
 

@@ -2,7 +2,7 @@ import {
   IngredientsContext,
   IngredientsContextProvider
 } from 'context/ingredientsContext'
-import React, { FC, useContext } from 'react'
+import React, { type FC, useContext } from 'react'
 import CreateIngredient from 'components/CreateIngredient'
 import CreatePurchasePlace from 'components/CreatePurchasePlace'
 import DisplayIngredients from 'components/DisplayIngredients'

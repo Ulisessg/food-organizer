@@ -1,5 +1,5 @@
 /* eslint-disable func-style */
-import React, { FC } from 'react'
+import React, { type FC } from 'react'
 import CardStyles from './Card.styles'
 
 const Card: FC<Props> = ({ children }) => <CardStyles>
