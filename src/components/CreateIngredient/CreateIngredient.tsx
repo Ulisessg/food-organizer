@@ -1,27 +1,26 @@
 /* eslint-disable max-statements */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Button, Form, LoadingSpinner, Select, TextInput, useInputs } from 'd-system'
+import { Button, Form, LoadingSpinner, Select, TextInput } from 'd-system'
 import React, { type FC, Fragment, useContext } from 'react'
 import Details from '../common/Details'
 import ErrorMessage from '../common/ErrorMessage'
 import { IngredientsContext } from 'context/ingredientsContext'
 import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
+import useCreateIngredient from 'hooks/components/useCreateIngredient'
 import useMultipleSelects from 'hooks/useMultipleSelects'
 
 // eslint-disable-next-line max-lines-per-function
 const CreateIngredient: FC = () => {
   const ingredientsContext = useContext(IngredientsContext)
   const { Component: PurchasePlacesSelect } = useMultipleSelects()
-  const { inputsData, inputsErrors, onBlur, onChange } = useInputs(
-    {
-      ingredient_comment: '',
-      ingredient_name: '',
-      ingredient_uom: defaultSelectValue
-    },
-    true
-  )
+  const {
+    inputsData,
+    inputsErrors,
+    onBlur,
+    onChange
+  } = useCreateIngredient()
 
   return <>
   <Details summary="Crear ingrediente">
