@@ -1,14 +1,27 @@
-import { Button, FileInput, Form, LoadingSpinner, TextInput } from 'd-system'
-import React, { FC, useContext } from 'react'
+/* eslint-disable max-statements */
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
+import { Button, Form, LoadingSpinner, Select, TextInput, useInputs } from 'd-system'
+import React, { type FC, Fragment, useContext } from 'react'
 import Details from '../common/Details'
 import ErrorMessage from '../common/ErrorMessage'
 import { IngredientsContext } from 'context/ingredientsContext'
-import PurchasePlaces from './PurchasePlaces'
-import UnitsOfMeasure from './UnitsOfMeasure'
+import { defaultSelectValue } from 'utils/constants'
+import randomId from 'utils/randomId'
+import useMultipleSelects from 'hooks/useMultipleSelects'
 
 // eslint-disable-next-line max-lines-per-function
 const CreateIngredient: FC = () => {
   const ingredientsContext = useContext(IngredientsContext)
+  const { Component: PurchasePlacesSelect } = useMultipleSelects()
+  const { inputsData, inputsErrors, onBlur, onChange } = useInputs(
+    {
+      ingredient_comment: '',
+      ingredient_name: '',
+      ingredient_uom: defaultSelectValue
+    },
+    true
+  )
 
   return <>
   <Details summary="Crear ingrediente">
@@ -18,8 +31,14 @@ const CreateIngredient: FC = () => {
         inputMode="text"
         label="Nombre del ingrediente"
         name="ingredient_name"
-        placeholder="Arroz, azucar, leche..."
         type="text"
+        pattern="^[\p{L}\s]+$"
+        acceptanceCriteria="Solo letras y espacios"
+        inputInvalid={inputsErrors.ingredient_name}
+        onChange={onChange}
+        onBlur={onBlur}
+        required
+        minLength={2}
       />
 
       {/* Purchase places */}
@@ -31,11 +50,14 @@ const CreateIngredient: FC = () => {
       }
       {ingredientsContext.purchasePlacesIsLoading && <LoadingSpinner size="small" />}
       {(!ingredientsContext.purchasePlacesIsLoading &&
-      !ingredientsContext.errorGettingPurchasePlaces) && <PurchasePlaces
-        data={ingredientsContext.purchasePlaces}
-        initialSelectId="143123" /> }
+      !ingredientsContext.errorGettingPurchasePlaces) && <PurchasePlacesSelect
+        addSelectButtonText="Añadir lugar de compra"
+        label="Selecciona un lugar de compra"
+        optionValueKeyName="name"
+        options={ingredientsContext.purchasePlaces}
+      />}
 
-      {/* Units Of Measure */}
+      {/* Unit Of Measure */}
 
       {ingredientsContext.uomIsLoading && <LoadingSpinner size="small" />}
       {ingredientsContext.errorGettingUom && <ErrorMessage
@@ -44,29 +66,49 @@ const CreateIngredient: FC = () => {
         />
       }
       {(!ingredientsContext.uomIsLoading && !ingredientsContext.errorGettingUom) &&
-       <UnitsOfMeasure data={ingredientsContext.unitsOfMeasure} />}
+
+       <Select
+        id="select_uom"
+        label="Selecciona una unidad de medida"
+        name="ingredient_uom"
+        onChange={onChange as any}
+        onBlur={onBlur as any}
+        required
+        allowDefaultValue={false}
+        defValue={defaultSelectValue}
+        value={inputsData.ingredient_uom}
+        selectIsInvalid={inputsErrors.ingredient_uom}
+      >
+          <option
+            value={defaultSelectValue}
+            disabled
+            aria-disabled>-- {defaultSelectValue} --</option>
+       {
+       ingredientsContext.unitsOfMeasure.map(({ uomt_name, uom }) => <Fragment key={randomId()}
+          >
+          <optgroup label={uomt_name}>
+            {uom.map(({ name }) => <Fragment key={randomId()}>
+              <option value={name}>{name}</option>
+            </Fragment>)}
+          </optgroup>
+       </Fragment>)}
+      </Select>
+      }
       <TextInput
         id="ingredient_comment"
         inputMode="text"
-        label="Comentario (opcional)"
+        label="Comentario"
+        acceptanceCriteria="opcional"
         name="ingredient_comment"
-        placeholder="Naturales, sin sal, añejo..."
         type="text"
-      />
-      <FileInput
-        accept="image/*"
-        id="ingredient_image"
-        inputMode="numeric"
-        label="Imagen (opcional)"
-        name="ingredient_image"
-        placeholder="Tomate.png"
-        type="file"
       />
       <Button
         colorMessage="continue"
         size="100%"
         text="Crear ingrediente"
         type="button"
+        disabled={inputsErrors.ingredient_name || inputsErrors.ingredient_uom ||
+          (inputsData.ingredient_name.length < 2)}
       />
     </Form>
 

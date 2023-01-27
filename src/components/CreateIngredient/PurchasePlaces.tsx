@@ -3,14 +3,14 @@ import {
   ButtonDeleteSelect,
   Container as MultipleSelectsContainer
 } from '../common/MultipleSelects'
-import React, { FC, Fragment } from 'react'
-import { GetPurchasePlaces } from 'controllers/food_organizer_crud/purchasePlaceCRUD'
-import Select from 'components/common/Select'
+import React, { type FC, Fragment } from 'react'
+import { type GetPurchasePlaces } from 'controllers/food_organizer_crud/purchasePlaceCRUD'
+import { Select } from 'd-system'
 import randomId from 'utils/randomId'
 import useMultipleSelects from 'hooks/useMultipleSelects'
 
 // eslint-disable-next-line max-lines-per-function
-const PurchasePlaces: FC<Props> = ({ data, initialSelectId }) => {
+const PurchasePlaces: FC<Props> = ({ data }) => {
   const {
     addSelect, data: ppData,
     deleteSelect, onChange: handleSelectChange
@@ -21,10 +21,12 @@ const PurchasePlaces: FC<Props> = ({ data, initialSelectId }) => {
     {indx === 0 &&
     <Select
       id={ppData.selectsValues[indx].selectId}
-      labelText="Selecciona un lugar de compra"
+      label="Selecciona un lugar de compra"
       key={selectId}
       onChange={handleSelectChange}
       value={ppData.selectsValues[indx].value}
+      name="PP"
+      acceptanceCriteria="Opcional"
       >
         {data.map(({ id, name }) => <Fragment key={id}>
           <option
@@ -39,9 +41,12 @@ const PurchasePlaces: FC<Props> = ({ data, initialSelectId }) => {
     {indx !== 0 &&
     <MultipleSelectsContainer key={selectId}>
     <Select
-      id={ppData.selectsValues[indx].selectId} labelText="Selecciona un lugar de compra"
+      id={ppData.selectsValues[indx].selectId} label="Selecciona un lugar de compra"
       onChange={handleSelectChange}
-      value={ppData.selectsValues[indx].value}>
+      value={ppData.selectsValues[indx].value}
+      name="PP"
+      acceptanceCriteria="Opcional"
+      >
             {data.map(({ id, name }) => <Fragment key={id}>
               <option
               value={name}
