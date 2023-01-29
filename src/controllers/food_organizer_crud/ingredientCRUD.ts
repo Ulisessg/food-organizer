@@ -8,29 +8,29 @@ import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'
 
 export const createIngredient = async (
-  req: CreateIngredient,
-  res: NextApiResponse<response<string>>
+  req: CreateIngredientRequest,
+  res: NextApiResponse<response<ingredients | string>>
 ): Promise<void> => {
   try {
-    const { comment, creation_date, image, name, uom_id } = req.body
+    const { comment, creationDate, image, name, uomId } = req.body
     ingredientValidations({
       comment,
-      creationDate: creation_date as unknown as string,
+      creationDate: creationDate as unknown as string,
       image,
       name,
-      uomId: uom_id
+      uomId
     })
-    await prisma.ingredients.create({
+    const result = await prisma.ingredients.create({
       data: {
         comment,
-        creation_date,
+        creation_date: creationDate,
         image,
         name: capitalize(name),
-        uom_id
+        uom_id: uomId
       }
     })
-    res.status(200).send({
-      data: 'ingredient created',
+    res.status(201).send({
+      data: result,
       error: false
     })
   } catch (error) {
@@ -82,18 +82,18 @@ export const getIngredients = async (
 
 // eslint-disable-next-line max-statements
 export const updateIngredient = async (
-  req: CreateIngredient,
+  req: UpdateIngredientRequest,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
-    const { comment, image, name, uom_id, id } = req.body
+    const { comment, image, name, uomId, id } = req.body
     validations.comment(comment)
     validations.image(image)
     validations.name(name)
-    validations.uomId(uom_id)
+    validations.uomId(uomId)
     await prisma.ingredients.update({
       data: {
-        comment, image, name: capitalize(name), uom_id
+        comment, image, name: capitalize(name), uom_id: uomId
       },
       where: {
         id
@@ -112,8 +112,23 @@ export const updateIngredient = async (
   }
 }
 
-interface CreateIngredient extends NextApiRequest {
-  body: ingredients
+interface CreateIngredientRequest extends NextApiRequest {
+  body: CreateIngredient
+}
+interface UpdateIngredientRequest extends NextApiRequest {
+  body: UpdateIngredient
+}
+
+export interface CreateIngredient {
+  comment: string | null
+  creationDate: string
+  image: string | null
+  name: string
+  uomId: number
+}
+
+export interface UpdateIngredient extends CreateIngredient {
+  id: number
 }
 export type GetIngredients = Array<{
   ingredient_id: number

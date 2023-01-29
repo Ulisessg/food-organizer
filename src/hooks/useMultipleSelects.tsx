@@ -8,7 +8,7 @@ import {
   type ChangeEvent,
   type ComponentPropsWithoutRef, type FC, Fragment, type MouseEvent, useState
 } from 'react'
-import Select from 'components/common/Select'
+import { Select } from 'd-system'
 import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
 
@@ -108,16 +108,18 @@ const useMultipleSelects = (): UseMultipleSelectsReturn => {
     }))
   }
 
-  const MultipleSelectsComponent: UseMultipleSelectsReturn['Component'] = (props) => <>
+  const MultipleSelectsComponent: UseMultipleSelectsReturn['Component'] = (props) => <Fragment>
     {data.selects.map(({ selectId }, indx) => <Fragment key={randomId()}>
       {indx === 0 &&
       <Select
         {...props.selectProps}
         id={data.selectsValues[indx].selectId}
-        labelText={props.label}
+        label={props.label}
+        name={randomId()}
         key={randomId()}
         onChange={onChange}
         value={data.selectsValues[indx].value}>
+          <option value={defaultSelectValue} disabled key={randomId()}>{defaultSelectValue}</option>
           {props.options.map((opt) => {
             const value = opt[props.optionValueKeyName]
             return <option
@@ -134,11 +136,15 @@ const useMultipleSelects = (): UseMultipleSelectsReturn => {
           <Select
             {...props.selectProps}
             id={data.selectsValues[indx].selectId}
-            labelText={props.label}
+            label={props.label}
+            name={randomId()}
             key={randomId() + randomId()}
             onChange={onChange}
             value={data.selectsValues[indx].value}
             >
+              <option value={defaultSelectValue} disabled key={randomId()}>
+                {defaultSelectValue}
+              </option>
               {props.options.map((opt) => {
                 const value = opt[props.optionValueKeyName]
                 return <option
@@ -162,7 +168,7 @@ const useMultipleSelects = (): UseMultipleSelectsReturn => {
       text={props.addSelectButtonText}
       onClick={addSelect}
     />
-  </>
+  </Fragment>
 
   return {
     Component: MultipleSelectsComponent,

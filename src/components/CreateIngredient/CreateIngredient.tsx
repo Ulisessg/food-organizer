@@ -6,20 +6,23 @@ import React, { type FC, Fragment, useContext } from 'react'
 import Details from '../common/Details'
 import ErrorMessage from '../common/ErrorMessage'
 import { IngredientsContext } from 'context/ingredientsContext'
+import RequestResultStyles from 'components/common/RequestResultStyles'
 import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
 import useCreateIngredient from 'hooks/components/useCreateIngredient'
-import useMultipleSelects from 'hooks/useMultipleSelects'
 
 // eslint-disable-next-line max-lines-per-function
 const CreateIngredient: FC = () => {
   const ingredientsContext = useContext(IngredientsContext)
-  const { Component: PurchasePlacesSelect } = useMultipleSelects()
   const {
+    disableButton,
     inputsData,
     inputsErrors,
     onBlur,
-    onChange
+    onChange,
+    PurchasePlaces,
+    nameIsRepeated,
+    sendIngredient
   } = useCreateIngredient()
 
   return <>
@@ -38,6 +41,7 @@ const CreateIngredient: FC = () => {
         onBlur={onBlur}
         required
         minLength={2}
+        style={{ textTransform: 'capitalize' }}
       />
 
       {/* Purchase places */}
@@ -49,7 +53,7 @@ const CreateIngredient: FC = () => {
       }
       {ingredientsContext.purchasePlacesIsLoading && <LoadingSpinner size="small" />}
       {(!ingredientsContext.purchasePlacesIsLoading &&
-      !ingredientsContext.errorGettingPurchasePlaces) && <PurchasePlacesSelect
+      !ingredientsContext.errorGettingPurchasePlaces) && <PurchasePlaces
         addSelectButtonText="Añadir lugar de compra"
         label="Selecciona un lugar de compra"
         optionValueKeyName="name"
@@ -70,8 +74,8 @@ const CreateIngredient: FC = () => {
         id="select_uom"
         label="Selecciona una unidad de medida"
         name="ingredient_uom"
-        onChange={onChange as any}
-        onBlur={onBlur as any}
+        onChange={onChange}
+        onBlur={onBlur}
         required
         allowDefaultValue={false}
         defValue={defaultSelectValue}
@@ -86,8 +90,8 @@ const CreateIngredient: FC = () => {
        ingredientsContext.unitsOfMeasure.map(({ uomt_name, uom }) => <Fragment key={randomId()}
           >
           <optgroup label={uomt_name}>
-            {uom.map(({ name }) => <Fragment key={randomId()}>
-              <option value={name}>{name}</option>
+            {uom.map(({ name, id }) => <Fragment key={randomId()}>
+              <option value={name} data-uom-id={id}>{name}</option>
             </Fragment>)}
           </optgroup>
        </Fragment>)}
@@ -106,9 +110,15 @@ const CreateIngredient: FC = () => {
         size="100%"
         text="Crear ingrediente"
         type="button"
-        disabled={inputsErrors.ingredient_name || inputsErrors.ingredient_uom ||
-          (inputsData.ingredient_name.length < 2)}
+        disabled={disableButton}
+        onClick={sendIngredient}
       />
+      <RequestResultStyles
+        hidden={!nameIsRepeated}
+        isError={true}
+      >
+        Ese ingrediente ya existe
+      </RequestResultStyles>
     </Form>
 
   </Details>

@@ -9,7 +9,7 @@ import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'
 
 export const createIngredientPurchasePlace = async (
-  req: CreateIngredientPurchasePlace,
+  req: CreateIngredientPurchasePlaceRequest,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
@@ -97,9 +97,16 @@ WHERE ingredient_purchase_places.id = ${id}
   }
 }
 
-interface CreateIngredientPurchasePlace extends NextApiRequest {
-  body: ingredient_purchase_places[]
+interface CreateIngredientPurchasePlaceRequest extends NextApiRequest {
+  body: CreateIngredientPurchasePlace
 }
+
+export type CreateIngredientPurchasePlace = Array<{
+  ingredient_id: number
+  purchase_place_id: number
+  creation_date: string
+}>
+
 interface UpdateIngredientPurchasePlace extends NextApiRequest {
   body: ingredient_purchase_places
 }
