@@ -26,31 +26,32 @@ const usePostRequest = <DataSend, Res>
       requestInit: true,
       response: ''
     }))
-    try {
-      const result = await axios.post<response<string | Res>>(
-        url,
-        data,
-        { ...axiosConfig }
-      )
+    const result = await axios.post<response<string | Res>>(
+      url,
+      data,
+      { ...axiosConfig }
+    ).then((res) => {
       setRequestInfo((prev) => ({
         ...prev,
         error: false,
         requestEnd: true,
         requestInit: false,
-        response: result.data.data as string
+        response: res.data.data as string
       }))
-      return result
-    } catch (error) {
-      const err = error as any
-      setRequestInfo((prev) => ({
-        ...prev,
-        error: true,
-        requestEnd: true,
-        requestInit: false,
-        response: err.response.data.data
-      }))
-      return error as any
-    }
+      return res
+    })
+      .catch((err) => {
+        setRequestInfo((prev) => ({
+          ...prev,
+          error: true,
+          requestEnd: true,
+          requestInit: false,
+          response: err.response.data.data
+        }))
+        throw new Error(err)
+      })
+
+    return result
   }
 
   return {
