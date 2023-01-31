@@ -10,7 +10,7 @@ import { type response } from 'controllers/response'
 // eslint-disable-next-line max-statements
 export const createPurchasePlace = async (
   req: CreatePurchasePlace,
-  res: NextApiResponse<response<string>>
+  res: NextApiResponse<response<purchase_places | string>>
 ): Promise<void> => {
   try {
     const { address, creation_date, name } = req.body
@@ -23,7 +23,7 @@ export const createPurchasePlace = async (
     if (typeof address === 'string') {
       modifiedAddress = capitalize(address)
     }
-    await prisma.purchase_places.create({
+    const result = await prisma.purchase_places.create({
       data: {
         address: modifiedAddress,
         creation_date,
@@ -31,13 +31,13 @@ export const createPurchasePlace = async (
       }
     })
     res.status(201).send({
-      data: 'purchase place successful created',
+      data: result,
       error: false
     })
   } catch (error) {
     console.log(error)
     res.status(400).send({
-      data: null,
+      data: 'error creating purchase place',
       error: true
     })
   }

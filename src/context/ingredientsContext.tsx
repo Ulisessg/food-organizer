@@ -89,7 +89,13 @@ export const IngredientsContextProvider: FC<IngredientsContextProps> = ({ childr
     }))
   }
   const updatePurchasePlaces: IngredientsContextData['updatePurchasePlaces'] = (purchasePlace) => {
-    console.warn('To do!')
+    setIngredientsState((prev) => ({
+      ...prev,
+      purchasePlaces: [
+        ...prev.purchasePlaces,
+        purchasePlace
+      ]
+    }))
   }
 
   // Ingredients
