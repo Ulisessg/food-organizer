@@ -1,14 +1,20 @@
-import React, { type FC } from 'react'
+import React, { forwardRef } from 'react'
+import { Details as Det } from 'd-system'
 import styled from 'styled-components'
 
-const Details: FC<DetailsProps> = ({ summary, children }) => <>
+// eslint-disable-next-line prefer-arrow-callback
+export default forwardRef<'details', DetailsProps>(function Details ({
+  children,
+  summary
+}, ref) {
+  return <>
   <Container>
-    <DetailsStyles>
-      <Summary>{summary}</Summary>
+    <DetailsStyles ref={ref as any} summary={summary}>
       {children}
     </DetailsStyles>
   </Container>
 </>
+})
 
 interface DetailsProps {
   summary: string
@@ -21,7 +27,8 @@ const Container = styled.div`
   grid-auto-flow: row;
   justify-items: center;
 `
-const DetailsStyles = styled.details`
+
+const DetailsStyles = styled(Det)`
   border-radius: 8px;
   padding: 10px;
   border: 1px solid ${({ theme }) => theme.colors.dark1};
@@ -39,17 +46,3 @@ const DetailsStyles = styled.details`
     }
   }
 `
-
-const Summary = styled.summary`
-  details[open] & summary {
-    margin-bottom: 30px;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.dark1};;
-    padding-bottom: 20px;
-    width: 90%;
-  }
-  &:focus, &:hover {
-    cursor: pointer;
-  }
-`
-
-export default Details

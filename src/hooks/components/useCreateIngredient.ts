@@ -1,18 +1,12 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
-import { type MouseEvent, useContext, useState } from 'react'
-import useMultipleSelects
-, { type UseMultipleSelectsReturn } from 'hooks/useMultipleSelects'
-import {
-  type CreateIngredient
-} from 'controllers/food_organizer_crud/ingredientCRUD'
+import { type MouseEvent, type RefObject, useContext, useEffect, useState } from 'react'
+import useMultipleSelects, { type UseMultipleSelectsReturn } from 'hooks/useMultipleSelects'
+import { type CreateIngredient } from 'controllers/food_organizer_crud/ingredientCRUD'
 import {
   type CreateIngredientPurchasePlace
-} from
-  'controllers/food_organizer_crud/ingredientPurchasePlacesCRUD'
-import {
-  type GetPurchasePlaces
-} from 'controllers/food_organizer_crud/purchasePlaceCRUD'
+} from 'controllers/food_organizer_crud/ingredientPurchasePlacesCRUD'
+import { type GetPurchasePlaces } from 'controllers/food_organizer_crud/purchasePlaceCRUD'
 import { IngredientsContext } from 'context/ingredientsContext'
 import dayjs from 'dayjs'
 import { defaultSelectValue } from 'utils/constants'
@@ -22,32 +16,53 @@ import { useInputs } from 'd-system'
 import usePostRequest from 'hooks/usePostRequest'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
-const useCreateIngredient = (): UseCreateIngredientReturn => {
-  const { Component: PurchasePlacesSelect, data: purchasePlaces } = useMultipleSelects()
+const useCreateIngredient = (
+  detailsElement: RefObject<HTMLDetailsElement>,
+  formElement: RefObject<HTMLFormElement>
+): UseCreateIngredientReturn => {
   const ingredientsContext = useContext(IngredientsContext)
+  const {
+    Component: PurchasePlacesSelect,
+    data: purchasePlaces,
+    resetMultipleSelect
+  } = useMultipleSelects()
+  const [
+    resetForm,
+    setResetForm
+  ] = useState<boolean>(false)
+  const [
+    errorResponse,
+    setErrorResponse
+  ] = useState<string>('')
+  const [
+    requestInit,
+    setRequestInit
+  ] = useState<boolean>(false)
+  const [
+    requestEnd,
+    setRequestEnd
+  ] = useState<boolean>(false)
+  const [
+    requestError,
+    setRequestError
+    // Init error set as true for hide ingredient creation success (RequestResultStyles)
+  ] = useState<boolean>(true)
   const [
     uomId,
     setUomId
   ] = useState<number>()
   const {
-    error: ingredientRequestError,
     postData: postIngredient,
-    requestEnd: ingredientRequestEnd,
-    requestInit: ingredientRequestInit,
     response: ingredientRequestResponse
   } = usePostRequest<CreateIngredient, ingredients>('/api/ingredient')
   const {
-    error: ingredientPurchaseRequestError,
-    postData: postIngredientPurchase,
-    requestEnd: ingredientPurchaseRequestEnd,
-    requestInit: ingredientPurchaseRequestInit,
-    response: ingredientPurchaseRequestResponse
+    postData: postIngredientPurchase
   } = usePostRequest<CreateIngredientPurchasePlace, string>('/api/ingredientpurchase')
   const {
     isRepeated: nameIsRepeated,
     searchIsRepeated: searchNameIsRepeated
   } = useValueIsRepeated()
-  const { inputsData, inputsErrors, onBlur, onChange } = useInputs(
+  const { inputsData, inputsErrors, onBlur, onChange, restartInputs } = useInputs(
     {
       ingredient_comment: '',
       ingredient_name: '',
@@ -69,41 +84,6 @@ const useCreateIngredient = (): UseCreateIngredientReturn => {
     return false
   }
 
-  const sendIngredient: UseCreateIngredientReturn['sendIngredient'] = () => {
-    void (async () => {
-      const allowSend: boolean = formIsValid()
-      if (!allowSend) return
-      // Post ingredient to use database generated id to post related purchase places
-      try {
-        const res = await postIngredient(transformPostData({
-          comment: inputsData.ingredient_comment,
-          creationDate: dayjs().toISOString(),
-          image: null,
-          name: inputsData.ingredient_name,
-          uomId: uomId as number
-        }))
-        // No related purchase places
-        if (purchasePlaces.valuesUsed.length === 0) return
-        const ingredientCreated: ingredients = res.data.data as ingredients
-        const creationDate: string = dayjs().toISOString()
-        const purchasePlacesData: CreateIngredientPurchasePlace =
-        purchasePlaces.valuesUsed.map((purchasePlace) => {
-          const ppSelected = ingredientsContext
-            .purchasePlaces.find((pp) => pp.name === purchasePlace) as GetPurchasePlaces[0]
-          return {
-            creation_date: creationDate,
-            ingredient_id: ingredientCreated.id,
-            purchase_place_id: ppSelected.id
-          }
-        })
-        // Add restriction for no more than 10 registers or delete restriction
-        await postIngredientPurchase(purchasePlacesData)
-      } catch (error) {
-        console.log(error)
-      }
-    })()
-  }
-
   const handleOnChange: typeof onChange = (ev) => {
     onChange(ev)
     searchNameIsRepeated(
@@ -122,22 +102,119 @@ const useCreateIngredient = (): UseCreateIngredientReturn => {
     }
   }
 
+  const sendIngredient: UseCreateIngredientReturn['sendIngredient'] = async () => {
+    const allowSend: boolean = formIsValid()
+    if (!allowSend) return
+    setRequestInit(true)
+
+    // First post ingredient to use database generated id to post related purchase places
+    const ingredientCreated: ingredients | string = await postIngredient(transformPostData({
+      comment: inputsData.ingredient_comment,
+      creationDate: dayjs().toISOString(),
+      image: null,
+      name: inputsData.ingredient_name,
+      uomId: uomId as number
+    })).then((res) => res.data.data as ingredients)
+      .catch((err) => {
+        // eslint-disable-next-line max-len
+        setErrorResponse('Ocurió un error creando el ingrediente pero no es tu culpa, intenta de nuevo mas tarde :).')
+        setRequestEnd(true)
+        setRequestError(true)
+        setResetForm(true)
+        return err
+      })
+
+    // No purchase places related
+    if (purchasePlaces.valuesUsed.length === 0) {
+      setRequestEnd(true)
+      setRequestError(false)
+      setResetForm(true)
+      ingredientsContext.updateIngredients(
+        ingredientCreated as ingredients,
+        inputsData.ingredient_uom,
+        purchasePlaces.valuesUsed
+      )
+      return
+    }
+    const creationDate: string = dayjs().toISOString()
+    const purchasePlacesData: CreateIngredientPurchasePlace =
+      purchasePlaces.valuesUsed.map((purchasePlace) => {
+        const ppSelected = ingredientsContext
+          .purchasePlaces.find((pp) => pp.name === purchasePlace) as GetPurchasePlaces[0]
+        return {
+          creation_date: creationDate,
+          ingredient_id: ((ingredientCreated as ingredients).id),
+          purchase_place_id: ppSelected.id
+        }
+      })
+      // Add restriction for no more than 10 registers or delete restriction
+    postIngredientPurchase(purchasePlacesData).then(() => {
+      setRequestEnd(true)
+      setRequestError(false)
+      setResetForm(true)
+      ingredientsContext.updateIngredients(
+        ingredientCreated as ingredients,
+        inputsData.ingredient_uom,
+        purchasePlaces.valuesUsed
+      )
+    })
+      .catch(() => {
+        // eslint-disable-next-line max-len
+        setErrorResponse('Ocurió un error agregando los lugares de compra pero no es tu culpa, intenta de nuevo mas tarde :).')
+        setRequestEnd(true)
+        setRequestError(true)
+      })
+  }
+
+  useEffect(
+    () => {
+      const timer = setTimeout(
+        () => {
+          if (resetForm) {
+            // Reset hook data
+            setErrorResponse('')
+            setRequestInit(false)
+            setRequestEnd(false)
+            setRequestError(true)
+            setResetForm(false)
+            // eslint-disable-next-line no-undefined
+            setUomId(undefined)
+            // Reset inputs
+            resetMultipleSelect()
+            restartInputs('all')
+            formElement.current?.reset()
+            detailsElement.current?.removeAttribute('open')
+            detailsElement.current?.focus()
+          }
+        },
+        3000
+      )
+      return () => {
+        clearTimeout(timer)
+      }
+    },
+    [
+      detailsElement,
+      formElement,
+      resetForm,
+      resetMultipleSelect,
+      restartInputs
+    ]
+  )
+
   return {
     PurchasePlaces: PurchasePlacesSelect,
-    disableButton: !formIsValid(),
-    ingredientPurchaseRequestEnd,
-    ingredientPurchaseRequestError,
-    ingredientPurchaseRequestInit,
-    ingredientPurchaseRequestResponse,
-    ingredientRequestEnd,
-    ingredientRequestError,
-    ingredientRequestInit,
+    disableButton: !formIsValid() || requestInit,
+    errorResponse,
     ingredientRequestResponse: ingredientRequestResponse as ingredients,
     inputsData,
     inputsErrors,
     nameIsRepeated,
     onBlur,
     onChange: handleOnChange,
+    requestEnd,
+    requestError,
+    requestInit,
     sendIngredient
   }
 }
@@ -149,16 +226,13 @@ interface UseCreateIngredientReturn {
   onChange: useInputsReturn['onChange']
   PurchasePlaces: UseMultipleSelectsReturn['Component']
   disableButton: boolean
-  sendIngredient: (ev: MouseEvent<HTMLButtonElement>) => void
+  sendIngredient: (ev: MouseEvent<HTMLButtonElement>) => Promise<void>
   nameIsRepeated: boolean
-  ingredientRequestInit: boolean
-  ingredientRequestEnd: boolean
+  requestInit: boolean
+  requestEnd: boolean
+  requestError: boolean
   ingredientRequestResponse: ingredients
-  ingredientRequestError: boolean
-  ingredientPurchaseRequestInit: boolean
-  ingredientPurchaseRequestEnd: boolean
-  ingredientPurchaseRequestResponse: string
-  ingredientPurchaseRequestError: boolean
+  errorResponse: string
 }
 
 interface InputsData {

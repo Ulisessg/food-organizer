@@ -2,10 +2,11 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Button, Form, LoadingSpinner, Select, TextInput } from 'd-system'
-import React, { type FC, Fragment, useContext } from 'react'
+import React, { type FC, Fragment, useContext, useRef } from 'react'
 import Details from '../common/Details'
 import ErrorMessage from '../common/ErrorMessage'
 import { IngredientsContext } from 'context/ingredientsContext'
+import { LoadingSpinnerContainer } from 'components/common/FormInDetailsStyles'
 import RequestResultStyles from 'components/common/RequestResultStyles'
 import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
@@ -14,20 +15,29 @@ import useCreateIngredient from 'hooks/components/useCreateIngredient'
 // eslint-disable-next-line max-lines-per-function
 const CreateIngredient: FC = () => {
   const ingredientsContext = useContext(IngredientsContext)
+  const formRef = useRef<HTMLFormElement>(null)
+  const detailsRef = useRef<HTMLDetailsElement>(null)
   const {
     disableButton,
+    errorResponse,
     inputsData,
     inputsErrors,
     onBlur,
     onChange,
     PurchasePlaces,
     nameIsRepeated,
-    sendIngredient
-  } = useCreateIngredient()
+    sendIngredient,
+    requestEnd,
+    requestError,
+    requestInit
+  } = useCreateIngredient(
+    detailsRef,
+    formRef
+  )
 
   return <>
-  <Details summary="Crear ingrediente">
-    <Form formTitle="Crear ingrediente">
+  <Details summary="Crear ingrediente" ref={detailsRef as any}>
+    <Form formTitle="Crear ingrediente" ref={formRef}>
       <TextInput
         id="ingredient_name"
         inputMode="text"
@@ -36,7 +46,7 @@ const CreateIngredient: FC = () => {
         type="text"
         pattern="^[\p{L}\s]+$"
         acceptanceCriteria="Solo letras y espacios"
-        inputInvalid={inputsErrors.ingredient_name}
+        inputInvalid={inputsErrors.ingredient_name || nameIsRepeated}
         onChange={onChange}
         onBlur={onBlur}
         required
@@ -119,6 +129,25 @@ const CreateIngredient: FC = () => {
       >
         Ese ingrediente ya existe
       </RequestResultStyles>
+      {/* Request init */}
+      {(requestInit && !requestEnd) &&
+      <LoadingSpinnerContainer>
+        <LoadingSpinner size="large" />
+      </LoadingSpinnerContainer>}
+      {/* Request end */}
+      <RequestResultStyles
+          hidden={!requestEnd && !requestError}
+          isError={true}
+        >
+          {errorResponse}
+        </RequestResultStyles>
+
+        <RequestResultStyles
+          hidden={requestError && !requestEnd}
+          isError={false}
+        >
+          Ingrediente creado con éxito
+        </RequestResultStyles>
     </Form>
 
   </Details>

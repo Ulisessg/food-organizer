@@ -136,10 +136,12 @@ export type GetIngredients = Array<{
   image?: string
   comment?: string
   uom_name: string
-  ingr_purchase_places?: Array<
-  {
-    purchase_place_id: number
-    purchase_place_name: string
-    ingredient_purchase_place_id: number
-  }>
+  ingr_purchase_places?: TIngr_purchase_places
+}>
+
+export type TIngr_purchase_places = Array<
+{
+  purchase_place_id: number
+  purchase_place_name: string
+  ingredient_purchase_place_id: number
 }>
