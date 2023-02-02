@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import { Button, Form, LoadingSpinner, TextInput } from 'd-system'
+import { Button, Form, Input, LoadingSpinner } from 'd-system'
 import React, {
   type FC,
   Fragment, useContext, useRef
@@ -28,7 +28,7 @@ const CreateUnitsOfMeasureForm: FC = () => {
   } = useCreateUnitsOfMeasure(formRef)
   return <>
   <Form formTitle="Crear unidad de medida" ref={formRef}>
-    <TextInput
+    <Input
       id="uom_name"
       inputMode="text"
       label="Nombre de la unidad de medida"
@@ -45,7 +45,7 @@ const CreateUnitsOfMeasureForm: FC = () => {
       style={{ textTransform: 'capitalize' }}
       inputInvalid={(uomIsRepeated || inputsErrors.uom_name)}
     />
-    <TextInput
+    <Input
       id="uom_abbreviation"
       inputMode="text"
       label="Abreviación de la unidad de medida"

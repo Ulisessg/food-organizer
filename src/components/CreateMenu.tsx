@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-import { Button, Form, LoadingSpinner, TextInput } from 'd-system'
+import { Button, Form, Input, LoadingSpinner } from 'd-system'
 import {
   ButtonAddSelect,
   ButtonDeleteSelect,
@@ -96,7 +96,7 @@ typeof selectsData.valuesUsed.find((vUsed) => vUsed === food_name) !== 'undefine
           text="Agregar comida"
           onClick={addSelect}
         />
-        <TextInput
+        <Input
           id="menu_comment"
           inputMode="text"
             label="Comentarios (opcional)"

@@ -4,7 +4,7 @@
 import Details from './common/Details'
 import styled from 'styled-components'
 import React, { type ChangeEvent, type FC, Fragment, useState } from 'react'
-import { Button, FileInput, Form, LoadingSpinner, TextInput } from 'd-system'
+import { Button, Form, LoadingSpinner, Input } from 'd-system'
 import Select from './common/Select'
 import useGetRequest from 'hooks/useGetRequest'
 import ErrorMessage from './common/ErrorMessage'
@@ -42,7 +42,7 @@ const CreateFood: FC = () => {
   return <>
   <Details summary="Crear comida">
     <Form formTitle="Crear comida">
-      <TextInput
+      <Input
         id="food_name"
         inputMode="text"
         label="Nombre de la comida"
@@ -51,7 +51,7 @@ const CreateFood: FC = () => {
         type="text"
       />
       <PrepTimeContainer>
-        <TextInput
+        <Input
           id="food_prep_time"
           inputMode="numeric"
           label="Tiempo de preparación (opcional)"
@@ -136,7 +136,7 @@ typeof selectsData.valuesUsed.find((valUsed) => valUsed === ingredient_name) !==
         />
       </>}
 
-      <FileInput
+      <Input
         accept="image/*"
         id="ingredient_image"
         inputMode="numeric"

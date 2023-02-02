@@ -1,4 +1,4 @@
-import { Button, Form, LoadingSpinner, TextInput } from 'd-system'
+import { Button, Form, Input, LoadingSpinner } from 'd-system'
 import React, { type FC, useRef } from 'react'
 import Details from 'components/common/Details'
 import { LoadingSpinnerContainer } from './common/FormInDetailsStyles'
@@ -27,7 +27,7 @@ const CreatePurchasePlace: FC = () => {
   return <>
   <Details summary="Crear lugar de compra" ref={detailsRef as any}>
   <Form formTitle="Crear lugar de compra" ref={formRef}>
-    <TextInput
+    <Input
       id="p_place_name"
       inputMode="text"
       label="Nombre del luugar de compra"
@@ -43,7 +43,7 @@ const CreatePurchasePlace: FC = () => {
       onChange={onChange}
       style={{ textTransform: 'capitalize' }}
       />
-    <TextInput
+    <Input
       id="pp_address"
       inputMode="text"
       label="Dirección"

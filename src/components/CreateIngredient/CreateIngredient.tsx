@@ -1,7 +1,7 @@
 /* eslint-disable max-statements */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Button, Form, LoadingSpinner, Select, TextInput } from 'd-system'
+import { Button, Form, Input, LoadingSpinner, Select } from 'd-system'
 import React, { type FC, Fragment, useContext, useRef } from 'react'
 import Details from '../common/Details'
 import ErrorMessage from '../common/ErrorMessage'
@@ -38,7 +38,7 @@ const CreateIngredient: FC = () => {
   return <>
   <Details summary="Crear ingrediente" ref={detailsRef as any}>
     <Form formTitle="Crear ingrediente" ref={formRef}>
-      <TextInput
+      <Input
         id="ingredient_name"
         inputMode="text"
         label="Nombre del ingrediente"
@@ -107,7 +107,7 @@ const CreateIngredient: FC = () => {
        </Fragment>)}
       </Select>
       }
-      <TextInput
+      <Input
         id="ingredient_comment"
         inputMode="text"
         label="Comentario"

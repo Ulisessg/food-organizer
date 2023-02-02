@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-statements */
-import { Button, Form, LoadingSpinner, TextInput } from 'd-system'
+import { Button, Form, Input, LoadingSpinner } from 'd-system'
 import React, {
   type FC,
   useRef
@@ -27,7 +27,7 @@ const CreateUnitsOfMeasureTypeForm: FC = () => {
   } = useCreateUnitsOfMeasureTypeForm(formRef)
   return <>
   <Form formTitle="Crear tipo de unidad de medida" onSubmit={sendUomt as any} ref={formRef}>
-    <TextInput
+    <Input
       id="create_uomt_uom_name"
       inputMode="text"
       label="Nombre del tipo de unidad de medida:"

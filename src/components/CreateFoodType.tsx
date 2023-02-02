@@ -1,11 +1,11 @@
-import { Button, Form, TextInput } from 'd-system'
+import { Button, Form, Input } from 'd-system'
 import React, { type FC } from 'react'
 import Details from './common/Details'
 
 const CreateFoodType: FC = () => (
   <Details summary="Crear tipo de comida">
     <Form formTitle="Tipo de comida">
-      <TextInput
+      <Input
         id="food_type_name"
         inputMode="text"
         label="Nombre del tipo de comida"
