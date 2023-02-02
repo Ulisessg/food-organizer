@@ -1,39 +1,20 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Button, Form, LoadingSpinner, TextInput } from 'd-system'
-import React, { type ChangeEvent, type FC, Fragment, useState } from 'react'
+import { Button, Datalist, Form, LoadingSpinner, TextInput } from 'd-system'
+import React, { type FC, Fragment } from 'react'
 import Details from './common/Details'
 import ErrorMessage from './common/ErrorMessage'
 import type { GetIngredients } from 'controllers/food_organizer_crud/ingredientCRUD'
-import Select from './common/Select'
 import styled from 'styled-components'
+import useCreateIngredientStock from 'hooks/components/useCreateIngredientStock'
 import useGetRequest from 'hooks/useGetRequest'
 
 // eslint-disable-next-line max-lines-per-function
 const CreateIngredientStock: FC = () => {
-  const [
-    ingredientSelected,
-    setIngredientSelected
-  ] = useState<{
-    name: string
-    uom: string
-  }>({
-    name: 'Selecciona una opcion',
-    uom: 'N/A'
-  })
   const { data, error, isLoading } = useGetRequest('/api/ingredient')
   const ingredients = data as GetIngredients
-  const handleIngredientSelected = (ev: ChangeEvent<HTMLSelectElement>): void => {
-    const value = ev.currentTarget.value as unknown as string
-    const uom: string = document
-      .querySelector(`option[value='${value}']`)
-      ?.getAttribute('data-ingredient-uom') as unknown as string
 
-    setIngredientSelected({
-      name: value,
-      uom
-    })
-  }
+  const { inputsData, onChange, onBlur, uom } = useCreateIngredientStock()
 
   return <>
   <Details summary="Añadir ingrediente disponible">
@@ -43,11 +24,15 @@ const CreateIngredientStock: FC = () => {
           message="Error obteniendo ingredientes"
           action="intenta de nuevo mas tarde" />}
 
-        {(!error && !isLoading) && <Select
+        {(!error && !isLoading) && <Datalist
           id="ingredient_stock_ingredients"
-          labelText="Ingredientes"
-          value={ingredientSelected.name}
-          onChange={handleIngredientSelected}
+          label="Escribe el nombre del ingrediente"
+          name="ingredient"
+          inputProps={{
+            onBlur,
+            onChange,
+            value: inputsData.ingredient
+          }}
         >
           {ingredients.map(({
             ingredient_id,
@@ -58,17 +43,20 @@ const CreateIngredientStock: FC = () => {
             data-ingredient-uom={uom_name}
             value={ingredient_name}>{ingredient_name}</option>
           </Fragment>)}
-        </Select>}
+        </Datalist>}
         <IngredientInputContainer>
           <TextInput
             id="ingredient_stock_qty"
             inputMode="numeric"
             label="Cantidad del ingrediente"
-            name="ingredient_stock_qty"
-            placeholder="0"
+            name="ingredient_qty"
             type="text"
+            pattern="^[1-9]\d*$"
+            onChange={onChange}
+            onBlur={onBlur}
+            value={inputsData.ingredient_qty}
           />
-          <IngredientUom>{ingredientSelected.uom}</IngredientUom>
+          <IngredientUom>{uom}</IngredientUom>
         </IngredientInputContainer>
         <Button
           colorMessage="continue"
