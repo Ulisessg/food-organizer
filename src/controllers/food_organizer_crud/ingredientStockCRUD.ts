@@ -7,7 +7,7 @@ import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'
 
 export const createIngredientStock = async (
-  req: CreateUOM,
+  req: CreateIngredientStockRequest,
   res: NextApiResponse<response<ingredient_stock>>
 ): Promise<void> => {
   try {
@@ -71,7 +71,7 @@ export const getIngredientsStock = async (
 }
 
 export const updateIngredientStock = async (
-  req: CreateUOM,
+  req: UpdateIngredientStockRequest,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
@@ -98,9 +98,15 @@ WHERE ingredient_stock.id = ${id}`
   }
 }
 
-interface CreateUOM extends NextApiRequest {
+interface CreateIngredientStockRequest extends NextApiRequest {
+  body: CreateIngredientStock
+}
+
+interface UpdateIngredientStockRequest extends NextApiRequest {
   body: ingredient_stock
 }
+
+export type CreateIngredientStock = Omit<ingredient_stock, 'id'>
 
 export type GetIngredientStock = Array<{
   ingredient_stock_id: number
