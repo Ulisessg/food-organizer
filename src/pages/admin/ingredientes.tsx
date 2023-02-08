@@ -1,8 +1,4 @@
-import {
-  IngredientsContext,
-  IngredientsContextProvider
-} from 'context/ingredientsContext'
-import React, { type FC, useContext } from 'react'
+import React, { type FC } from 'react'
 import CreateIngredient from 'components/CreateIngredient'
 import CreatePurchasePlace from 'components/CreatePurchasePlace'
 import DisplayIngredients from 'components/DisplayIngredients'
@@ -10,29 +6,31 @@ import ErrorMessage from 'components/common/ErrorMessage'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
 import type { NextPage } from 'next'
+import { type RootState } from 'redux/store'
 import Title from 'components/common/Title'
+import { useSelector } from 'react-redux'
 
-const Ingredientes: NextPage = () => <IngredientsContextProvider>
+const Ingredientes: NextPage = () => <>
   <Head>
     <title>Administrar ingredientes</title>
   </Head>
   <Title>Administrar ingredientes</Title>
   <Content />
-</IngredientsContextProvider>
+</>
 
 const Content: FC = () => {
-  const ingredientsContext = useContext(IngredientsContext)
+  const ingredientsData = useSelector((state: RootState) => state.ingredients)
   return <>
     <CreateIngredient />
     <CreatePurchasePlace />
-    {ingredientsContext.ingredientsIsLoading && <LoadingSpinner size="large" />}
-    {(!ingredientsContext.ingredientsIsLoading && ingredientsContext.errorGettingIngredients) &&
+    {ingredientsData.getIsLoading && <LoadingSpinner size="large" />}
+    {(!ingredientsData.getIsLoading && ingredientsData.getIngredientsError) &&
       <ErrorMessage
         message="Error obteniendo los ingredientes"
         action="intenta de nuevo más tarde"
     />}
-    {(!ingredientsContext.ingredientsIsLoading && !ingredientsContext.errorGettingIngredients) &&
-      <DisplayIngredients ingredients={ingredientsContext.ingredients} />
+    {(!ingredientsData.getIsLoading && !ingredientsData.getIngredientsError) &&
+      <DisplayIngredients />
     }
   </>
 }

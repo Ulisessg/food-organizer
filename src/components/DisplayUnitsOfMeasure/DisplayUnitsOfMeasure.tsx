@@ -1,13 +1,13 @@
 /* eslint-disable max-lines-per-function */
-import React, { type FC, Fragment, useContext } from 'react'
+import React, { type FC, Fragment } from 'react'
 import { Table, Th } from 'd-system'
+import { type RootState } from 'redux/store'
 import Rows from './Rows'
 import TableContainer from 'components/common/TableContainer'
-import { UnitsOfMeasureContext } from 'context/unitsOfMeasureContext'
+import { useSelector } from 'react-redux'
 
 const DisplayUnitsOfMeasure: FC = () => {
-  const uomContext = useContext(UnitsOfMeasureContext)
-
+  const unitsOfMeasureData = useSelector((state: RootState) => state.unitsOfMeasure)
   return <TableContainer>
   <Table caption="Unidades de medida">
     <thead>
@@ -27,7 +27,7 @@ const DisplayUnitsOfMeasure: FC = () => {
       </tr>
     </thead>
     <tbody>
-    {uomContext.unitsOfMeasureOrderByUomt.map((uomt) => <Fragment key={uomt.uomt_id}>
+    {unitsOfMeasureData.uomGroupedByType.map((uomt) => <Fragment key={uomt.uomt_id}>
       {uomt.uom.map((uom, index) => <Fragment key={uom.id}>
         {index === 0 && <>
           <Rows

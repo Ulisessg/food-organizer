@@ -2,27 +2,34 @@
 /* eslint-disable camelcase */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { type ChangeEvent, type MouseEvent, type RefObject, useContext, useState } from 'react'
+import { type AppDispatch, type RootState } from 'redux/store'
+import { type ChangeEvent, type MouseEvent, type RefObject, useState } from 'react'
+import {
+  createUnitOfMeasureThunk,
+  restartCreateUomPostStatusThunk
+} from 'redux/slices/unitsOfMeasureSlice'
+import { useDispatch, useSelector } from 'react-redux'
 import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
-import { UnitsOfMeasureContext } from 'context/unitsOfMeasureContext'
 import { defaultSelectValue } from 'utils/constants'
 import transformPostData from 'utils/transformPostData'
-import type { units_of_measure } from '@prisma/client'
 import { useInputs } from 'd-system'
-import usePostRequest from 'hooks/usePostRequest'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
 const useCreateUnitsOfMeasure =
-(formRef: RefObject<HTMLFormElement>): UseCreateUnitsOfMeasureReturn => {
-  const uomContext = useContext(UnitsOfMeasureContext)
+(
+  formRef: RefObject<HTMLFormElement>,
+  detailsRef: RefObject<HTMLDetailsElement>
+): UseCreateUnitsOfMeasureReturn => {
+  const unitsOfMeasureData = useSelector((state: RootState) => state.unitsOfMeasure)
+  const dispatch: AppDispatch = useDispatch()
   const {
     isRepeated: uomIsRepeated,
     searchIsRepeated: seachUomIsRepeated
-  } = useValueIsRepeated<GetUOM[0]['uom'][0]>()
+  } = useValueIsRepeated<GetUOM['unitsOfMeasureGroupedByType'][0]['uom'][0]>()
   const {
     isRepeated: abbreviationIsRepeated,
     searchIsRepeated: searchIfAbbreviationIsRepeated
-  } = useValueIsRepeated<GetUOM[0]['uom'][0]>()
+  } = useValueIsRepeated<GetUOM['unitsOfMeasureGroupedByType'][0]['uom'][0]>()
   const { inputsData, onChange, onBlur, inputsErrors, restartInputs } = useInputs(
     {
       abbreviation: '',
@@ -31,25 +38,11 @@ const useCreateUnitsOfMeasure =
     },
     true
   )
-  const { postData, requestInit } =
-  usePostRequest<Omit<units_of_measure, 'id' | 'creation_date'>, units_of_measure>(
-    '/api/uom',
-    {
-      method: 'POST'
-    }
-  )
+
   const [
     disableButton,
     setDisableButton
   ] = useState<boolean>(true)
-  const [
-    showSuccessMessage,
-    setShowSuccessMessage
-  ] = useState<boolean>(false)
-  const [
-    showRequestErrorMessage,
-    setShowRequestErrorMessage
-  ] = useState<boolean>(false)
 
   const handleChange = (ev: TChangeEvent): void => {
     onChange(ev as ChangeEvent<HTMLInputElement>)
@@ -64,79 +57,63 @@ const useCreateUnitsOfMeasure =
     }
     if (ev.currentTarget.name === 'uom_name') {
       seachUomIsRepeated(
-        uomContext.unitsOfMeasure,
+        unitsOfMeasureData.uom,
         'name',
         ev.currentTarget.value
       )
     }
     if (ev.currentTarget.name === 'abbreviation') {
       searchIfAbbreviationIsRepeated(
-        uomContext.unitsOfMeasure,
+        unitsOfMeasureData.uom,
         'abbreviation',
         ev.currentTarget.value
       )
     }
   }
 
-  const sendUom: UseCreateUnitsOfMeasureReturn['sendUom'] = (ev): void => {
+  const formIsValid = (): boolean => {
+    if (formRef.current?.checkValidity() === true) return true
+    return false
+  }
+
+  const createUom: UseCreateUnitsOfMeasureReturn['createUom'] = async (ev) => {
     if (ev.currentTarget.form?.checkValidity() === true) {
       const uomtId =
-      uomContext.unitsOfMeasureTypes.find((el) => el.name === inputsData.select_uomt)?.id as number
-      const requestData = transformPostData({
+      unitsOfMeasureData.unitsOfMeasureType
+        .find((el) => el.name === inputsData.select_uomt)?.id as number
+
+      const res = await dispatch(createUnitOfMeasureThunk(transformPostData({
         abbreviation: inputsData.abbreviation,
         name: inputsData.uom_name,
         uomt_id: uomtId
-      })
-      postData(requestData).then((res) => {
-        setShowSuccessMessage(true)
+      })))
+
+      if (typeof (res as any).error === 'undefined') {
         restartInputs('all')
+        detailsRef.current?.focus()
         setDisableButton(true)
-        uomContext.updateUom(res.data?.data as units_of_measure)
-        setTimeout(
-          () => {
-            setShowSuccessMessage(false)
-          },
-          1500
-        )
-      })
-        .catch(() => {
-          setShowRequestErrorMessage(true)
-          setTimeout(
-            () => {
-              setShowRequestErrorMessage(false)
-            },
-            1500
-          )
-        })
-        .finally(() => {
-          formRef.current?.parentNode?.querySelector('summary')?.focus()
-        })
+        await dispatch(restartCreateUomPostStatusThunk())
+      }
     }
   }
   return {
     abbreviationIsRepeated,
-    disableButton,
+    createUom,
+    disableButton: !formIsValid() || unitsOfMeasureData.postUomIsLoading || disableButton,
     handleChange,
     inputsData,
     inputsErrors,
     onBlur,
-    requestInit,
-    sendUom,
-    showRequestErrorMessage,
-    showSuccessMessage,
     uomIsRepeated
   }
 }
 
 interface UseCreateUnitsOfMeasureReturn {
   handleChange: (ev: TChangeEvent) => void
-  disableButton: boolean
-  showSuccessMessage: boolean
-  showRequestErrorMessage: boolean
-  requestInit: boolean
   onBlur: ReturnType<typeof useInputs>['onBlur']
+  createUom: (ev: MouseEvent<HTMLButtonElement>) => Promise<void>
+  disableButton: boolean
   abbreviationIsRepeated: boolean
-  sendUom: (ev: MouseEvent<HTMLButtonElement>) => void
   inputsData: Record<keyof InputsValues, any>
   inputsErrors: Record<keyof InputsValues, boolean>
   uomIsRepeated: boolean

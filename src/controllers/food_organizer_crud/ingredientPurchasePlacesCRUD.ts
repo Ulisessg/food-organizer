@@ -1,16 +1,18 @@
+/* eslint-disable max-statements */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import ingredientPurchasePlaceValidations, {
   validations
 } from 'models/ingredientPurchasePlaceValidations'
+import { type TIngr_purchase_places } from './ingredientCRUD'
 import type { ingredient_purchase_places } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'
 
 export const createIngredientPurchasePlace = async (
   req: CreateIngredientPurchasePlaceRequest,
-  res: NextApiResponse<response<string>>
+  res: NextApiResponse<response<TIngr_purchase_places | string>>
 ): Promise<void> => {
   try {
     if (req.body.length > 10) throw new Error('not more of 10 purchase places')
@@ -31,8 +33,18 @@ export const createIngredientPurchasePlace = async (
         error: true
       })
     } else {
+      const ingredientId = req.body[0].ingredient_id
+      const registerCreated = await prisma.$queryRaw<TIngr_purchase_places>`SELECT 
+ingredient_purchase_places.id, 
+ingredient_purchase_places.ingredient_id, 
+ingredient_purchase_places.purchase_place_id, 
+purchase_places.name AS purchase_place_name
+FROM ingredient_purchase_places 
+INNER JOIN purchase_places ON purchase_places.id = ingredient_purchase_places.purchase_place_id
+WHERE ingredient_purchase_places.ingredient_id = ${ingredientId};
+      `
       res.status(201).send({
-        data: 'ingredient purchase place created',
+        data: registerCreated,
         error: false
       })
     }

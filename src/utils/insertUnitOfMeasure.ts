@@ -12,12 +12,12 @@ import type { units_of_measure } from '@prisma/client'
  * @returns
  */
 const insertUnitOfMeasure = (
-  uomList: GetUOM,
+  uomList: GetUOM['unitsOfMeasureGroupedByType'],
   unitOfMeasure: units_of_measure,
   unitsOfMeasureTypes: GetUOMT
-): GetUOM => {
+): GetUOM['unitsOfMeasureGroupedByType'] => {
   let isUnitOfMeasureTypeIncluded = false
-  let result: GetUOM = uomList.map((uomt) => {
+  let result: GetUOM['unitsOfMeasureGroupedByType'] = uomList.map((uomt) => {
     if (uomt.uomt_id === unitOfMeasure.uomt_id) {
       isUnitOfMeasureTypeIncluded = true
       return {

@@ -1,25 +1,17 @@
 /* eslint-disable max-lines-per-function */
 import { Description, DescriptionContainer, Title } from 'styles/pages/unidades.styles'
-import React, { type FC, useContext } from 'react'
-import {
-  UnitsOfMeasureContext,
-  UnitsOfMeasureContextProvider
-} from 'context/unitsOfMeasureContext'
+import React, { type FC } from 'react'
 import CreateUnitsOfMeasure from 'components/CreateUnitsOfMeasure'
 import CreateUnitsOfMeasureType from 'components/CreateUnitsOfMeasureType'
 import DisplayUnitsOfMeasure from 'components/DisplayUnitsOfMeasure'
 import ErrorMessage from 'components/common/ErrorMessage'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
+import { type RootState } from 'redux/store'
+import { useSelector } from 'react-redux'
 
-const Unidades: FC = () => <UnitsOfMeasureContextProvider>
-    <Content />
-  </UnitsOfMeasureContextProvider>
-
-/** Component "Content" used to access UnitsOfMeasureContextProvider" */
-
-const Content: FC = () => {
-  const unitsOfMeasureContext = useContext(UnitsOfMeasureContext)
+const Unidades: FC = () => {
+  const unitsOfMeasureData = useSelector((state: RootState) => state.unitsOfMeasure)
   return <>
   <Head>
      <title>Administrar unidades de medida</title>
@@ -56,12 +48,12 @@ const Content: FC = () => {
     <CreateUnitsOfMeasureType />
 
     {/* Display Uom */}
-    {unitsOfMeasureContext.uomIsLoading && <LoadingSpinner size="large" />}
+    {unitsOfMeasureData.dataIsLoading && <LoadingSpinner size="large" />}
 
-    {(!unitsOfMeasureContext.uomIsLoading && !unitsOfMeasureContext.errorGettingUom.error) &&
+    {(!unitsOfMeasureData.dataIsLoading && !unitsOfMeasureData.errorGettingData) &&
     <DisplayUnitsOfMeasure />}
-    {(unitsOfMeasureContext.errorGettingUom.error &&
-     !unitsOfMeasureContext.uomIsLoading) && <ErrorMessage
+    {(unitsOfMeasureData.errorGettingData &&
+     !unitsOfMeasureData.dataIsLoading) && <ErrorMessage
       message="Error obteniendo las unidades de medida"
       action="intenta de nuevo más tarde"
     />}

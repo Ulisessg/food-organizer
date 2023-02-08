@@ -9,11 +9,13 @@ const useValueIsRepeated = <T extends Record<string, any>>(): UseValueIsRepeated
   const searchIsRepeated: UseValueIsRepeatedReturn<T>['searchIsRepeated'] =
    (list, key, valueToSearch) => {
      let existValueRepeated: boolean = false
-     list.forEach((element) => {
+     list.some((element) => {
        const elementValue = element[key] as string
        if (elementValue.toLowerCase() === valueToSearch.toLowerCase()) {
          existValueRepeated = true
+         return true
        }
+       return false
      })
      setIsRepeated(existValueRepeated)
    }

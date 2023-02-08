@@ -2,20 +2,21 @@
 /* eslint-disable camelcase */
 import { type NextApiRequest, type NextApiResponse } from 'next'
 import unitOfMeasureValidations, { validations } from 'models/unitOfMeasureValidations'
+import { type GetUOMT } from './unitsOfMeasureTypeCRUD'
 import capitalize from 'utils/capitalize'
 import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'
 import { type units_of_measure } from '@prisma/client'
 
 export const createUOM = async (
-  req: CreateUOM,
+  req: CreateUOMRequest,
   res: NextApiResponse<response<units_of_measure | string>>
 ): Promise<void> => {
   try {
     const { abbreviation, creation_date, name, uomt_id } = req.body
     unitOfMeasureValidations({
       abbreviation,
-      creationDate: creation_date as unknown as string,
+      creationDate: creation_date,
       name,
       uomtId: uomt_id
     })
@@ -44,7 +45,8 @@ export const getUOM = async (
   res: NextApiResponse<response<GetUOM>>
 ): Promise<void> => {
   try {
-    const result = await prisma.$queryRaw<GetUOM>`SELECT 
+    const unitsOfMeasureGroupedByType =
+    await prisma.$queryRaw<GetUOM['unitsOfMeasureGroupedByType']>`SELECT 
 units_of_measure_types.id AS uomt_id,units_of_measure_types.name AS uomt_name,
 JSON_ARRAYAGG(JSON_OBJECT(
 'abbreviation', units_of_measure.abbreviation,
@@ -55,8 +57,16 @@ FROM units_of_measure_types
 INNER JOIN units_of_measure ON units_of_measure_types.id = units_of_measure.uomt_id
 GROUP BY uomt_name
 `
+    const unitsOfMeasureType = await prisma.$queryRaw<GetUOM['unitsOfMeasureType']>`SELECT 
+units_of_measure_types.id,
+units_of_measure_types.name
+FROM units_of_measure_types
+`
     res.status(200).send({
-      data: result,
+      data: {
+        unitsOfMeasureGroupedByType,
+        unitsOfMeasureType
+      },
       error: false
     })
   } catch (error) {
@@ -69,7 +79,7 @@ GROUP BY uomt_name
 }
 
 export const updateUOM = async (
-  req: CreateUOM,
+  req: UpdateUomRequest,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
@@ -97,16 +107,30 @@ WHERE units_of_measure.id = ${id}`
   }
 }
 
-interface CreateUOM extends NextApiRequest {
+interface CreateUOMRequest extends NextApiRequest {
+  body: CreateUom
+}
+
+interface UpdateUomRequest extends NextApiRequest {
   body: units_of_measure
 }
 
-export type GetUOM = Array<{
+export interface CreateUom {
+  abbreviation: string
+  creation_date: string
+  name: string
   uomt_id: number
-  uomt_name: string
-  uom: Array<{
-    id: number
-    name: string
-    abbreviation: string
+}
+
+export interface GetUOM {
+  unitsOfMeasureGroupedByType: Array<{
+    uomt_id: number
+    uomt_name: string
+    uom: Array<{
+      id: number
+      name: string
+      abbreviation: string
+    }>
   }>
-}>
+  unitsOfMeasureType: GetUOMT
+}

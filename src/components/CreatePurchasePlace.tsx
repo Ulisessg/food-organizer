@@ -3,23 +3,23 @@ import React, { type FC, useRef } from 'react'
 import Details from 'components/common/Details'
 import { LoadingSpinnerContainer } from './common/FormInDetailsStyles'
 import RequestResultStyles from './common/RequestResultStyles'
+import { type RootState } from 'redux/store'
 import useCreatePurchasePlace from 'hooks/components/useCreatePurchasePlace'
+import { useSelector } from 'react-redux'
 
 // eslint-disable-next-line max-lines-per-function
 const CreatePurchasePlace: FC = () => {
+  const purchasePlacesData = useSelector((state: RootState) => state.purchasePlaces)
   const detailsRef = useRef<HTMLDetailsElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
   const {
+    createPurchasePlace,
     enableButton,
     inputsData,
     inputsErrors,
     onBlur,
     onChange,
-    postPurchasePlace,
-    purchasePlaceIsrepeated,
-    requestError,
-    requestInit,
-    requestSuccess
+    purchasePlaceIsrepeated
   } = useCreatePurchasePlace(
     detailsRef,
     formRef
@@ -60,22 +60,22 @@ const CreatePurchasePlace: FC = () => {
       text="Añadir nueva dirección"
       type="button"
       disabled={!enableButton || purchasePlaceIsrepeated}
-      onClick={postPurchasePlace}
+      onClick={createPurchasePlace}
     />
-    {requestInit && <LoadingSpinnerContainer>
+    {purchasePlacesData.postPPIsLoading && <LoadingSpinnerContainer>
       <LoadingSpinner
         size="large"
       />
     </LoadingSpinnerContainer>}
     {/* Error */}
     <RequestResultStyles
-      hidden={!requestError}
+      hidden={!purchasePlacesData.postPPError}
       isError={true}>
         Error creando el lugar de compra, intenta de nuevo mas tarde :).
     </RequestResultStyles>
     {/* Success */}
     <RequestResultStyles
-      hidden={!requestSuccess}
+      hidden={!purchasePlacesData.postPPSuccess}
       isError={false}>
         Lugar de compra creado!.
     </RequestResultStyles>

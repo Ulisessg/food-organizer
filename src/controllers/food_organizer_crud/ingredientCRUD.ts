@@ -2,20 +2,23 @@
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import ingredientValidations, { validations } from 'models/ingredientValidations'
+import type {
+  ingredient_purchase_places, ingredients
+} from '@prisma/client'
 import capitalize from 'utils/capitalize'
-import type { ingredients } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'
 
 export const createIngredient = async (
   req: CreateIngredientRequest,
-  res: NextApiResponse<response<ingredients | string>>
+  res: NextApiResponse<response<CreateIngredientReturn | string>>
 ): Promise<void> => {
+  // Implement a way to store images
   try {
-    const { comment, creationDate, image, name, uomId } = req.body
+    const { comment, creation_date, image, name, uomId } = req.body
     ingredientValidations({
       comment,
-      creationDate: creationDate as unknown as string,
+      creationDate: creation_date as unknown as string,
       image,
       name,
       uomId
@@ -23,14 +26,23 @@ export const createIngredient = async (
     const result = await prisma.ingredients.create({
       data: {
         comment,
-        creation_date: creationDate,
+        creation_date,
         image,
         name: capitalize(name),
         uom_id: uomId
       }
     })
+    const uomName: string = await prisma.units_of_measure.findUniqueOrThrow({
+      where: {
+        id: result.uom_id
+      }
+    }).then((uom) => uom.name)
+
     res.status(201).send({
-      data: result,
+      data: {
+        ...result,
+        uomName
+      },
       error: false
     })
   } catch (error) {
@@ -44,10 +56,10 @@ export const createIngredient = async (
 
 export const getIngredients = async (
   req: NextApiRequest,
-  res: NextApiResponse<response<GetIngredients[] | string>>
+  res: NextApiResponse<response<GetIngredients | string>>
 ): Promise<void> => {
   try {
-    const result = await prisma.$queryRaw<GetIngredients[]>`SELECT 
+    const result = await prisma.$queryRaw<GetIngredients>`SELECT 
     ingredients.id AS ingredient_id,
     ingredients.name AS ingredient_name,
     ingredients.image,
@@ -57,7 +69,7 @@ export const getIngredients = async (
       JSON_ARRAYAGG(JSON_OBJECT(
         'ingredient_purchase_place_id', ingredient_purchase_places.id,
         'purchase_place_id', purchase_places.id,
-            'purchase_place_name', purchase_places.name
+        'purchase_place_name', purchase_places.name
         ))
         FROM ingredient_purchase_places
     INNER JOIN purchase_places ON purchase_places.id = ingredient_purchase_places.purchase_place_id
@@ -121,7 +133,7 @@ interface UpdateIngredientRequest extends NextApiRequest {
 
 export interface CreateIngredient {
   comment: string | null
-  creationDate: string
+  creation_date: string
   image: string | null
   name: string
   uomId: number
@@ -130,6 +142,11 @@ export interface CreateIngredient {
 export interface UpdateIngredient extends CreateIngredient {
   id: number
 }
+
+export interface CreateIngredientReturn extends ingredients {
+  uomName: string
+}
+
 export type GetIngredients = Array<{
   ingredient_id: number
   ingredient_name: string
@@ -140,8 +157,4 @@ export type GetIngredients = Array<{
 }>
 
 export type TIngr_purchase_places = Array<
-{
-  purchase_place_id: number
-  purchase_place_name: string
-  ingredient_purchase_place_id: number
-}>
+ingredient_purchase_places & { purchase_place_name: string }>

@@ -2,37 +2,39 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Button, Form, Input, LoadingSpinner, Select } from 'd-system'
-import React, { type FC, Fragment, useContext, useRef } from 'react'
+import React, { type FC, Fragment, useRef } from 'react'
 import Details from '../common/Details'
 import ErrorMessage from '../common/ErrorMessage'
-import { IngredientsContext } from 'context/ingredientsContext'
 import { LoadingSpinnerContainer } from 'components/common/FormInDetailsStyles'
 import RequestResultStyles from 'components/common/RequestResultStyles'
+import { type RootState } from 'redux/store'
 import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
 import useCreateIngredient from 'hooks/components/useCreateIngredient'
+import { useSelector } from 'react-redux'
 
 // eslint-disable-next-line max-lines-per-function
 const CreateIngredient: FC = () => {
-  const ingredientsContext = useContext(IngredientsContext)
   const formRef = useRef<HTMLFormElement>(null)
   const detailsRef = useRef<HTMLDetailsElement>(null)
+  const selectUomElement = useRef<HTMLSelectElement>(null)
+  const purchasePlacesData = useSelector((state: RootState) => state.purchasePlaces)
+  const unitsOfMeasureData = useSelector((state: RootState) => state.unitsOfMeasure)
+  const ingredientsData = useSelector((state: RootState) => state.ingredients)
+
   const {
     disableButton,
-    errorResponse,
     inputsData,
     inputsErrors,
     onBlur,
     onChange,
-    PurchasePlaces,
-    nameIsRepeated,
-    sendIngredient,
-    requestEnd,
-    requestError,
-    requestInit
+    PurchasePlacesComponent,
+    createIngredient,
+    ingredientNameIsRepeated
   } = useCreateIngredient(
     detailsRef,
-    formRef
+    formRef,
+    selectUomElement
   )
 
   return <>
@@ -46,39 +48,45 @@ const CreateIngredient: FC = () => {
         type="text"
         pattern="^[\p{L}\s]+$"
         acceptanceCriteria="Solo letras y espacios"
-        inputInvalid={inputsErrors.ingredient_name || nameIsRepeated}
+        inputInvalid={inputsErrors.ingredient_name || ingredientNameIsRepeated}
         onChange={onChange}
         onBlur={onBlur}
         required
         minLength={2}
         style={{ textTransform: 'capitalize' }}
       />
-
+      <RequestResultStyles
+        hidden={!ingredientNameIsRepeated}
+        isError={true}
+        marginTop="-5px"
+      >
+        Ese ingrediente ya existe
+      </RequestResultStyles>
       {/* Purchase places */}
 
-      {ingredientsContext.errorGettingPurchasePlaces && <ErrorMessage
+      {purchasePlacesData.getRequestError && <ErrorMessage
           message="Error obteniendo lugares de compra"
           action="intenta de nuevo mas tarde"
         />
       }
-      {ingredientsContext.purchasePlacesIsLoading && <LoadingSpinner size="small" />}
-      {(!ingredientsContext.purchasePlacesIsLoading &&
-      !ingredientsContext.errorGettingPurchasePlaces) && <PurchasePlaces
+      {purchasePlacesData.dataIsLoading && <LoadingSpinner size="small" />}
+      {(!purchasePlacesData.dataIsLoading &&
+      !purchasePlacesData.getRequestError) && <PurchasePlacesComponent
         addSelectButtonText="Añadir lugar de compra"
         label="Selecciona un lugar de compra"
         optionValueKeyName="name"
-        options={ingredientsContext.purchasePlaces}
+        options={purchasePlacesData.purchasePlaces}
       />}
 
       {/* Unit Of Measure */}
 
-      {ingredientsContext.uomIsLoading && <LoadingSpinner size="small" />}
-      {ingredientsContext.errorGettingUom && <ErrorMessage
+      {unitsOfMeasureData.dataIsLoading && <LoadingSpinner size="small" />}
+      {unitsOfMeasureData.errorGettingData && <ErrorMessage
           message="Error obteniendo unidades de medida"
           action="intenta de nuevo mas tarde"
         />
       }
-      {(!ingredientsContext.uomIsLoading && !ingredientsContext.errorGettingUom) &&
+      {(!unitsOfMeasureData.dataIsLoading && !unitsOfMeasureData.errorGettingData) &&
 
        <Select
         id="select_uom"
@@ -91,13 +99,14 @@ const CreateIngredient: FC = () => {
         defValue={defaultSelectValue}
         value={inputsData.ingredient_uom}
         selectIsInvalid={inputsErrors.ingredient_uom}
+        ref={selectUomElement}
       >
           <option
             value={defaultSelectValue}
             disabled
             aria-disabled>-- {defaultSelectValue} --</option>
        {
-       ingredientsContext.unitsOfMeasure.map(({ uomt_name, uom }) => <Fragment key={randomId()}
+       unitsOfMeasureData.uomGroupedByType.map(({ uomt_name, uom }) => <Fragment key={randomId()}
           >
           <optgroup label={uomt_name}>
             {uom.map(({ name, id }) => <Fragment key={randomId()}>
@@ -114,6 +123,8 @@ const CreateIngredient: FC = () => {
         acceptanceCriteria="opcional"
         name="ingredient_comment"
         type="text"
+        onChange={onChange}
+        value={inputsData.ingredient_comment}
       />
       <Button
         colorMessage="continue"
@@ -121,29 +132,31 @@ const CreateIngredient: FC = () => {
         text="Crear ingrediente"
         type="button"
         disabled={disableButton}
-        onClick={sendIngredient}
+        onClick={createIngredient}
       />
-      <RequestResultStyles
-        hidden={!nameIsRepeated}
-        isError={true}
-      >
-        Ese ingrediente ya existe
-      </RequestResultStyles>
       {/* Request init */}
-      {(requestInit && !requestEnd) &&
+      {(ingredientsData.postIsLoading) &&
       <LoadingSpinnerContainer>
         <LoadingSpinner size="large" />
       </LoadingSpinnerContainer>}
-      {/* Request end */}
+
+      {/* Request end with error */}
       <RequestResultStyles
-          hidden={!requestEnd && !requestError}
+          hidden={
+            !ingredientsData.postEnd &&
+            !ingredientsData.postError &&
+            !ingredientsData.postIngredientPurchaseEnd &&
+            !ingredientsData.postIngredientPurchaseError}
           isError={true}
         >
-          {errorResponse}
+          {ingredientsData.postError && 'Ocurrió un error creando el ingrediente'}
+          {ingredientsData.postIngredientPurchaseError &&
+          'Ocurrió un error añadiendo los lugares de compra'}
         </RequestResultStyles>
 
+      {/* Request end successfull */}
         <RequestResultStyles
-          hidden={requestError && !requestEnd}
+          hidden={!ingredientsData.postSuccess && !ingredientsData.postIngredientPurchaseSuccess}
           isError={false}
         >
           Ingrediente creado con éxito

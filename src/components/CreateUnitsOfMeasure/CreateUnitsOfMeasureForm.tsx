@@ -2,31 +2,34 @@
 import { Button, Form, Input, LoadingSpinner } from 'd-system'
 import React, {
   type FC,
-  Fragment, useContext, useRef
+  Fragment, useRef
 } from 'react'
 import AlertMessage from 'components/common/RequestResultStyles'
+import Details from 'components/common/Details'
 import ErrorMessage from 'components/common/ErrorMessage'
 import { LoadingSpinnerContainer } from 'components/common/FormInDetailsStyles'
+import { type RootState } from 'redux/store'
 import Select from 'components/common/Select'
-import { UnitsOfMeasureContext } from 'context/unitsOfMeasureContext'
 import useCreateUnitsOfMeasure from 'hooks/components/useCreateUnitsOfMeasure'
+import { useSelector } from 'react-redux'
 
 const CreateUnitsOfMeasureForm: FC = () => {
   const formRef = useRef<HTMLFormElement>(null)
-  const uomContext = useContext(UnitsOfMeasureContext)
+  const detailsRef = useRef<HTMLDetailsElement>(null)
+  const unitsOfMeasureData = useSelector((state: RootState) => state.unitsOfMeasure)
   const {
     abbreviationIsRepeated, disableButton,
     handleChange,
     inputsData,
     inputsErrors,
     onBlur,
-    requestInit,
-    sendUom,
-    showRequestErrorMessage,
-    showSuccessMessage,
+    createUom,
     uomIsRepeated
-  } = useCreateUnitsOfMeasure(formRef)
-  return <>
+  } = useCreateUnitsOfMeasure(
+    formRef,
+    detailsRef
+  )
+  return <Details summary="Crear unidad de medida" ref={detailsRef as any}>
   <Form formTitle="Crear unidad de medida" ref={formRef}>
     <Input
       id="uom_name"
@@ -62,11 +65,11 @@ const CreateUnitsOfMeasureForm: FC = () => {
       onBlur={onBlur}
       style={{ textTransform: 'capitalize' }}
     />
-      {uomContext.uomtIsLoading && <LoadingSpinner size="large" />}
-      {uomContext.errorGettingUomt.error && <ErrorMessage
+      {unitsOfMeasureData.dataIsLoading && <LoadingSpinner size="large" />}
+      {unitsOfMeasureData.errorGettingData && <ErrorMessage
       message="Ocurrió un error obteniendo los tipo de unidad de medida"
       action="Intenta de nuevo más tarde" />}
-      {(!uomContext.errorGettingUomt.error && !uomContext.uomtIsLoading) && <>
+      {(!unitsOfMeasureData.errorGettingData && !unitsOfMeasureData.dataIsLoading) && <>
         <Select
           labelText="Selecciona a que tipo de unidad de medida pertenece"
           id="create_uomt_select"
@@ -75,7 +78,7 @@ const CreateUnitsOfMeasureForm: FC = () => {
           value={inputsData.select_uomt}
           required
         >
-          {uomContext.unitsOfMeasureTypes.map(({ id, name }) => <Fragment key={id}>
+          {unitsOfMeasureData.unitsOfMeasureType.map(({ id, name }) => <Fragment key={id}>
             <option value={name}>{name}</option>
           </Fragment>)}
         </Select>
@@ -86,17 +89,17 @@ const CreateUnitsOfMeasureForm: FC = () => {
       type="button"
       text="Crear unidad de medida"
       disabled={disableButton || uomIsRepeated || abbreviationIsRepeated}
-      onClick={sendUom}
+      onClick={createUom}
     />
-    {requestInit &&
+    {unitsOfMeasureData.postUomIsLoading &&
     <LoadingSpinnerContainer>
       <LoadingSpinner size="large" />
     </LoadingSpinnerContainer>
     }
     {/* Request error */}
     <AlertMessage
-      hidden={!showRequestErrorMessage}
-      aria-hidden={!showRequestErrorMessage}
+      hidden={!unitsOfMeasureData.postUomError}
+      aria-hidden={!unitsOfMeasureData.postUomError}
       isError={true}
       aria-live="assertive"
       role="alert"
@@ -105,8 +108,8 @@ const CreateUnitsOfMeasureForm: FC = () => {
     </AlertMessage>
     {/* Request success */}
     <AlertMessage
-      hidden={!showSuccessMessage}
-      aria-hidden={!showSuccessMessage}
+      hidden={!unitsOfMeasureData.postUomSuccess}
+      aria-hidden={!unitsOfMeasureData.postUomSuccess}
       isError={false}
       aria-live="assertive"
       role="alert"
@@ -134,7 +137,7 @@ const CreateUnitsOfMeasureForm: FC = () => {
       {abbreviationIsRepeated && 'Esa abbreviación ya existe'}
     </AlertMessage>
   </Form>
-</>
+</Details>
 }
 
 export default CreateUnitsOfMeasureForm

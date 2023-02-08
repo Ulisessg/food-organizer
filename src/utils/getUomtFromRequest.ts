@@ -2,14 +2,16 @@
 /* eslint-disable camelcase */
 import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 
-const getUomtFromRequest = (data: GetUOM): TGetUomtFromRequestReturn => {
-  const result: TGetUomtFromRequestReturn = data.map(({ uomt_id, uomt_name }) => ({
-    uomt_id,
-    uomt_name
+const getUomtFromRequest = (data: GetUOM['unitsOfMeasureType']): TGetUomtFromRequestReturn => {
+  const result: TGetUomtFromRequestReturn = data.map(({ id, name }) => ({
+    id,
+    name
   }))
   return result
 }
 
-type TGetUomtFromRequestReturn = Array<Pick<GetUOM[0], 'uomt_id' | 'uomt_name'>>
+type TGetUomtFromRequestReturn = Array<Pick<
+GetUOM['unitsOfMeasureType'][0],
+'id' | 'name'>>
 
 export default getUomtFromRequest

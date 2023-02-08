@@ -4,15 +4,19 @@
 import React, { type FC, Fragment } from 'react'
 import { Table, Td, Th } from 'd-system'
 import EditTableButtons from 'components/common/EditTableButtons'
-import type { GetIngredients } from 'controllers/food_organizer_crud/ingredientCRUD'
+import { type RootState } from 'redux/store'
 import TableContainer from 'components/common/TableContainer'
+import randomId from 'utils/randomId'
 import styled from 'styled-components'
+import { useSelector } from 'react-redux'
 
 const onUpdate = (): void => {
   console.log('Update!')
 }
 
-const DisplayIngredients: FC<Props> = ({ ingredients }) => <TableContainer>
+const DisplayIngredients: FC = () => {
+  const ingredients = useSelector((state: RootState) => state.ingredients.ingredients)
+  return <TableContainer>
   <Table caption="Ingredientes">
     <thead>
       <tr>
@@ -40,13 +44,10 @@ const DisplayIngredients: FC<Props> = ({ ingredients }) => <TableContainer>
               { comment?.length === 0 && <Td>N/A</Td>}
               <Td>{uom_name}</Td>
               {/* Purchase places */}
-              {ingr_purchase_places?.map(({
-                ingredient_purchase_place_id,
-                purchase_place_name
-              }) => <Fragment key={ingredient_purchase_place_id}>
+              {ingr_purchase_places?.map((pp) => <Fragment key={randomId()}>
                   <Td
                   className="ingredient_purchase_places"
-                  >{purchase_place_name}</Td>
+                  >{pp.purchase_place_name}</Td>
                 </Fragment>)}
                 {!Array.isArray(ingr_purchase_places) && <Td>N/A</Td>}
                 <EditTableButtons className="no_grid" onUpdate={onUpdate} />
@@ -55,6 +56,7 @@ const DisplayIngredients: FC<Props> = ({ ingredients }) => <TableContainer>
     </tbody>
   </Table>
 </TableContainer>
+}
 
 const TrStyles = styled.tr`
 .ingredient_purchase_places {
@@ -72,9 +74,5 @@ const TrStyles = styled.tr`
   }
 }
 `
-
-interface Props {
-  ingredients: GetIngredients
-}
 
 export default DisplayIngredients

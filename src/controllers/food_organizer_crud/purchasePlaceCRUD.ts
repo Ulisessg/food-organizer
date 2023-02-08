@@ -9,23 +9,23 @@ import { type response } from 'controllers/response'
 
 // eslint-disable-next-line max-statements
 export const createPurchasePlace = async (
-  req: CreatePurchasePlace,
+  req: CreatePurchasePlaceRequest,
   res: NextApiResponse<response<purchase_places | string>>
 ): Promise<void> => {
   try {
     const { address, creation_date, name } = req.body
     purchasePlaceValidations({
       address,
-      creationDate: creation_date as unknown as string,
+      creationDate: creation_date,
       name
     })
-    let modifiedAddress: string | null = null
+    let capitalizedAddress: string | null = null
     if (typeof address === 'string') {
-      modifiedAddress = capitalize(address)
+      capitalizedAddress = capitalize(address)
     }
     const result = await prisma.purchase_places.create({
       data: {
-        address: modifiedAddress,
+        address: capitalizedAddress,
         creation_date,
         name: capitalize(name)
       }
@@ -68,19 +68,19 @@ ORDER BY purchase_places.name
 
 // eslint-disable-next-line max-statements
 export const updatePurchasePlace = async (
-  req: CreatePurchasePlace,
+  req: UpdatePurchasePlaceRequest,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
     const { address, name, id } = req.body
     validations.address(address)
     validations.name(name)
-    let modifiedAddress: string | null = null
+    let capitalizedAddress: string | null = null
     if (typeof address === 'string') {
-      modifiedAddress = capitalize(address)
+      capitalizedAddress = capitalize(address)
     }
     await prisma.$executeRaw`UPDATE IGNORE purchase_places SET
-address = ${modifiedAddress},
+address = ${capitalizedAddress},
 name = ${capitalize(name)}
 WHERE purchase_places.id = ${id}
 `
@@ -100,6 +100,16 @@ export type GetPurchasePlaces = Array<{
   address: string | null
 }>
 
-interface CreatePurchasePlace extends NextApiRequest {
+interface CreatePurchasePlaceRequest extends NextApiRequest {
+  body: CreatePurchasePlace
+}
+
+export interface CreatePurchasePlace {
+  address: string | null
+  creation_date: string
+  name: string
+}
+
+interface UpdatePurchasePlaceRequest extends NextApiRequest {
   body: purchase_places
 }

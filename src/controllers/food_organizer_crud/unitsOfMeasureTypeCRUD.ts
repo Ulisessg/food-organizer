@@ -8,7 +8,7 @@ import unitOfMeasureTypeVerification from 'models/unitOfMeasureTypeValidations'
 import type { units_of_measure_types } from '@prisma/client'
 
 export const insertUOMT = async (
-  req: InsertUOMTBody,
+  req: InsertUOMTRequest,
   res: NextApiResponse<response<units_of_measure_types | string>>
 ): Promise<void> => {
   try {
@@ -53,7 +53,7 @@ export const getUOMT = async (
 }
 
 export const updateUOMT = async (
-  req: InsertUOMTBody,
+  req: UpdateUOMTRequest,
   res: NextApiResponse<response<units_of_measure_types>>
 ): Promise<void> => {
   const { creation_date, name } = req.body
@@ -78,8 +78,17 @@ export const updateUOMT = async (
   }
 }
 
-interface InsertUOMTBody extends NextApiRequest {
+interface InsertUOMTRequest extends NextApiRequest {
+  body: CreateUomT
+}
+
+interface UpdateUOMTRequest extends NextApiRequest {
   body: units_of_measure_types
+}
+
+export interface CreateUomT {
+  creation_date: string
+  name: string
 }
 
 export type GetUOMT = Array<{

@@ -1,3 +1,3 @@
-import CreateUnitsOfMeasure from './CreateUnitsOfMeasure'
+import CreateUnitsOfMeasure from './CreateUnitsOfMeasureForm'
 
 export default CreateUnitsOfMeasure

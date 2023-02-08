@@ -1,8 +1,9 @@
 import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 
-const extractUomNames = (uomList: GetUOM): GetUOM[0]['uom'] => {
+const extractUomNames = (uomList:
+GetUOM['unitsOfMeasureGroupedByType']): GetUOM['unitsOfMeasureGroupedByType'][0]['uom'] => {
   if (!Array.isArray(uomList)) throw new TypeError('Array type mus required')
-  const result: GetUOM[0]['uom'] = []
+  const result: GetUOM['unitsOfMeasureGroupedByType'][0]['uom'] = []
   uomList.forEach((uomOrderByUomt) => {
     uomOrderByUomt.uom.forEach((uom) => {
       if (typeof uom.abbreviation !== 'string') {

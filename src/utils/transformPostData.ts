@@ -1,7 +1,8 @@
 import dayjs from 'dayjs'
 
-const transformPostData = <DataType extends Record<string, any>>(data: DataType):
-transformPostDataReturn<DataType> => {
+const transformPostData = <
+DataType extends Omit<Record<string, any>, 'creationDate'>>(data: DataType):
+  transformPostDataReturn<DataType> => {
   const creationDate: string = dayjs().toISOString()
   return {
     ...data,
