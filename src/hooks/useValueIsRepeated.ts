@@ -20,14 +20,20 @@ const useValueIsRepeated = <T extends Record<string, any>>(): UseValueIsRepeated
      setIsRepeated(existValueRepeated)
    }
 
+  const resetIsRepeated = (): void => {
+    setIsRepeated(false)
+  }
   return {
     isRepeated,
+    resetIsRepeated,
     searchIsRepeated
   }
 }
 
 interface UseValueIsRepeatedReturn <ObjType extends Record<string, any>> {
   searchIsRepeated: (list: ObjType[], key: keyof ObjType, valueToSearch: string) => void
+  // Set is repeated as false
+  resetIsRepeated: () => void
   isRepeated: boolean
 }
 

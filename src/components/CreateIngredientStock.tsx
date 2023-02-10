@@ -4,49 +4,57 @@ import { Button, Datalist, Form, Input, LoadingSpinner } from 'd-system'
 import React, { type FC, Fragment, useRef } from 'react'
 import Details from './common/Details'
 import ErrorMessage from './common/ErrorMessage'
-import type { GetIngredients } from 'controllers/food_organizer_crud/ingredientCRUD'
+import { LoadingSpinnerContainer } from './common/FormInDetailsStyles'
+import RequestResultStyles from './common/RequestResultStyles'
+import { type RootState } from 'redux/store'
 import styled from 'styled-components'
 import useCreateIngredientStock from 'hooks/components/useCreateIngredientStock'
-import useGetRequest from 'hooks/useGetRequest'
+import { useSelector } from 'react-redux'
 
 // eslint-disable-next-line max-lines-per-function
 const CreateIngredientStock: FC = () => {
-  const formRef = useRef(null)
-  const { data, error, isLoading } = useGetRequest('/api/ingredient')
-  const ingredients = data as GetIngredients
-
+  const formRef = useRef<HTMLFormElement>(null)
+  const detailsRef = useRef<HTMLDetailsElement>(null)
+  const ingredientsStockData = useSelector((state: RootState) => state.ingredientsStock)
+  const ingredientsData = useSelector((state: RootState) => state.ingredients)
   const {
     inputsData,
     onChange,
     onBlur,
     uom,
     inputsErrors,
+    isRepeated,
     disableButton,
-    sendIngredientStock
-  } = useCreateIngredientStock(formRef)
+    createIngredientStock
+  } = useCreateIngredientStock(
+    formRef,
+    detailsRef
+  )
 
   return <>
-  <Details summary="Añadir ingrediente disponible">
+  <Details summary="Añadir ingrediente disponible" ref={detailsRef as any}>
       <Form formTitle="Informacion del ingrediente" ref={formRef}>
-        {isLoading && <LoadingSpinner size="large" />}
-        {error && <ErrorMessage
+        {ingredientsStockData.getRequestIsLoading && <LoadingSpinner size="large" />}
+        {ingredientsStockData.getRequestError && <ErrorMessage
           message="Error obteniendo ingredientes"
           action="intenta de nuevo mas tarde" />}
 
-        {(!error && !isLoading) && <Datalist
+        {(ingredientsStockData.getRequestSuccess) && <Datalist
           id="ingredient_stock_ingredients"
           label="Escribe el nombre del ingrediente"
           name="ingredient"
           inputProps={{
-            inputInvalid: inputsErrors.ingredient,
+            autoComplete: 'true',
+            inputInvalid: inputsErrors.ingredient || isRepeated,
             minLength: 1,
             onBlur,
             onChange,
             required: true,
+            style: { textTransform: 'capitalize' },
             value: inputsData.ingredient
           }}
         >
-          {ingredients.map(({
+          {ingredientsData.ingredients.map(({
             ingredient_id,
             ingredient_name,
             uom_name
@@ -58,6 +66,12 @@ const CreateIngredientStock: FC = () => {
             >{ingredient_name}</option>
           </Fragment>)}
         </Datalist>}
+        <RequestResultStyles
+          isError={true}
+          hidden={!isRepeated}
+          marginTop="-20px">
+            Ya registraste ese ingrediente como disponible!
+        </RequestResultStyles>
         <IngredientInputContainer>
           <Input
             id="ingredient_stock_qty"
@@ -86,13 +100,28 @@ const CreateIngredientStock: FC = () => {
           onChange={onChange}
         />
         <Button
+          // eslint-disable-next-line no-ternary
           colorMessage="continue"
           size="100%"
           text="Añadir ingrediente"
           type="button"
           disabled={disableButton}
-          onClick={sendIngredientStock}
+          onClick={createIngredientStock}
         />
+        {ingredientsStockData.postRequestIsLoading &&
+          <LoadingSpinnerContainer>
+            <LoadingSpinner size="large" />
+          </LoadingSpinnerContainer>}
+        <RequestResultStyles
+          isError={true}
+          hidden={!ingredientsStockData.postRequestError}>
+            Ocurrió un error registrando el ingrediente disponible
+        </RequestResultStyles>
+        <RequestResultStyles
+          isError={false}
+          hidden={!ingredientsStockData.postRequestSuccess}>
+            Ingrediente disponible añadido!
+        </RequestResultStyles>
       </Form>
     </Details>
 </>

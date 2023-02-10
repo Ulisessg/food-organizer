@@ -12,6 +12,7 @@ export const createIngredientStock = async (
 ): Promise<void> => {
   try {
     const { comment, ingredient_id, ingredient_qty, creation_date } = req.body
+
     ingredientStockValidations({
       comment,
       creationDate: creation_date as unknown as string,
@@ -106,7 +107,9 @@ interface UpdateIngredientStockRequest extends NextApiRequest {
   body: ingredient_stock
 }
 
-export type CreateIngredientStock = Omit<ingredient_stock, 'id'>
+export interface CreateIngredientStock extends Omit<ingredient_stock, 'id' | 'creation_date'> {
+  creation_date: string
+}
 
 export type GetIngredientStock = Array<{
   ingredient_stock_id: number

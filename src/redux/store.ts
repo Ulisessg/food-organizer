@@ -1,6 +1,7 @@
 import { HYDRATE, createWrapper } from 'next-redux-wrapper'
 import { configureStore } from '@reduxjs/toolkit'
 import ingredientsSlice from './slices/ingredientsSlice'
+import ingredientsStockSlice from './slices/ingredientsStockSlice'
 import purchasePlacesSlice from './slices/purchasePlacesSlice'
 import unitsOfMeasureSlice from './slices/unitsOfMeasureSlice'
 
@@ -8,6 +9,7 @@ const store = configureStore({
   reducer: {
     [HYDRATE]: (state: any, action) => ({ ...state, ...action.payload }),
     ingredients: ingredientsSlice,
+    ingredientsStock: ingredientsStockSlice,
     purchasePlaces: purchasePlacesSlice,
     unitsOfMeasure: unitsOfMeasureSlice
   }
