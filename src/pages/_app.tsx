@@ -1,16 +1,44 @@
+import { type AppDispatch, wrapper } from 'redux/store'
+import { type FC, type ReactNode, useEffect } from 'react'
+import { Provider as ReduxProvider, useDispatch } from 'react-redux'
 import type { AppProps } from 'next/app'
 import { GlobalStyles } from 'd-system'
 import Header from 'components/Header'
-import { Provider as ReduxProvider } from 'react-redux'
-import { wrapper } from 'redux/store'
+import { getIngredientsThunk } from 'redux/slices/ingredientsSlice'
+import { getPurchasePlacesThunk } from 'redux/slices/purchasePlacesSlice'
+import { getUomDataThunk } from 'redux/slices/unitsOfMeasureSlice'
 
 export default function MyApp ({ Component, ...pageProps }: AppProps): JSX.Element {
   const { store } = wrapper.useWrappedStore(pageProps)
   return (
     <ReduxProvider store={store}>
-      <GlobalStyles footer header={<Header />}>
+      <ReduxProviderWrapper>
         <Component {...pageProps} />
-      </GlobalStyles>
+      </ReduxProviderWrapper>
     </ReduxProvider>
   )
+}
+
+const ReduxProviderWrapper: FC<{
+  children: ReactNode
+}> = ({ children }) => {
+  const dispatch: AppDispatch = useDispatch()
+  useEffect(
+    () => {
+      // eslint-disable-next-line lines-around-comment
+      /*
+       * Get data, todo: create a limiter or develop a performance improvement
+       */
+      // Ingredients
+      void dispatch(getIngredientsThunk(null))
+      void dispatch(getPurchasePlacesThunk(null))
+      void dispatch(getUomDataThunk(null))
+    },
+    [dispatch]
+  )
+  return <>
+  <GlobalStyles footer header={<Header />}>
+    {children}
+  </GlobalStyles>
+</>
 }
