@@ -7,3 +7,5 @@ export const addressRegexp = /^[\p{L}0-9\s.°]+$/u
 export const urlRegExp = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)+$/u
 // ISO8601Date regexp use dayjs.toISOString() format
 export const ISO8601Date = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/u
+
+export const inputNumberPattern = /^[1-9]\d*$/ugs

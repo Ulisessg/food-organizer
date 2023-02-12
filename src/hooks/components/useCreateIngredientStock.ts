@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   type GetIngredientStock
 } from 'controllers/food_organizer_crud/ingredientStockCRUD'
+import getInputNumberData from 'utils/getInputNumberData'
 import { useInputs } from 'd-system'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
@@ -61,13 +62,15 @@ UseCreateIngredientStockReturn => {
   const onChange: ReturnType<typeof useInputs>['onChange'] = (ev) => {
     const input = ev.currentTarget
     // Only accept numbers and no exponential notation or symbols, etc.
-    if (input.name === 'ingredient_qty' && (ev.target.value.match('/^[1-9][0-9]*$/g') === null)) {
-      input.value = Number(input.value).toFixed(0)
-      input.reportValidity()
-    } else {
-      input.setCustomValidity('')
-      input.checkValidity()
-      input.reportValidity()
+    if (input.name === 'ingredient_qty') {
+      const inputValidationResult = getInputNumberData(ev.target as HTMLInputElement)
+      if (inputValidationResult.match) {
+        input.reportValidity()
+      } else {
+        input.setCustomValidity('')
+        input.checkValidity()
+        input.reportValidity()
+      }
     }
     UseIOnChange(ev)
 
