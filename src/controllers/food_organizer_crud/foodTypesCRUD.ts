@@ -8,7 +8,7 @@ import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'
 
 export const createFoodType = async (
-  req: CreateFoodType,
+  req: CreateFoodTypeRequest,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
@@ -57,7 +57,7 @@ ORDER BY food_types.name ASC
 }
 
 export const updateFoodTypes = async (
-  req: CreateFoodType,
+  req: UpdateFoodTypeRequest,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
@@ -84,8 +84,17 @@ WHERE food_types.id = ${id}
   }
 }
 
-interface CreateFoodType extends NextApiRequest {
+interface CreateFoodTypeRequest extends NextApiRequest {
+  body: CreateFoodType
+}
+
+interface UpdateFoodTypeRequest extends NextApiRequest {
   body: food_types
+}
+
+export interface CreateFoodType {
+  name: string
+  creation_date: string
 }
 
 export type GetFoodTypes = Array<{

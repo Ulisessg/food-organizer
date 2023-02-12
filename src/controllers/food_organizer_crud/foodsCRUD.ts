@@ -14,8 +14,8 @@ import { type response } from 'controllers/response'
 }
 
 export const createFood = async (
-  req: CreateFood,
-  res: NextApiResponse<response<string>>
+  req: CreateFoodRequest,
+  res: NextApiResponse<response<foods | string>>
 ): Promise<void> => {
   try {
     const {
@@ -35,7 +35,7 @@ export const createFood = async (
       score: score as unknown as number,
       usedCounter: used_counter as unknown as number
     })
-    await prisma.foods.create({
+    const result = await prisma.foods.create({
       data: {
         creation_date,
         food_type_id,
@@ -47,7 +47,7 @@ export const createFood = async (
       }
     })
     res.status(201).send({
-      data: 'food created',
+      data: result,
       error: false
     })
   } catch (error) {
@@ -95,7 +95,7 @@ ORDER BY food_type_name
 
 // eslint-disable-next-line max-statements
 export const updateFood = async (
-  req: CreateFood,
+  req: UpdateFoodRequest,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
@@ -136,8 +136,22 @@ WHERE foods.id = ${id}`
   }
 }
 
-interface CreateFood extends NextApiRequest {
+interface CreateFoodRequest extends NextApiRequest {
+  body: CreateFood
+}
+
+interface UpdateFoodRequest extends NextApiRequest {
   body: foods
+}
+
+export interface CreateFood {
+  name: string
+  used_counter: number | null
+  preparation_time: number
+  score: number | null
+  food_type_id: number
+  image: string | null
+  creation_date: string
 }
 
 export type GetFoods = Array<{

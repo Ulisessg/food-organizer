@@ -4,6 +4,7 @@ import { Provider as ReduxProvider, useDispatch } from 'react-redux'
 import type { AppProps } from 'next/app'
 import { GlobalStyles } from 'd-system'
 import Header from 'components/Header'
+import { getFoodsDataThunk } from 'redux/slices/foodSlice'
 import { getIngredientsThunk } from 'redux/slices/ingredientsSlice'
 import { getPurchasePlacesThunk } from 'redux/slices/purchasePlacesSlice'
 import { getUomDataThunk } from 'redux/slices/unitsOfMeasureSlice'
@@ -33,6 +34,7 @@ const ReduxProviderWrapper: FC<{
       void dispatch(getIngredientsThunk(null))
       void dispatch(getPurchasePlacesThunk(null))
       void dispatch(getUomDataThunk(null))
+      void dispatch(getFoodsDataThunk(null))
     },
     [dispatch]
   )

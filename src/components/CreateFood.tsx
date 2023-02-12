@@ -3,77 +3,94 @@
 /* eslint-disable sort-imports */
 import Details from './common/Details'
 import styled from 'styled-components'
-import React, { type ChangeEvent, type FC, Fragment, useState } from 'react'
-import { Button, Form, LoadingSpinner, Input } from 'd-system'
-import Select from './common/Select'
-import useGetRequest from 'hooks/useGetRequest'
+import React, { type FC, Fragment, useRef } from 'react'
+import { Button, Form, LoadingSpinner, Input, Select } from 'd-system'
 import ErrorMessage from './common/ErrorMessage'
-import type { GetFoodTypes } from 'controllers/food_organizer_crud/foodTypesCRUD'
 import { defaultSelectValue } from 'utils/constants'
-import { type GetIngredients } from 'controllers/food_organizer_crud/ingredientCRUD'
-import { Container, ButtonDeleteSelect, ButtonAddSelect } from './common/MultipleSelects'
-import useMultipleSelects from 'hooks/useMultipleSelects'
+import { useSelector } from 'react-redux'
+import { type RootState } from 'redux/store'
+import useCreateFood from 'hooks/components/useCreateFood'
+import RequestResultStyles from './common/RequestResultStyles'
+import { LoadingSpinnerContainer } from './common/FormInDetailsStyles'
 
 // eslint-disable-next-line max-lines-per-function
 const CreateFood: FC = () => {
-  const { data, error, isLoading } = useGetRequest<GetFoodTypes>('/api/foodtypes')
+  const foodsData = useSelector((state: RootState) => state.foods)
+  const ingredientsData = useSelector((state: RootState) => state.ingredients)
+  const formRef = useRef<HTMLFormElement>(null)
   const {
-    data: ingredientRequestData,
-    error: ingredientRequestError,
-    isLoading: ingredientIsLoading
-  } = useGetRequest<GetIngredients>('/api/ingredient')
+    createFood,
+    disableButton,
+    foodNameIsRepeated,
+    inputsData,
+    onChange,
+    onBlur,
+    inputsErrors,
+    SelectIngredientsComponent
+  } = useCreateFood(formRef)
 
-  const {
-    addSelect: addIngredient,
-    data: selectsData,
-    deleteSelect: deleteIngredient,
-    onChange: handleIngredientsSelectChange
-  } = useMultipleSelects()
-  const [
-    foodTypeSelected,
-    setFoodTypeSelected
-  ] = useState<string>(defaultSelectValue)
-
-  const foodTypes = data as GetFoodTypes
-  const ingredients = ingredientRequestData as GetIngredients
-
-  const handleFoodTypeSelect = ({ currentTarget }:
-  ChangeEvent<HTMLSelectElement>): void => { setFoodTypeSelected(currentTarget.value) }
   return <>
   <Details summary="Crear comida">
-    <Form formTitle="Crear comida">
+    <Form formTitle="Crear comida" ref={formRef}>
       <Input
         id="food_name"
         inputMode="text"
         label="Nombre de la comida"
         name="food_name"
-        placeholder="Mole, agua de sandia, sopa de fideos"
         type="text"
+        acceptanceCriteria="Solo letras y espacios"
+        pattern="^[\p{L}\s]+$"
+        required
+        value={inputsData.food_name}
+        onChange={onChange}
+        onBlur={onBlur}
+        inputInvalid={inputsErrors.food_name || foodNameIsRepeated}
+        style={{ textTransform: 'capitalize' }}
       />
+      <RequestResultStyles
+        isError={true}
+        hidden={!foodNameIsRepeated}
+        marginTop="-5px"
+      >
+        Esa comida ya existe
+      </RequestResultStyles>
       <PrepTimeContainer>
         <Input
           id="food_prep_time"
           inputMode="numeric"
-          label="Tiempo de preparación (opcional)"
+          label="Tiempo de preparación"
+          acceptanceCriteria="Opcional"
           name="food_prep_time"
-          placeholder="30"
-          type="text"
+          type="number"
+          value={inputsData.food_prep_time}
+          onChange={onChange}
+          onBlur={onBlur}
+          inputInvalid={inputsErrors.food_prep_time}
+          min={1}
         />
         <p>minutos</p>
       </PrepTimeContainer>
-      {isLoading && <LoadingSpinner size="large" />}
-      {error && <ErrorMessage
-        message={data as string}
+      {/* Food type */}
+      {foodsData.getFoodTypesIsLoading && <LoadingSpinner size="large" />}
+      {foodsData.getFoodTypesError && <ErrorMessage
+        message="Ocurrió un error obteniendo los tipos de comida"
         action="intenta de nuevo en unos momentos" />}
 
-      {(!error && !isLoading) && <>
+      {foodsData.getFoodTypesSuccess && <>
         <Select
-          id="food_types"
-          labelText="Selecciona el tipo de comida al que pertenece"
-          value={foodTypeSelected}
-          onChange={handleFoodTypeSelect}
+          id="food_type_select"
+          label="Selecciona un tipo de comida al que pertenece"
+          name="food_type_select"
+          required
+          allowDefaultValue={false}
+          defValue={defaultSelectValue}
+          value={inputsData.food_type_select}
+          onChange={onChange}
+          onBlur={onBlur}
+          selectIsInvalid={inputsErrors.food_type_select}
           >
-          {foodTypes.map(({ id, name }) => <Fragment key={id}>
+            <option value={defaultSelectValue} disabled>{defaultSelectValue}</option>
+          {foodsData.foodTypes.map(({ id, name }) => <Fragment key={id}>
             <option value={name}>{name}</option>
           </Fragment>)}
         </Select>
@@ -81,76 +98,40 @@ const CreateFood: FC = () => {
       }
 
       {/* Ingredients */}
-      {ingredientIsLoading && <LoadingSpinner size="large" />}
-      {ingredientRequestError &&
-        <ErrorMessage message={ingredientRequestData as string}
+      {ingredientsData.getIsLoading && <LoadingSpinner size="large" />}
+      {ingredientsData.getIngredientsError &&
+        <ErrorMessage message="Ocurrió un error obteniendo los ingredientes"
           action="intenta de nuevo más tarde" />}
 
-      {(!ingredientRequestError && !ingredientIsLoading) && <>
-      <FormIngredientsSectionTitle>Ingredientes</FormIngredientsSectionTitle>
-        {selectsData.selects.map(({ selectId }, index) => <Fragment
-        key={selectId}>
-          {index === 0 && <Select
-            id={selectId}
-            labelText="Selecciona un ingrediente"
-            value={selectsData.selectsValues[index].value}
-            onChange={handleIngredientsSelectChange}
-            >
-            {ingredients.map(({ ingredient_id, ingredient_name }) => <option
-              value={ingredient_name}
-              key={ingredient_id}
-              disabled={
-typeof selectsData.valuesUsed.find((valUsed) => valUsed === ingredient_name) !== 'undefined'
-              }
-              >
-              {ingredient_name}
-            </option>)}
-        </Select>}
-
-        {index !== 0 && <Container>
-          <Select
-            id={selectId}
-            labelText="Selecciona un ingrediente"
-            key={selectId}
-            value={selectsData.selectsValues[index].value}
-            onChange={handleIngredientsSelectChange}
-            >
-            {ingredients.map(({ ingredient_id, ingredient_name }) => <option
-              value={ingredient_name}
-              key={ingredient_id}
-              disabled={
-typeof selectsData.valuesUsed.find((valUsed) => valUsed === ingredient_name) !== 'undefined'
-              }
-              >
-              {ingredient_name}
-            </option>)}
-            </Select>
-            <ButtonDeleteSelect data-select-id={selectId} onClick={deleteIngredient} />
-          </Container>}
-
-        </Fragment>)}
-        <ButtonAddSelect
-          text="Agregar ingrediente"
-          onClick={addIngredient}
-          disabled={selectsData.selects.length === ingredients.length}
-        />
-      </>}
-
-      <Input
-        accept="image/*"
-        id="ingredient_image"
-        inputMode="numeric"
-        label="Imagen (opcional)"
-        name="ingredient_image"
-        placeholder="Tomate.png"
-        type="file"
-      />
+      {ingredientsData.getIngredientsSuccess && <>
+        <SelectIngredientsComponent
+          addSelectButtonText="Agregar ingrediente"
+          label="Ingredientes"
+          optionValueKeyName="ingredient_name"
+          options={ingredientsData.ingredients}
+          />
+        </>}
       <Button
         colorMessage="continue"
         size="100%"
         text="Añadir comida"
         type="button"
+        disabled={disableButton}
+        onClick={createFood}
       />
+      {foodsData.postFoodsIsLoading && <LoadingSpinnerContainer>
+        <LoadingSpinner size="large" />
+        </LoadingSpinnerContainer>}
+      <RequestResultStyles
+        hidden={!foodsData.postFoodsError}
+        isError={true}>
+        Ocurrió un error creando la comida
+      </RequestResultStyles>
+      <RequestResultStyles
+        hidden={!foodsData.postFoodsSuccess}
+        isError={false}>
+        Comida creada con éxito
+      </RequestResultStyles>
     </Form>
   </Details>
 </>
@@ -162,13 +143,6 @@ const PrepTimeContainer = styled.div`
   & > label {
     margin-right: 15px;
   }
-`
-
-const FormIngredientsSectionTitle = styled.p`
-  font-weight: bold;
-  text-align: center;
-  font-size: 25px;
-  margin: 20px 0px;
 `
 
 export default CreateFood

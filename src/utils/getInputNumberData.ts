@@ -9,6 +9,8 @@ import { inputNumberPattern } from './RegExps'
 const getInputNumberData = (input: HTMLInputElement): GetInputNumberDataReturn => {
   const { value } = input
   const valueFixed = Number(value).toFixed(0)
+  input.checkValidity()
+  input.reportValidity()
   input.value = valueFixed
   if (value.match(inputNumberPattern) === null) {
     return {

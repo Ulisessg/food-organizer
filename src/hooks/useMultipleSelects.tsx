@@ -9,11 +9,12 @@ import {
   type ComponentPropsWithoutRef, type FC, Fragment, type MouseEvent, useState
 } from 'react'
 import { Select } from 'd-system'
+import type SelectProps from 'd-system/dist/types/components/atoms/Select'
 import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
 
 const initialSelectId = randomId()
-const useMultipleSelects = (): UseMultipleSelectsReturn => {
+const useMultipleSelects = (idPrefix?: string): UseMultipleSelectsReturn => {
   const [
     data,
     setData
@@ -30,7 +31,7 @@ const useMultipleSelects = (): UseMultipleSelectsReturn => {
   })
 
   const addSelect = (): void => {
-    const newId = randomId()
+    const newId = randomId(idPrefix)
     setData((prev) => ({
       ...prev,
       selects: [
@@ -200,10 +201,10 @@ export interface UseMultipleSelectsReturn {
   deleteSelect: (ev: MouseEvent<HTMLButtonElement>) => void
   data: SelectsState
   Component: FC<{
-    selectProps?: ComponentPropsWithoutRef<'select'>
+    selectProps?: typeof SelectProps
     optionProps?: ComponentPropsWithoutRef<'option'>
     options: Array<{
-      id: number
+      id?: number
       [k: string]: any
     }>
     label: string
