@@ -1,10 +1,15 @@
+/* eslint-disable max-lines */
+/* eslint-disable camelcase */
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
 import { type CreateFood, type GetFoods } from 'controllers/food_organizer_crud/foodsCRUD'
+import {
+  type CreateFoodType,
+  type GetFoodTypes
+} from 'controllers/food_organizer_crud/foodTypesCRUD'
 import axios, { type AxiosResponse } from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { type GetFoodTypes } from 'controllers/food_organizer_crud/foodTypesCRUD'
-import { type foods } from '@prisma/client'
+import { type food_types, type foods } from '@prisma/client'
 import { type response } from 'controllers/response'
 
 const initialState: TFoodState = {
@@ -86,6 +91,20 @@ export const restartPostData = createAsyncThunk(
         3000
       )
     })
+  }
+)
+
+export const createFoodTypeThunk = createAsyncThunk<food_types, CreateFoodType>(
+  'food_types/create',
+  async (foodTypeData, thunkApi) => {
+    const postRequestResult = await axios.post<CreateFoodType, AxiosResponse<response<food_types>>>(
+      '/api/foodtypes',
+      foodTypeData
+    )
+    if (postRequestResult.data.error) {
+      return thunkApi.rejectWithValue('')
+    }
+    return postRequestResult.data.data as food_types
   }
 )
 
@@ -199,6 +218,47 @@ const foodsSlice = createSlice({
         state.postFoodsEnd = false
         state.postFoodsIsLoading = false
         state.postFoodsSuccess = false
+        // Food types
+        state.postFoodTypesEnd = false
+        state.postFoodTypesSuccess = false
+        state.postFoodTypesError = false
+        state.postFoodTypesIsLoading = false
+      }
+    )
+
+    // Create food type
+    builder.addCase(
+      createFoodTypeThunk.pending,
+      (state) => {
+        state.postFoodTypesEnd = false
+        state.postFoodTypesError = false
+        state.postFoodTypesIsLoading = true
+        state.postFoodTypesSuccess = false
+      }
+    )
+    builder.addCase(
+      createFoodTypeThunk.rejected,
+      (state) => {
+        state.postFoodTypesEnd = true
+        state.postFoodTypesError = true
+        state.postFoodTypesIsLoading = false
+        state.postFoodTypesSuccess = false
+      }
+    )
+    builder.addCase(
+      createFoodTypeThunk.fulfilled,
+      (state, action) => {
+        state.postFoodTypesEnd = true
+        state.postFoodTypesSuccess = true
+        state.postFoodTypesError = false
+        state.postFoodTypesIsLoading = false
+        state.foodTypes = [
+          ...state.foodTypes,
+          {
+            id: action.payload.id,
+            name: action.payload.name
+          }
+        ]
       }
     )
   }

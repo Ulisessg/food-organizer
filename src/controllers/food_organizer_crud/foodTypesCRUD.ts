@@ -9,7 +9,7 @@ import { type response } from 'controllers/response'
 
 export const createFoodType = async (
   req: CreateFoodTypeRequest,
-  res: NextApiResponse<response<string>>
+  res: NextApiResponse<response<food_types | string>>
 ): Promise<void> => {
   try {
     const { creation_date, name } = req.body
@@ -17,11 +17,11 @@ export const createFoodType = async (
       creationDate: creation_date as unknown as string,
       name
     })
-    await prisma.food_types.create({
+    const result = await prisma.food_types.create({
       data: { creation_date, name: capitalize(name) }
     })
     res.status(201).send({
-      data: 'food type created successful',
+      data: result,
       error: false
     })
   } catch (error) {
