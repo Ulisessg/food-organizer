@@ -1,32 +1,89 @@
+/* eslint-disable max-statements */
+/* eslint-disable max-lines-per-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
+import { type CreateMenuFoods, createMenuFoods } from './MenuFoodsCRUD'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import menuValidations, { validations } from 'models/menuValidations'
-import type { menus } from '@prisma/client'
+import { type menus } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'
 
 export const createMenu = async (
   req: CreateMenu,
-  res: NextApiResponse<response<string>>
+  res: NextApiResponse<response<CreateMenuResponse>>
 ): Promise<void> => {
+  const { comment, creation_date, foods } = req.body
+
+  let successfullResponse: CreateMenuResponse = {
+    errorCreatingFoods: false,
+    errorCreatingMenu: false,
+    menu: {} as any
+  }
+
+  // Menu creation
   try {
-    const { comment, creation_date } = req.body
     menuValidations({
       comment,
       creationDate: creation_date as unknown as string
     })
-    await prisma.menus.create({
+    const menuCreationResult = await prisma.menus.create({
       data: { comment, creation_date }
     })
+    successfullResponse = {
+      ...successfullResponse,
+      menu: {
+        comment: menuCreationResult.comment,
+        id: menuCreationResult.id,
+        menu_foods: [] as any
+      }
+    }
+  } catch (error) {
+    res.status(400).send({
+      data: {
+        errorCreatingFoods: false,
+        errorCreatingMenu: true,
+        menu: [] as any
+      },
+      error: true
+    })
+  }
+
+  // Menu foods creation
+  try {
+    const menuFoodsCreated = await createMenuFoods(foods)
+    if (menuFoodsCreated.count === 0) {
+      throw new Error('Ocurrió un error añadiendo las comidas al menú')
+    }
+    const menuFoods = await prisma.$queryRaw<GetMenus[0]['menu_foods']>`SELECT
+      menu_foods.id AS menu_food_id,
+      menu_foods.food_id,
+      foods.name,
+      foods.image,
+      foods.preparation_time
+      FROM menu_foods
+      INNER JOIN foods ON foods.id = menu_foods.food_id
+      WHERE menu_foods.menu_id = ${successfullResponse.menu.id}`
+
+    successfullResponse = {
+      ...successfullResponse,
+      menu: {
+        ...successfullResponse.menu,
+        menu_foods: menuFoods
+      }
+    }
     res.status(201).send({
-      data: 'menu created',
+      data: successfullResponse,
       error: false
     })
   } catch (error) {
-    console.error(error)
+    console.log(error)
     res.status(400).send({
-      data: 'error creating menu',
+      data: {
+        errorCreatingFoods: true,
+        errorCreatingMenu: false,
+        menu: {} as any
+      },
       error: true
     })
   }
@@ -64,7 +121,7 @@ GROUP BY menus.id
 }
 
 export const updateMenu = async (
-  req: CreateMenu,
+  req: UpdateMenu,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
@@ -94,14 +151,25 @@ WHERE menus.id = ${id}
   }
 }
 
-interface CreateMenu extends NextApiRequest {
+export interface CreateMenu extends NextApiRequest {
+  body: Omit<menus, 'id'> & { foods: CreateMenuFoods }
+}
+
+export interface CreateMenuResponse {
+  menu: GetMenus[0]
+  errorCreatingMenu: boolean
+  errorCreatingFoods: boolean
+}
+
+export interface UpdateMenu extends NextApiRequest {
   body: menus
 }
 
 export type GetMenus = Array<{
   id: number
-  comment: string
+  comment: string | null
   menu_foods: Array<{
+    menu_food_id: number
     image: null | string
     food_id: number
     food_name: string

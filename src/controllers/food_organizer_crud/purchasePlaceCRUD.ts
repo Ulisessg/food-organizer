@@ -45,7 +45,7 @@ export const createPurchasePlace = async (
 
 export const getPurchasePlaces = async (
   req: NextApiRequest,
-  res: NextApiResponse<response<GetPurchasePlaces>>
+  res: NextApiResponse<response<GetPurchasePlaces | null>>
 ): Promise<void> => {
   try {
     const result = await prisma.$queryRaw<GetPurchasePlaces>`SELECT 

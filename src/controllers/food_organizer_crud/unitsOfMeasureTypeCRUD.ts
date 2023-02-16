@@ -36,7 +36,7 @@ export const insertUOMT = async (
 
 export const getUOMT = async (
   _req: NextApiRequest,
-  res: NextApiResponse< response<units_of_measure_types[] >>
+  res: NextApiResponse< response<units_of_measure_types[] | null>>
 ): Promise<void> => {
   try {
     const result = await prisma.units_of_measure_types.findMany({
@@ -54,7 +54,7 @@ export const getUOMT = async (
 
 export const updateUOMT = async (
   req: UpdateUOMTRequest,
-  res: NextApiResponse<response<units_of_measure_types>>
+  res: NextApiResponse<response<units_of_measure_types | null>>
 ): Promise<void> => {
   const { creation_date, name } = req.body
   try {

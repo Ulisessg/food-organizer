@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import foodSlice from './slices/foodSlice'
 import ingredientsSlice from './slices/ingredientsSlice'
 import ingredientsStockSlice from './slices/ingredientsStockSlice'
+import menusSlice from './slices/menusSlice'
 import purchasePlacesSlice from './slices/purchasePlacesSlice'
 import unitsOfMeasureSlice from './slices/unitsOfMeasureSlice'
 
@@ -12,6 +13,7 @@ const store = configureStore({
     foods: foodSlice,
     ingredients: ingredientsSlice,
     ingredientsStock: ingredientsStockSlice,
+    menus: menusSlice,
     purchasePlaces: purchasePlacesSlice,
     unitsOfMeasure: unitsOfMeasureSlice
   }

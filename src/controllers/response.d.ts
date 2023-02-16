@@ -1,4 +1,4 @@
-export interface response<T> {
+export interface response<T = null> {
   error: boolean
-  data: T | null
+  data: T
 }

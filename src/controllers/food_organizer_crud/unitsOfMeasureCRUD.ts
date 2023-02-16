@@ -42,7 +42,7 @@ export const createUOM = async (
 
 export const getUOM = async (
   _req: NextApiRequest,
-  res: NextApiResponse<response<GetUOM>>
+  res: NextApiResponse<response<GetUOM | null>>
 ): Promise<void> => {
   try {
     const unitsOfMeasureGroupedByType =
@@ -101,7 +101,7 @@ WHERE units_of_measure.id = ${id}`
   } catch (error) {
     console.error(error)
     res.status(400).send({
-      data: null,
+      data: '',
       error: true
     })
   }

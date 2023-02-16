@@ -1,42 +1,27 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
+import type { Prisma, menu_foods } from '@prisma/client'
 import menuFoodsValidations, { validations } from 'models/menuFoodsValidations'
-import type { menu_foods } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'
 
-export const createDailyMenuFoods = async (
-  req: CreateDailyMenuFoods,
-  res: NextApiResponse<response<string>>
-): Promise<void> => {
-  try {
-    if (!Array.isArray(req.body)) throw new Error('Invalid body: not array')
-    if (req.body.length > 10) throw new Error('you cannot add more than 10 registers at same time')
-    for (const { creation_date, menu_id, food_id } of req.body) {
-      menuFoodsValidations({
-        creationDate: creation_date as unknown as string,
-        food_id,
-        menu_id
-      })
-    }
-    await prisma.menu_foods.createMany({
-      data: [...req.body]
-    })
-    res.status(201).send({
-      data: 'daily menu foods created',
-      error: false
-    })
-  } catch (error) {
-    console.error(error)
-    res.status(400).send({
-      data: 'error creating daily menu foods',
-      error: true
+export const createMenuFoods = async (data: CreateMenuFoods): Promise<Prisma.BatchPayload> => {
+  if (!Array.isArray(data)) throw new Error('Invalid body: not array')
+  for (const { creation_date, menu_id, food_id } of data) {
+    menuFoodsValidations({
+      creationDate: creation_date as unknown as string,
+      food_id,
+      menu_id
     })
   }
+  const result = await prisma.menu_foods.createMany({
+    data: [...data]
+  })
+  return result
 }
 
-export const getDailyMenuFoods = async (
+export const getMenuFoods = async (
   _req: NextApiRequest,
   res: NextApiResponse<response<menu_foods[] | string>>
 ): Promise<void> => {
@@ -55,7 +40,7 @@ export const getDailyMenuFoods = async (
   }
 }
 
-export const updateDailyMenuFoods = async (
+export const updateMenuFoods = async (
   req: UpdateDailyMenuFoods,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
@@ -88,9 +73,7 @@ WHERE menu_foods.id = ${id}
   }
 }
 
-interface CreateDailyMenuFoods extends NextApiRequest {
-  body: menu_foods[]
-}
+export type CreateMenuFoods = Array<Omit<menu_foods, 'id'>>
 
 interface UpdateDailyMenuFoods extends NextApiRequest {
   body: menu_foods

@@ -8,7 +8,7 @@ import { type response } from 'controllers/response'
 
 export const createIngredientStock = async (
   req: CreateIngredientStockRequest,
-  res: NextApiResponse<response<ingredient_stock>>
+  res: NextApiResponse<response<ingredient_stock | null>>
 ): Promise<void> => {
   try {
     const { comment, ingredient_id, ingredient_qty, creation_date } = req.body
@@ -42,7 +42,7 @@ export const createIngredientStock = async (
 
 export const getIngredientsStock = async (
   _req: NextApiRequest,
-  res: NextApiResponse<response<GetIngredientStock>>
+  res: NextApiResponse<response<GetIngredientStock | null>>
 ): Promise<void> => {
   try {
     const result = await prisma.$queryRaw<GetIngredientStock>`SELECT 
@@ -93,7 +93,7 @@ WHERE ingredient_stock.id = ${id}`
   } catch (error) {
     console.error(error)
     res.status(400).send({
-      data: null,
+      data: '',
       error: true
     })
   }

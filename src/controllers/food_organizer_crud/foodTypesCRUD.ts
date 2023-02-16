@@ -35,7 +35,7 @@ export const createFoodType = async (
 
 export const getFoodTypes = async (
   _req: NextApiRequest,
-  res: NextApiResponse<response<GetFoodTypes>>
+  res: NextApiResponse<response<GetFoodTypes | null>>
 ): Promise<void> => {
   try {
     const result = await prisma.$queryRaw<GetFoodTypes>`SELECT

@@ -1,22 +1,23 @@
 import CreateMenu from 'components/CreateMenu'
 import DisplayDailyMenus from 'components/DisplayMenus'
 import ErrorMessage from 'components/common/ErrorMessage'
-import type { GetMenus } from 'controllers/food_organizer_crud/MenuCRUD'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
 import type { NextPage } from 'next'
 import React from 'react'
+import { type RootState } from 'redux/store'
 import Title from 'components/common/Title'
-import useGetRequest from 'hooks/useGetRequest'
+import { useSelector } from 'react-redux'
 
 const Menu: NextPage = () => {
-  const { data, error, isLoading } = useGetRequest<GetMenus>('/api/menu')
+  const menusData = useSelector((state: RootState) => state.menus)
 
-  if (isLoading) {
+  if (menusData.getMenusDataIsLoading) {
     return <LoadingSpinner size="large"/>
   }
-  if (error) {
-    return <ErrorMessage message={data as string} action="intenta de nuevo mas tarde" />
+  if (menusData.getMenusDataError) {
+    return <ErrorMessage
+    message="Ocurrió un error obteniendo los menús" action="intenta de nuevo mas tarde" />
   }
   return <>
   <Head>
@@ -24,7 +25,7 @@ const Menu: NextPage = () => {
   </Head>
   <Title>Administrar menús</Title>
   <CreateMenu />
-  <DisplayDailyMenus menus={data as GetMenus} />
+  <DisplayDailyMenus menus={menusData.menus} />
 </>
 }
 
