@@ -208,6 +208,19 @@ const foodsSlice = createSlice({
           preparation_time: action.payload.preparation_time,
           score: action.payload.score as any
         })
+        state.foodsGroupedByType.some((fGByType, index) => {
+          if (fGByType.food_type_id === action.payload.food_type_id) {
+            state.foodsGroupedByType[index].foods.push({
+              food_id: action.payload.id,
+              food_name: action.payload.name,
+              image: action.payload.image,
+              preparation_time: action.payload.preparation_time,
+              score: action.payload.score as any
+            })
+            return true
+          }
+          return false
+        })
       }
     )
     // Restart post data
