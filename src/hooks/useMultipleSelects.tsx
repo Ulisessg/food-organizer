@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import {
   ButtonAddSelect,
@@ -14,7 +15,12 @@ import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
 
 const initialSelectId = randomId()
-const useMultipleSelects = (idPrefix?: string): UseMultipleSelectsReturn => {
+const useMultipleSelects = (
+  idPrefix?: string,
+
+  /** Required to correct function of 'disableButton' value */
+  optionsLenght?: number
+): UseMultipleSelectsReturn => {
   const [
     data,
     setData
@@ -109,15 +115,15 @@ const useMultipleSelects = (idPrefix?: string): UseMultipleSelectsReturn => {
     }))
   }
 
+  /** ⚠️ Warning!, this component is not accesible, it moves the focus to body tag */
   const MultipleSelectsComponent: UseMultipleSelectsReturn['Component'] = (props) => <Fragment>
     {data.selects.map(({ selectId }, indx) => <Fragment key={randomId()}>
       {indx === 0 &&
       <Select
         {...props.selectProps}
-        id={data.selectsValues[indx].selectId}
+        id={selectId}
         label={props.label}
-        name={randomId()}
-        key={randomId()}
+        name={selectId}
         onChange={onChange}
         value={data.selectsValues[indx].value}>
           <option value={defaultSelectValue} disabled key={randomId()}>{defaultSelectValue}</option>
@@ -136,10 +142,9 @@ const useMultipleSelects = (idPrefix?: string): UseMultipleSelectsReturn => {
       {indx !== 0 && <MultipleSelectsContainer key={randomId()}>
           <Select
             {...props.selectProps}
-            id={data.selectsValues[indx].selectId}
+            id={selectId}
             label={props.label}
-            name={randomId()}
-            key={randomId() + randomId()}
+            name={selectId}
             onChange={onChange}
             value={data.selectsValues[indx].value}
             >
@@ -176,6 +181,7 @@ const useMultipleSelects = (idPrefix?: string): UseMultipleSelectsReturn => {
     addSelect,
     data,
     deleteSelect,
+    disableButton: data.selects.length === optionsLenght,
     onChange,
     resetMultipleSelect
   }
@@ -213,4 +219,5 @@ export interface UseMultipleSelectsReturn {
     optionValueKeyName: string
   }>
   resetMultipleSelect: () => void
+  disableButton: boolean
 }
