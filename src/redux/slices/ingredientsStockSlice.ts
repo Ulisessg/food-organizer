@@ -34,7 +34,7 @@ export const getIngredientsStockThunk = createAsyncThunk<GetIngredientStock, num
     if (requestResponse.data.error) {
       return thunkApi.rejectWithValue('Ocurrió un error oteniendo los ingredientes disponibles')
     }
-    return requestResponse.data.data as GetIngredientStock
+    return requestResponse.data.data
   }
 )
 
@@ -57,7 +57,7 @@ export const createIngredientStockThunk = createAsyncThunk<{
       return thunkApi.rejectWithValue('Ocurrió un errro creando el ingrediente disponible')
     }
     const returnedData = {
-      ingredientCreated: requestResponse.data.data as ingredient_stock,
+      ingredientCreated: requestResponse.data.data,
       ingredientsList: ingredientStock.ingredientList
     }
 

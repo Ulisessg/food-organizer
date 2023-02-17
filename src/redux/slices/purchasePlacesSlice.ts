@@ -32,7 +32,7 @@ export const getPurchasePlacesThunk = createAsyncThunk<GetPurchasePlaces, number
     if (requestResult.data.error) {
       thunkAPi.rejectWithValue(requestResult.data.data)
     }
-    return requestResult.data.data as GetPurchasePlaces
+    return requestResult.data.data
   }
 )
 
@@ -47,7 +47,7 @@ export const createPurchasePlaceThunk = createAsyncThunk<purchase_places, Create
     if (requestResponse.data.error) {
       thunkApi.rejectWithValue(requestResponse.data.data)
     }
-    return requestResponse.data.data as purchase_places
+    return requestResponse.data.data
   }
 )
 

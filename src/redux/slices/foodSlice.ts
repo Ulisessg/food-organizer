@@ -60,8 +60,8 @@ export const getFoodsDataThunk = createAsyncThunk<GetFoodsDataThunkReturn, numbe
       })
     }
     return {
-      foodTypes: requestFoodTypesResult.data.data as GetFoodTypes,
-      foodsGroupedByType: requestFoodsResult.data.data as GetFoods
+      foodTypes: requestFoodTypesResult.data.data,
+      foodsGroupedByType: requestFoodsResult.data.data
     }
   }
 )
@@ -76,7 +76,7 @@ export const createFoodThunk = createAsyncThunk(
     if (createFoodRequestResult.data.error) {
       return thunkApi.rejectWithValue('Error creating food')
     }
-    return createFoodRequestResult.data.data as foods
+    return createFoodRequestResult.data.data
   }
 )
 
@@ -104,7 +104,7 @@ export const createFoodTypeThunk = createAsyncThunk<food_types, CreateFoodType>(
     if (postRequestResult.data.error) {
       return thunkApi.rejectWithValue('')
     }
-    return postRequestResult.data.data as food_types
+    return postRequestResult.data.data
   }
 )
 

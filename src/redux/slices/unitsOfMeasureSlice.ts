@@ -42,7 +42,7 @@ export const getUomDataThunk = createAsyncThunk<GetUOM, number | null>(
     if (requestResponse.data.error) {
       thunkApi.rejectWithValue(requestResponse.data.data)
     }
-    return requestResponse.data.data as GetUOM
+    return requestResponse.data.data
   }
 )
 
@@ -57,7 +57,7 @@ export const createUnitOfMeasureThunk = createAsyncThunk<units_of_measure, Creat
     if (requestResponse.data.error) {
       thunkApi.rejectWithValue(requestResponse.data.data)
     }
-    return requestResponse.data.data as units_of_measure
+    return requestResponse.data.data
   }
 )
 
@@ -74,7 +74,7 @@ createAsyncThunk<GetUOMT[0], CreateUomT>(
     if (requestResult.data.error) {
       thunkApi.rejectWithValue(requestResult.data.data)
     }
-    return requestResult.data.data as GetUOMT[0]
+    return requestResult.data.data
   }
 )
 

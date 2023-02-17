@@ -43,7 +43,7 @@ export const getIngredientsThunk = createAsyncThunk<GetIngredients, number | nul
     if (ingredientsResponse.data.error) {
       thunkApi.rejectWithValue(true)
     }
-    return ingredientsResponse.data.data as GetIngredients
+    return ingredientsResponse.data.data
   }
 )
 
@@ -70,7 +70,7 @@ CreateIngredientThunkParam,
       if (postIngredients.data.error) {
         throw new Error('ingredient')
       }
-      const ingredientCreated = postIngredients.data.data as CreateIngredientReturn
+      const ingredientCreated = postIngredients.data.data
 
       // eslint-disable-next-line init-declarations
       let purchasePlaces: undefined | TIngr_purchase_places
