@@ -37,7 +37,6 @@ const useCreateFoodType = (
     resetIsRepeated
   } = useValueIsRepeated<typeof foodsData['foodTypes'][0]>()
   const formIsValid = (): boolean => {
-    formRef.current?.reportValidity()
     if (formRef.current?.checkValidity() === true &&
     !foodTypeIsRepeated && !inputsErrors.food_type_name) return true
     return false
