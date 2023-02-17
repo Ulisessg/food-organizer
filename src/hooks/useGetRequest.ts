@@ -32,7 +32,7 @@ const useGetRequest = <ReturnT>(
           )
           setUseRequest((prev) => ({
             ...prev,
-            data: res.data.data as ReturnT,
+            data: res.data.data,
             error: res.data.error,
             isLoading: false
           }))
