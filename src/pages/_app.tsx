@@ -1,6 +1,7 @@
 import { type AppDispatch, wrapper } from 'redux/store'
 import { type FC, type ReactNode, useEffect } from 'react'
 import { Provider as ReduxProvider, useDispatch } from 'react-redux'
+import { getDaysThunk, getWeeklyMenusThunk } from 'redux/slices/weekSlice'
 import type { AppProps } from 'next/app'
 import { GlobalStyles } from 'd-system'
 import Header from 'components/Header'
@@ -31,12 +32,13 @@ const ReduxProviderWrapper: FC<{
       /*
        * Get data, todo: create a limiter or develop a performance improvement
        */
-      // Ingredients
       void dispatch(getIngredientsThunk(null))
       void dispatch(getPurchasePlacesThunk(null))
       void dispatch(getUomDataThunk(null))
       void dispatch(getFoodsDataThunk(null))
       void dispatch(getMenusDataThunk(null))
+      void dispatch(getDaysThunk())
+      void dispatch(getWeeklyMenusThunk())
     },
     [dispatch]
   )
