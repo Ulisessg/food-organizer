@@ -10,7 +10,7 @@ import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'
 
 export const createMenu = async (
-  req: CreateMenu,
+  req: CreateMenuRequest,
   res: NextApiResponse<response<CreateMenuResponse>>
 ): Promise<void> => {
   const { comment, creation_date, foods } = req.body
@@ -51,14 +51,19 @@ export const createMenu = async (
 
   // Menu foods creation
   try {
-    const menuFoodsCreated = await createMenuFoods(foods)
+    const foodsWithMenuId: CreateMenuWithMenuId['foods'] = foods.map((fd) => (
+      {
+        ...fd,
+        menu_id: successfullResponse.menu.id
+      }))
+    const menuFoodsCreated = await createMenuFoods(foodsWithMenuId)
     if (menuFoodsCreated.count === 0) {
       throw new Error('Ocurrió un error añadiendo las comidas al menú')
     }
     const menuFoods = await prisma.$queryRaw<GetMenus[0]['menu_foods']>`SELECT
       menu_foods.id AS menu_food_id,
       menu_foods.food_id,
-      foods.name,
+      foods.name AS food_name,
       foods.image,
       foods.preparation_time
       FROM menu_foods
@@ -90,7 +95,7 @@ export const createMenu = async (
 }
 
 export const getMenus = async (
-  _req: CreateMenu,
+  _req: NextApiRequest,
   res: NextApiResponse<response<GetMenus | string>>
 ): Promise<void> => {
   try {
@@ -151,8 +156,8 @@ WHERE menus.id = ${id}
   }
 }
 
-export interface CreateMenu extends NextApiRequest {
-  body: Omit<menus, 'id'> & { foods: CreateMenuFoods }
+export interface CreateMenuRequest extends NextApiRequest {
+  body: CreateMenu
 }
 
 export interface CreateMenuResponse {
@@ -163,6 +168,16 @@ export interface CreateMenuResponse {
 
 export interface UpdateMenu extends NextApiRequest {
   body: menus
+}
+
+/** Used when menu is already created */
+interface CreateMenuWithMenuId extends Omit<menus, 'id'> {
+  foods: Array<CreateMenuFoods[0]>
+}
+
+/** Used in request to create menu */
+export interface CreateMenu extends Omit<menus, 'id'> {
+  foods: Array<Omit<CreateMenuFoods[0], 'menu_id'>>
 }
 
 export type GetMenus = Array<{

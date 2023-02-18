@@ -1,12 +1,11 @@
 /* eslint-disable max-lines-per-function */
 import {
+  type CreateMenu,
   type CreateMenuResponse,
-  type CreateMenu as CreateMenuType,
   type GetMenus
 } from 'controllers/food_organizer_crud/MenuCRUD'
 import axios, { type AxiosResponse } from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { type CreateMenuFoods } from 'controllers/food_organizer_crud/MenuFoodsCRUD'
 import { type response } from 'controllers/response'
 
 const initialState: TMenuState = {
@@ -39,13 +38,13 @@ export const getMenusDataThunk = createAsyncThunk<GetMenus, number | null>(
 )
 
 // eslint-disable-next-line max-len
-export const createMenuThunk = createAsyncThunk<GetMenus[0], CreateMenuData, { rejectValue: CreateMenuReject }>(
+export const createMenuThunk = createAsyncThunk<GetMenus[0], CreateMenu, { rejectValue: CreateMenuReject }>(
   'menus/create',
   async (menuData, thunkApi) => {
     const createMenuRequest: AxiosResponse<response<CreateMenuResponse>> =
-     await axios.post<CreateMenuData['menu'], AxiosResponse<response<CreateMenuResponse>>>(
+     await axios.post<CreateMenu, AxiosResponse<response<CreateMenuResponse>>>(
        '/api/menu',
-       menuData.menu
+       menuData
      )
     if (createMenuRequest.data.error) {
       return thunkApi.rejectWithValue({
@@ -53,11 +52,21 @@ export const createMenuThunk = createAsyncThunk<GetMenus[0], CreateMenuData, { r
         createMenuFoodsError: createMenuRequest.data.data?.errorCreatingFoods
       })
     }
-    return {
-      comment: createMenuRequest.data.data?.menu.comment,
-      id: createMenuRequest.data.data?.menu.id,
-      menu_foods: createMenuRequest.data.data?.menu.menu_foods
-    }
+    return createMenuRequest.data.data.menu
+  }
+)
+
+export const restartPostMenuThunk = createAsyncThunk(
+  'menus/restart_post_data',
+  async () => {
+    await new Promise((resolve) => {
+      setTimeout(
+        () => {
+          resolve('')
+        },
+        3000
+      )
+    })
   }
 )
 
@@ -132,10 +141,25 @@ const menusSlice = createSlice({
         state.createMenuEnd = true
         state.createMenuError = false
         state.createMenuSuccess = true
+        console.log(action.payload)
+
         state.menus = [
           ...state.menus,
-          action.payload
+          {
+            ...action.payload
+          }
         ]
+      }
+    )
+    // Restart post data
+
+    builder.addCase(
+      restartPostMenuThunk.fulfilled,
+      (state) => {
+        state.createMenuIsLoading = false
+        state.createMenuEnd = false
+        state.createMenuError = false
+        state.createMenuSuccess = false
       }
     )
   }
@@ -159,11 +183,6 @@ interface TMenuState {
 
   errorCreatingMenu: boolean
   errorCreatingMenuFoods: boolean
-}
-
-interface CreateMenuData {
-  menu: CreateMenuType
-  menuFoods: CreateMenuFoods
 }
 
 interface CreateMenuReject {

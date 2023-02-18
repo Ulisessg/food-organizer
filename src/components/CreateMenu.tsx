@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import { Button, Form, Input, LoadingSpinner } from 'd-system'
@@ -6,43 +7,49 @@ import {
   ButtonDeleteSelect,
   Container
 } from './common/MultipleSelects'
-import React, { type FC, Fragment, useState } from 'react'
+import React, { type FC, Fragment } from 'react'
 import Details from './common/Details'
 import ErrorMessage from './common/ErrorMessage'
-import { type GetFoods } from 'controllers/food_organizer_crud/foodsCRUD'
+import { LoadingSpinnerContainer } from './common/FormInDetailsStyles'
+import RequestResultStyles from './common/RequestResultStyles'
+import { type RootState } from 'redux/store'
 import Select from './common/Select'
 import randomId from 'utils/randomId'
-import useGetRequest from 'hooks/useGetRequest'
+import useCreateMenu from 'hooks/components/useCreateMenu'
 import useMultipleSelects from 'hooks/useMultipleSelects'
+import { useSelector } from 'react-redux'
 
 // eslint-disable-next-line max-lines-per-function
 const CreateMenu: FC = () => {
-  const [
-    totalFoods,
-    setTotalFoods
-  ] = useState<number>(0)
-  const { data: foodsData, isLoading, error } = useGetRequest('/api/foods')
+  const foodsData = useSelector((state: RootState) => state.foods)
+  const menusData = useSelector((state: RootState) => state.menus)
   const {
-    addSelect: handleAdSelect, data: selectsData,
-    deleteSelect, onChange: handleSelects
-  } = useMultipleSelects()
-  const foods = foodsData as GetFoods
-
-  const addSelect = (): void => {
-    handleAdSelect()
-    if (totalFoods !== 0) return
-    foods.forEach(({ total_foods: tf }) => {
-      setTotalFoods((prev) => prev + tf)
-    })
-  }
+    addSelect, data: selectsData,
+    deleteSelect, onChange: handleSelects,
+    disableButton,
+    resetMultipleSelect
+  } = useMultipleSelects(
+    // eslint-disable-next-line no-undefined
+    undefined,
+    foodsData.foods.length
+  )
+  const {
+    inputsData,
+    onChange,
+    disableButton: disableCreateMenuButton,
+    createMenu
+  } = useCreateMenu(
+    selectsData.valuesUsed,
+    resetMultipleSelect
+  )
 
   return <>
     <Details summary="Crear menú">
-      {isLoading && <LoadingSpinner size="large" />}
-      {error &&
+      {foodsData.getFoodsIsLoading && <LoadingSpinner size="large" />}
+      {foodsData.getFoodsError &&
       <ErrorMessage message="Error obteniendo las comidas" action="intenta de nuevo más tarde"/>}
 
-      {(!error && !isLoading) && <Form formTitle="Información del menú">
+      {foodsData.getFoodsSuccess && <Form formTitle="Información del menú">
         {selectsData.selects.map(({ selectId }, index) => <Fragment key={selectId}>
           {/* Required select */}
           {index === 0 &&
@@ -50,14 +57,17 @@ const CreateMenu: FC = () => {
             value={selectsData.selectsValues[index].value}
             onChange={handleSelects}
           >
-            {foods.map(({ food_type_name, foods: foodsInfo }) => <Fragment key={randomId()}>
+            {foodsData
+              .foodsGroupedByType
+              .map(({ food_type_name, foods: foodsInfo }) => <Fragment key={randomId()}>
               <optgroup label={food_type_name}>
-                {foodsInfo.map(({ food_name }) => <option
+                {foodsInfo.map(({ food_name, food_id }) => <option
                   key={randomId()}
                   value={food_name}
                   disabled={
 typeof selectsData.valuesUsed.find((vUsed) => vUsed === food_name) !== 'undefined'
                   }
+                  data-food-id={food_id}
                 >
                   {food_name}
                 </option>)}
@@ -71,14 +81,17 @@ typeof selectsData.valuesUsed.find((vUsed) => vUsed === food_name) !== 'undefine
                 value={selectsData.selectsValues[index].value}
                 onChange={handleSelects}
               >
-                {foods.map(({ food_type_name, foods: foodsInfo }) => <Fragment key={randomId()}>
+                {foodsData
+                  .foodsGroupedByType
+                  .map(({ food_type_name, foods: foodsInfo }) => <Fragment key={randomId()}>
               <optgroup label={food_type_name}>
-                {foodsInfo.map(({ food_name }) => <option
+                {foodsInfo.map(({ food_name, food_id }) => <option
                   key={randomId()}
                   value={food_name}
                   disabled={
 typeof selectsData.valuesUsed.find((vUsed) => vUsed === food_name) !== 'undefined'
                   }
+                  data-food-id={food_id}
                   >
                     {food_name}
                 </option>)}
@@ -92,24 +105,43 @@ typeof selectsData.valuesUsed.find((vUsed) => vUsed === food_name) !== 'undefine
           </>}
         </Fragment>)}
         <ButtonAddSelect
-          disabled={selectsData.selects.length === totalFoods}
+          disabled={disableButton}
           text="Agregar comida"
           onClick={addSelect}
         />
         <Input
           id="menu_comment"
           inputMode="text"
-            label="Comentarios (opcional)"
-            name="menu_comment"
-            placeholder="Remojar el garbanzo en la noche..."
-            type="text"
+          label="Comentarios"
+          acceptanceCriteria="Opcional"
+          name="menu_comment"
+          type="text"
+          value={inputsData.menu_comment}
+          onChange={onChange}
         />
         <Button
           colorMessage="continue"
           size="100%"
           text="Crear menú"
           type="button"
+          disabled={disableCreateMenuButton}
+          onClick={createMenu}
         />
+        {menusData.createMenuIsLoading && <LoadingSpinnerContainer>
+            <LoadingSpinner size="large" />
+          </LoadingSpinnerContainer>}
+        <RequestResultStyles
+          hidden={!menusData.errorCreatingMenu}
+          isError={true}
+        >
+          Ocurrió un error creando el menú
+        </RequestResultStyles>
+        <RequestResultStyles
+          hidden={!menusData.createMenuSuccess}
+          isError={false}
+        >
+          Menú creado!
+        </RequestResultStyles>
       </Form>}
     </Details>
   </>
