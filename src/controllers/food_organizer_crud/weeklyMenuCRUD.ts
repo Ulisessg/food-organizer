@@ -83,6 +83,7 @@ export const getWeeklyMenu = async (
     const result = await prisma.$queryRaw<GetWeeklyMenu>`
   SELECT
 weekly_menus.id,
+weekly_menus.creation_date,
 (SELECT
   JSON_ARRAYAGG(JSON_OBJECT(
     'menu_id', weekly_menu_days.menu_id,
@@ -218,6 +219,8 @@ interface CreateWeeklyMenu extends NextApiRequest {
 }
 
 export type GetWeeklyMenu = Array<{
+  creation_date: string
+  id: number
   monday: TDay
   tuesday: TDay
   wednesday: TDay
@@ -227,7 +230,7 @@ export type GetWeeklyMenu = Array<{
   sunday: TDay
 }>
 
-type TDay = Array<{
+export type TDay = Array<{
   menu_id: number
   foods: Food[]
 }> | null
