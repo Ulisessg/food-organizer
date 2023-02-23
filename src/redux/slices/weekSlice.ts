@@ -7,6 +7,7 @@ import {
 import axios, { type AxiosResponse } from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { type GetDays } from 'controllers/food_organizer_crud/daysCRUD'
+import getWeekRangeOfDates from 'utils/getWeekRangeOfDates'
 import { type response } from 'controllers/response'
 
 const initialState: TWeekState = {
@@ -23,6 +24,7 @@ const initialState: TWeekState = {
   getWeeklyError: false,
   getWeeklyIsLoading: false,
   getWeeklySuccess: false,
+  mondaysOfWeeksWithMenus: [] as any,
   weeklyMenus: []
 }
 
@@ -135,6 +137,15 @@ const weeklyMenusSlice = createSlice({
         state.getWeeklyIsLoading = false
         state.getWeeklySuccess = true
         state.weeklyMenus = [...action.payload]
+        const mondaysOfWeeksWithMenus: TWeekState['mondaysOfWeeksWithMenus'] = action
+          .payload.map((week, index) => {
+            const { mondayDate } = getWeekRangeOfDates(week.creation_date)
+            return {
+              date: mondayDate,
+              index
+            }
+          })
+        state.mondaysOfWeeksWithMenus = [...mondaysOfWeeksWithMenus]
       }
     )
 
@@ -197,4 +208,8 @@ interface TWeekState {
 
   weeklyMenus: GetWeeklyMenu
   days: GetDays
+  mondaysOfWeeksWithMenus: Array<{
+    date: string
+    index: number
+  }>
 }

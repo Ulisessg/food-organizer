@@ -5,11 +5,18 @@ import { getDaysThunk, getWeeklyMenusThunk } from 'redux/slices/weekSlice'
 import type { AppProps } from 'next/app'
 import { GlobalStyles } from 'd-system'
 import Header from 'components/Header'
+import dayjs from 'dayjs'
+import dayjsCustomParseFormat from 'dayjs/plugin/customParseFormat'
+import dayjsWeekDayPlugin from 'dayjs/plugin/weekday'
 import { getFoodsDataThunk } from 'redux/slices/foodSlice'
 import { getIngredientsThunk } from 'redux/slices/ingredientsSlice'
 import { getMenusDataThunk } from 'redux/slices/menusSlice'
 import { getPurchasePlacesThunk } from 'redux/slices/purchasePlacesSlice'
 import { getUomDataThunk } from 'redux/slices/unitsOfMeasureSlice'
+
+dayjs.extend(dayjsCustomParseFormat)
+dayjs.extend(dayjsWeekDayPlugin)
+dayjs.locale('es')
 
 export default function MyApp ({ Component, ...pageProps }: AppProps): JSX.Element {
   const { store } = wrapper.useWrappedStore(pageProps)
