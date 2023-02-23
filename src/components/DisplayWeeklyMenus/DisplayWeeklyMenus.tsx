@@ -1,15 +1,12 @@
 /* eslint-disable max-lines-per-function */
-import { Td as DSystemTd, Input, Select, Table, Th, useInputs } from 'd-system'
-import React, { type ChangeEvent, type FC, Fragment, type ReactNode } from 'react'
-import EditTableButtonsComponent from '../common/EditTableButtons'
+import { Input, Select, useInputs } from 'd-system'
+import React, { type ChangeEvent, type FC, Fragment } from 'react'
+import DispkayWeeklyMenusContainer from './DispkayWeeklyMenusContainer'
+import DisplayDay from './DisplayDay'
 import RequesResultStyles from '../common/RequestResultStyles'
 import { type RootState } from 'redux/store'
-import { type TDay } from 'controllers/food_organizer_crud/weeklyMenuCRUD'
-import TableContainer from '../common/TableContainer'
 import { dayInMiliseconds } from 'utils/constants'
 import dayjs from 'dayjs'
-import getWeekRangeOfDates from 'utils/getWeekRangeOfDates'
-import randomId from 'utils/randomId'
 import styled from 'styled-components'
 import useDisplayWeeklyMenus from 'hooks/components/useDisplayWeeklyMenus'
 import { useSelector } from 'react-redux'
@@ -127,97 +124,6 @@ const DisplayWeeklyMenus: FC = () => {
   </>
 }
 
-const DisplayDay: FC<{ dayliMenu: TDay, day: string }> =
-({ dayliMenu, day }) => <>
-<TableContainer className="daily_menu">
-  <Table caption={`Comidas del ${day}`}>
-    <thead>
-      <tr>
-        <Th>
-          Identificador del menú
-        </Th>
-        <Th>
-          Comidas
-        </Th>
-        <Th>
-          Acciones
-        </Th>
-
-      </tr>
-    </thead>
-    <tbody>
-      {dayliMenu === null && <>
-        <tr>
-          <Td
-            className="day_no_data"
-            colSpan={3}
-          >Aun no has añadido un menu al {day}</Td>
-        </tr>
-      </>
-
-      }
-      {dayliMenu?.map((menus) => <Fragment key={randomId(day)}>
-      {menus.foods.map((food, foodIndex) => <Fragment key={randomId()}>
-        {foodIndex === 0 && <>
-          <tr>
-            <Td rowSpan={menus.foods.length}>{menus.menu_id}</Td>
-            <Td>{food.food_name}</Td>
-            <EditTableButtons onUpdate={() => {
-              //
-            }}></EditTableButtons>
-          </tr>
-        </>}
-        {foodIndex !== 0 && <>
-          <tr>
-            <Td>{food.food_name}</Td>
-            <EditTableButtons onUpdate={() => {
-              //
-            }}></EditTableButtons>
-          </tr>
-        </>}
-      </Fragment>)}
-      </Fragment>)}
-    </tbody>
-  </Table>
-</TableContainer>
-</>
-
-const DispkayWeeklyMenusContainerStyles = styled.section`
-  display: grid;
-  grid-template-columns: 1fr;
-  width: 90vw;
-  .day_no_data {
-    padding: 5px;
-    text-align: center;
-    text-transform: initial;
-    font-weight: 600;
-  }
-  .daily_menu{ 
-    border: 1.5px solid black;
-    height: 500px;
-  } 
-  @media screen and (min-width: 1020px) {
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 15px;
-  }
-
-`
-
-const DispkayWeeklyMenusContainer: FC<
-{
-  children: ReactNode
-  sowDate: boolean
-  date?: string
-}> = ({ children, sowDate, date }) => {
-  const rangeOfDates = getWeekRangeOfDates(dayjs(date).toDate() ?? '')
-  return <>
-     {sowDate && <p>{rangeOfDates.mondayDate} - {rangeOfDates.sundayDate}</p>}
-     <DispkayWeeklyMenusContainerStyles>
-     {children}
-     </DispkayWeeklyMenusContainerStyles>
-   </>
-}
-
 const LastDayContainer = styled.div`
   @media screen and (min-width: 1020px) {  
     grid-column: span 2;
@@ -229,10 +135,6 @@ const LastDayContainer = styled.div`
   }
 `
 
-const Td = styled(DSystemTd)`
-  padding:  0px !important;
-`
-
 const FiltersContainer = styled.section`
   display: grid;
   cursor: pointer;
@@ -240,10 +142,6 @@ const FiltersContainer = styled.section`
 `
 const FiltersTitle = styled.p`
   font-weight: bold;
-`
-const EditTableButtons = styled(EditTableButtonsComponent)`
-grid-gap: 10px;
-width: 200px;
 `
 
 const NoMenusToShow = styled(RequesResultStyles)`
