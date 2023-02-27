@@ -1,8 +1,13 @@
+/* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
 import { type AppDispatch, type RootState } from 'redux/store'
-import { type MouseEvent, type RefObject } from 'react'
+import {
+  type ChangeEvent, type MouseEvent,
+  type RefObject, useState
+} from 'react'
 import { createFoodThunk, restartPostData } from 'redux/slices/foodSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { type CreateFood } from 'controllers/food_organizer_crud/foodsCRUD'
 import { defaultSelectValue } from 'utils/constants'
 import getInputNumberData from 'utils/getInputNumberData'
 import transformPostData from 'utils/transformPostData'
@@ -13,6 +18,12 @@ import useValueIsRepeated from 'hooks/useValueIsRepeated'
 const useCreateFood = (formRef: RefObject<HTMLFormElement>): UseCreateFoodReturn => {
   const dispatch: AppDispatch = useDispatch()
   const foodsData = useSelector((state: RootState) => state.foods)
+  const ingredientsData = useSelector((state: RootState) => state.ingredients)
+  const [
+    inputsIngredientQtyAreValid,
+    setInputsIngredientsQtyAreValid
+  ] = useState<boolean>(false)
+
   const { inputsData, inputsErrors, onBlur, onChange: UseInpusOnChange, restartInputs } = useInputs(
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     {
@@ -27,29 +38,79 @@ const useCreateFood = (formRef: RefObject<HTMLFormElement>): UseCreateFoodReturn
     resetIsRepeated,
     searchIsRepeated
   } = useValueIsRepeated<typeof foodsData['foods'][0]>()
+
   const {
-    Component: SelectIngredients,
-    data: IngredientsSelectsData,
+    addSelect,
+    data: selectIngredientsData,
+    deleteSelect,
+    disableButton: multipleSelecsDisableButton,
+    onChange: UseMultipleSelectsOnChangeFunc,
     resetMultipleSelect
-  } = useMultipleSelects('ingredients')
+  } = useMultipleSelects(
+    'ingredients',
+    ingredientsData.ingredients.length
+  )
+  const UseMultipleSelectsOnChange:
+  UseCreateFoodReturn['UseMultipleSelectsOnChange'] = (ev) => {
+    UseMultipleSelectsOnChangeFunc(ev)
+    setInputsIngredientsQtyAreValid(formRef.current?.checkValidity() as boolean)
+  }
+
   const onChange: UseCreateFoodReturn['onChange'] = (ev) => {
     const input = ev.currentTarget
     if (input.name === 'food_prep_time') {
       getInputNumberData(ev.target as HTMLInputElement)
     }
-    searchIsRepeated(
-      foodsData.foods,
-      'food_name',
-      input.value
-    )
+    if (input.name === 'food_name') {
+      searchIsRepeated(
+        foodsData.foods,
+        'food_name',
+        input.value
+      )
+    }
     UseInpusOnChange(ev)
+
+    /**
+     * Re render to validate form if user start typing ingredient qty
+     */
+    setInputsIngredientsQtyAreValid(formRef.current?.checkValidity() as boolean)
   }
-  const createFood: UseCreateFoodReturn['createFood'] = async (ev) => {
+  const createFood: UseCreateFoodReturn['createFood'] = async (_ev) => {
     if (!formIsValid()) return
     const foodTypeId = foodsData.foodTypes.find((ft) => ft.name === inputsData.food_type_select)?.id
+
+    const ingredientsContainers = document.querySelectorAll('[data-ingredient-container="true"]')
+    const datalist: HTMLDataListElement = document
+      .querySelector('datalist[id="ingredients-options"]') as HTMLDataListElement
+
+    const ingredients: CreateFood['ingredients'] = []
+
+    ingredientsContainers.forEach((ingredientContainer) => {
+      const inputIngredientName: HTMLInputElement =
+      ingredientContainer.querySelector('input[list=ingredients-options]') as HTMLInputElement
+      const inputIngredientQty: HTMLInputElement = ingredientContainer
+        .querySelector('input[type=number]') as HTMLInputElement
+      console.log(ingredientContainer)
+
+      const ingredientId: number = parseInt(
+        datalist
+          .querySelector(`option[value=${inputIngredientName.value} i]`)
+          ?.getAttribute('data-ingredient-id') as string,
+        10
+      )
+      const ingredientQty = parseInt(
+        inputIngredientQty.value,
+        10
+      )
+      ingredients.push({
+        ingredient_id: ingredientId,
+        ingredient_qty: ingredientQty
+      })
+    })
     const postFoodRequestResult = await dispatch(createFoodThunk(transformPostData({
-      food_type_id: foodTypeId as any,
+      food_type_id: foodTypeId as number,
       image: null,
+      ingredients,
       name: inputsData.food_name,
       preparation_time: parseInt(
         inputsData.food_prep_time,
@@ -66,23 +127,34 @@ const useCreateFood = (formRef: RefObject<HTMLFormElement>): UseCreateFoodReturn
       await dispatch(restartPostData())
     }
   }
+
+  /**
+   *
+   * Form validations
+   */
   const formIsValid = (): boolean => {
     if (formRef.current?.checkValidity() === true &&
-    IngredientsSelectsData.valuesUsed.length > 0 &&
+    (selectIngredientsData.valuesUsed.length >= 1) &&
+    (inputsIngredientQtyAreValid) &&
     !inputsErrors.food_name &&
     !inputsErrors.food_prep_time && !inputsErrors.food_type_select) return true
     return false
   }
+
   // Add validation for prep time to not allow symbols
   return {
-    SelectIngredientsComponent: SelectIngredients,
+    UseMultipleSelectsOnChange,
+    addSelect,
     createFood,
+    deleteSelect,
+    disableAddIngredient: multipleSelecsDisableButton,
     disableButton: !formIsValid(),
     foodNameIsRepeated,
     inputsData,
     inputsErrors,
     onBlur,
-    onChange
+    onChange,
+    selectIngredientsData
   }
 }
 
@@ -97,8 +169,16 @@ interface UseCreateFoodReturn {
   inputsErrors: Record<keyof UseCreateFoodReturn['inputsData'], boolean>
   onChange: ReturnType<typeof useInputs>['onChange']
   onBlur: ReturnType<typeof useInputs>['onBlur']
-  SelectIngredientsComponent: ReturnType<typeof useMultipleSelects>['Component']
   foodNameIsRepeated: boolean
   disableButton: boolean
   createFood: (ev: MouseEvent<HTMLButtonElement>) => void
+  addSelect: ReturnType<typeof useMultipleSelects>['addSelect']
+  deleteSelect: ReturnType<typeof useMultipleSelects>['deleteSelect']
+
+  UseMultipleSelectsOnChange:
+  (
+    ev: ChangeEvent<HTMLInputElement>
+  ) => void
+  selectIngredientsData: ReturnType<typeof useMultipleSelects>['data']
+  disableAddIngredient: ReturnType<typeof useMultipleSelects>['disableButton']
 }

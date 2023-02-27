@@ -1,6 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next'
 import {
-  createFoodIngredient, getFoodIngredients, updateFoodIngredient
+  getFoodIngredients,
+  updateFoodIngredient
 } from 'controllers/food_organizer_crud/foodIngredientsCRUD'
 import { type response } from 'controllers/response'
 
@@ -10,12 +11,6 @@ const handler = async (
 ): Promise<void> => {
   const { method } = req
   switch (method) {
-    case 'POST':
-      await createFoodIngredient(
-        req,
-        res
-      )
-      break
     case 'GET':
       await getFoodIngredients(
         req,
@@ -32,7 +27,6 @@ const handler = async (
       res.setHeader(
         'Allow',
         [
-          'POST',
           'GET',
           'PATCH'
         ]

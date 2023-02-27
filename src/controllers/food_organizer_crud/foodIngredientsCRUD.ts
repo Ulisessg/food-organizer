@@ -1,42 +1,18 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
-import foodIngredientValidations, { validations } from 'models/foodIngredientValidations'
 import type { food_ingredients } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'
+import { validations } from 'models/foodIngredientValidations'
 
-export const createFoodIngredient = async (
-  req: CreateFoodIngredient,
-  res: NextApiResponse<response<string>>
-): Promise<void> => {
-  try {
-    const { creation_date, food_id, ingredient_id, ingredient_qty } = req.body
-    foodIngredientValidations({
-      creationDate: creation_date as unknown as string,
-      foodId: food_id,
-      ingredientId: ingredient_id,
-      ingredient_qty: ingredient_qty as unknown as number
-    })
-    await prisma.food_ingredients.create({
-      data: {
-        creation_date,
-        food_id,
-        ingredient_id,
-        ingredient_qty
-      }
-    })
-    res.status(201).send({
-      data: 'food ingredient created',
-      error: false
-    })
-  } catch (error) {
-    console.error(error)
-    res.status(400).send({
-      data: 'error creating food ingredient',
-      error: true
-    })
-  }
+export const createFoodIngredient = async (foodIngredients:
+CreateFoodIngredients): Promise<void> => {
+  const foodIngredientsCreation = await prisma.food_ingredients.createMany({
+    data: foodIngredients,
+    skipDuplicates: true
+  })
+  if (foodIngredientsCreation.count === 0) throw new Error('No food ingredients created')
 }
 
 export const getFoodIngredients = async (
@@ -46,7 +22,7 @@ export const getFoodIngredients = async (
   try {
     const result = await prisma.$queryRaw<food_ingredients[]>`SELECT
 food_ingredients.id, food_ingredients.ingredient_id AS ingredient_id,
-food_ingredients.food_id AS food_id, food_ingredients.ingredient_qty AS ingredient_qty
+food_ingredients.food_id AS food_id, food_ingredients.ingredient_qty AS ingredient_qty,
 foods.name AS food_name, ingredients.name AS ingredient_name, units_of_measure.name AS uom_name
 FROM food_ingredients
 INNER JOIN foods ON food_ingredients.food_id = foods.id
@@ -67,7 +43,7 @@ INNER JOIN units_of_measure ON ingredients.uom_id = units_of_measure.id
 }
 
 export const updateFoodIngredient = async (
-  req: CreateFoodIngredient,
+  req: UpdateFoodIngredient,
   res: NextApiResponse<response<string>>
 ): Promise<void> => {
   try {
@@ -100,6 +76,13 @@ WHERE food_ingredients.id = ${id}
   }
 }
 
-interface CreateFoodIngredient extends NextApiRequest {
+interface UpdateFoodIngredient extends NextApiRequest {
   body: food_ingredients
 }
+
+export type CreateFoodIngredients = Array<{
+  creation_date: string
+  food_id: number
+  ingredient_id: number
+  ingredient_qty: number
+}>

@@ -1,5 +1,8 @@
+/* eslint-disable max-statements */
+/* eslint-disable max-lines-per-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
+import { type CreateFoodIngredients, createFoodIngredient } from './foodIngredientsCRUD'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import foodValidations, { validations } from 'models/foodValidations'
 import capitalize from 'utils/capitalize'
@@ -15,8 +18,13 @@ import { type response } from 'controllers/response'
 
 export const createFood = async (
   req: CreateFoodRequest,
-  res: NextApiResponse<response<foods | string>>
+  res: NextApiResponse<response<CreateFoodsResponse>>
 ): Promise<void> => {
+  let createFoodResponse: CreateFoodsResponse = {
+    errorCreatingFood: false,
+    errorCreatingIngedients: false
+  } as any
+  // Food
   try {
     const {
       creation_date,
@@ -35,7 +43,7 @@ export const createFood = async (
       score: score as unknown as number,
       usedCounter: used_counter as unknown as number
     })
-    const result = await prisma.foods.create({
+    const createFoodResult = await prisma.foods.create({
       data: {
         creation_date,
         food_type_id,
@@ -46,14 +54,36 @@ export const createFood = async (
         used_counter
       }
     })
-    res.status(201).send({
-      data: result,
-      error: false
-    })
+    createFoodResponse = { ...createFoodResponse, ...createFoodResult }
   } catch (error) {
     console.error(error)
     res.status(400).send({
-      data: 'error creating food',
+      data: {
+        errorCreatingFood: true
+      } as any,
+      error: true
+    })
+  }
+  // Food ingredients
+  try {
+    const { ingredients } = req.body
+    const createIngredientsData = ingredients.map((ingr) => ({
+      ...ingr,
+      creation_date: createFoodResponse.creation_date as unknown as any,
+      food_id: createFoodResponse.id
+    }))
+    await createFoodIngredient(createIngredientsData)
+    createFoodResponse = { ...createFoodResponse, ingredients: createIngredientsData }
+    res.status(201).send({
+      data: createFoodResponse,
+      error: false
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({
+      data: {
+        errorCreatingIngedients: true
+      } as any,
       error: true
     })
   }
@@ -152,6 +182,7 @@ export interface CreateFood {
   food_type_id: number
   image: string | null
   creation_date: string
+  ingredients: Array<Omit<CreateFoodIngredients[0], 'creation_date' | 'food_id'>>
 }
 
 export type GetFoods = Array<{
@@ -166,3 +197,12 @@ export type GetFoods = Array<{
     preparation_time: number
   }>
 }>
+
+export interface CreateFoodsResponse extends foods {
+  ingredients: Array<{
+    ingredient_id: number
+    ingredient_qty: number
+  }>
+  errorCreatingFood: boolean
+  errorCreatingIngedients: boolean
+}

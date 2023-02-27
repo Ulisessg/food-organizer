@@ -2,14 +2,17 @@
 /* eslint-disable camelcase */
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
-import { type CreateFood, type GetFoods } from 'controllers/food_organizer_crud/foodsCRUD'
+import {
+  type CreateFood,
+  type CreateFoodsResponse, type GetFoods
+} from 'controllers/food_organizer_crud/foodsCRUD'
 import {
   type CreateFoodType,
   type GetFoodTypes
 } from 'controllers/food_organizer_crud/foodTypesCRUD'
 import axios, { type AxiosResponse } from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { type food_types, type foods } from '@prisma/client'
+import { type food_types } from '@prisma/client'
 import { type response } from 'controllers/response'
 
 const initialState: TFoodState = {
@@ -66,10 +69,11 @@ export const getFoodsDataThunk = createAsyncThunk<GetFoodsDataThunkReturn, numbe
   }
 )
 
-export const createFoodThunk = createAsyncThunk(
+export const createFoodThunk = createAsyncThunk<CreateFoodsResponse, CreateFood>(
   'foods/create_food',
-  async (foodData: CreateFood, thunkApi) => {
-    const createFoodRequestResult = await axios.post<CreateFood, AxiosResponse<response<foods>>>(
+  async (foodData, thunkApi) => {
+    const createFoodRequestResult =
+    await axios.post<CreateFood, AxiosResponse<response<CreateFoodsResponse>>>(
       '/api/foods',
       foodData
     )

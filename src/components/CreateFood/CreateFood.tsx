@@ -1,17 +1,18 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable sort-imports */
-import Details from './common/Details'
-import styled from 'styled-components'
+import Details from '../common/Details'
 import React, { type FC, Fragment, useRef } from 'react'
 import { Button, Form, LoadingSpinner, Input, Select } from 'd-system'
-import ErrorMessage from './common/ErrorMessage'
+import ErrorMessage from '../common/ErrorMessage'
 import { defaultSelectValue } from 'utils/constants'
 import { useSelector } from 'react-redux'
 import { type RootState } from 'redux/store'
 import useCreateFood from 'hooks/components/useCreateFood'
-import RequestResultStyles from './common/RequestResultStyles'
-import { LoadingSpinnerContainer } from './common/FormInDetailsStyles'
+import RequestResultStyles from '../common/RequestResultStyles'
+import { LoadingSpinnerContainer } from '../common/FormInDetailsStyles'
+import { PrepTimeContainer } from './CreateFoodStyles'
+import SelectIngredients from './SelectIngredients'
 
 // eslint-disable-next-line max-lines-per-function
 const CreateFood: FC = () => {
@@ -25,10 +26,13 @@ const CreateFood: FC = () => {
     inputsData,
     onChange,
     onBlur,
-    inputsErrors,
-    SelectIngredientsComponent
+    UseMultipleSelectsOnChange,
+    addSelect,
+    deleteSelect,
+    disableAddIngredient,
+    selectIngredientsData,
+    inputsErrors
   } = useCreateFood(formRef)
-
   return <>
   <Details summary="Crear comida">
     <Form formTitle="Crear comida" ref={formRef}>
@@ -104,11 +108,12 @@ const CreateFood: FC = () => {
           action="intenta de nuevo más tarde" />}
 
       {ingredientsData.getIngredientsSuccess && <>
-        <SelectIngredientsComponent
-          addSelectButtonText="Agregar ingrediente"
-          label="Ingredientes"
-          optionValueKeyName="ingredient_name"
-          options={ingredientsData.ingredients}
+        <SelectIngredients
+          addSelect={addSelect}
+          data={selectIngredientsData}
+          deleteSelect={deleteSelect}
+          disableButton={disableAddIngredient}
+          onChange={UseMultipleSelectsOnChange}
           />
         </>}
       <Button
@@ -136,13 +141,5 @@ const CreateFood: FC = () => {
   </Details>
 </>
 }
-
-const PrepTimeContainer = styled.div`
-  display: flex;
-  align-items: center;
-  & > label {
-    margin-right: 15px;
-  }
-`
 
 export default CreateFood

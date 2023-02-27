@@ -5,11 +5,11 @@ import styled from 'styled-components'
 export const Container = styled.div`
   width: 100%;
   display: flex;
-  height: auto;
-  align-items: center;
-  align-content: center;
+  height: 100%;
   justify-content: space-between;
   margin-bottom: 20px;
+  align-content: end;
+  align-items: end;
   & label {
     width: 65%;
     margin: 0 !important;
@@ -17,11 +17,20 @@ export const Container = styled.div`
       width: 80%;
     }
   }
+  & label > select, & label > input {
+    margin: 0px;
+  }
+  & label > p {
+    margin-bottom: 8px;
+  }
+
   & button {
-    height: 35px;
+    display: flex;
+    height: 30px;
     width: 80px;
     margin: 0 !important;
-    align-self: end;
+    align-items: center;
+    justify-content: center;
   }
 `
 

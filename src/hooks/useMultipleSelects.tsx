@@ -85,7 +85,7 @@ const useMultipleSelects = (
     }))
   }
 
-  const onChange = (ev: ChangeEvent<HTMLSelectElement>): void => {
+  const onChange: UseMultipleSelectsReturn['onChange'] = (ev): void => {
     const selectId = ev.currentTarget.id
     const selectNextValue = ev.currentTarget.value
     let prevSelectValue: string = ''
@@ -202,7 +202,7 @@ export interface SelectsState {
 }
 
 export interface UseMultipleSelectsReturn {
-  onChange: (ev: ChangeEvent<HTMLSelectElement>) => void
+  onChange: (ev: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => void
   addSelect: () => void
   deleteSelect: (ev: MouseEvent<HTMLButtonElement>) => void
   data: SelectsState
