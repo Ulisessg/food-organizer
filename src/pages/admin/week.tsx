@@ -1,3 +1,4 @@
+import CreateWeeklyMenu from 'components/CreateWeeklyMenu'
 import DisplayWeeklyMenus from 'components/DisplayWeeklyMenus'
 import ErrorMessage from 'components/common/ErrorMessage'
 import type { GetWeeklyMenu } from '../../controllers/food_organizer_crud/weeklyMenuCRUD'
@@ -22,6 +23,7 @@ const WeeklyMenus: NextPage = () => {
     <title>Administrar los menús de la semana</title>
   </Head>
   <Title>Administrar los menús de la semana</Title>
+  <CreateWeeklyMenu />
   <DisplayWeeklyMenus />
 </>
 }

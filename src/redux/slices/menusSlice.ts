@@ -6,6 +6,9 @@ import {
 } from 'controllers/food_organizer_crud/MenuCRUD'
 import axios, { type AxiosResponse } from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import {
+  type GetMenusIngredients
+} from 'controllers/food_organizer_crud/sql/getMenusIngredients'
 import { type response } from 'controllers/response'
 
 const initialState: TMenuState = {
@@ -19,7 +22,12 @@ const initialState: TMenuState = {
   getMenusDataError: false,
   getMenusDataIsLoading: false,
   getMenusDataSuccess: false,
-  menus: []
+  getMenusIngredientsEnd: false,
+  getMenusIngredientsError: false,
+  getMenusIngredientsIsLoading: false,
+  getMenusIngredientsSuccess: false,
+  menus: [],
+  menusIngredients: []
 }
 
 /**
@@ -70,6 +78,18 @@ export const restartPostMenuThunk = createAsyncThunk(
   }
 )
 
+export const getMenusIngredientsThunk = createAsyncThunk <GetMenusIngredients, number | null>(
+  'menu_ingredients',
+  async (_limit, thunkApi) => {
+    const menusIngredientsResponse = await axios
+      .get<response<GetMenusIngredients>>('/api/menusingredients')
+    if (menusIngredientsResponse.data.error) {
+      return thunkApi.rejectWithValue('')
+    }
+    return menusIngredientsResponse.data.data
+  }
+)
+
 /**
  * Slice
  */
@@ -111,6 +131,36 @@ const menusSlice = createSlice({
       }
     )
 
+    // Get Menus Ingredients
+    builder.addCase(
+      getMenusIngredientsThunk.pending,
+      (state) => {
+        state.getMenusIngredientsIsLoading = true
+        state.getMenusIngredientsError = false
+        state.getMenusIngredientsSuccess = false
+        state.getMenusIngredientsEnd = false
+      }
+    )
+
+    builder.addCase(
+      getMenusIngredientsThunk.rejected,
+      (state) => {
+        state.getMenusIngredientsIsLoading = false
+        state.getMenusIngredientsError = true
+        state.getMenusIngredientsSuccess = false
+        state.getMenusIngredientsEnd = true
+      }
+    )
+    builder.addCase(
+      getMenusIngredientsThunk.fulfilled,
+      (state, action) => {
+        state.getMenusIngredientsIsLoading = false
+        state.getMenusIngredientsError = false
+        state.getMenusIngredientsSuccess = true
+        state.getMenusIngredientsEnd = true
+        state.menusIngredients = [...action.payload]
+      }
+    )
     // Create menu
     builder.addCase(
       createMenuThunk.pending,
@@ -169,11 +219,17 @@ export default menusSlice.reducer
 
 interface TMenuState {
   menus: GetMenus
+  menusIngredients: GetMenusIngredients
   // Get data
   getMenusDataIsLoading: boolean
   getMenusDataEnd: boolean
   getMenusDataError: boolean
   getMenusDataSuccess: boolean
+  // Get Menus ingredients
+  getMenusIngredientsIsLoading: boolean
+  getMenusIngredientsEnd: boolean
+  getMenusIngredientsError: boolean
+  getMenusIngredientsSuccess: boolean
 
   // Post data
   createMenuIsLoading: boolean

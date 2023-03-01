@@ -241,8 +241,6 @@ interface Food {
 }
 
 export interface TCreateWeeklyMenus {
-
-  /** Use the day selected by calendar */
   creation_date: string
   menus: Array<{
     day_id: number

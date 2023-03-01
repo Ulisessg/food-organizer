@@ -4,6 +4,7 @@
 /* eslint-disable camelcase */
 import { type CreateMenuFoods, createMenuFoods } from './MenuFoodsCRUD'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import getMenusIngredientsSql, { type GetMenusIngredients } from './sql/getMenusIngredients'
 import menuValidations, { validations } from 'models/menuValidations'
 import { type menus } from '@prisma/client'
 import prisma from 'lib/prisma'
@@ -111,6 +112,7 @@ FROM menu_foods
 JOIN menus ON menus.id = menu_foods.menu_id
 JOIN foods ON foods.id = menu_foods.food_id
 GROUP BY menus.id
+ORDER BY menus.id asc
 `
     res.status(200).send({
       data: result,
@@ -120,6 +122,25 @@ GROUP BY menus.id
     console.error(error)
     res.status(400).send({
       data: 'error getting  menu',
+      error: true
+    })
+  }
+}
+
+export const getMenusIngredients = async (
+  req: NextApiRequest,
+  res: NextApiResponse<response<GetMenusIngredients>>
+): Promise<void> => {
+  try {
+    const menusIngredients = await getMenusIngredientsSql()
+    res.status(200).send({
+      data: menusIngredients,
+      error: false
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({
+      data: [] as any,
       error: true
     })
   }
