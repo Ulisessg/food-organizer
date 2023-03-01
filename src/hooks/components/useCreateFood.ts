@@ -94,7 +94,7 @@ const useCreateFood = (formRef: RefObject<HTMLFormElement>): UseCreateFoodReturn
 
       const ingredientId: number = parseInt(
         datalist
-          .querySelector(`option[value=${inputIngredientName.value} i]`)
+          .querySelector(`option[value='${inputIngredientName.value}' i]`)
           ?.getAttribute('data-ingredient-id') as string,
         10
       )
