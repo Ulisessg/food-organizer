@@ -10,6 +10,7 @@ import dayjs from 'dayjs'
 import getDayNameFromEnglish from 'utils/getDayNameFromEnglish'
 import getDayNameFromSpanish from 'utils/getDayNameFromSpanish'
 import getWeekRangeOfDates from 'utils/getWeekRangeOfDates'
+import safeObjectGet from 'utils/safeObjectGet'
 import { useInputs } from 'd-system'
 
 const menusSelectedAndMenusIdsUsedDefaultData = {
@@ -106,11 +107,17 @@ const useCreateWeeklyMenu = (formRef: RefObject<HTMLFormElement>): TUseCreateWee
     menusData.menus.some((menu) => {
       if (menu.id === menuId) {
         const dayInEnglish: TDaysOfTheWeek = getDayNameFromSpanish(inputsData.day)
-        menusSelectedData[dayInEnglish].push(menu)
+        safeObjectGet(
+          menusSelectedData,
+          dayInEnglish
+        ).push(menu)
         setMenusIdsUsed((prev) => ({
           ...prev,
           [dayInEnglish]: [
-            ...prev[dayInEnglish],
+            ...safeObjectGet(
+              prev,
+              dayInEnglish
+            ),
             menuId
           ]
         }))
@@ -132,12 +139,20 @@ const useCreateWeeklyMenu = (formRef: RefObject<HTMLFormElement>): TUseCreateWee
     // Remove id
     setMenusIdsUsed((prev) => ({
       ...prev,
-      [dayInElgish]: [...prev[dayInElgish].filter((id) => id !== menuId)]
+      [dayInElgish]: [
+        ...safeObjectGet(
+          prev,
+          dayInElgish
+        ).filter((id) => id !== menuId)
+      ]
     }))
     setMenusSelected((prev) => ({
       ...prev,
       [dayInElgish]:
-       prev[dayInElgish].filter((menu) => menu.id !== menuId)
+       safeObjectGet(
+         prev,
+         dayInElgish
+       ).filter((menu) => menu.id !== menuId)
     }))
     setMenusSelectedQty((prev) => prev - 1)
   }

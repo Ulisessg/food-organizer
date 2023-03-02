@@ -3,6 +3,7 @@ import { type GetMenus } from 'controllers/food_organizer_crud/MenuCRUD'
 import { type RootState } from 'redux/store'
 import { type TDaysOfTheWeek } from 'utils/constants'
 import { type TUseCreateWeeklyMenuReturn } from './useCreateWeeklyMenu'
+import safeObjectGet from 'utils/safeObjectGet'
 import { useSelector } from 'react-redux'
 
 const useMenus = (
@@ -19,7 +20,10 @@ const useMenus = (
         if (filter.propertyName === 'foods') {
           menusData.menus.forEach((menu, index) => {
             // Remove menus used
-            if (menusIdsUsed[day].some((id) => id === menu.id)) return
+            if (safeObjectGet(
+              menusIdsUsed,
+              day
+            ).some((id) => id === menu.id)) return
             if (menusIndexesUsed.some((indexUsed) => indexUsed === index)) return
 
             if (menu.menu_foods.some((food) => food.food_name === filter.value)) {
@@ -30,7 +34,10 @@ const useMenus = (
         }
         if (filter.propertyName === 'ingredients') {
           menusData.menusIngredients.forEach((menu, index) => {
-            if (menusIdsUsed[day].some((id) => id === menu.id)) return
+            if (safeObjectGet(
+              menusIdsUsed,
+              day
+            ).some((id) => id === menu.id)) return
             if (menusIndexesUsed.some((indexUsed) => indexUsed === index)) return
 
             /**
@@ -39,7 +46,10 @@ const useMenus = (
              */
             if (menu.ingredients.some((ingredient) => ingredient
               .ingredient_name.toLocaleLowerCase() === filter.value.toLocaleLowerCase())) {
-              menusToDisplay.push(menusData.menus[index])
+              menusToDisplay.push(safeObjectGet(
+                menusData.menus as any,
+                index
+              ))
               menusIndexesUsed.push(index)
             }
           })

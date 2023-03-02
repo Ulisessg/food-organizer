@@ -4,6 +4,7 @@ import { Select, useInputs } from 'd-system'
 import { type RootState } from 'redux/store'
 import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
+import safeObjectGet from 'utils/safeObjectGet'
 import useMultipleSelects from 'hooks/useMultipleSelects'
 import { useSelector } from 'react-redux'
 
@@ -70,7 +71,10 @@ const PurchasePlace: FC<PurchasePlaceProps> = ({
     id={id}
     label="Selecciona un lugar de compra"
     name={id}
-    value={inputsData[id]}
+    value={safeObjectGet(
+      inputsData,
+      id
+    )}
     onChange={onChange}
   >
   <option value={defaultSelectValue} disabled>{defaultSelectValue}</option>

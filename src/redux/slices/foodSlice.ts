@@ -14,6 +14,7 @@ import axios, { type AxiosResponse } from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { type food_types } from '@prisma/client'
 import { type response } from 'controllers/response'
+import safeObjectGet from 'utils/safeObjectGet'
 
 const initialState: TFoodState = {
   foodTypes: [],
@@ -214,7 +215,10 @@ const foodsSlice = createSlice({
         })
         state.foodsGroupedByType.some((fGByType, index) => {
           if (fGByType.food_type_id === action.payload.food_type_id) {
-            state.foodsGroupedByType[index].foods.push({
+            (safeObjectGet(
+              state.foodsGroupedByType as any,
+              index
+            )).foods.push({
               food_id: action.payload.id,
               food_name: action.payload.name,
               image: action.payload.image,

@@ -10,6 +10,7 @@ import MenusSelected from './MenusSelected'
 import RequestResultStyles from 'components/common/RequestResultStyles'
 import { type RootState } from 'redux/store'
 import getDayNameFromSpanish from 'utils/getDayNameFromSpanish'
+import safeObjectGet from 'utils/safeObjectGet'
 import styled from 'styled-components'
 import useCreateWeeklyMenu from 'hooks/components/useCreateWeeklyMenu'
 import { useSelector } from 'react-redux'
@@ -78,7 +79,10 @@ const CreateWeeklyMenu: FC = () => {
   />
   <MenusSelectedMessage>Menús seleccionados</MenusSelectedMessage>
   <MenusSelected
-    menus={menusSelected[daySelected]}
+    menus={safeObjectGet(
+      menusSelected,
+      daySelected
+    )}
     onMenuDeselected={onMenuDeselected} />
    <Button
       colorMessage="continue"

@@ -2,10 +2,12 @@
 /* eslint-disable max-lines-per-function */
 import { type ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { type RootState } from 'redux/store'
+import { type TDay } from 'controllers/food_organizer_crud/weeklyMenuCRUD'
 import { dayInMiliseconds } from 'utils/constants'
 import dayjs from 'dayjs'
 import getDayOfTheWeekFromDate from 'utils/getDayOfTheWeekFromDate'
 import getWeekRangeOfDates from 'utils/getWeekRangeOfDates'
+import safeObjectGet from 'utils/safeObjectGet'
 import { useInputs } from 'd-system'
 import { useSelector } from 'react-redux'
 
@@ -56,7 +58,10 @@ const useDisplayWeeklyMenus = (): TDisplayWeeklyMenusReturn => {
 
             setDailyMenu({
               day: daySelected,
-              menu: weeklyMenusData.weeklyMenus[sunday.index][daySelected]
+              menu: safeObjectGet(
+                weeklyMenusData.weeklyMenus[sunday.index],
+                daySelected
+              ) as TDay
             })
             return true
           }

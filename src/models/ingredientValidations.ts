@@ -1,7 +1,7 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
-import { lettersWithSpaces, urlRegExp } from 'utils/RegExps'
 import tableValidations, { type tableProps } from './tableValidations'
 import idValidation from './idValidation'
+import { lettersWithSpaces } from 'utils/RegExps'
 
 export const validations: verifyObj = {
   comment: (comment: string | null) => {
@@ -17,12 +17,11 @@ export const validations: verifyObj = {
   },
   image: (image: string | null) => {
     if (typeof image === 'string') {
-      if (image.match(urlRegExp) === null) {
-        throw new Error(invalidPropertyErrorMessage(
-          'image',
-          image,
-          'only url allowed'
-        ))
+      try {
+        // eslint-disable-next-line no-new
+        new URL(image)
+      } catch (error) {
+        throw new Error(`Invalid "image" property, only url allowed. value: ${image}`)
       }
     } else if (image !== null) {
       throw new TypeError(invalidPropertyTypeErrorMessage(

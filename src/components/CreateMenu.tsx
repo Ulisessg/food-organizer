@@ -15,6 +15,7 @@ import RequestResultStyles from './common/RequestResultStyles'
 import { type RootState } from 'redux/store'
 import Select from './common/Select'
 import randomId from 'utils/randomId'
+import safeArrayGet from 'utils/safeArrayGet'
 import useCreateMenu from 'hooks/components/useCreateMenu'
 import useMultipleSelects from 'hooks/useMultipleSelects'
 import { useSelector } from 'react-redux'
@@ -54,7 +55,10 @@ const CreateMenu: FC = () => {
           {/* Required select */}
           {index === 0 &&
           <Select id={selectId} labelText="Selecciona una comida"
-            value={selectsData.selectsValues[index].value}
+            value={safeArrayGet(
+              selectsData.selectsValues,
+              index
+            ).value}
             onChange={handleSelects}
           >
             {foodsData
@@ -78,7 +82,10 @@ typeof selectsData.valuesUsed.find((vUsed) => vUsed === food_name) !== 'undefine
           {index !== 0 && <>
             <Container>
               <Select id={selectId} labelText="Selecciona una comida"
-                value={selectsData.selectsValues[index].value}
+                value={safeArrayGet(
+                  selectsData.selectsValues,
+                  index
+                ).value}
                 onChange={handleSelects}
               >
                 {foodsData

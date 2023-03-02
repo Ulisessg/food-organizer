@@ -5,6 +5,7 @@ import React, { type ChangeEvent, type FC, Fragment, useState } from 'react'
 import { type RootState } from 'redux/store'
 import { type UseMultipleSelectsReturn } from 'hooks/useMultipleSelects'
 import randomId from 'utils/randomId'
+import safeObjectGet from 'utils/safeObjectGet'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 
@@ -88,9 +89,15 @@ const IngredientComponent: FC<IngredientComponentProps> = ({
      acceptanceCriteria="Solo letras y espacios"
      onChange={onChange}
      pattern="^[\p{L}\s]+$"
-     inputInvalid={inputsErrors[inputNameIngredientName]}
+     inputInvalid={safeObjectGet(
+       inputsErrors,
+       inputNameIngredientName as never
+     )}
      onBlur={onBlur}
-     value={inputsData[inputNameIngredientName]}
+     value={safeObjectGet(
+       inputsData,
+       inputNameIngredientName as never
+     )}
    />
 
    <Input
@@ -101,10 +108,16 @@ const IngredientComponent: FC<IngredientComponentProps> = ({
      labelProps={{ className: 'ingr_qty' }}
      required
      acceptanceCriteria="Solo números"
-     inputInvalid={inputsErrors[inputNameQty]}
+     inputInvalid={safeObjectGet(
+       inputsErrors,
+       inputNameQty
+     )}
      onBlur={onBlur}
      onChange={onChange}
-     value={inputsData[inputNameQty]}
+     value={safeObjectGet(
+       inputsData,
+       inputNameQty
+     )}
      step={0.1}
    />
    <IngredientUom className="ingredient_uom">{unitOM}</IngredientUom >

@@ -1,3 +1,4 @@
+import safeObjectGet from 'utils/safeObjectGet'
 import { useState } from 'react'
 
 const useValueIsRepeated = <T extends Record<string, any>>(): UseValueIsRepeatedReturn<T> => {
@@ -10,7 +11,10 @@ const useValueIsRepeated = <T extends Record<string, any>>(): UseValueIsRepeated
    (list, key, valueToSearch) => {
      let existValueRepeated: boolean = false
      list.some((element) => {
-       const elementValue = element[key] as string
+       const elementValue = safeObjectGet(
+         element,
+         key
+       )
        if (elementValue.toLowerCase() === valueToSearch.toLowerCase()) {
          existValueRepeated = true
          return true

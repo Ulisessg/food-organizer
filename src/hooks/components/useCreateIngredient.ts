@@ -22,7 +22,6 @@ const useCreateIngredient = (
   const purchasePlaces = useSelector((state: RootState) => state.purchasePlaces.purchasePlaces)
   const dispatch: AppDispatch = useDispatch()
   const {
-    Component: PurchasePlacesSelect,
     data: purchasePlacesSelected,
     resetMultipleSelect
   } = useMultipleSelects()
@@ -95,7 +94,6 @@ const useCreateIngredient = (
   }
 
   return {
-    PurchasePlacesComponent: PurchasePlacesSelect,
     createIngredient,
     disableButton: !formIsValid() || ingredientsData.postIsLoading,
     ingredientNameIsRepeated,
@@ -111,7 +109,6 @@ interface UseCreateIngredientReturn {
   inputsErrors: Record<keyof InputsData, boolean>
   onBlur: ReturnType<typeof useInputs>['onBlur']
   onChange: ReturnType<typeof useInputs>['onChange']
-  PurchasePlacesComponent: ReturnType<typeof useMultipleSelects>['Component']
   disableButton: boolean
   createIngredient: (ev: MouseEvent<HTMLButtonElement>) => Promise<void>
   ingredientNameIsRepeated: boolean
