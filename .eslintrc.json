@@ -8,6 +8,7 @@
         "standard-with-typescript",
         "next",
         "next/core-web-vitals",
+        "plugin:security/recommended",
         "eslint:all"
     ],
     "overrides": [],
