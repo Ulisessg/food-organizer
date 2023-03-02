@@ -9,7 +9,8 @@ export default class MyDocument extends Document {
     const originalRenderPage = ctx.renderPage
 
     try {
-      ctx.renderPage = () => originalRenderPage({
+      // eslint-disable-next-line no-return-await
+      ctx.renderPage = async () => await originalRenderPage({
         enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />)
       })
 
