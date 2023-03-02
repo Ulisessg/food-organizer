@@ -227,6 +227,10 @@ const ingredientsSlice = createSlice({
         state.postError = false
         state.postEnd = true
         state.postSuccess = true
+        state.postIngredientPurchaseEnd = true
+        state.postIngredientPurchaseError = false
+        state.postIngredientPurchaseIsLoading = false
+        state.postIngredientPurchaseSuccess = true
 
         const { payload } = action
 
@@ -251,6 +255,11 @@ const ingredientsSlice = createSlice({
         state.postEnd = false
         state.postError = false
         state.postSuccess = false
+
+        state.postIngredientPurchaseEnd = false
+        state.postIngredientPurchaseError = false
+        state.postIngredientPurchaseIsLoading = false
+        state.postIngredientPurchaseSuccess = false
       }
     )
   }

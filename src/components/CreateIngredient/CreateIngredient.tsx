@@ -6,6 +6,7 @@ import React, { type FC, Fragment, useRef } from 'react'
 import Details from '../common/Details'
 import ErrorMessage from '../common/ErrorMessage'
 import { LoadingSpinnerContainer } from 'components/common/FormInDetailsStyles'
+import PurchasePlaces from './PurchasePlaces'
 import RequestResultStyles from 'components/common/RequestResultStyles'
 import { type RootState } from 'redux/store'
 import { defaultSelectValue } from 'utils/constants'
@@ -28,7 +29,6 @@ const CreateIngredient: FC = () => {
     inputsErrors,
     onBlur,
     onChange,
-    PurchasePlacesComponent,
     createIngredient,
     ingredientNameIsRepeated
   } = useCreateIngredient(
@@ -71,12 +71,9 @@ const CreateIngredient: FC = () => {
       }
       {purchasePlacesData.dataIsLoading && <LoadingSpinner size="small" />}
       {(!purchasePlacesData.dataIsLoading &&
-      !purchasePlacesData.getRequestError) && <PurchasePlacesComponent
-        addSelectButtonText="Añadir lugar de compra"
-        label="Selecciona un lugar de compra"
-        optionValueKeyName="name"
-        options={purchasePlacesData.purchasePlaces}
-      />}
+      !purchasePlacesData.getRequestError) && <PurchasePlaces
+        restartMultipleSelects={ingredientsData.postIngredientPurchaseSuccess ||
+        ingredientsData.postIngredientPurchaseSuccess } />}
 
       {/* Unit Of Measure */}
 
@@ -143,9 +140,7 @@ const CreateIngredient: FC = () => {
       {/* Request end with error */}
       <RequestResultStyles
           hidden={
-            !ingredientsData.postEnd &&
-            !ingredientsData.postError &&
-            !ingredientsData.postIngredientPurchaseEnd &&
+            !ingredientsData.postIngredientPurchaseError ||
             !ingredientsData.postIngredientPurchaseError}
           isError={true}
         >
