@@ -7,26 +7,26 @@ import dayjs from 'dayjs'
  * Format used: **DD/MM/YYYY**
  */
 const getWeekRangeOfDates = (date: string | Date, format?: string): GetWeekRangeOfDatesReturn => {
-  const mondayDate = dayjs(
+  const sundayDate = dayjs(
     date,
     format
   ).day(0)
     .format(dateFormatUsed)
-  const sundayDate = dayjs(
+  const saturdayDate = dayjs(
     date,
     format
   ).day(6)
     .format(dateFormatUsed)
 
   return {
-    mondayDate,
+    saturdayDate,
     sundayDate
   }
 }
 
 interface GetWeekRangeOfDatesReturn {
-  mondayDate: string
   sundayDate: string
+  saturdayDate: string
 }
 
 export default getWeekRangeOfDates

@@ -197,7 +197,6 @@ weekly_menus.creation_date,
 FROM weekly_menus
 GROUP BY weekly_menus.id
 ORDER BY weekly_menus.creation_date
-LIMIT 1
 ;
 `
 
@@ -251,5 +250,5 @@ export interface TCreateWeeklyMenus {
 export interface TCreateWeeklyMenusResponse {
   errorCreatingWeeklyMenu: boolean
   errorCreatingWeeklyMenuDay: boolean
-  weeklyMenu: GetWeeklyMenu[0]
+  weeklyMenu: GetWeeklyMenu
 }

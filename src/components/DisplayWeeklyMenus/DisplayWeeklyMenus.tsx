@@ -1,63 +1,26 @@
 /* eslint-disable max-lines-per-function */
-import { Input, Select, useInputs } from 'd-system'
-import React, { type ChangeEvent, type FC, Fragment } from 'react'
-import DispkayWeeklyMenusContainer from './DispkayWeeklyMenusContainer'
+import { Input, Select } from 'd-system'
+import React, { type FC, Fragment } from 'react'
+import DispkayWeeklyMenusContainer from './DisplayWeeklyMenusContainer'
 import DisplayDay from './DisplayDay'
 import RequesResultStyles from '../common/RequestResultStyles'
 import { type RootState } from 'redux/store'
-import { dayInMiliseconds } from 'utils/constants'
-import dayjs from 'dayjs'
+import getDayNameFromEnglish from 'utils/getDayNameFromEnglish'
+import randomId from 'utils/randomId'
 import styled from 'styled-components'
 import useDisplayWeeklyMenus from 'hooks/components/useDisplayWeeklyMenus'
 import { useSelector } from 'react-redux'
 
 const DisplayWeeklyMenus: FC = () => {
   const weeklyMenusData = useSelector((state: RootState) => state.weeklyMenus)
-  const { inputsData, onChange: UseInputsOnChange } = useInputs(
-    {
-      filter_by_wm_ammount: 'week',
 
-      /** Today */
-      pick_date: dayjs().format('YYYY-MM-DD')
-    },
-    false
-  )
   const {
     dailyMenu,
     menusToShow,
-    searchWeeklyMenu,
-    weeklyMenu
+    weeklyMenu,
+    inputsData,
+    filtersOnChange
   } = useDisplayWeeklyMenus()
-
-  const onChange = (ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
-    UseInputsOnChange(ev as any)
-    if (ev.currentTarget.name === 'filter_by_wm_ammount') {
-      searchWeeklyMenu(
-        dayjs(inputsData.pick_date).toDate(),
-        ev.currentTarget.value
-      )
-    } else if (ev.currentTarget.name === 'pick_date') {
-      const targetElement = ev.currentTarget as HTMLInputElement
-
-      /*
-       * Value as date is
-       * inexact by one day
-       * https://stackoverflow.com/questions/28506845/adding-one-day-to-an-input-type-date-value
-       */
-      // eslint-disable-next-line init-declarations
-      let fixedDate: Date
-      if (typeof targetElement.valueAsDate === 'undefined') {
-        fixedDate = dayjs('Invalid date').toDate()
-      } else {
-        fixedDate = dayjs((targetElement.valueAsDate as Date).getTime() + dayInMiliseconds).toDate()
-      }
-
-      searchWeeklyMenu(
-        fixedDate,
-        inputsData.filter_by_wm_ammount
-      )
-    }
-  }
 
   return <>
   <b><p>Las semanas comienzan los domingos y terminan los sabados</p></b>
@@ -66,7 +29,7 @@ const DisplayWeeklyMenus: FC = () => {
     label="Selecciona una fecha"
     name="pick_date"
     type="date"
-    onChange={onChange}
+    onChange={filtersOnChange}
     value={inputsData.pick_date}
     acceptanceCriteria="Formato: DD-MM-YYYY"
     style={{ width: '90vw' }}
@@ -79,7 +42,7 @@ const DisplayWeeklyMenus: FC = () => {
       label="Cuantos menus semanales quieres ver"
       name="filter_by_wm_ammount"
       value={inputsData.filter_by_wm_ammount}
-      onChange={onChange}
+      onChange={filtersOnChange}
       >
         <option value="week">La semana seleccionada</option>
         <option value="day">El dia seleccionado</option>
@@ -87,7 +50,8 @@ const DisplayWeeklyMenus: FC = () => {
     </Select>
   </FiltersContainer>
 
-  {menusToShow === 'week' && <DispkayWeeklyMenusContainer sowDate={false}>
+  {menusToShow === 'week' && <DispkayWeeklyMenusContainer
+    sowDate={true} date={inputsData.pick_date}>
     <DisplayDay day="Lunes" dayliMenu={weeklyMenu.monday} />
     <DisplayDay day="Martes" dayliMenu={weeklyMenu.tuesday} />
     <DisplayDay day="Miercoles" dayliMenu={weeklyMenu.wednesday} />
@@ -99,7 +63,7 @@ const DisplayWeeklyMenus: FC = () => {
     </LastDayContainer>
   </DispkayWeeklyMenusContainer>}
   {menusToShow === 'all' && <>
-    {weeklyMenusData.weeklyMenus.map((wm) => <Fragment key={wm.id}>
+    {weeklyMenusData.weeklyMenus.map((wm) => <Fragment key={randomId()}>
   <DispkayWeeklyMenusContainer sowDate={true} date={wm.creation_date}>
      <DisplayDay day="Lunes" dayliMenu={wm.monday} />
      <DisplayDay day="Martes" dayliMenu={wm.tuesday} />
@@ -115,7 +79,9 @@ const DisplayWeeklyMenus: FC = () => {
   </>}
   {menusToShow === 'day' && <DispkayWeeklyMenusContainer sowDate={true} date={inputsData.pick_date}>
     <LastDayContainer>
-    <DisplayDay day={dailyMenu.day} dayliMenu={dailyMenu.menu} />
+    <DisplayDay
+      day={getDayNameFromEnglish(dailyMenu.day.toLowerCase())}
+      dayliMenu={dailyMenu.menu} />
     </LastDayContainer>
   </DispkayWeeklyMenusContainer>}
   <NoMenusToShow hidden={menusToShow !== 'none'} isError={true}>

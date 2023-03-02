@@ -2,9 +2,10 @@
 import { type GetWeeklyMenu } from '../weeklyMenuCRUD'
 import prisma from 'lib/prisma'
 
-const getWeeklyMenuCreated = async (weeklyMenuId: number): Promise<GetWeeklyMenu[0]> => {
-  const weeklyMenuCreated = await prisma.$queryRaw<GetWeeklyMenu[0]>`SELECT
+const getWeeklyMenuCreated = async (weeklyMenuId: number): Promise<GetWeeklyMenu> => {
+  const weeklyMenuCreated = await prisma.$queryRaw<GetWeeklyMenu>`SELECT
   weekly_menus.id,
+  weekly_menus.creation_date,
   (SELECT
     JSON_ARRAYAGG(JSON_OBJECT(
       'menu_id', weekly_menu_days.menu_id,

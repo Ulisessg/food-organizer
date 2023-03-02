@@ -24,7 +24,7 @@ const initialState: TWeekState = {
   getWeeklyError: false,
   getWeeklyIsLoading: false,
   getWeeklySuccess: false,
-  mondaysOfWeeksWithMenus: [] as any,
+  sundaysOfWeeksWithMenus: [] as any,
   weeklyMenus: []
 }
 
@@ -68,6 +68,20 @@ export const createWeeklyMenuThunk = createAsyncThunk<TCreateWeeklyMenusResponse
       return thunkApi.rejectWithValue('')
     }
     return createWeeklyMenuRequestResult.data.data
+  }
+)
+
+export const restartPostWeeklyMenu = createAsyncThunk(
+  'weekly_menus/restart-post-data',
+  async () => {
+    await new Promise((resolve) => {
+      setTimeout(
+        () => {
+          resolve('')
+        },
+        3000
+      )
+    })
   }
 )
 
@@ -137,15 +151,15 @@ const weeklyMenusSlice = createSlice({
         state.getWeeklyIsLoading = false
         state.getWeeklySuccess = true
         state.weeklyMenus = [...action.payload]
-        const mondaysOfWeeksWithMenus: TWeekState['mondaysOfWeeksWithMenus'] = action
+        const sundaysOfWeeksWithMenus: TWeekState['sundaysOfWeeksWithMenus'] = action
           .payload.map((week, index) => {
-            const { mondayDate } = getWeekRangeOfDates(week.creation_date)
+            const { sundayDate } = getWeekRangeOfDates(week.creation_date)
             return {
-              date: mondayDate,
+              date: sundayDate,
               index
             }
           })
-        state.mondaysOfWeeksWithMenus = [...mondaysOfWeeksWithMenus]
+        state.sundaysOfWeeksWithMenus = [...sundaysOfWeeksWithMenus]
       }
     )
 
@@ -177,8 +191,26 @@ const weeklyMenusSlice = createSlice({
         state.createWeeklySuccess = true
         state.weeklyMenus = [
           ...state.weeklyMenus,
-          { ...action.payload.weeklyMenu }
+          { ...action.payload.weeklyMenu[0] }
         ]
+        state.sundaysOfWeeksWithMenus = [
+          ...state.sundaysOfWeeksWithMenus,
+          {
+            date: action.payload.weeklyMenu[0].creation_date,
+            index: state.weeklyMenus.length - 1
+          }
+        ]
+      }
+    )
+
+    // Restart post data
+    builder.addCase(
+      restartPostWeeklyMenu.fulfilled,
+      (state) => {
+        state.createWeeklyEnd = false
+        state.createWeeklyError = false
+        state.createWeeklyIsLoading = false
+        state.createWeeklySuccess = false
       }
     )
   }
@@ -208,7 +240,7 @@ interface TWeekState {
 
   weeklyMenus: GetWeeklyMenu
   days: GetDays
-  mondaysOfWeeksWithMenus: Array<{
+  sundaysOfWeeksWithMenus: Array<{
     date: string
     index: number
   }>

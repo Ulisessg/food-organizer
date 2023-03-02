@@ -1,17 +1,31 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
-import { type ChangeEvent, type RefObject, useState } from 'react'
+import { type AppDispatch, type RootState } from 'redux/store'
+import { type ChangeEvent, type MouseEvent, type RefObject, useState } from 'react'
 import { type TDaysOfTheWeek, dayInMiliseconds } from 'utils/constants'
-import { type RootState } from 'redux/store'
+import { createWeeklyMenuThunk, restartPostWeeklyMenu } from 'redux/slices/weekSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { type TCreateWeeklyMenus } from 'controllers/food_organizer_crud/weeklyMenuCRUD'
 import dayjs from 'dayjs'
+import getDayNameFromEnglish from 'utils/getDayNameFromEnglish'
 import getDayNameFromSpanish from 'utils/getDayNameFromSpanish'
 import getWeekRangeOfDates from 'utils/getWeekRangeOfDates'
 import { useInputs } from 'd-system'
-import { useSelector } from 'react-redux'
+
+const menusSelectedAndMenusIdsUsedDefaultData = {
+  friday: [],
+  monday: [],
+  saturday: [],
+  sunday: [],
+  thursday: [],
+  tuesday: [],
+  wednesday: []
+}
 
 const useCreateWeeklyMenu = (formRef: RefObject<HTMLFormElement>): TUseCreateWeeklyMenuReturn => {
   const weeklyMenusData = useSelector((state: RootState) => state.weeklyMenus)
   const menusData = useSelector((state: RootState) => state.menus)
+  const dispatch: AppDispatch = useDispatch()
   const [
     menusSelectedQty,
     setMenusSelectedQty
@@ -44,18 +58,17 @@ const useCreateWeeklyMenu = (formRef: RefObject<HTMLFormElement>): TUseCreateWee
     filters,
     setFilters
   ] = useState<TUseCreateWeeklyMenuReturn['filters']>([])
-  const { onChange: UseInputsOnChange, inputsData } = useInputs(
+  const { onChange: UseInputsOnChange, inputsData, restartInputs } = useInputs(
     {
       day: 'Lunes',
-      wm_date_picker: dayjs().format('YYYY-MM-DD')
+      wm_date_picker: ''
     },
     true
   )
   const [
     weekIsUsed,
     setWeekIsUsed
-  ] = useState<boolean>(dateIsUsed(dayjs(inputsData.wm_date_picker).toDate()
-    .getTime()))
+  ] = useState<boolean>(false)
 
   const updateFilters: TUseCreateWeeklyMenuReturn['updateFilters'] = (
     action,
@@ -141,16 +154,24 @@ const useCreateWeeklyMenu = (formRef: RefObject<HTMLFormElement>): TUseCreateWee
     }
   }
 
-  /**
-   * Declared as function to use hoisting
-   */
-  // eslint-disable-next-line func-style
-  function dateIsUsed (dateInNumbers: number): boolean {
+  const dateIsUsed = (dateInNumbers: number): boolean => {
     if (!Number.isNaN(dateInNumbers)) {
       const fixedDate = dateInNumbers + dayInMiliseconds
-      const mondayOfDateSelected = getWeekRangeOfDates(dayjs(fixedDate).toDate()).mondayDate
-      return weeklyMenusData
-        .mondaysOfWeeksWithMenus.some((monday) => monday.date === mondayOfDateSelected)
+      const sundayOfDateSelected = getWeekRangeOfDates(dayjs(fixedDate).toDate()).sundayDate
+      const result = weeklyMenusData
+        .sundaysOfWeeksWithMenus.some((sunday) => {
+          console.log(
+            'Monday: ',
+            sunday
+          )
+          console.log(
+            'sundayOfDateSelected: ',
+            sundayOfDateSelected
+          )
+
+          return sunday.date === sundayOfDateSelected
+        })
+      return result
     }
     return false
   }
@@ -160,8 +181,44 @@ const useCreateWeeklyMenu = (formRef: RefObject<HTMLFormElement>): TUseCreateWee
     menusSelectedQty >= 1) return true
     return false
   }
+  const createWeeklyMenu: TUseCreateWeeklyMenuReturn['createWeeklyMenu'] = async (ev) => {
+    const createWeeklyMenuData: TCreateWeeklyMenus = {
+      creation_date: dayjs(
+        inputsData.wm_date_picker,
+        'YYYY-MM-DD'
+      ).toISOString(),
+      menus: []
+    }
+
+    // eslint-disable-next-line guard-for-in
+    for (const day in menusSelected) {
+      if (menusSelected[day as TDaysOfTheWeek].length !== 0) {
+        const dayId = weeklyMenusData
+          .days.find((dy) => dy.name.toLowerCase() === getDayNameFromEnglish(day))?.id as number
+
+        menusSelected[day as TDaysOfTheWeek].forEach((menu) => {
+          createWeeklyMenuData.menus.push({
+            day_id: dayId,
+            menu_id: menu.id
+          })
+        })
+      }
+    }
+    const createWeeklyMenuResponse = await dispatch(createWeeklyMenuThunk(createWeeklyMenuData))
+
+    if (typeof (createWeeklyMenuResponse as any).error === 'undefined') {
+      restartFilters()
+      restartInputs('all')
+      formRef.current?.reset()
+      setMenusIdsUsed(menusSelectedAndMenusIdsUsedDefaultData)
+      setMenusSelected(menusSelectedAndMenusIdsUsedDefaultData)
+      setMenusSelectedQty(0)
+      await dispatch(restartPostWeeklyMenu())
+    }
+  }
 
   return {
+    createWeeklyMenu,
     daySelected: getDayNameFromSpanish(inputsData.day),
     disableButton: !formIsValid(),
     filters,
@@ -210,4 +267,5 @@ export interface TUseCreateWeeklyMenuReturn {
     [k in TDaysOfTheWeek]: number[]
   }
   disableButton: boolean
+  createWeeklyMenu: (ev: MouseEvent<HTMLButtonElement>) => Promise<void>
 }

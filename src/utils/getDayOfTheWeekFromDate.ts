@@ -1,7 +1,4 @@
 import dayjs from 'dayjs'
-import dayjsWeekDayPlugin from 'dayjs/plugin/weekday'
-dayjs.extend(dayjsWeekDayPlugin)
-dayjs().weekday(-7)
 
 const getDayOfTheWeekFromDate = (date: string | Date): GetDayOfTheWeekFromDateReturn => {
   const day = dayjs(date).get('day')

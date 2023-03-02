@@ -1,8 +1,9 @@
 /* eslint-disable max-lines-per-function */
-import { Button, Form, Input, Select } from 'd-system'
+import { Button, Form, Input, LoadingSpinner, Select } from 'd-system'
 import React, { type FC, useRef } from 'react'
 import CreateMenu from 'components/CreateMenu'
 import Details from '../common/Details'
+import { LoadingSpinnerContainer } from 'components/common/FormInDetailsStyles'
 import MenuFilters from './MenuFilters'
 import MenusOptions from './MenusOptions'
 import MenusSelected from './MenusSelected'
@@ -15,6 +16,7 @@ import { useSelector } from 'react-redux'
 
 const CreateWeeklyMenu: FC = () => {
   const days = useSelector((state: RootState) => state.weeklyMenus.days)
+  const weeklyMenusData = useSelector((state: RootState) => state.weeklyMenus)
   const formRef = useRef<HTMLFormElement>(null)
   const {
     onChange,
@@ -28,7 +30,8 @@ const CreateWeeklyMenu: FC = () => {
     menusIdsUsed,
     menusSelected,
     daySelected,
-    disableButton
+    disableButton,
+    createWeeklyMenu
   } = useCreateWeeklyMenu(formRef)
 
   return <Details summary="Crear menú semanal">
@@ -83,7 +86,26 @@ const CreateWeeklyMenu: FC = () => {
       text="Crear menú semanal"
       type="button"
       disabled={disableButton}
+      onClick={createWeeklyMenu}
     />
+    {weeklyMenusData.createWeeklyIsLoading && <LoadingSpinnerContainer>
+      <LoadingSpinner size="large" />
+    </LoadingSpinnerContainer>
+    }
+
+    <RequestResultStyles
+      hidden={!weeklyMenusData.createWeeklyError}
+      isError={true}
+    >
+      Ocurrió un error creando el menú semanal
+    </RequestResultStyles>
+    <RequestResultStyles
+      hidden={!weeklyMenusData.createWeeklySuccess}
+      isError={false}
+    >
+      Menú semanal creado exitosamente!
+    </RequestResultStyles>
+
   </Form>
   <CreateMenuSectionMessage>
     Si no te convence nigún menu puedes crear uno nuevo

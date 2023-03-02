@@ -12,7 +12,7 @@ const DispkayWeeklyMenusContainer: FC<
   const rangeOfDates = getWeekRangeOfDates(dayjs(date).toDate() ?? '')
 
   return <>
-     {sowDate && <p>{rangeOfDates.mondayDate} - {rangeOfDates.sundayDate}</p>}
+     {sowDate && <p>{rangeOfDates.sundayDate} - {rangeOfDates.saturdayDate}</p>}
      <DispkayWeeklyMenusContainerStyles>
      {children}
      </DispkayWeeklyMenusContainerStyles>
