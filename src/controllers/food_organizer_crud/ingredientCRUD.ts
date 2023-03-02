@@ -32,11 +32,13 @@ export const createIngredient = async (
         uom_id: uomId
       }
     })
-    const uomName: string = await prisma.units_of_measure.findUniqueOrThrow({
+    const uom = await prisma.units_of_measure.findUniqueOrThrow({
       where: {
         id: result.uom_id
       }
-    }).then((uom) => uom.name)
+    })
+
+    const uomName = uom.name
 
     res.status(201).send({
       data: {

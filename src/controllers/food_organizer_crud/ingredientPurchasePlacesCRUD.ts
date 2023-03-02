@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable max-statements */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
@@ -15,6 +16,13 @@ export const createIngredientPurchasePlace = async (
   res: NextApiResponse<response<TIngr_purchase_places | string>>
 ): Promise<void> => {
   try {
+    if (req.body.length === 0) {
+      res.status(204).send({
+        data: 'No purchase places in request',
+        error: false
+      })
+      return
+    }
     if (req.body.length > 10) throw new Error('not more of 10 purchase places')
     for (const purchasePlace of req.body) {
       ingredientPurchasePlaceValidations({
