@@ -1,14 +1,12 @@
 /* eslint-disable max-lines-per-function */
-import React, { type FC, Fragment } from 'react'
+import React, { type FC } from 'react'
 import { Table, Th } from 'd-system'
-import { type RootState } from 'redux/store'
+import { ModalContextProvider } from 'context/ModalContext'
 import Rows from './Rows'
 import TableContainer from 'components/common/TableContainer'
-import { useSelector } from 'react-redux'
 
-const DisplayUnitsOfMeasure: FC = () => {
-  const unitsOfMeasureData = useSelector((state: RootState) => state.unitsOfMeasure)
-  return <TableContainer>
+const DisplayUnitsOfMeasure: FC = () => <ModalContextProvider>
+    <TableContainer>
   <Table caption="Unidades de medida">
     <thead>
       <tr>
@@ -27,30 +25,10 @@ const DisplayUnitsOfMeasure: FC = () => {
       </tr>
     </thead>
     <tbody>
-    {unitsOfMeasureData.uomGroupedByType.map((uomt) => <Fragment key={uomt.uomt_id}>
-      {uomt.uom.map((uom, index) => <Fragment key={uom.id}>
-        {index === 0 && <>
-          <Rows
-            uomAbbreviation={uom.abbreviation}
-            uomName={uom.name}
-            uomtName={uomt.uomt_name}
-            rowSpan={uomt.uom.length} />
-          </>
-        }
-        {index !== 0 && <>
-          <Rows
-            uomAbbreviation={uom.abbreviation}
-            uomName={uom.name}
-            uomtName={uomt.uomt_name}
-            />
-        </>
-        }
-      </Fragment>)}
-    </Fragment>)}
-
-      </tbody>
+      <Rows />
+    </tbody>
     </Table>
   </TableContainer>
-}
+  </ModalContextProvider>
 
 export default DisplayUnitsOfMeasure

@@ -1,18 +1,23 @@
-import React, { type FC, useState } from 'react'
+/* eslint-disable no-constant-binary-expression */
+import React, { type FC, type MouseEvent, useState } from 'react'
 import { Button } from 'd-system'
 import styled from 'styled-components'
 
-const EditTableButtons: FC<Props> = ({ onUpdate, className }) => {
+const EditTableButtons: FC<Props> = ({ onUpdate, className, handleEditProp, editProp }) => {
   const [
     edit,
     setEdit
   ] = useState<boolean>(false)
-  const handleEdit = (): void => {
-    setEdit(!edit)
+  const handleEdit = (ev: MouseEvent<HTMLButtonElement>): void => {
+    if (typeof handleEditProp === 'undefined') {
+      setEdit(!edit)
+    } else {
+      handleEditProp(ev)
+    }
   }
 
-  return <EditButtonsContainer data-is-active={edit} className={className}>
-   {edit && <>
+  return <EditButtonsContainer data-is-active={editProp ?? edit} className={className}>
+   {(editProp ?? edit) && <>
             <Button
               colorMessage="continue"
               size="100%"
@@ -27,7 +32,7 @@ const EditTableButtons: FC<Props> = ({ onUpdate, className }) => {
               type="button"
               onClick={handleEdit} />
           </>}
-          {!edit && <Button
+          {(!(editProp ?? false) ?? !edit) && <Button
             colorMessage="info"
             size="100%"
             text="Editar"
@@ -37,11 +42,13 @@ const EditTableButtons: FC<Props> = ({ onUpdate, className }) => {
 }
 
 interface Props {
-  onUpdate: () => void
+  onUpdate: (ev: MouseEvent<HTMLButtonElement>) => void
   className?: string
+  handleEditProp?: (ev: MouseEvent<HTMLButtonElement>) => void
+  editProp?: boolean
 }
 
-const EditButtonsContainer = styled.td`
+const EditButtonsContainer = styled.div`
 display: grid;
 grid-auto-flow: column;
 grid-gap: 10px;

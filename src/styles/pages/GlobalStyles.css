@@ -1,0 +1,5 @@
+/* Provent html scroll when modal is open */
+.ReactModal__Body--open,
+.ReactModal__Html--open {
+  overflow: hidden;
+}

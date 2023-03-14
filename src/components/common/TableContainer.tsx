@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const TableContainer = styled.div`
-width: 100%;
+width: 90vw;
 overflow-x: scroll;
 text-align: left;
 box-shadow: 2px 2px 6px 2px ${({ theme }) => theme.colors.shadow};

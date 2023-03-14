@@ -1,0 +1,25 @@
+import ModalComponent, { type Props, type Styles } from 'react-modal'
+import { type FC } from 'react'
+
+ModalComponent.setAppElement('#__next')
+
+const modalStyles: Styles = {
+  content: {
+    alignContent: 'space-around',
+    borderRadius: '30px',
+    display: 'grid',
+    gridRowGap: '15px',
+    inset: '15px',
+    justifyContent: 'center',
+    justifyItems: 'center',
+    overflow: 'auto',
+    position: 'fixed'
+  },
+  overlay: {
+    backgroundColor: 'rgba(0,0,0,0.4)'
+  }
+}
+
+const Modal: FC<Props> = (props) => <ModalComponent {...props} style={modalStyles} />
+
+export default Modal
