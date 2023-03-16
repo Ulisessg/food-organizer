@@ -1,25 +1,43 @@
+/* eslint-disable max-lines-per-function */
 import React, { type ComponentPropsWithoutRef, type FC, type KeyboardEvent, useState } from 'react'
 import styled from 'styled-components'
 
 const ArrowBack: FC<ArrowBackProps> = ({
   title,
+  elementReturnFocusId,
   ...props
 }) => {
   const [
     isEnterPressed,
     setIsEnterPressed
   ] = useState<boolean>(false)
+  const returnFocusToElement = (): void => {
+    if (typeof elementReturnFocusId === 'string') {
+      const element = document.getElementById(elementReturnFocusId)
+      if (element === null) {
+        throw new Error('No element')
+      }
+      element.focus()
+    }
+  }
 
   const handleKeyDown = (ev: KeyboardEvent<HTMLButtonElement>): void => {
     props.onKeyDown?.(ev)
-    if (ev.key === 'Enter' || ev.key === ' ') {
+    if (ev.key === 'Enter') {
+      if (typeof props.onClick !== 'undefined') {
+        props.onClick(ev as any)
+      }
       setIsEnterPressed(true)
+      returnFocusToElement()
     }
   }
 
   const handleOnKeyUp = (ev: KeyboardEvent<HTMLButtonElement>): void => {
     props.onKeyUp?.(ev)
-    if (ev.key === 'Enter' || ev.key === ' ') {
+    if (ev.key === 'Enter') {
+      if (typeof props.onClick !== 'undefined') {
+        props.onClick(ev as any)
+      }
       setIsEnterPressed(false)
       ev.target?.dispatchEvent(new globalThis.KeyboardEvent(
         'click',
@@ -27,6 +45,7 @@ const ArrowBack: FC<ArrowBackProps> = ({
           repeat: false
         }
       ))
+      returnFocusToElement()
     }
   }
 
@@ -38,14 +57,18 @@ const ArrowBack: FC<ArrowBackProps> = ({
       onKeyDown={handleKeyDown}
       onKeyUp={handleOnKeyUp}
       isDisabled={props.disabled}
+      type="button"
      >↶</ArrowBackStyles>
   )
 }
 
-interface ArrowBackProps extends ComponentPropsWithoutRef<'button'> {
+export interface ArrowBackProps extends ComponentPropsWithoutRef<'button'> {
 
   /** Text to accesibility pruposes */
   title: string
+
+  /** Element id to return focus when arrow back is pressed */
+  elementReturnFocusId?: string
 }
 
 const ArrowBackStyles = styled.button<{
