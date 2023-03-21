@@ -29,6 +29,10 @@ const insertUnitOfMeasure = (
             id: unitOfMeasure.id,
             name: unitOfMeasure.name
           }
+        ],
+        uomIds: [
+          ...uomt.uomIds,
+          unitOfMeasure.id
         ]
       }
     }
@@ -46,7 +50,7 @@ const insertUnitOfMeasure = (
       ...result,
       {
         uom: [unitOfMeasure],
-        uomIds: [unitOfMeasureType.id],
+        uomIds: [unitOfMeasure.id],
         uomt_id: unitOfMeasureType.id,
         uomt_name: unitOfMeasureType.name
       }
