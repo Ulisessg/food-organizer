@@ -8,28 +8,28 @@ import type FormProps from 'd-system/dist/types/components/molecules/Form/Form'
 import { type InputProps } from 'd-system/dist/types/components/atoms/Input/InputProps'
 import Modal from './Modal'
 import { type Props as ModalProps } from 'react-modal'
+import randomId from 'utils/randomId'
 import styled from 'styled-components'
 
 const ModalUpdateTable: FC<ModalUpdateTableProps> = ({
   modalProps,
   dataChanged,
-  formTitle,
   formProps,
   buttonCancellProps,
   buttonConfirmProps,
   onClikConfirmUpdate
 }) => (
     <Modal {...modalProps}>
-      <Form {...formProps} formTitle={formTitle} onSubmit={(ev) => { ev.preventDefault() }}>
-        {dataChanged.map((data) => <Fragment key={data.elementId}>
+      {dataChanged.map((data) => <Fragment key={randomId()}>
+        <Form {...formProps} formTitle={data.formTitle} onSubmit={(ev) => { ev.preventDefault() }}>
           {data.fields.map((field) => <Fragment key={field.fieldName}>
             <InputComponent
               field={field}
               inputProps={field.inputProps}
             />
           </Fragment>)}
-        </Fragment>)}
       </Form>
+    </Fragment>)}
       <ButtonsContainer>
         <Button
           {...buttonConfirmProps}
@@ -78,7 +78,7 @@ const InputComponent: FC<InputComponentProps> = ({ arrowBackProps, inputProps, f
     }
     setDisabeArrowBack(true)
   }
-  return <>
+  return <InputComponentStyles>
     <Input
       {...inputProps}
       data-field-name={field.fieldName}
@@ -96,8 +96,18 @@ const InputComponent: FC<InputComponentProps> = ({ arrowBackProps, inputProps, f
         disabled={disableArrowack}
         elementReturnFocusId={inputProps.id}
       />
-  </>
+  </InputComponentStyles>
 }
+
+const InputComponentStyles = styled.div`
+  display: flex;
+  & button {
+    align-self: center;
+    /** Margin to center it, same as label and input */
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+`
 
 interface InputComponentProps {
   inputProps: InputProps
@@ -107,25 +117,27 @@ interface InputComponentProps {
 
 interface ModalUpdateTableProps {
   modalProps: ModalProps
-  formTitle: string
   formProps?: Omit<typeof FormProps, 'formTitle'>
-  dataChanged: Array<{
-
-    /** Table name in database */
-    dbTable: string
-    tableNameToDisplay: string
-    elementId: number
-
-    /** For each field an input is displayed */
-    fields: Array<{
-      prevValue: string
-      fieldName: string
-      inputProps: InputProps
-    }>
-  }>
+  dataChanged: ModalUpdateTableDataChanged
   buttonConfirmProps?: ButtonProps
   buttonCancellProps?: ButtonProps
   onClikConfirmUpdate: (ev: MouseEvent<HTMLButtonElement>) => void
 }
+
+export type ModalUpdateTableDataChanged = Array<{
+  formTitle: string
+
+  /** Table name in database */
+  dbTable: string
+  tableNameToDisplay: string
+  elementId: number
+
+  /** For each field an input is displayed */
+  fields: Array<{
+    prevValue: string
+    fieldName: string
+    inputProps: InputProps
+  }>
+}>
 
 export default ModalUpdateTable

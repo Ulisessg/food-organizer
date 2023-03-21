@@ -5,11 +5,10 @@ ModalComponent.setAppElement('#__next')
 
 const modalStyles: Styles = {
   content: {
-    alignContent: 'space-around',
+    alignContent: 'space-between',
     borderRadius: '30px',
     display: 'grid',
     gridRowGap: '15px',
-    inset: '15px',
     justifyContent: 'center',
     justifyItems: 'center',
     overflow: 'auto',

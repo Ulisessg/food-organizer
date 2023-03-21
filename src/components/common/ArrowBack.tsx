@@ -86,7 +86,7 @@ const ArrowBackStyles = styled.button<{
   align-content: center;
   justify-items: center;
   padding-bottom: 10px;
-  font-size: 40px;
+  font-size: 50px;
   font-weight: bold;
   background-color: transparent;
   color:  ${({ theme }) => theme.colors.dark2};
