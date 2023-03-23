@@ -77,8 +77,12 @@ export const ModalUpdateTableContextProvider: FC<{ children: ReactNode }> = ({ c
       const inputValueStored: string = safeObjectGet(
         inputsValues,
         key
-      )
-      if (inputValueStored.toLowerCase() === value.toLowerCase()) {
+      ).toLowerCase()
+      const valueToCompare = value.toLowerCase()
+
+      if (valueToCompare === '') return
+
+      if (inputValueStored === valueToCompare) {
         inputsRepeated.push(key)
         inputsRepeated.push(inputName)
       }
