@@ -20,6 +20,7 @@ import type FormProps from 'd-system/dist/types/components/molecules/Form/Form'
 import { type InputProps } from 'd-system/dist/types/components/atoms/Input/InputProps'
 import Modal from './Modal'
 import { type Props as ModalProps } from 'react-modal'
+import RequestResultStyles from './RequestResultStyles'
 import randomId from 'utils/randomId'
 import safeObjectGet from 'utils/safeObjectGet'
 import styled from 'styled-components'
@@ -59,22 +60,24 @@ const ModalUpdateTable: FC<ModalUpdateTableProps> = ({
     </Modal>
 )
 
-const ButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-around;
-
-`
-
 const InputComponent: FC<InputComponentProps> = ({ arrowBackProps, inputProps, field }) => {
   const ModalUpdateTableCtx = useContext(ModalUpdateTableContext)
   const InputRef = useRef<HTMLInputElement>(null)
+  const getAllowRepeatedValue = (input: HTMLInputElement): boolean => {
+    const attribute = input.getAttribute('data-allow-repeated-value')
+    if (attribute === null || attribute === 'false') return false
+    return true
+  }
   const [
     disableArrowack,
     setDisabeArrowBack
   ] = useState<boolean>(true)
   const handleInputChange = (ev: ChangeEvent<HTMLInputElement>): void => {
+    ModalUpdateTableCtx.updateInputValue(
+      inputProps.name,
+      ev.currentTarget.value,
+      getAllowRepeatedValue(ev.currentTarget)
+    )
     if (ev.currentTarget.defaultValue.toLowerCase() === ev.currentTarget.value.toLowerCase()) {
       setDisabeArrowBack(true)
       ModalUpdateTableCtx.updateInputChangedState(
@@ -91,7 +94,7 @@ const InputComponent: FC<InputComponentProps> = ({ arrowBackProps, inputProps, f
       )
     }
   }
-  const resetInput = (_ev: MouseEvent<HTMLButtonElement>): void => {
+  const resetInput = (ev: MouseEvent<HTMLButtonElement>): void => {
     if (InputRef.current !== null) {
       InputRef.current.value = InputRef.current.defaultValue
     }
@@ -101,6 +104,13 @@ const InputComponent: FC<InputComponentProps> = ({ arrowBackProps, inputProps, f
       inputProps.name,
       false
     )
+    ModalUpdateTableCtx.updateInputValue(
+      inputProps.name,
+      field.prevValue,
+
+      getAllowRepeatedValue(ev
+        .currentTarget.parentElement?.querySelector('input') as HTMLInputElement)
+    )
   }
 
   useEffect(
@@ -109,11 +119,15 @@ const InputComponent: FC<InputComponentProps> = ({ arrowBackProps, inputProps, f
         ModalUpdateTableCtx.inputs,
         inputProps.name
       ) === 'undefined') {
-        ModalUpdateTableCtx.addInput(inputProps.name)
+        ModalUpdateTableCtx.addInput(
+          inputProps.name,
+          field.prevValue
+        )
       }
     },
     [
       ModalUpdateTableCtx,
+      field.prevValue,
       inputProps.name
     ]
   )
@@ -125,6 +139,7 @@ const InputComponent: FC<InputComponentProps> = ({ arrowBackProps, inputProps, f
       defaultValue={field.prevValue}
       ref={InputRef}
       onChange={handleInputChange}
+      style={{ ...inputProps.style, textTransform: 'capitalize' }}
     />
       <ArrowBack
         {...arrowBackProps}
@@ -146,25 +161,58 @@ const Buttons: FC<ButtonsProps> = ({
 }) => {
   const ModalUpdateTableCtx = useContext(ModalUpdateTableContext)
 
-  return <ButtonsContainer>
-  <Button
-    {...buttonConfirmProps}
-    colorMessage="continue"
-    text="Confirmar cambios"
-    size="small"
-    type="button"
-    onClick={onClikConfirmUpdate}
-    disabled={!ModalUpdateTableCtx.anyInputChanged}
+  return <>
+  <ValuesAreRepeated />
+  <ButtonsContainer>
+    <Button
+      {...buttonConfirmProps}
+      colorMessage="continue"
+      text="Confirmar cambios"
+      size="small"
+      type="button"
+      onClick={onClikConfirmUpdate}
+      disabled={
+        !ModalUpdateTableCtx.anyInputChanged ||
+
+        /** If all inputs can repeat values the length will never change */
+        ModalUpdateTableCtx.inputsValuesRepeated.length >= 1 ||
+        ModalUpdateTableCtx.anyInputIsEmpty
+      }
     />
-  <Button
-    {...buttonCancellProps}
-    colorMessage="cancel"
-    text="Cancelar"
-    size="small"
-    type="button"
-    onClick={modalProps.onRequestClose}
+    <Button
+      {...buttonCancellProps}
+      colorMessage="cancel"
+      text="Cancelar"
+      size="small"
+      type="button"
+      onClick={modalProps.onRequestClose}
     />
-</ButtonsContainer>
+  </ButtonsContainer>
+</>
+}
+
+const ValuesAreRepeated: FC = () => {
+  const ModalUpdateTableCtx = useContext(ModalUpdateTableContext)
+  return <InputsRepeatedContainer>
+  <RequestResultStyles
+      hidden={ModalUpdateTableCtx.inputsValuesRepeated.length === 0}
+      isError={true}
+    >
+      <p style={{ color: 'black' }}
+      hidden={ModalUpdateTableCtx.inputsValuesRepeated.length === 0}
+      >Los siguientes valores están repetidos:</p>
+      {ModalUpdateTableCtx.inputsValuesRepeated.map((inputNameAttibute) => {
+        const input: HTMLInputElement = document
+          .querySelector(`input[name="${inputNameAttibute}"]`) as HTMLInputElement
+        const inputLabelText = input.previousSibling?.textContent
+        return <Fragment key={randomId()}>
+          <p style={{ textTransform: 'capitalize' }}>
+            <strong style={{ color: 'black' }}>{inputLabelText}</strong> : {input.value}
+          </p>
+        </Fragment>
+      })}
+    </RequestResultStyles>
+</InputsRepeatedContainer>
 }
 
 const InputComponentStyles = styled.div`
@@ -177,8 +225,30 @@ const InputComponentStyles = styled.div`
   }
 `
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+`
+
+const InputsRepeatedContainer = styled.div`
+  margin-bottom: 40px;
+  & span {
+    display: grid;
+    justify-content: center;
+    align-content: space-around;
+    height: 100%;
+    padding: 10px;
+    margin: 10px;
+    & > p {
+      margin-bottom: 10px;
+    }
+  }
+`
+
 interface InputComponentProps {
-  inputProps: InputProps
+  inputProps: TIputProps
   arrowBackProps?: Omit<ArrowBackProps, 'title'>
   field: Omit<ModalUpdateTableProps['dataChanged'][0]['fields'][0], 'inputProps' | 'arrowbackProps'>
 }
@@ -204,9 +274,19 @@ export type ModalUpdateTableDataChanged = Array<{
   fields: Array<{
     prevValue: string
     fieldName: string
-    inputProps: InputProps
+    inputProps: TIputProps
   }>
 }>
+
+interface TIputProps extends InputProps {
+
+  /**
+   * If the value is unique in database indicates when user type a repeated value,
+   *  if true this consider all inputs in modal
+   */
+  allowRepeatedValue: boolean
+}
+
 interface ButtonsProps extends Pick<ModalUpdateTableProps,
 'onClikConfirmUpdate' | 'buttonCancellProps' | 'buttonConfirmProps' | 'modalProps'> {
 

@@ -60,6 +60,7 @@ const Rows: FC = () => {
           {
             fieldName: 'name',
             inputProps: {
+              allowRepeatedValue: false,
               id: unitOfMeasureTypeId,
               label: 'Tipo de unidad de medida',
               name: unitOfMeasureTypeId
@@ -78,6 +79,7 @@ const Rows: FC = () => {
           {
             fieldName: 'name',
             inputProps: {
+              allowRepeatedValue: false,
               id: randomId(`${uom.id}`),
               label: 'Nombre de la unidad de medida',
               name: randomId(`${uom.id}`)
@@ -89,6 +91,7 @@ const Rows: FC = () => {
           {
             fieldName: 'abbreviation',
             inputProps: {
+              allowRepeatedValue: false,
               id: randomId(`${uom.id}`),
               label: 'Abreviación de la unidad de medida',
               name: randomId(`${uom.id}`)
