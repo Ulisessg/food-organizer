@@ -1,14 +1,27 @@
 /* eslint-disable max-lines-per-function */
 import ArrowBack, { type ArrowBackProps } from './ArrowBack'
 import { Button, Form, Input } from 'd-system'
+import {
+  ModalUpdateTableContext,
+  ModalUpdateTableContextProvider
+} from 'context/ModalUpdateTableContext'
 import React,
-{ type ChangeEvent, type FC, Fragment, type MouseEvent, useRef, useState } from 'react'
+{
+  type ChangeEvent,
+  type FC, Fragment,
+  type MouseEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import { type ButtonProps } from 'd-system/dist/types/components/atoms/Button'
 import type FormProps from 'd-system/dist/types/components/molecules/Form/Form'
 import { type InputProps } from 'd-system/dist/types/components/atoms/Input/InputProps'
 import Modal from './Modal'
 import { type Props as ModalProps } from 'react-modal'
 import randomId from 'utils/randomId'
+import safeObjectGet from 'utils/safeObjectGet'
 import styled from 'styled-components'
 
 const ModalUpdateTable: FC<ModalUpdateTableProps> = ({
@@ -20,34 +33,29 @@ const ModalUpdateTable: FC<ModalUpdateTableProps> = ({
   onClikConfirmUpdate
 }) => (
     <Modal {...modalProps}>
-      {dataChanged.map((data) => <Fragment key={randomId()}>
-        <Form {...formProps} formTitle={data.formTitle} onSubmit={(ev) => { ev.preventDefault() }}>
-          {data.fields.map((field) => <Fragment key={field.fieldName}>
-            <InputComponent
-              field={field}
-              inputProps={field.inputProps}
-            />
-          </Fragment>)}
-      </Form>
-    </Fragment>)}
-      <ButtonsContainer>
-        <Button
-          {...buttonConfirmProps}
-          colorMessage="continue"
-          text="Confirmar"
-          size="small"
-          type="button"
-          onClick={onClikConfirmUpdate}
+      <ModalUpdateTableContextProvider>
+        {dataChanged.map((data) => <Fragment key={randomId()}>
+          <Form
+            {...formProps}
+            formTitle={data.formTitle}
+            onSubmit={(ev) => { ev.preventDefault() }}
+          >
+            {data.fields.map((field) => <Fragment key={field.fieldName}>
+              <InputComponent
+                field={field}
+                inputProps={field.inputProps}
+              />
+            </Fragment>)
+            }
+          </Form>
+        </Fragment>)}
+        <Buttons
+          modalProps={modalProps}
+          onClikConfirmUpdate={onClikConfirmUpdate}
+          buttonCancellProps={buttonCancellProps}
+          buttonConfirmProps={buttonConfirmProps}
         />
-        <Button
-          {...buttonCancellProps}
-          colorMessage="cancel"
-          text="Cancelar"
-          size="small"
-          type="button"
-          onClick={modalProps.onRequestClose}
-        />
-      </ButtonsContainer>
+      </ModalUpdateTableContextProvider>
     </Modal>
 )
 
@@ -60,16 +68,27 @@ const ButtonsContainer = styled.div`
 `
 
 const InputComponent: FC<InputComponentProps> = ({ arrowBackProps, inputProps, field }) => {
+  const ModalUpdateTableCtx = useContext(ModalUpdateTableContext)
   const InputRef = useRef<HTMLInputElement>(null)
   const [
     disableArrowack,
     setDisabeArrowBack
   ] = useState<boolean>(true)
   const handleInputChange = (ev: ChangeEvent<HTMLInputElement>): void => {
-    if (ev.currentTarget.defaultValue === ev.currentTarget.value) {
+    if (ev.currentTarget.defaultValue.toLowerCase() === ev.currentTarget.value.toLowerCase()) {
       setDisabeArrowBack(true)
-    } else if (ev.currentTarget.defaultValue !== ev.currentTarget.value) {
+      ModalUpdateTableCtx.updateInputChangedState(
+        inputProps.name,
+        false
+      )
+    } else if (
+      ev.currentTarget.defaultValue.toLowerCase() !== ev.currentTarget.value.toLowerCase()) {
       setDisabeArrowBack(false)
+
+      ModalUpdateTableCtx.updateInputChangedState(
+        inputProps.name,
+        true
+      )
     }
   }
   const resetInput = (_ev: MouseEvent<HTMLButtonElement>): void => {
@@ -77,7 +96,27 @@ const InputComponent: FC<InputComponentProps> = ({ arrowBackProps, inputProps, f
       InputRef.current.value = InputRef.current.defaultValue
     }
     setDisabeArrowBack(true)
+
+    ModalUpdateTableCtx.updateInputChangedState(
+      inputProps.name,
+      false
+    )
   }
+
+  useEffect(
+    () => {
+      if (typeof safeObjectGet(
+        ModalUpdateTableCtx.inputs,
+        inputProps.name
+      ) === 'undefined') {
+        ModalUpdateTableCtx.addInput(inputProps.name)
+      }
+    },
+    [
+      ModalUpdateTableCtx,
+      inputProps.name
+    ]
+  )
   return <InputComponentStyles>
     <Input
       {...inputProps}
@@ -97,6 +136,35 @@ const InputComponent: FC<InputComponentProps> = ({ arrowBackProps, inputProps, f
         elementReturnFocusId={inputProps.id}
       />
   </InputComponentStyles>
+}
+
+const Buttons: FC<ButtonsProps> = ({
+  modalProps,
+  onClikConfirmUpdate,
+  buttonCancellProps,
+  buttonConfirmProps
+}) => {
+  const ModalUpdateTableCtx = useContext(ModalUpdateTableContext)
+
+  return <ButtonsContainer>
+  <Button
+    {...buttonConfirmProps}
+    colorMessage="continue"
+    text="Confirmar cambios"
+    size="small"
+    type="button"
+    onClick={onClikConfirmUpdate}
+    disabled={!ModalUpdateTableCtx.anyInputChanged}
+    />
+  <Button
+    {...buttonCancellProps}
+    colorMessage="cancel"
+    text="Cancelar"
+    size="small"
+    type="button"
+    onClick={modalProps.onRequestClose}
+    />
+</ButtonsContainer>
 }
 
 const InputComponentStyles = styled.div`
@@ -139,5 +207,9 @@ export type ModalUpdateTableDataChanged = Array<{
     inputProps: InputProps
   }>
 }>
+interface ButtonsProps extends Pick<ModalUpdateTableProps,
+'onClikConfirmUpdate' | 'buttonCancellProps' | 'buttonConfirmProps' | 'modalProps'> {
+
+}
 
 export default ModalUpdateTable

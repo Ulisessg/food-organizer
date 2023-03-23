@@ -48,7 +48,6 @@ const Rows: FC = () => {
         ] as const
       )
     }))
-    console.log(unitsOfMeasure)
 
     setModalData([
       {
