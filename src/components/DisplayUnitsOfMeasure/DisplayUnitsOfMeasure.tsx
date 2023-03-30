@@ -1,6 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { type FC } from 'react'
 import { Table, Th } from 'd-system'
+import { EditTableRowContextProvider } from 'context/EditTableRowContext'
 import { ModalContextProvider } from 'context/ModalContext'
 import Rows from './Rows'
 import TableContainer from 'components/common/TableContainer'
@@ -25,7 +26,10 @@ const DisplayUnitsOfMeasure: FC = () => <ModalContextProvider>
       </tr>
     </thead>
     <tbody>
+    <EditTableRowContextProvider>
       <Rows />
+    </EditTableRowContextProvider>
+
     </tbody>
     </Table>
   </TableContainer>

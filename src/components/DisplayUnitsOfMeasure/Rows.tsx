@@ -1,7 +1,7 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
 import ModalUpdateTable,
-{ type ModalUpdateTableDataChanged } from 'components/common/ModalUpdateTable'
+{ type ModalUpdateTableDataChanged } from '../common/ModalUpdateTable/ModalUpdateTable'
 import React, { type FC, Fragment, type MouseEvent, useContext, useState } from 'react'
 import { RowNoSpan, RowWithSpan } from './Row'
 import { EditTableRowContextProvider } from 'context/EditTableRowContext'
@@ -58,6 +58,7 @@ const Rows: FC = () => {
         ),
         fields: [
           {
+            dbTable: 'units_of_measure',
             fieldName: 'name',
             inputProps: {
               allowRepeatedValue: false,
@@ -77,6 +78,7 @@ const Rows: FC = () => {
 
         fields: [
           {
+            dbTable: '',
             fieldName: 'name',
             inputProps: {
               allowRepeatedValue: false,
@@ -89,6 +91,7 @@ const Rows: FC = () => {
             prevValue: uom.name
           },
           {
+            dbTable: '',
             fieldName: 'abbreviation',
             inputProps: {
               allowRepeatedValue: false,
@@ -108,19 +111,24 @@ const Rows: FC = () => {
     modalContext.openModal()
   }
   const updateData = (_ev: MouseEvent<HTMLButtonElement>): void => {
-    // Show loading spinner
-    modalContext.closeModal()
+    console.log(modalData)
+
+    /*
+     * Show loading spinner
+     * modalContext.closeModal()
+     */
   }
 
   return <>
   <ModalUpdateTable
     dataChanged={modalData}
     modalProps={{
+      id: 'modal_update_table',
       isOpen: modalContext.modalIsOpen,
       onRequestClose: modalContext.closeModal,
       shouldReturnFocusAfterClose: true
     }}
-  onClikConfirmUpdate={updateData}
+    onClikConfirmUpdate={updateData}
   />
   {unitsOfMeasureData.uomGroupedByType.map((uomt) => <Fragment key={uomt.uomt_id}>
       <EditTableRowContextProvider>

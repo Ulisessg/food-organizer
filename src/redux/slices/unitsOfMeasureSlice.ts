@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-statements */
 /* eslint-disable camelcase */
 import {
@@ -6,13 +7,14 @@ import {
 } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import {
   type CreateUomT,
-  type GetUOMT
+  type GetUOMT,
+  type UpdateUomT
 } from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { type units_of_measure, type units_of_measure_types } from '@prisma/client'
 import axios from 'axios'
 import insertUnitOfMeasure from 'utils/insertUnitOfMeasure'
 import { type response } from 'controllers/response'
-import { type units_of_measure } from '@prisma/client'
 
 const initialState: TUomState = {
   dataIsLoading: false,
@@ -28,7 +30,11 @@ const initialState: TUomState = {
   requestEnd: false,
   unitsOfMeasureType: [],
   uom: [],
-  uomGroupedByType: []
+  uomGroupedByType: [],
+  updateUomtEnd: false,
+  updateUomtError: false,
+  updateUomtIsLoading: false,
+  updateUomtSuccess: false
 }
 
 /**
@@ -75,6 +81,22 @@ createAsyncThunk<GetUOMT[0], CreateUomT>(
       thunkApi.rejectWithValue(requestResult.data.data)
     }
     return requestResult.data.data
+  }
+)
+
+// Update unit of measure type thunk
+
+export const updateUomtThunk = createAsyncThunk<units_of_measure_types, UpdateUomT>(
+  'uomt/update',
+  async (uomtData, thunkApi) => {
+    const updateResult = await axios.patch<response<units_of_measure_types>>(
+      '/api/uomt',
+      uomtData
+    )
+    if (updateResult.data.error) {
+      return thunkApi.rejectWithValue(updateResult.data.data)
+    }
+    return updateResult.data.data
   }
 )
 
@@ -252,6 +274,50 @@ const UnitsOfMeasureSlice = createSlice({
         state.postUomSuccess = false
       }
     )
+
+    // Update unit of measure type
+    builder.addCase(
+      updateUomtThunk.pending,
+      (state) => {
+        state.updateUomtIsLoading = true
+        state.updateUomtEnd = false
+        state.updateUomtError = false
+        state.updateUomtSuccess = false
+      }
+    )
+    builder.addCase(
+      updateUomtThunk.rejected,
+      (state) => {
+        state.updateUomtIsLoading = false
+        state.updateUomtEnd = true
+        state.updateUomtError = true
+        state.updateUomtSuccess = false
+      }
+    )
+    builder.addCase(
+      updateUomtThunk.fulfilled,
+      (state, action) => {
+        state.updateUomtIsLoading = false
+        state.updateUomtEnd = true
+        state.updateUomtError = false
+        state.updateUomtSuccess = true
+
+        const unitsOfmeasureType: typeof state.unitsOfMeasureType = []
+        state.unitsOfMeasureType.some((unitOfMeasureType) => {
+          if (unitOfMeasureType.id === action.payload.id) {
+            unitsOfmeasureType.push({
+              ...unitOfMeasureType,
+              name: action.payload.name
+            })
+            return true
+          }
+          unitsOfmeasureType.push(unitOfMeasureType)
+          return false
+        })
+
+        state.unitsOfMeasureType = [...unitsOfmeasureType]
+      }
+    )
   }
 })
 
@@ -274,4 +340,10 @@ interface TUomState {
   postUomtEnd: boolean
   postUomtError: boolean
   postUomtSuccess: boolean
+
+  // Update uomt
+  updateUomtIsLoading: boolean
+  updateUomtEnd: boolean
+  updateUomtError: boolean
+  updateUomtSuccess: boolean
 }

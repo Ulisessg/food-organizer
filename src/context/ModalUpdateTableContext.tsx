@@ -1,19 +1,31 @@
+/* eslint-disable max-lines */
+/* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
-import { type FC, type ReactNode, createContext, useState } from 'react'
+import {
+  type ComponentPropsWithoutRef,
+  type FC,
+  Fragment,
+  type ReactNode,
+  createContext,
+  useContext,
+  useState
+} from 'react'
+import { Button } from 'd-system'
+import { type ModalUpdateTableProps } from 'components/common/ModalUpdateTable/types'
+import RequestResultStyles from 'components/common/RequestResultStyles'
+import randomId from 'utils/randomId'
 import safeObjectGet from 'utils/safeObjectGet'
+import styled from 'styled-components'
 
 const initialState: ModalUpdateTableContextState = {
   addInput: () => {
     //
   },
-  anyInputChanged: false,
   anyInputIsEmpty: false,
-  inputs: {},
+  inputsChanged: [],
+  inputsEmpty: [],
+  inputsRepeated: [],
   inputsValues: {},
-  inputsValuesRepeated: [],
-  updateInputChangedState: () => {
-    //
-  },
   updateInputValue: () => {
     //
   }
@@ -21,114 +33,251 @@ const initialState: ModalUpdateTableContextState = {
 
 export const ModalUpdateTableContext = createContext(initialState)
 
-export const ModalUpdateTableContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const ModalUpdateTableContextProvider: FC<ProviderProps> = ({
+  children,
+  buttonCancellProps,
+  buttonConfirmProps,
+  modalProps,
+  onClikConfirmUpdate
+
+}) => {
   const [
     anyInputIsEmpty,
     setAnyInputIsEmpty
   ] = useState<boolean>(false)
   const [
-    anyInputChanged,
-    setAnyInputChanged
-  ] = useState<boolean>(false)
+    inputsChanged,
+    setInputsChanged
+  ] = useState<string[]>([])
+  const [
+    inputsEmpty,
+    setInputsEmpty
+  ] = useState<HTMLInputElement[]>([])
+  const [
+    inputsRepeated,
+    setInputsRepeated
+  ] = useState<HTMLInputElement[]>([])
   const [
     inputsValues,
     setInputsValues
-  ] = useState<Record<string, string>>({})
-
-  const [
-    inputsValuesRepeated,
-    setInputsValuesRepeated
-  ] = useState<string[]>([])
-
-  const [
-    inputsCahangedStatus,
-    setInputsCahangedStatus
-  ] = useState<ModalUpdateTableContextState['inputs']>({})
-
-  const addInput: ModalUpdateTableContextState['addInput'] = (inputName, inputValue) => {
-    setInputsCahangedStatus((prev) => ({ ...prev, [inputName]: false }))
-    setInputsValues((prev) => ({ ...prev, [inputName]: inputValue }))
-  }
+  ] = useState<ModalUpdateTableContextState['inputsValues']>({})
 
   const updateInputValue:
-  ModalUpdateTableContextState['updateInputValue'] =
-  (inputName, value, allowRepeatedValue = true) => {
-    const inputsValuesKeys = Object.keys(inputsValues)
-    setInputsValues((prev) => ({ ...prev, [inputName]: String(value) }))
-    if (value === '') {
-      setAnyInputIsEmpty(true)
-    } else {
-      setAnyInputIsEmpty(inputsValuesKeys.some((key) => {
-        if (key === inputName) return false
+  ModalUpdateTableContextState['updateInputValue'] = (inputName, newValue) => {
+    const newValueLowerCase = newValue.toLowerCase()
+    const inputStored = safeObjectGet(
+      inputsValues,
+      inputName
+    )
 
-        /** Stored value from changed input could give a false positive  */
+    const modal: HTMLDivElement = document.getElementById('modal_update_table') as HTMLDivElement
+    const inputHTMLElement: HTMLInputElement = modal
+      .querySelector(`input[name="${inputName}"]`) as HTMLInputElement
+    const inputStoredIndexOfChanged = inputsChanged.indexOf(inputName)
+    const inputStoredIndexOfRepeated = inputsRepeated.indexOf(inputHTMLElement)
 
-        return safeObjectGet(
-          inputsValues,
-          key
-        ) === ''
-      }))
-    }
-
-    if (allowRepeatedValue === true) return
-    const inputsRepeated: string[] = []
-
-    inputsValuesKeys.forEach((key) => {
-      const inputValueStored: string = safeObjectGet(
-        inputsValues,
-        key
-      ).toLowerCase()
-      const valueToCompare = value.toLowerCase()
-
-      if (valueToCompare === '') return
-
-      if (inputValueStored === valueToCompare) {
-        inputsRepeated.push(key)
-        inputsRepeated.push(inputName)
+    setInputsValues((prev) => ({
+      ...prev,
+      [inputName]: {
+        ...inputStored,
+        value: newValueLowerCase
       }
-    })
-    setInputsValuesRepeated(inputsRepeated)
-  }
+    }))
 
-  const updateInputChangedState:
-  ModalUpdateTableContextState['updateInputChangedState'] = (inputName, isChanged) => {
-    setInputsCahangedStatus((prev) => ({ ...prev, [inputName]: Boolean(isChanged) }))
-    if (isChanged) {
-      setAnyInputChanged(true)
-    } else {
-      setAnyInputChanged(Object.keys(inputsCahangedStatus).some((key) => {
-        if (inputName === key) return false
-        return safeObjectGet(
-          inputsCahangedStatus,
-          key
+    /** Is imposible the new value equals stored initial value in first change */
+    /** Initial value is setted as lowercase in 'add input' */
+    if (newValueLowerCase === inputStored.initialValue.toLowerCase()) {
+      setInputsRepeated((prev) => ([
+        ...prev.splice(
+          inputStoredIndexOfRepeated,
+          1
         )
-      }))
+      ]))
+      setInputsChanged((prev) => [
+        ...prev.splice(
+          inputStoredIndexOfChanged,
+          1
+        )
+      ])
+    }
+
+    if (inputStoredIndexOfChanged === -1) {
+      setInputsChanged((prev) => ([
+        ...prev,
+        inputName
+      ]))
+    }
+
+    if (newValue === '') {
+      setAnyInputIsEmpty(true)
+      return
+    }
+    const inputsEmptyResult: NodeListOf<HTMLInputElement> = modal
+      .querySelectorAll(`input[value=""]:not([name="${inputName}"])`)
+
+    setInputsEmpty([...inputsEmptyResult])
+
+    if (inputsEmptyResult.length === 0) {
+      setAnyInputIsEmpty(false)
+    } else {
+      setAnyInputIsEmpty(true)
+    }
+    if (inputStored.allowRepeatedValues) return
+
+    const inputsWithValueRepeated: NodeListOf<HTMLInputElement> =
+    modal
+      // eslint-disable-next-line max-len
+      .querySelectorAll(`input[value="${newValue}" i]:not([name="${inputName}"])`)
+
+    if (inputsWithValueRepeated.length >= 1) {
+      setInputsRepeated([
+        ...inputsWithValueRepeated,
+        inputHTMLElement
+      ])
     }
   }
 
+  const addInput:
+  ModalUpdateTableContextState['addInput'] = (inputName, allowRepeatedValues, initialValue) => {
+    setInputsValues((prev) => ({
+      ...prev,
+      [inputName]: {
+        allowRepeatedValues,
+        initialValue: initialValue.toLowerCase(),
+        inputName,
+        value: initialValue.toLowerCase()
+      }
+    }))
+  }
   return <ModalUpdateTableContext.Provider value={{
     addInput,
-    anyInputChanged,
     anyInputIsEmpty,
-    inputs: inputsCahangedStatus,
+    inputsChanged,
+    inputsEmpty,
+    inputsRepeated,
     inputsValues,
-    inputsValuesRepeated,
-    updateInputChangedState,
     updateInputValue
   }}>
     {
       children
     }
+    <Buttons
+      modalProps={modalProps}
+      onClikConfirmUpdate={onClikConfirmUpdate}
+      buttonCancellProps={buttonCancellProps}
+      buttonConfirmProps={buttonConfirmProps}
+        />
   </ModalUpdateTableContext.Provider>
 }
 
+const Buttons: FC<ButtonsProps> = ({
+  modalProps,
+  onClikConfirmUpdate,
+  buttonCancellProps,
+  buttonConfirmProps
+}) => {
+  const ModalUpdateTableCtx = useContext(ModalUpdateTableContext)
+
+  return <>
+  <ValuesAreRepeated />
+  <ButtonsContainer>
+    <Button
+      {...buttonConfirmProps}
+      colorMessage="continue"
+      text="Confirmar cambios"
+      size="small"
+      type="button"
+      onClick={onClikConfirmUpdate}
+      disabled={
+        ModalUpdateTableCtx.anyInputIsEmpty ||
+        ModalUpdateTableCtx.inputsChanged.length === 0 ||
+        ModalUpdateTableCtx.inputsRepeated.length >= 1
+      }
+    />
+    <Button
+      {...buttonCancellProps}
+      colorMessage="cancel"
+      text="Cancelar"
+      size="small"
+      type="button"
+      onClick={modalProps.onRequestClose}
+    />
+  </ButtonsContainer>
+</>
+}
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+`
+
+const ValuesAreRepeated: FC = () => {
+  const ModalUpdateTableCtx = useContext(ModalUpdateTableContext)
+  return <InputsRepeatedContainer>
+  <RequestResultStyles
+      hidden={ModalUpdateTableCtx.inputsRepeated.length === 0}
+      isError={true}
+    >
+      <p style={{ color: 'black' }}
+      hidden={ModalUpdateTableCtx.inputsRepeated.length === 0}
+      >Los siguientes valores están repetidos:</p>
+      {ModalUpdateTableCtx.inputsRepeated.map((input) => {
+        const inputLabelText = input.previousSibling?.textContent
+        return <Fragment key={randomId()}>
+          <p style={{ textTransform: 'capitalize' }}>
+            <strong style={{ color: 'black' }}>{inputLabelText}</strong> : {input.value}
+          </p>
+        </Fragment>
+      })}
+    </RequestResultStyles>
+</InputsRepeatedContainer>
+}
+
+const InputsRepeatedContainer = styled.div`
+  margin-bottom: 40px;
+  & span {
+    display: grid;
+    justify-content: center;
+    align-content: space-around;
+    height: 100%;
+    padding: 10px;
+    margin: 10px;
+    & > p {
+      margin-bottom: 10px;
+    }
+  }
+`
+
+interface ButtonsProps extends Pick<ModalUpdateTableProps,
+'onClikConfirmUpdate' | 'buttonCancellProps' | 'buttonConfirmProps' | 'modalProps'> {
+}
+
 interface ModalUpdateTableContextState {
-  addInput: (inputName: string, inputValue: string) => void
-  updateInputChangedState: (inputName: string, isChanged: boolean) => void
-  inputs: Record<string, boolean>
-  anyInputChanged: boolean
+  inputsValues: Record<string, {
+    value: string
+    allowRepeatedValues: boolean
+    initialValue: string
+    inputName: string
+  }>
+  updateInputValue: (inputName: string, newValue: string) => void
+  addInput: (inputName: string, allowRepeatedValues: boolean, initialValue: string,) => void
+
+  /** Inputs 'name' attribute */
+  inputsChanged: string[]
+
+  /** Inputs html elements  */
+  inputsRepeated: HTMLInputElement[]
+
   anyInputIsEmpty: boolean
-  inputsValues: Record<string, string>
-  updateInputValue: (inputName: string, value: string, allowRepeatedValue: boolean | null) => void
-  inputsValuesRepeated: string[]
+  inputsEmpty: HTMLInputElement[]
+}
+
+interface ProviderProps extends ComponentPropsWithoutRef<'div'> {
+  modalProps: ModalUpdateTableProps['modalProps']
+  onClikConfirmUpdate: ModalUpdateTableProps['onClikConfirmUpdate']
+  buttonCancellProps: ModalUpdateTableProps['buttonCancellProps']
+  buttonConfirmProps: ModalUpdateTableProps['buttonConfirmProps']
+  children: ReactNode
 }
