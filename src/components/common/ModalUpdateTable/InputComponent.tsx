@@ -28,34 +28,13 @@ const InputComponent: FC<InputComponentProps> = ({ arrowBackProps, inputProps, f
     )
     if (ev.currentTarget.defaultValue.toLowerCase() === ev.currentTarget.value.toLowerCase()) {
       setDisabeArrowBack(true)
-
-      /*
-       * ModalUpdateTableCtx.updateInputChangedState(
-       *   inputProps.name,
-       *   false
-       * )
-       */
     } else if (
       ev.currentTarget.defaultValue.toLowerCase() !== ev.currentTarget.value.toLowerCase()) {
       setDisabeArrowBack(false)
-
-      /*
-       * ModalUpdateTableCtx.updateInputChangedState(
-       *   inputProps.name,
-       *   true
-       * )
-       */
     }
   }
   const resetInput = (ev: MouseEvent<HTMLButtonElement>): void => {
     setDisabeArrowBack(true)
-
-    /*
-     * ModalUpdateTableCtx.updateInputChangedState(
-     *   inputProps.name,
-     *   false
-     * )
-     */
     ModalUpdateTableCtx.updateInputValue(
       inputProps.name,
       field.prevValue
