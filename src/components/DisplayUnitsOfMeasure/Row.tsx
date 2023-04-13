@@ -9,7 +9,9 @@ export const RowWithSpan: FC<RowWithSpanProps> = ({
   uomName,
   uomtId, uomtName,
   openModal,
-  uomIds
+  uomIds,
+  elementIndex,
+  groupingElementIndex
 }) => <tr
     data-uom-id={uomId}
     data-uomt-id={uomtId}
@@ -19,6 +21,7 @@ export const RowWithSpan: FC<RowWithSpanProps> = ({
       data-db-table="units_of_measure_type"
       data-element-id={uomtId}
       data-db-field="name"
+      data-grouping-element-index={groupingElementIndex}
     >
       {uomtName}
     </Td>
@@ -27,6 +30,8 @@ export const RowWithSpan: FC<RowWithSpanProps> = ({
     data-db-table="units_of_measure"
     data-element-id={uomId}
     data-db-field="name"
+    data-element-index={elementIndex}
+    data-grouping-element-index={groupingElementIndex}
   >
     {uomName}
   </Td>
@@ -34,6 +39,8 @@ export const RowWithSpan: FC<RowWithSpanProps> = ({
     data-db-table="units_of_measure"
     data-element-id={uomId}
     data-db-field="abbreviation"
+    data-grouping-element-index={groupingElementIndex}
+    data-element-index={elementIndex}
   >
     {uomAbbreviation}
   </Td>
@@ -44,20 +51,31 @@ export const RowWithSpan: FC<RowWithSpanProps> = ({
     data-uom-ids={uomIds.toString()}
     data-uomt-id={uomtId}
   >
-    <Button colorMessage="info" size="small" text="Editar" type="button" onClick={openModal} />
+    <Button
+      colorMessage="info"
+      size="small"
+      text="Editar"
+      type="button"
+      data-grouping-element-index={groupingElementIndex}
+      onClick={openModal}
+    />
   </Td>
 </tr>
 
 export const RowNoSpan: FC<RowNoSpanProps> = ({
   uomAbbreviation,
   uomName,
-  uomId
+  uomId,
+  elementIndex,
+  groupingElementIndex
 }) => <>
   <tr>
   <Td
     data-db-table="units_of_measure"
     data-element-id={uomId}
     data-db-field="name"
+    data-grouping-element-index={groupingElementIndex}
+    data-element-index={elementIndex}
   >
     {uomName}
   </Td>
@@ -65,6 +83,8 @@ export const RowNoSpan: FC<RowNoSpanProps> = ({
     data-db-table="units_of_measure"
     data-element-id={uomId}
     data-db-field="abbreviation"
+    data-grouping-element-index={groupingElementIndex}
+    data-element-index={elementIndex}
   >
     {uomAbbreviation}
   </Td>
@@ -79,13 +99,14 @@ interface RowWithSpanProps extends RowCommonProps {
 }
 
 interface RowNoSpanProps extends RowCommonProps {
-
 }
 
 /** Fileds on units of measure table on database */
 export type TDataFields = 'name' | 'abbreviation'
 
 interface RowCommonProps {
+  elementIndex: number
+  groupingElementIndex: number
 
   /** "uomtName" used for consistency in "useDisplayUOMRows" hook */
   uomtName: string

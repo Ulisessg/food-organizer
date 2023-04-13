@@ -12,7 +12,7 @@ import dayjsWeekDayPlugin from 'dayjs/plugin/weekday'
 import { getFoodsDataThunk } from 'redux/slices/foodSlice'
 import { getIngredientsThunk } from 'redux/slices/ingredientsSlice'
 import { getPurchasePlacesThunk } from 'redux/slices/purchasePlacesSlice'
-import { getUomDataThunk } from 'redux/slices/unitsOfMeasureSlice'
+import { getUomDataThunk } from 'redux/slices/unitsOfMeasureSlice/thunks'
 
 // eslint-disable-next-line sort-imports
 import '../styles/pages/GlobalStyles.css'

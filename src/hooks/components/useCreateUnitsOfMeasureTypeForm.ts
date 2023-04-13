@@ -6,7 +6,7 @@ import {
 import {
   createUnitOfMeasureTypeThunk,
   restartCreateUomtPostStatusThunk
-} from 'redux/slices/unitsOfMeasureSlice'
+} from 'redux/slices/unitsOfMeasureSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
 import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import transformPostData from 'utils/transformPostData'

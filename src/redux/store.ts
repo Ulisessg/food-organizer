@@ -8,7 +8,7 @@ import purchasePlacesSlice from './slices/purchasePlacesSlice'
 import unitsOfMeasureSlice from './slices/unitsOfMeasureSlice'
 import weekSlice from './slices/weekSlice'
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     [HYDRATE]: (state: any, action) => ({ ...state, ...action.payload }),
     foods: foodSlice,

@@ -1,139 +1,130 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
-import ModalUpdateTable,
-{ type ModalUpdateTableDataChanged } from '../common/ModalUpdateTable/ModalUpdateTable'
-import React, { type FC, Fragment, type MouseEvent, useContext, useState } from 'react'
+import React, {
+  type FC,
+  Fragment,
+  type MouseEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import { RowNoSpan, RowWithSpan } from './Row'
+import {
+  updateUnitOfMeasureThunk,
+  updateUomtThunk
+} from 'redux/slices/unitsOfMeasureSlice/thunks'
 import { EditTableRowContextProvider } from 'context/EditTableRowContext'
+import InputComponent from 'components/common/ModalUpdateTable/UpdateTableInputComponent'
 import { ModalContext } from 'context/ModalContext'
+import ModalUpdateTable from '../common/ModalUpdateTable/ModalUpdateTable'
 import { type RootState } from 'redux/store'
-import { getDataFromTable } from 'utils/getDataFromTable'
+import { UpdateTableInputsContextProvider } from 'context/UpdateTableInputsContext'
 import randomId from 'utils/randomId'
 import { useSelector } from 'react-redux'
 
 const Rows: FC = () => {
+  const [
+    uomtIndex,
+    setUomtIndex
+  ] = useState<number>(0)
+  const modalRef = useRef<HTMLDivElement>()
   const modalContext = useContext(ModalContext)
   const unitsOfMeasureData = useSelector((state: RootState) => state.unitsOfMeasure)
-  const [
-    modalData,
-    setModalData
-  ] = useState<ModalUpdateTableDataChanged>([])
+
   const getDataFromTableToModify = (ev: MouseEvent<HTMLButtonElement>): void => {
-    const button = ev.currentTarget
-    const table = ev.currentTarget.parentElement
-      ?.parentElement?.parentElement?.parentElement as HTMLTableElement
-
-    const unitsOfMeasureIds = button.parentElement?.getAttribute('data-uom-ids') as string
-    const unitOfMeasureTypeId = button.parentElement?.getAttribute('data-uomt-id') as string
-
-    const unitOfMeasureType = getDataFromTable(
-      table,
-      'units_of_measure_type',
-      unitOfMeasureTypeId,
-      ['name'] as const
-    )
-
-    const unitsOfMeasure = unitsOfMeasureIds.split(',').map((id) => ({
-      id: parseInt(
-        id,
-        10
-      ),
-      ...getDataFromTable(
-        table,
-        'units_of_measure',
-        id,
-        [
-          'name',
-          'abbreviation'
-        ] as const
-      )
-    }))
-
-    setModalData([
-      {
-        dbTable: 'units_of_measure',
-        elementId: parseInt(
-          unitOfMeasureTypeId,
-          10
-        ),
-        fields: [
-          {
-            dbTable: 'units_of_measure',
-            fieldName: 'name',
-            inputProps: {
-              allowRepeatedValue: false,
-              id: unitOfMeasureTypeId,
-              label: 'Tipo de unidad de medida',
-              name: unitOfMeasureTypeId
-            },
-            prevValue: unitOfMeasureType.name
-          }
-        ],
-        formTitle: 'Actualizar el tipo de unidad de medida',
-        tableNameToDisplay: 'Tipos de unidad de medida'
-      },
-      ...unitsOfMeasure.map<ModalUpdateTableDataChanged[0]>((uom) => ({
-        dbTable: '',
-        elementId: uom.id,
-
-        fields: [
-          {
-            dbTable: '',
-            fieldName: 'name',
-            inputProps: {
-              allowRepeatedValue: false,
-              id: randomId(`${uom.id}`),
-              label: 'Nombre de la unidad de medida',
-              name: randomId(`${uom.id}`)
-
-            },
-
-            prevValue: uom.name
-          },
-          {
-            dbTable: '',
-            fieldName: 'abbreviation',
-            inputProps: {
-              allowRepeatedValue: false,
-              id: randomId(`${uom.id}`),
-              label: 'Abreviación de la unidad de medida',
-              name: randomId(`${uom.id}`)
-
-            },
-            prevValue: uom.abbreviation
-          }
-        ],
-        formTitle: 'Actualizar la unidad de medida',
-        tableNameToDisplay: 'Unidades de medida'
-      }))
-    ])
-
+    const uomtIdx = ev.currentTarget.getAttribute('data-grouping-element-index')
+    setUomtIndex(uomtIdx as any)
     modalContext.openModal()
   }
-  const updateData = (_ev: MouseEvent<HTMLButtonElement>): void => {
-    console.log(modalData)
 
-    /*
-     * Show loading spinner
-     * modalContext.closeModal()
-     */
-  }
+  // eslint-disable-next-line security/detect-object-injection
+  const selectedUomt = unitsOfMeasureData?.uomGroupedByType[uomtIndex]
+
+  useEffect(
+    () => {
+      modalRef.current = document.querySelector('.ReactModalPortal') as HTMLDivElement
+    },
+    [modalContext.modalIsOpen]
+  )
 
   return <>
   <ModalUpdateTable
-    dataChanged={modalData}
+    buttonCancellProps={{
+      onClick: modalContext.closeModal
+    }}
     modalProps={{
       id: 'modal_update_table',
       isOpen: modalContext.modalIsOpen,
       onRequestClose: modalContext.closeModal,
       shouldReturnFocusAfterClose: true
     }}
-    onClikConfirmUpdate={updateData}
-  />
-  {unitsOfMeasureData.uomGroupedByType.map((uomt) => <Fragment key={uomt.uomt_id}>
+    thunks={{
+      units_of_measure: updateUnitOfMeasureThunk as any,
+      units_of_measure_type: updateUomtThunk as any
+    }}
+  >
+    <UpdateTableInputsContextProvider
+       formTitle="Actualizar tipo de unidad de medida"
+       dbTable="units_of_measure_type"
+       elementId={selectedUomt?.uomt_id}
+       elementIndex={uomtIndex}
+       groupingElementIndex={null}
+      >
+      <InputComponent
+        initialValue={selectedUomt?.uomt_name}
+        inputProps={{
+          allowRepeatedValue: false,
+          id: selectedUomt?.uomt_name,
+          label: 'Nombre del tipo de unidad de medida',
+          name: selectedUomt?.uomt_name
+        }}
+        field="name"
+        modal={modalRef.current as HTMLDivElement}
+      />
+    </UpdateTableInputsContextProvider>
+
+    {selectedUomt?.uom.map((uom, uomIndex) => <Fragment
+      key={randomId(uom.id as any)}>
+      <UpdateTableInputsContextProvider
+        formTitle="Actualizar unidad de medida"
+        dbTable="units_of_measure"
+        elementId={uom.id}
+        elementIndex={uomIndex}
+        groupingElementIndex={uomtIndex}
+      >
+        <InputComponent
+          initialValue={uom.name}
+          inputProps={{
+            allowRepeatedValue: false,
+            id: `${uom.id}${uom.name}`,
+            label: 'Nombre de la medida de medida',
+            name: `${uom.id}${uom.name}`
+          }}
+          field="name"
+          modal={modalRef.current as HTMLDivElement}
+        />
+        <InputComponent
+          initialValue={uom.abbreviation}
+          inputProps={{
+            allowRepeatedValue: false,
+            id: `${uom.id}${uom.abbreviation}`,
+            label: 'Areviación de la medida de medida',
+            name: `${uom.id}${uom.abbreviation}`
+          }}
+          field="abbreviation"
+          modal={modalRef.current as HTMLDivElement}
+        />
+      </UpdateTableInputsContextProvider>
+    </Fragment>)}
+  </ModalUpdateTable>
+
+  {/* Display data */}
+
+  {unitsOfMeasureData.uomGroupedByType.map((uomt, uomtIdx) => <Fragment key={uomt.uomt_id}>
       <EditTableRowContextProvider>
-        {uomt.uom.map(({ abbreviation, id, name }, index) => <Fragment key={id}>
-          {index === 0 && <RowWithSpan
+        {uomt.uom.map(({ abbreviation, id, name }, uomGroupedIndex) => <Fragment key={id}>
+          {uomGroupedIndex === 0 && <RowWithSpan
             rowSpan={uomt.uom.length}
             uomAbbreviation={abbreviation}
              uomId={id}
@@ -142,12 +133,16 @@ const Rows: FC = () => {
              uomtName={uomt.uomt_name}
              openModal={getDataFromTableToModify}
              uomIds={uomt.uomIds}
+             groupingElementIndex={uomtIdx}
+             elementIndex={uomGroupedIndex}
           />}
-          {index !== 0 && <RowNoSpan
+          {uomGroupedIndex !== 0 && <RowNoSpan
+            groupingElementIndex={uomtIdx}
             uomAbbreviation={abbreviation}
             uomName={name}
             uomId={id}
             uomtName={uomt.uomt_name}
+            elementIndex={uomGroupedIndex}
            />}
         </Fragment>)}
       </EditTableRowContextProvider>

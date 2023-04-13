@@ -67,22 +67,25 @@ export const getUOM = async (
 
 export const updateUOM = async (
   req: UpdateUomRequest,
-  res: NextApiResponse<response<string>>
+  res: NextApiResponse<response<units_of_measure | string>>
 ): Promise<void> => {
   try {
-    const { abbreviation, name, uomt_id, id } = req.body
+    const { abbreviation, name, id } = req.body
 
     validations.abbreviation(abbreviation)
     validations.name(name)
-    validations.uomtId(uomt_id)
 
-    await prisma.$executeRaw`UPDATE IGNORE units_of_measure SET
-name = ${capitalize(name)},
-abbreviation = ${capitalize(abbreviation)},
-uomt_id = ${uomt_id}
-WHERE units_of_measure.id = ${id}`
+    const result = await prisma.units_of_measure.update({
+      data: {
+        abbreviation, name
+      },
+      where: {
+        id
+      }
+    })
+
     res.status(200).send({
-      data: 'successful update',
+      data: result,
       error: false
     })
   } catch (error) {
@@ -99,7 +102,7 @@ interface CreateUOMRequest extends NextApiRequest {
 }
 
 interface UpdateUomRequest extends NextApiRequest {
-  body: units_of_measure
+  body: Omit<units_of_measure, 'uomt_id'>
 }
 
 export interface CreateUom {

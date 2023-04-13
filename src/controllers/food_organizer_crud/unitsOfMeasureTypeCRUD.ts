@@ -56,14 +56,15 @@ export const updateUOMT = async (
   req: UpdateUOMTRequest,
   res: NextApiResponse<response<units_of_measure_types | null>>
 ): Promise<void> => {
-  const { name } = req.body
+  const { name, id } = req.body
+
   try {
     const result = await prisma.units_of_measure_types.update({
       data: {
         name: capitalize(name)
       },
       where: {
-        name
+        id
       }
     })
     res.status(200).send({ data: result, error: false })
@@ -86,6 +87,7 @@ interface UpdateUOMTRequest extends NextApiRequest {
 
 export interface UpdateUomT {
   name: string
+  id: number
 }
 
 export interface CreateUomT {

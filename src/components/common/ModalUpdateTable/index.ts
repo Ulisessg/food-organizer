@@ -1,3 +1,3 @@
-import ModalUpdateTable, { type ModalUpdateTableDataChanged } from './ModalUpdateTable'
+import ModalUpdateTable from './ModalUpdateTable'
 
-export { ModalUpdateTable, type ModalUpdateTableDataChanged }
+export { ModalUpdateTable }

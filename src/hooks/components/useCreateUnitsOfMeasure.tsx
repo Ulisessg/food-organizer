@@ -7,7 +7,7 @@ import { type ChangeEvent, type MouseEvent, type RefObject, useState } from 'rea
 import {
   createUnitOfMeasureThunk,
   restartCreateUomPostStatusThunk
-} from 'redux/slices/unitsOfMeasureSlice'
+} from 'redux/slices/unitsOfMeasureSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
 import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import { defaultSelectValue } from 'utils/constants'
