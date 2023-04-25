@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable camelcase */
 import type { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
 import type { GetUOMT } from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
@@ -30,9 +31,13 @@ const insertUnitOfMeasure = (
             name: unitOfMeasure.name
           }
         ],
-        uomIds: [
-          ...uomt.uomIds,
-          unitOfMeasure.id
+        uomAbbreviations: [
+          ...uomt.uomAbbreviations,
+          unitOfMeasure.abbreviation
+        ],
+        uomNames: [
+          ...uomt.uomNames,
+          unitOfMeasure.name
         ]
       }
     }
@@ -50,7 +55,8 @@ const insertUnitOfMeasure = (
       ...result,
       {
         uom: [unitOfMeasure],
-        uomIds: [unitOfMeasure.id],
+        uomAbbreviations: [unitOfMeasure.abbreviation],
+        uomNames: [unitOfMeasure.name],
         uomt_id: unitOfMeasureType.id,
         uomt_name: unitOfMeasureType.name
       }

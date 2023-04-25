@@ -9,7 +9,6 @@ export const RowWithSpan: FC<RowWithSpanProps> = ({
   uomName,
   uomtId, uomtName,
   openModal,
-  uomIds,
   elementIndex,
   groupingElementIndex
 }) => <tr
@@ -48,7 +47,6 @@ export const RowWithSpan: FC<RowWithSpanProps> = ({
   <Td
     rowSpan={rowSpan}
     data-buttons-container
-    data-uom-ids={uomIds.toString()}
     data-uomt-id={uomtId}
   >
     <Button
@@ -94,7 +92,6 @@ export const RowNoSpan: FC<RowNoSpanProps> = ({
 interface RowWithSpanProps extends RowCommonProps {
   rowSpan: number
   uomtId: number
-  uomIds: number[]
   openModal: (ev: MouseEvent<HTMLButtonElement>) => void
 }
 

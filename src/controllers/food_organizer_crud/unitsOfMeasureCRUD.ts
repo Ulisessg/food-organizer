@@ -77,7 +77,7 @@ export const updateUOM = async (
 
     const result = await prisma.units_of_measure.update({
       data: {
-        abbreviation, name
+        abbreviation: capitalize(abbreviation), name: capitalize(name)
       },
       where: {
         id
@@ -116,7 +116,8 @@ export interface GetUOM {
   unitsOfMeasureGroupedByType: Array<{
     uomt_id: number
     uomt_name: string
-    uomIds: number[]
+    uomNames: string[]
+    uomAbbreviations: string[]
     uom: Array<{
       id: number
       name: string

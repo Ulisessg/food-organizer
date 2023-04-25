@@ -117,17 +117,23 @@ export const updateUnitOfMeasureThunk = createAsyncThunk<{
 
     let uomName = ''
     let uomAbbreviation = ''
+    let fieldInvalid: boolean = false
 
     data.forEach((input) => {
       const dbField = input.getAttribute('data-db-field') as 'name' | 'abbreviation'
+      console.log(dbField)
+
       if (dbField === 'abbreviation') {
         uomAbbreviation = input.value
       } else if (dbField === 'name') {
         uomName = input.value
       } else {
-        throw new Error('Invalid field')
+        fieldInvalid = true
       }
     })
+    if (fieldInvalid) {
+      return thunkApi.rejectWithValue('Invalid field')
+    }
 
     const updateResult = await axios.patch<response<units_of_measure>>(
       '/api/uom',
