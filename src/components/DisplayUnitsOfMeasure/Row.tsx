@@ -11,7 +11,7 @@ export const RowWithSpan: FC<RowWithSpanProps> = ({
   elementIndex,
   groupingElementIndex
 }) => <tr>
-    <Td>
+    <Td rowSpan={rowSpan}>
       {uomtName}
     </Td>
 

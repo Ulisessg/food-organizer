@@ -14,7 +14,6 @@ import {
   updateUnitOfMeasureThunk,
   updateUomtThunk
 } from 'redux/slices/unitsOfMeasureSlice/thunks'
-import { EditTableRowContextProvider } from 'context/EditTableRowContext'
 import ModalContent from './ModalContent'
 import { ModalContext } from 'context/ModalContext'
 import {
@@ -82,7 +81,6 @@ const Rows: FC = () => {
   {/* Display data */}
 
   {unitsOfMeasureData.uomGroupedByType.map((uomt, uomtIdx) => <Fragment key={uomt.uomt_id}>
-      <EditTableRowContextProvider>
         {uomt.uom.map(({ abbreviation, id, name }, uomGroupedIndex) => <Fragment key={id}>
           {uomGroupedIndex === 0 && <RowWithSpan
             rowSpan={uomt.uom.length}
@@ -102,7 +100,6 @@ const Rows: FC = () => {
             elementIndex={uomGroupedIndex}
            />}
         </Fragment>)}
-      </EditTableRowContextProvider>
 
     </Fragment>)}
 
