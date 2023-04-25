@@ -5,49 +5,25 @@ import React, { type FC, type MouseEvent } from 'react'
 export const RowWithSpan: FC<RowWithSpanProps> = ({
   rowSpan,
   uomAbbreviation,
-  uomId,
   uomName,
-  uomtId, uomtName,
+  uomtName,
   openModal,
   elementIndex,
   groupingElementIndex
-}) => <tr
-    data-uom-id={uomId}
-    data-uomt-id={uomtId}
-  >
-    <Td
-      rowSpan={rowSpan}
-      data-db-table="units_of_measure_type"
-      data-element-id={uomtId}
-      data-db-field="name"
-      data-grouping-element-index={groupingElementIndex}
-    >
+}) => <tr>
+    <Td>
       {uomtName}
     </Td>
 
-  <Td
-    data-db-table="units_of_measure"
-    data-element-id={uomId}
-    data-db-field="name"
-    data-element-index={elementIndex}
-    data-grouping-element-index={groupingElementIndex}
-  >
+  <Td>
     {uomName}
   </Td>
-  <Td
-    data-db-table="units_of_measure"
-    data-element-id={uomId}
-    data-db-field="abbreviation"
-    data-grouping-element-index={groupingElementIndex}
-    data-element-index={elementIndex}
-  >
+  <Td>
     {uomAbbreviation}
   </Td>
 
   <Td
     rowSpan={rowSpan}
-    data-buttons-container
-    data-uomt-id={uomtId}
   >
     <Button
       colorMessage="info"
@@ -62,28 +38,13 @@ export const RowWithSpan: FC<RowWithSpanProps> = ({
 
 export const RowNoSpan: FC<RowNoSpanProps> = ({
   uomAbbreviation,
-  uomName,
-  uomId,
-  elementIndex,
-  groupingElementIndex
+  uomName
 }) => <>
   <tr>
-  <Td
-    data-db-table="units_of_measure"
-    data-element-id={uomId}
-    data-db-field="name"
-    data-grouping-element-index={groupingElementIndex}
-    data-element-index={elementIndex}
-  >
+  <Td>
     {uomName}
   </Td>
-  <Td
-    data-db-table="units_of_measure"
-    data-element-id={uomId}
-    data-db-field="abbreviation"
-    data-grouping-element-index={groupingElementIndex}
-    data-element-index={elementIndex}
-  >
+  <Td>
     {uomAbbreviation}
   </Td>
 </tr>
@@ -109,5 +70,4 @@ interface RowCommonProps {
   uomtName: string
   uomName: string
   uomAbbreviation: string
-  uomId: number
 }

@@ -87,7 +87,6 @@ const Rows: FC = () => {
           {uomGroupedIndex === 0 && <RowWithSpan
             rowSpan={uomt.uom.length}
             uomAbbreviation={abbreviation}
-             uomId={id}
              uomName={name}
              uomtId={uomt.uomt_id}
              uomtName={uomt.uomt_name}
@@ -99,7 +98,6 @@ const Rows: FC = () => {
             groupingElementIndex={uomtIdx}
             uomAbbreviation={abbreviation}
             uomName={name}
-            uomId={id}
             uomtName={uomt.uomt_name}
             elementIndex={uomGroupedIndex}
            />}
