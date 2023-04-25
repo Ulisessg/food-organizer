@@ -16,12 +16,18 @@ import { type TUpdateThunkArgs } from 'Types'
 import safeObjectGet from 'utils/safeObjectGet'
 import { useDispatch } from 'react-redux'
 
-const ModalUpdateData: FC<ModalUpdateDataProps> = (props) => <Modal {...props.modalProps}>
+const ModalUpdateData: FC<ModalUpdateDataProps> = (props) => {
+  const modalContext = useContext(ModalContext)
+  return <Modal
+    {...props.modalProps}
+    isOpen={modalContext.modalIsOpen}
+    onRequestClose={modalContext.closeModal}>
   <FormUpdateDataContextProvider formProps={props.formProps}>
     <Content {...props} />
   </FormUpdateDataContextProvider>
 
 </Modal>
+}
 
 const Content: FC<ModalUpdateDataProps> = ({
   children,
@@ -86,7 +92,7 @@ const Content: FC<ModalUpdateDataProps> = ({
 export default ModalUpdateData
 
 interface ModalUpdateDataProps {
-  modalProps: ModalProps
+  modalProps?: Omit<ModalProps, 'isOpen' | 'onRequestClose'>
   cancellButtonProps: TButtonProps
   continueButtonProps: TButtonProps
   formProps: FormProps

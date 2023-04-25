@@ -40,10 +40,6 @@ const Rows: FC = () => {
 
   return <>
   <ModalUpdateData
-    modalProps={{
-      isOpen: modalContext.modalIsOpen,
-      onRequestClose: modalContext.closeModal
-    }}
     formProps={{
       formTitle: 'Actualizar unidades de medida'
     }}
