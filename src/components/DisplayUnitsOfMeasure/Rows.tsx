@@ -17,7 +17,7 @@ import {
 import ModalContent from './ModalContent'
 import { ModalContext } from 'context/ModalContext'
 import {
-  ModalUpdateTable
+  ModalUpdateData
 } from 'components/common/ModalUpdateData'
 
 import { type RootState } from 'redux/store'
@@ -49,7 +49,7 @@ const Rows: FC = () => {
   )
 
   return <>
-  <ModalUpdateTable
+  <ModalUpdateData
     modalProps={{
       isOpen: modalContext.modalIsOpen,
       onRequestClose: modalContext.closeModal
@@ -77,7 +77,7 @@ const Rows: FC = () => {
       unitOfMeasureTypeIndex={uomtIndex as number}
     />
 
-  </ModalUpdateTable>
+  </ModalUpdateData>
   {/* Display data */}
 
   {unitsOfMeasureData.uomGroupedByType.map((uomt, uomtIdx) => <Fragment key={uomt.uomt_id}>
