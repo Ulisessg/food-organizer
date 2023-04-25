@@ -5,8 +5,6 @@ import React, {
   Fragment,
   type MouseEvent,
   useContext,
-  useEffect,
-  useRef,
   useState
 } from 'react'
 import { RowNoSpan, RowWithSpan } from './Row'
@@ -28,7 +26,6 @@ const Rows: FC = () => {
     uomtIndex,
     setUomtIndex
   ] = useState<number | null>(null)
-  const modalRef = useRef<HTMLDivElement>()
   const modalContext = useContext(ModalContext)
   const unitsOfMeasureData = useSelector((state: RootState) => state.unitsOfMeasure)
 
@@ -40,13 +37,6 @@ const Rows: FC = () => {
 
   // eslint-disable-next-line security/detect-object-injection
   const selectedUomt = unitsOfMeasureData?.uomGroupedByType[uomtIndex as number]
-
-  useEffect(
-    () => {
-      modalRef.current = document.querySelector('.ReactModalPortal') as HTMLDivElement
-    },
-    [modalContext.modalIsOpen]
-  )
 
   return <>
   <ModalUpdateData
