@@ -88,9 +88,9 @@ const Rows: FC = () => {
              uomName={name}
              uomtId={uomt.uomt_id}
              uomtName={uomt.uomt_name}
-             openModal={getDataFromTableToModify}
              groupingElementIndex={uomtIdx}
              elementIndex={uomGroupedIndex}
+             onClickOpenModal={getDataFromTableToModify}
           />}
           {uomGroupedIndex !== 0 && <RowNoSpan
             groupingElementIndex={uomtIdx}

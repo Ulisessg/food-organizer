@@ -1,15 +1,16 @@
 /* eslint-disable max-lines-per-function */
-import { Button, Td } from 'd-system'
 import React, { type FC, type MouseEvent } from 'react'
+import ButtonOpenModal from 'components/common/ModalUpdateData/ButtonOpenModal'
+import { Td } from 'd-system'
 
 export const RowWithSpan: FC<RowWithSpanProps> = ({
   rowSpan,
   uomAbbreviation,
   uomName,
   uomtName,
-  openModal,
   elementIndex,
-  groupingElementIndex
+  groupingElementIndex,
+  onClickOpenModal
 }) => <tr>
     <Td rowSpan={rowSpan}>
       {uomtName}
@@ -25,13 +26,12 @@ export const RowWithSpan: FC<RowWithSpanProps> = ({
   <Td
     rowSpan={rowSpan}
   >
-    <Button
-      colorMessage="info"
+    <ButtonOpenModal
       size="small"
       text="Editar"
-      type="button"
-      data-grouping-element-index={groupingElementIndex}
-      onClick={openModal}
+      elementIndex={elementIndex}
+      groupingElementIndex={groupingElementIndex}
+      onClick={onClickOpenModal}
     />
   </Td>
 </tr>
@@ -53,7 +53,7 @@ export const RowNoSpan: FC<RowNoSpanProps> = ({
 interface RowWithSpanProps extends RowCommonProps {
   rowSpan: number
   uomtId: number
-  openModal: (ev: MouseEvent<HTMLButtonElement>) => void
+  onClickOpenModal: (ev: MouseEvent<HTMLButtonElement>) => void
 }
 
 interface RowNoSpanProps extends RowCommonProps {
