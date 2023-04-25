@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
 import { type TReducerWBuilder } from 'redux/types'
 import { type TUomState } from '../unitsOfMeasureSliceState'
@@ -36,7 +37,7 @@ const updateUnitOfMeasureReducer: TReducerWBuilder<TUomState> = (builder) => {
       const uomt = state.uomGroupedByType
         .at(action.payload.groupingElementIndex as any) as TUomState['uomGroupedByType'][0]
 
-      const { uomNames } = uomt
+      const { uomNames, uomAbbreviations } = uomt
 
       const uom = uomt
         .uom
@@ -50,6 +51,11 @@ const updateUnitOfMeasureReducer: TReducerWBuilder<TUomState> = (builder) => {
         action.payload.elementIndex as any,
         1,
         action.payload.data.name
+      )
+      uomAbbreviations.splice(
+        action.payload.elementIndex as any,
+        1,
+        action.payload.data.abbreviation
       )
     }
   )
