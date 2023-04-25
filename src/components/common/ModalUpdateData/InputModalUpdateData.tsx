@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import { Input, type InputProps, UseInputsContext } from 'd-system'
+import { Input, type InputProps, Select, type SelectProps, UseInputsContext } from 'd-system'
 import React, { type FC, useContext, useEffect } from 'react'
 import { FormUpdateDataContext } from 'context/FormUpdateDataContext'
 import styled from 'styled-components'
@@ -13,9 +13,10 @@ const InputModalUpdateTable: FC<InputModalUpdateTableProps> = (props) => {
   }
   useEffect(
     () => {
-      if (typeof UseInputsCtx.inputsData[props.name] === 'undefined') {
+      if (typeof UseInputsCtx
+        .inputsData[props.inputProps?.name ?? props.selectProps?.name as any] === 'undefined') {
         UseInputsCtx.addInput(
-          props.name,
+          props.inputProps?.name ?? props.selectProps?.name as any,
           props.initialValue
         )
       }
@@ -23,20 +24,29 @@ const InputModalUpdateTable: FC<InputModalUpdateTableProps> = (props) => {
     [
       UseInputsCtx,
       props.initialValue,
-      props.name
+      props.inputProps,
+      props.selectProps
     ]
   )
 
   return <InputContainer>
-    <Input
-      {...props}
+    {props.type === 'input' && <Input
+      {...props.inputProps as any}
       onChange={onChange}
       onBlur={UseInputsCtx.onBlur}
-      inputInvalid={UseInputsCtx.inputsErrors[props.name]}
-      value={UseInputsCtx.inputsData[props.name] ?? ''}
+      inputInvalid={UseInputsCtx.inputsErrors[props.inputProps?.name as any]}
+      value={UseInputsCtx.inputsData[props.inputProps?.name as any] ?? ''}
       style={{ textTransform: 'capitalize' }}
       data-db-field={props.field}
-    />
+    />}
+    {props.type === 'select' && <Select
+      {...props.selectProps as any}
+      onChange={onChange}
+      onBlur={UseInputsCtx.onBlur}
+      inputInvalid={UseInputsCtx.inputsErrors[props.selectProps?.name as any]}
+      value={UseInputsCtx.inputsData[props.selectProps?.name as any] ?? ''}
+      data-db-field={props.field}
+    />}
   </InputContainer>
 }
 
@@ -55,7 +65,10 @@ export const InputsSectionTitle = styled.p`
 
 export default InputModalUpdateTable
 
-interface InputModalUpdateTableProps extends InputProps {
+interface InputModalUpdateTableProps {
   initialValue: string
   field: string
+  inputProps?: InputProps
+  selectProps?: SelectProps
+  type: 'select' | 'input'
 }

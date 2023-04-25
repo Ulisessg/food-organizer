@@ -33,12 +33,15 @@ const ModalContent: FC<ModalContentProps> = ({
 >
   <InputsSectionTitle>Tipo de unidad de medida</InputsSectionTitle>
   <InputModalUpdateData
-    id={selectedUomtId}
-    name={selectedUomtId}
-    label="Nombre"
-    required
-    acceptanceCriteria="Solo letras y números, valor inicial no valido"
-    pattern={`^${getPatterExcludeWords([selectedUomt?.uomt_name])}([\\p{L}\\s]+)$`}
+    type="input"
+    inputProps={{
+      acceptanceCriteria: 'Solo letras y números, valor inicial no valido',
+      id: selectedUomtId,
+      label: 'Nombre',
+      name: selectedUomtId,
+      pattern: `^${getPatterExcludeWords([selectedUomt?.uomt_name])}([\\p{L}\\s]+)$`,
+      required: true
+    }}
     initialValue={selectedUomt?.uomt_name}
     field="name"
   />
@@ -66,22 +69,28 @@ const ModalContent: FC<ModalContentProps> = ({
     >
     <InputsSectionTitle>Unidad de medida</InputsSectionTitle>
       <InputModalUpdateData
-        id={unitOfMeasure.name}
-        name={unitOfMeasure.name}
-        label="Nombre"
-        required
-        acceptanceCriteria="Solo letras y números, valor inicial no valido"
-        pattern={`^${getPatterExcludeWords(selectedUomt?.uomNames)}([\\p{L}\\s]+)$`}
+        inputProps={{
+          acceptanceCriteria: 'Solo letras y números, valor inicial no valido',
+          id: unitOfMeasure.name,
+          label: 'Nombre',
+          name: unitOfMeasure.name,
+          pattern: `^${getPatterExcludeWords(selectedUomt?.uomNames)}([\\p{L}\\s]+)$`,
+          required: true
+        }}
+        type="input"
         initialValue={unitOfMeasure.name}
         field="name"
       />
       <InputModalUpdateData
-        id={unitOfMeasure.abbreviation}
-        name={unitOfMeasure.abbreviation}
-        label="Abreviación"
-        required
-        acceptanceCriteria="Solo letras y números, valor inicial no valido"
-        pattern={`^${getPatterExcludeWords(selectedUomt?.uomAbbreviations)}([\\p{L}\\s]+)$`}
+        inputProps={{
+          acceptanceCriteria: 'Solo letras y números, valor inicial no valido',
+          id: unitOfMeasure.abbreviation,
+          label: 'Abreviación',
+          name: unitOfMeasure.abbreviation,
+          pattern: `^${getPatterExcludeWords(selectedUomt?.uomAbbreviations)}([\\p{L}\\s]+)$`,
+          required: true
+        }}
+        type="input"
         initialValue={unitOfMeasure.abbreviation}
         field="abbreviation"
       />
