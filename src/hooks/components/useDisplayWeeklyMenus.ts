@@ -2,7 +2,7 @@
 /* eslint-disable max-lines-per-function */
 import { type ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { type RootState } from 'redux/store'
-import { type TDay } from 'controllers/food_organizer_crud/weeklyMenuCRUD'
+import { type TDay } from 'controllers/food_organizer_crud/sql/weeklyMenus/getWeeklyMenusSql'
 import { dayInMiliseconds } from 'utils/constants'
 import dayjs from 'dayjs'
 import getDayOfTheWeekFromDate from 'utils/getDayOfTheWeekFromDate'

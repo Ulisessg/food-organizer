@@ -5,7 +5,7 @@ import { type ChangeEvent, type MouseEvent, type RefObject, useState } from 'rea
 import { type TDaysOfTheWeek, dayInMiliseconds } from 'utils/constants'
 import { createWeeklyMenuThunk, restartPostWeeklyMenu } from 'redux/slices/weekSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { type TCreateWeeklyMenus } from 'controllers/food_organizer_crud/weeklyMenuCRUD'
+import { type TCreateWeeklyMenus } from 'controllers/food_organizer_crud/nextjs/weeklyMenuCRUD'
 import dayjs from 'dayjs'
 import getDayNameFromEnglish from 'utils/getDayNameFromEnglish'
 import getDayNameFromSpanish from 'utils/getDayNameFromSpanish'

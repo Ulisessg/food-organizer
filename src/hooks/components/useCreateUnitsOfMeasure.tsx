@@ -9,7 +9,9 @@ import {
   restartCreateUomPostStatusThunk
 } from 'redux/slices/unitsOfMeasureSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
-import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
+import {
+  type GetUnitsOfMeasureData
+} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
 import { defaultSelectValue } from 'utils/constants'
 import transformPostData from 'utils/transformPostData'
 import { useInputs } from 'd-system'
@@ -25,11 +27,11 @@ const useCreateUnitsOfMeasure =
   const {
     isRepeated: uomIsRepeated,
     searchIsRepeated: seachUomIsRepeated
-  } = useValueIsRepeated<GetUOM['unitsOfMeasureGroupedByType'][0]['uom'][0]>()
+  } = useValueIsRepeated<GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'][0]['uom'][0]>()
   const {
     isRepeated: abbreviationIsRepeated,
     searchIsRepeated: searchIfAbbreviationIsRepeated
-  } = useValueIsRepeated<GetUOM['unitsOfMeasureGroupedByType'][0]['uom'][0]>()
+  } = useValueIsRepeated<GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'][0]['uom'][0]>()
   const { inputsData, onChange, onBlur, inputsErrors, restartInputs } = useInputs(
     {
       abbreviation: '',

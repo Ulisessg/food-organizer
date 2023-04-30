@@ -1,12 +1,14 @@
 /* eslint-disable max-lines-per-function */
 import {
-  type GetWeeklyMenu,
   type TCreateWeeklyMenus,
   type TCreateWeeklyMenusResponse
-} from 'controllers/food_organizer_crud/weeklyMenuCRUD'
+} from 'controllers/food_organizer_crud/nextjs/weeklyMenuCRUD'
 import axios, { type AxiosResponse } from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { type GetDays } from 'controllers/food_organizer_crud/daysCRUD'
+import { type GetDays } from 'controllers/food_organizer_crud/sql/days/getDaysSql'
+import {
+  type GetWeeklyMenu
+} from 'controllers/food_organizer_crud/sql/weeklyMenus/getWeeklyMenusSql'
 import getWeekRangeOfDates from 'utils/getWeekRangeOfDates'
 import { type response } from 'controllers/response'
 

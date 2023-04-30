@@ -1,24 +1,32 @@
 /* eslint-disable max-statements */
 /* eslint-disable camelcase */
+
 import {
-  type CreateUom,
-  type GetUOM
-} from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
+  type units_of_measure,
+  type units_of_measure_types
+} from '@prisma/client'
 import {
-  type CreateUomT,
-  type GetUOMT
-} from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
-import { type units_of_measure, type units_of_measure_types } from '@prisma/client'
+  type CreateUnitOfMeasureType
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/createUnitOfMeasureTyeSql'
+import {
+  type CreateUom
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasure/createUnitOfMeasureSql'
+import {
+  type GetUnitsOfMeasureData
+} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
+import {
+  type TGetUnitsOfMeasureType
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/getUnitsOfMeasureTypeSql'
 import { type TUpdateThunkArgs } from 'Types'
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { type response } from 'controllers/response'
 
 // Get data thunk
-export const getUomDataThunk = createAsyncThunk<GetUOM, number | null>(
+export const getUomDataThunk = createAsyncThunk<GetUnitsOfMeasureData, number | null>(
   'uom/getData',
   async (_limit: any, thunkApi) => {
-    const requestResponse = await axios.get<response<GetUOM>>('/api/uom')
+    const requestResponse = await axios.get<response<GetUnitsOfMeasureData>>('/api/uom')
     if (requestResponse.data.error) {
       thunkApi.rejectWithValue(requestResponse.data.data)
     }
@@ -43,10 +51,10 @@ export const createUnitOfMeasureThunk = createAsyncThunk<units_of_measure, Creat
 
 // Create Unit of measure type thunk
 export const createUnitOfMeasureTypeThunk =
-createAsyncThunk<GetUOMT[0], CreateUomT>(
+createAsyncThunk<TGetUnitsOfMeasureType[0], CreateUnitOfMeasureType>(
   'uom/createUomt',
   async (unitOfMeasureType, thunkApi) => {
-    const requestResult = await axios.post<response<GetUOMT[0]>>(
+    const requestResult = await axios.post<response<TGetUnitsOfMeasureType[0]>>(
       '/api/uomt',
       unitOfMeasureType
     )

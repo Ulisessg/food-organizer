@@ -1,7 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next'
 import {
   createFoodPrice, getFoodPrices, updateFoodPrice
-} from 'controllers/food_organizer_crud/foodPriceCRUD'
+} from 'controllers/food_organizer_crud/nextjs/foodPriceCRUD'
 
 const handler = async (
   req: NextApiRequest,

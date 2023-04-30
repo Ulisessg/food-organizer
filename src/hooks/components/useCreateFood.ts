@@ -7,7 +7,7 @@ import {
 } from 'react'
 import { createFoodThunk, restartPostData } from 'redux/slices/foodSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { type CreateFood } from 'controllers/food_organizer_crud/foodsCRUD'
+import { type CreateFood } from 'controllers/food_organizer_crud/nextjs/foodsCRUD'
 import { defaultSelectValue } from 'utils/constants'
 import getInputNumberData from 'utils/getInputNumberData'
 import transformPostData from 'utils/transformPostData'

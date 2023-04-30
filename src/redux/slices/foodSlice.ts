@@ -5,13 +5,15 @@
 import {
   type CreateFood,
   type CreateFoodsResponse, type GetFoods
-} from 'controllers/food_organizer_crud/foodsCRUD'
-import {
-  type CreateFoodType,
-  type GetFoodTypes
-} from 'controllers/food_organizer_crud/foodTypesCRUD'
+} from 'controllers/food_organizer_crud/nextjs/foodsCRUD'
 import axios, { type AxiosResponse } from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import {
+  type CreateFoodType
+} from 'controllers/food_organizer_crud/sql/foodTypes/createFoodTypeSql'
+import {
+  type GetFoodTypes
+} from 'controllers/food_organizer_crud/sql/foodTypes/getFoodTypesSql'
 import { type food_types } from '@prisma/client'
 import { type response } from 'controllers/response'
 import safeObjectGet from 'utils/safeObjectGet'
@@ -215,10 +217,10 @@ const foodsSlice = createSlice({
         })
         state.foodsGroupedByType.some((fGByType, index) => {
           if (fGByType.food_type_id === action.payload.food_type_id) {
-            (safeObjectGet(
-              state.foodsGroupedByType as any,
+            ((safeObjectGet(
+              state.foodsGroupedByType,
               index
-            )).foods.push({
+            )) as any).foods.push({
               food_id: action.payload.id,
               food_name: action.payload.name,
               image: action.payload.image,

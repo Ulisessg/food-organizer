@@ -1,7 +1,11 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable camelcase */
-import type { GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
-import type { GetUOMT } from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
+import {
+  type GetUnitsOfMeasureData
+} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
+import {
+  type TGetUnitsOfMeasureType
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/getUnitsOfMeasureTypeSql'
 import type { units_of_measure } from '@prisma/client'
 
 /**
@@ -13,12 +17,12 @@ import type { units_of_measure } from '@prisma/client'
  * @returns
  */
 const insertUnitOfMeasure = (
-  uomList: GetUOM['unitsOfMeasureGroupedByType'],
+  uomList: GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'],
   unitOfMeasure: units_of_measure,
-  unitsOfMeasureTypes: GetUOMT
-): GetUOM['unitsOfMeasureGroupedByType'] => {
+  unitsOfMeasureTypes: TGetUnitsOfMeasureType
+): GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'] => {
   let isUnitOfMeasureTypeIncluded = false
-  let result: GetUOM['unitsOfMeasureGroupedByType'] = uomList.map((uomt) => {
+  let result: GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'] = uomList.map((uomt) => {
     if (uomt.uomt_id === unitOfMeasure.uomt_id) {
       isUnitOfMeasureTypeIncluded = true
       return {
@@ -45,8 +49,9 @@ const insertUnitOfMeasure = (
   })
 
   if (!isUnitOfMeasureTypeIncluded) {
-    const unitOfMeasureType: GetUOMT[0] =
-      unitsOfMeasureTypes.find((uomt) => uomt.id === unitOfMeasure.uomt_id) as GetUOMT[0]
+    const unitOfMeasureType: TGetUnitsOfMeasureType[0] =
+      unitsOfMeasureTypes.find((uomt) => uomt.id ===
+      unitOfMeasure.uomt_id) as TGetUnitsOfMeasureType[0]
 
     if (typeof unitOfMeasureType === 'undefined') {
       throw new Error('Unit of measure type does not exist')

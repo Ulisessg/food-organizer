@@ -4,14 +4,17 @@
 /* eslint-disable camelcase */
 import {
   type CreateIngredient,
-  type CreateIngredientReturn,
+  type CreateIngredientReturn
+} from 'controllers/food_organizer_crud/sql/ingredients/createIngredientSql'
+import {
   type GetIngredients,
   type TIngr_purchase_places
-} from 'controllers/food_organizer_crud/ingredientCRUD'
+} from 'controllers/food_organizer_crud/sql/ingredients/getIngredientsSql'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
   type CreateIngredientPurchasePlace
-} from 'controllers/food_organizer_crud/ingredientPurchasePlacesCRUD'
+} from
+  'controllers/food_organizer_crud/sql/ingredientPurchasePlaces/createIngredientPurchasePlaceSql'
 import { type RootState } from 'redux/store'
 import axios from 'axios'
 import dayjs from 'dayjs'

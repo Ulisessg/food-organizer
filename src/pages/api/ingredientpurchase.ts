@@ -1,9 +1,8 @@
 import { type NextApiRequest, type NextApiResponse } from 'next'
 import {
   createIngredientPurchasePlace,
-  getIngredientPurchasePlaces,
   updateIngredientPurchasePlace
-} from 'controllers/food_organizer_crud/ingredientPurchasePlacesCRUD'
+} from 'controllers/food_organizer_crud/nextjs/ingredientPurchasePlacesCRUD'
 
 const handler = async (
   req: NextApiRequest,
@@ -13,12 +12,6 @@ const handler = async (
   switch (method) {
     case 'POST':
       await createIngredientPurchasePlace(
-        req,
-        res
-      )
-      break
-    case 'GET':
-      await getIngredientPurchasePlaces(
         req,
         res
       )
@@ -34,7 +27,6 @@ const handler = async (
         'Allow',
         [
           'POST',
-          'GET',
           'PATCH'
         ]
       )

@@ -1,20 +1,13 @@
 import { type NextApiRequest, type NextApiResponse } from 'next'
 import {
-  getUOMT,
-  insertUOMT, updateUOMT
-} from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
+  createUnitOfMeasureType, updateUOMT
+} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureTypeCRUD'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   const { method } = req
   switch (method) {
     case 'POST':
-      await insertUOMT(
-        req,
-        res
-      )
-      break
-    case 'GET':
-      await getUOMT(
+      await createUnitOfMeasureType(
         req,
         res
       )
@@ -30,7 +23,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
         'Allow',
         [
           'POST',
-          'GET',
           'PATCH'
         ]
       )

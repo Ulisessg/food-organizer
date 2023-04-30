@@ -1,9 +1,12 @@
-import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
+import {
+  type GetUnitsOfMeasureData
+} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
 
 const extractUomNames = (uomList:
-GetUOM['unitsOfMeasureGroupedByType']): GetUOM['unitsOfMeasureGroupedByType'][0]['uom'] => {
+GetUnitsOfMeasureData['unitsOfMeasureGroupedByType']):
+GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'][0]['uom'] => {
   if (!Array.isArray(uomList)) throw new TypeError('Array type mus required')
-  const result: GetUOM['unitsOfMeasureGroupedByType'][0]['uom'] = []
+  const result: GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'][0]['uom'] = []
   uomList.forEach((uomOrderByUomt) => {
     uomOrderByUomt.uom.forEach((uom) => {
       if (typeof uom.abbreviation !== 'string') {

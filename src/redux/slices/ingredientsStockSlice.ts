@@ -1,10 +1,12 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable camelcase */
-import {
-  type CreateIngredientStock,
-  type GetIngredientStock
-} from 'controllers/food_organizer_crud/ingredientStockCRUD'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import {
+  type CreateIngredientStock
+} from 'controllers/food_organizer_crud/sql/ingredientStock/createIngredientStockSql'
+import {
+  type GetIngredientStock
+} from 'controllers/food_organizer_crud/sql/ingredientStock/getIngredientsStockSql'
 import { type RootState } from 'redux/store'
 import axios from 'axios'
 import { type ingredient_stock } from '@prisma/client'

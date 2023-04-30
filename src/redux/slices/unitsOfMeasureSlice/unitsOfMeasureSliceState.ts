@@ -1,5 +1,9 @@
-import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
-import { type GetUOMT } from 'controllers/food_organizer_crud/unitsOfMeasureTypeCRUD'
+import {
+  type GetUnitsOfMeasureData
+} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
+import {
+  type TGetUnitsOfMeasureType
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/getUnitsOfMeasureTypeSql'
 
 const initialState: TUomState = {
   dataIsLoading: false,
@@ -31,9 +35,9 @@ const initialState: TUomState = {
 export default initialState
 
 export interface TUomState {
-  uom: GetUOM['unitsOfMeasureGroupedByType'][0]['uom']
-  uomGroupedByType: GetUOM['unitsOfMeasureGroupedByType']
-  unitsOfMeasureType: GetUOMT
+  uom: GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'][0]['uom']
+  uomGroupedByType: GetUnitsOfMeasureData['unitsOfMeasureGroupedByType']
+  unitsOfMeasureType: TGetUnitsOfMeasureType
   dataIsLoading: boolean
   errorGettingData: boolean
   requestEnd: boolean

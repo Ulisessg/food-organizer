@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
+import {
+  type TGetUnitsOfMeasureType
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/getUnitsOfMeasureTypeSql'
 
-const getUomtFromRequest = (data: GetUOM['unitsOfMeasureType']): TGetUomtFromRequestReturn => {
+const getUomtFromRequest = (data: TGetUnitsOfMeasureType): TGetUomtFromRequestReturn => {
   const result: TGetUomtFromRequestReturn = data.map(({ id, name }) => ({
     id,
     name
@@ -11,7 +13,7 @@ const getUomtFromRequest = (data: GetUOM['unitsOfMeasureType']): TGetUomtFromReq
 }
 
 type TGetUomtFromRequestReturn = Array<Pick<
-GetUOM['unitsOfMeasureType'][0],
+TGetUnitsOfMeasureType[0],
 'id' | 'name'>>
 
 export default getUomtFromRequest

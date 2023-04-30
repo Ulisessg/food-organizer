@@ -8,7 +8,9 @@ import {
   restartCreateUomtPostStatusThunk
 } from 'redux/slices/unitsOfMeasureSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
-import { type GetUOM } from 'controllers/food_organizer_crud/unitsOfMeasureCRUD'
+import {
+  type GetUnitsOfMeasureData
+} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
 import transformPostData from 'utils/transformPostData'
 import { useInputs } from 'd-system'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
@@ -21,7 +23,9 @@ const useCreateUnitsOfMeasureTypeForm = (
 UseCreateUnitsOfMeasureTypeFormReturn => {
   const unitsOfMeasureData = useSelector((state: RootState) => state.unitsOfMeasure)
   const dispatch: AppDispatch = useDispatch()
-  const { isRepeated, searchIsRepeated } = useValueIsRepeated<GetUOM['unitsOfMeasureType'][0]>()
+  const {
+    isRepeated, searchIsRepeated
+  } = useValueIsRepeated<GetUnitsOfMeasureData['unitsOfMeasureType'][0]>()
   const { inputsData, inputsErrors, onBlur, onChange, restartInputs } = useInputs(
     {
       uomt: ''

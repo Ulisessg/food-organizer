@@ -2,7 +2,7 @@
 import { type AppDispatch, type RootState } from 'redux/store'
 import { createMenuThunk, restartPostMenuThunk } from 'redux/slices/menusSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { type CreateMenu } from 'controllers/food_organizer_crud/MenuCRUD'
+import { type CreateMenu } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
 import { type MouseEvent } from 'react'
 import dayjs from 'dayjs'
 import transformPostData from 'utils/transformPostData'

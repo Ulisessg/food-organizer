@@ -3,7 +3,7 @@ import {
   createIngredientStock,
   getIngredientsStock,
   updateIngredientStock
-} from 'controllers/food_organizer_crud/ingredientStockCRUD'
+} from 'controllers/food_organizer_crud/nextjs/ingredientStockCRUD'
 
 const handler = async (
   req: NextApiRequest,

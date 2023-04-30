@@ -3,12 +3,12 @@ import {
   type CreateMenu,
   type CreateMenuResponse,
   type GetMenus
-} from 'controllers/food_organizer_crud/MenuCRUD'
+} from '../../controllers/food_organizer_crud/nextjs/MenuCRUD'
 import axios, { type AxiosResponse } from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
   type GetMenusIngredients
-} from 'controllers/food_organizer_crud/sql/getMenusIngredients'
+} from 'controllers/food_organizer_crud/sql/menusIngredients/getMenusIngredientsSql'
 import { type response } from 'controllers/response'
 
 const initialState: TMenuState = {

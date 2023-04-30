@@ -1,10 +1,12 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable camelcase */
-import {
-  type CreatePurchasePlace,
-  type GetPurchasePlaces
-} from 'controllers/food_organizer_crud/purchasePlaceCRUD'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import {
+  type CreatePurchasePlace
+} from 'controllers/food_organizer_crud/sql/purchasePlaces/createPurchasePlaceSql'
+import {
+  type GetPurchasePlaces
+} from 'controllers/food_organizer_crud/sql/purchasePlaces/getPurchasePlacesSql'
 import axios from 'axios'
 import { type purchase_places } from '@prisma/client'
 import { type response } from 'controllers/response'

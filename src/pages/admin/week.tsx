@@ -1,7 +1,9 @@
 import CreateWeeklyMenu from 'components/CreateWeeklyMenu'
 import DisplayWeeklyMenus from 'components/DisplayWeeklyMenus'
 import ErrorMessage from 'components/common/ErrorMessage'
-import type { GetWeeklyMenu } from '../../controllers/food_organizer_crud/weeklyMenuCRUD'
+import {
+  type GetWeeklyMenu
+} from 'controllers/food_organizer_crud/sql/weeklyMenus/getWeeklyMenusSql'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
 import type { NextPage } from 'next'

@@ -10,7 +10,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import {
   type GetIngredientStock
-} from 'controllers/food_organizer_crud/ingredientStockCRUD'
+} from 'controllers/food_organizer_crud/sql/ingredientStock/getIngredientsStockSql'
 import getInputNumberData from 'utils/getInputNumberData'
 import { useInputs } from 'd-system'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'

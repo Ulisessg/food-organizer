@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import { type GetMenus } from 'controllers/food_organizer_crud/MenuCRUD'
+import { type GetMenus } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
 import { type RootState } from 'redux/store'
 import { type TDaysOfTheWeek } from 'utils/constants'
 import { type TUseCreateWeeklyMenuReturn } from './useCreateWeeklyMenu'
