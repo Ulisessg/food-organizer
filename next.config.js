@@ -4,6 +4,9 @@ const nextConfig = {
     styledComponents: true
   },
   distDir: 'build',
+  experimental: {
+    forceSwcTransforms: true
+  },
   // eslint-disable-next-line require-await, space-before-function-paren
   async headers() {
     return [
