@@ -14,27 +14,36 @@
     "cypress:headless": "cypress run",
     "e2e": "start-server-and-test start http://localhost:3000 cypress",
     "e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "start:expo": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
   },
+  "main": "./src/native/index.tsx",
   "dependencies": {
     "@prisma/client": "4.12.0",
     "@reduxjs/toolkit": "1.9.3",
     "axios": "1.3.5",
-    "d-system": "0.29.1",
+    "d-system": "0.30.4",
     "dayjs": "1.11.7",
     "dotenv": "16.0.3",
+    "expo": "48.0.16",
+    "expo-status-bar": "1.4.4",
     "mysql2": "3.2.1",
-    "next": "13.3.0",
+    "next": "13.4.1",
     "next-redux-wrapper": "8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-modal": "3.16.1",
+    "react-native": "0.71.7",
     "react-redux": "8.0.5",
     "redux": "4.2.1",
-    "styled-components": "5.3.9"
+    "styled-components": "5.3.10"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "13.3.0",
+    "@babel/core": "7.21.8",
+    "@next/eslint-plugin-next": "13.4.1",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
     "@testing-library/user-event": "14.4.3",
@@ -58,6 +67,6 @@
     "jest-environment-jsdom": "29.5.0",
     "prettier": "2.8.7",
     "prisma": "4.12.0",
-    "typescript": "5.0.4"
+    "typescript": "^4.9.4"
   }
 }
