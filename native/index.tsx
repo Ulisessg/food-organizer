@@ -2,17 +2,14 @@ import React, { type FC } from 'react'
 import { Link } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
-import { Text } from 'react-native'
-import pageStyles from 'native/pageStyles'
+import pageStyles from 'styles/pages/pageStyles'
 
-const Config: FC = () => (
+const Index: FC = () => (
     <SafeAreaView style={pageStyles.container}>
-      <Text>Configruración</Text>
 
-      <Link href="/">Ir a inicio</Link>
+      <Link href="/config">Ir a configuración</Link>
       <StatusBar style="auto" />
     </SafeAreaView>
 )
 
-// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-export default Config
+export default Index

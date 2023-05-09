@@ -7,6 +7,38 @@
       "dom.iterable",
       "esnext"
     ],
+    "paths": {
+      "src": [
+        "./src/*"
+      ],
+      "components": [
+        "./src/components/*"
+      ],
+      "context:": [
+        "./src/context/*"
+      ],
+      "controllers": [
+        "./src/controllers/*"
+      ],
+      "hooks": [
+        "./src/hooks/*"
+      ],
+      "lib": [
+        "./lib/*"
+      ],
+      "models": [
+        "./src/models/*"
+      ],
+      "styles": [
+        "./src/styles/*"
+      ],
+      "utils": [
+        "./src/utils/*"
+      ],
+      "pages": [
+        "'./pages/*'"
+      ],
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,

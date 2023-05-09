@@ -6,7 +6,7 @@ import { registerRootComponent } from 'expo'
 
 // Must be exported or Fast Refresh won't update the context
 export const App = () => {
-  const ctx = require.context('./app')
+  const ctx = require.context('./native')
   // eslint-disable-next-line react/jsx-filename-extension
   return <ExpoRoot context={ctx} />
 }

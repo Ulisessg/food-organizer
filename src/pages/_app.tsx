@@ -15,7 +15,7 @@ import { getPurchasePlacesThunk } from 'redux/slices/purchasePlacesSlice'
 import { getUomDataThunk } from 'redux/slices/unitsOfMeasureSlice/thunks'
 
 // eslint-disable-next-line sort-imports
-import '../styles/pages/GlobalStyles.css'
+import 'styles/pages/GlobalStyles.css'
 dayjs.extend(dayjsCustomParseFormat)
 dayjs.extend(dayjsWeekDayPlugin)
 dayjs.locale('es')

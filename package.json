@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --fix -d src",
+    "lint": "next lint --fix",
     "test": "jest",
     "test:watch": "jest --watch --coverage",
     "test:coverage": "jest --coverage",
@@ -24,7 +24,7 @@
     "metro": "0.76.0",
     "metro-resolver": "0.76.0"
   },
-  "main": "./src/native/index.js",
+  "main": "./index.js",
   "dependencies": {
     "@prisma/client": "4.13.0",
     "@reduxjs/toolkit": "1.9.5",
@@ -62,6 +62,7 @@
     "@types/react-modal": "3.13.1",
     "@types/styled-components": "5.1.26",
     "@typescript-eslint/eslint-plugin": "5.59.2",
+    "babel-plugin-module-resolver": "^5.0.0",
     "cypress": "12.9.0",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
