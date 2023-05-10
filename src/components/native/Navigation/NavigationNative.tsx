@@ -9,8 +9,7 @@ import { theme } from 'd-system/dist/native'
 
 const NavigationNative: FC = () => <NavigationStyles style={{
   borderTopColor: 'rgba(92, 92, 92, 0.68)',
-  borderTopWidth: 1,
-  position: 'absolute'
+  borderTopWidth: 1
 }}>
   <HomeIcon />
   <ModalContextProvider>
@@ -31,6 +30,8 @@ const NavigationStyles = styled.View`
   padding: 3px;
   border-top: 1px;
   border-color: ${theme.colors.dark1};
+  background-color: white;
+  height: 70px;
 `
 
 export default NavigationNative
