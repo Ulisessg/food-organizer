@@ -7,3 +7,12 @@ export type TDaysOfTheWeek = 'sunday'
 
 export type TDaysOfTheWeekInSpanish =
 'lunes' | 'martes' | 'miercoles' | 'jueves' | 'viernes' | 'sábado' | 'domingo'
+
+export const NativeRoutes = {
+  adminFoods: '/admin/foods',
+  adminIngredients: '/admin/ingredients',
+  adminMenus: '/admin/menu',
+  adminStock: '/admin/stock',
+  adminUnits: '/admin/units',
+  adminWeeklyMenus: '/admin/week'
+}

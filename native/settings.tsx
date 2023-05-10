@@ -1,17 +1,20 @@
 import React, { type FC } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import {
+  SafeAreaView,
+  ScrollView
+} from 'react-native'
+import SettingsList from 'components/native/SettingsList'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { Text } from 'react-native'
-import pageStyles from 'styles/pages/pageStyles'
-
 const Config: FC = () => (
   <>
     <Stack.Screen options={{
       headerTitle: 'Configuración'
     }} />
-    <SafeAreaView style={pageStyles.container}>
-      <Text>Configruración</Text>
+    <SafeAreaView>
+      <ScrollView>
+        <SettingsList />
+      </ScrollView>
       <StatusBar style="auto" />
     </SafeAreaView>
   </>
