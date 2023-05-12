@@ -1,12 +1,12 @@
-import CreateMenu from 'components/CreateMenu'
-import DisplayDailyMenus from 'components/DisplayMenus'
-import ErrorMessage from 'components/common/ErrorMessage'
+import CreateMenu from 'components/web/CreateMenu'
+import DisplayDailyMenus from 'components/web/DisplayMenus'
+import ErrorMessage from 'components/web/common/ErrorMessage'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
 import type { NextPage } from 'next'
 import React from 'react'
 import { type RootState } from 'redux/store'
-import Title from 'components/common/Title'
+import Title from 'components/web/common/Title'
 import { useSelector } from 'react-redux'
 
 const Menu: NextPage = () => {

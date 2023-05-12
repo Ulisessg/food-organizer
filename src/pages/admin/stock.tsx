@@ -1,13 +1,13 @@
 import { type AppDispatch, type RootState } from 'redux/store'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import CreateIngredientStock from 'components/CreateIngredientStock'
-import DisplayIngredientsStock from 'components/DisplayIngredientsStock'
-import ErrorMessage from 'components/common/ErrorMessage'
+import CreateIngredientStock from 'components/web/CreateIngredientStock'
+import DisplayIngredientsStock from 'components/web/DisplayIngredientsStock'
+import ErrorMessage from 'components/web/common/ErrorMessage'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
 import type { NextPage } from 'next'
-import Title from 'components/common/Title'
+import Title from 'components/web/common/Title'
 import { getIngredientsStockThunk } from 'redux/slices/ingredientsStockSlice'
 
 const IngredientsStock: NextPage = () => {

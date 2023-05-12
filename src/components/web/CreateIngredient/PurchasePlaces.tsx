@@ -1,4 +1,7 @@
-import { ButtonAddSelect, ButtonDeleteSelect, Container } from 'components/common/MultipleSelects'
+import {
+  ButtonAddSelect,
+  ButtonDeleteSelect, Container
+} from 'components/web/common/MultipleSelects'
 import React, { type ChangeEvent, type FC, Fragment, useEffect } from 'react'
 import { Select, useInputs } from 'd-system'
 import { type RootState } from 'redux/store'

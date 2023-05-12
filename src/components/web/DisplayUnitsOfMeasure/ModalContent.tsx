@@ -3,7 +3,7 @@ import {
   InputModalUpdateData,
   InputsContainer,
   InputsSectionTitle
-} from 'components/common/ModalUpdateData'
+} from 'components/web/common/ModalUpdateData'
 import React, { type FC, Fragment } from 'react'
 import { type RootState } from 'redux/store'
 import { type UseInputsContextProps } from 'd-system'

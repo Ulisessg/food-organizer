@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import { ButtonAddSelect, ButtonDeleteSelect } from 'components/common/MultipleSelects'
+import { ButtonAddSelect, ButtonDeleteSelect } from 'components/web/common/MultipleSelects'
 import { Input, useInputs } from 'd-system'
 import React, { type ChangeEvent, type FC, Fragment, useState } from 'react'
 import { type RootState } from 'redux/store'

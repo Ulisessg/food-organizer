@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { type FC } from 'react'
-import EditTableButtons from 'components/common/EditTableButtons'
+import EditTableButtons from 'components/web/common/EditTableButtons'
 import { Td } from 'd-system'
 
 const Rows: FC<RowsProps> = ({

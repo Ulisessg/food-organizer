@@ -2,7 +2,7 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Input, useInputs } from 'd-system'
 import React, { type ChangeEvent, type FC } from 'react'
-import Filter from 'components/common/Filter'
+import Filter from 'components/web/common/Filter'
 import { type RootState } from 'redux/store'
 import { type TUseCreateWeeklyMenuReturn } from 'hooks/components/useCreateWeeklyMenu'
 import styled from 'styled-components'

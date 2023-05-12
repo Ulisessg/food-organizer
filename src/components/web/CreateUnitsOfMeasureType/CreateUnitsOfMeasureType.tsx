@@ -5,9 +5,9 @@ import React, {
   type FC,
   useRef
 } from 'react'
-import Details from 'components/common/Details'
-import { LoadingSpinnerContainer } from 'components/common/FormInDetailsStyles'
-import RequestResultStyles from 'components/common/RequestResultStyles'
+import Details from 'components/web/common/Details'
+import { LoadingSpinnerContainer } from 'components/web/common/FormInDetailsStyles'
+import RequestResultStyles from 'components/web/common/RequestResultStyles'
 import { type RootState } from 'redux/store'
 import useCreateUnitsOfMeasureTypeForm from 'hooks/components/useCreateUnitsOfMeasureTypeForm'
 import { useSelector } from 'react-redux'

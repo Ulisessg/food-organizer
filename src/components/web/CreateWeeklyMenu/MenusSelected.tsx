@@ -1,6 +1,6 @@
 import Menu, { MenusContainer } from './Menu'
 import React, { type ChangeEvent, type FC, Fragment } from 'react'
-import RequestResultStyles from 'components/common/RequestResultStyles'
+import RequestResultStyles from 'components/web/common/RequestResultStyles'
 import { type RootState } from 'redux/store'
 import randomId from 'utils/randomId'
 

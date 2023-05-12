@@ -1,13 +1,13 @@
-import CreateFood from 'components/CreateFood'
-import CreateFoodType from 'components/CreateFoodType'
-import DisplayFoods from 'components/DisplayFoods'
-import ErrorMessage from 'components/common/ErrorMessage'
+import CreateFood from 'components/web/CreateFood'
+import CreateFoodType from 'components/web/CreateFoodType'
+import DisplayFoods from 'components/web/DisplayFoods'
+import ErrorMessage from 'components/web/common/ErrorMessage'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
 import type { NextPage } from 'next'
 import React from 'react'
 import { type RootState } from 'redux/store'
-import Title from 'components/common/Title'
+import Title from 'components/web/common/Title'
 import { useSelector } from 'react-redux'
 
 const Foods: NextPage = () => {

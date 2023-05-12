@@ -4,12 +4,12 @@ import React, {
   type FC,
   Fragment, useRef
 } from 'react'
-import AlertMessage from 'components/common/RequestResultStyles'
-import Details from 'components/common/Details'
-import ErrorMessage from 'components/common/ErrorMessage'
-import { LoadingSpinnerContainer } from 'components/common/FormInDetailsStyles'
+import AlertMessage from 'components/web/common/RequestResultStyles'
+import Details from 'components/web/common/Details'
+import ErrorMessage from 'components/web/common/ErrorMessage'
+import { LoadingSpinnerContainer } from 'components/web/common/FormInDetailsStyles'
 import { type RootState } from 'redux/store'
-import Select from 'components/common/Select'
+import Select from 'components/web/common/Select'
 import useCreateUnitsOfMeasure from 'hooks/components/useCreateUnitsOfMeasure'
 import { useSelector } from 'react-redux'
 

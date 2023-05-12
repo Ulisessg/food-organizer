@@ -1,6 +1,6 @@
 import { Button, Form, Input, LoadingSpinner } from 'd-system'
 import React, { type FC, useRef } from 'react'
-import Details from 'components/common/Details'
+import Details from 'components/web/common/Details'
 import { LoadingSpinnerContainer } from './common/FormInDetailsStyles'
 import RequestResultStyles from './common/RequestResultStyles'
 import { type RootState } from 'redux/store'

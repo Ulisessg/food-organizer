@@ -16,7 +16,7 @@ import ModalContent from './ModalContent'
 import { ModalContext } from 'context/ModalContext'
 import {
   ModalUpdateData
-} from 'components/common/ModalUpdateData'
+} from 'components/web/common/ModalUpdateData'
 
 import { type RootState } from 'redux/store'
 import { useSelector } from 'react-redux'

@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import React, { type FC, type MouseEvent } from 'react'
-import ButtonOpenModal from 'components/common/ModalUpdateData/ButtonOpenModal'
+import ButtonOpenModal from 'components/web/common/ModalUpdateData/ButtonOpenModal'
 import { Td } from 'd-system'
 
 export const RowWithSpan: FC<RowWithSpanProps> = ({

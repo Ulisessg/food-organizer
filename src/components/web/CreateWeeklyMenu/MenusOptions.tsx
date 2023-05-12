@@ -1,6 +1,6 @@
 import Menu, { MenusContainer } from './Menu'
 import React, { type ChangeEvent, type FC, Fragment } from 'react'
-import RequestResultStyles from 'components/common/RequestResultStyles'
+import RequestResultStyles from 'components/web/common/RequestResultStyles'
 import { type TDaysOfTheWeek } from 'utils/constants'
 import { type TUseCreateWeeklyMenuReturn } from 'hooks/components/useCreateWeeklyMenu'
 import useMenusOptions from 'hooks/components/useMenusOptions'

@@ -3,7 +3,7 @@ import React, { type FC } from 'react'
 import { Table, Th } from 'd-system'
 import { ModalContextProvider } from 'context/ModalContext'
 import Rows from './Rows'
-import TableContainer from 'components/common/TableContainer'
+import TableContainer from 'components/web/common/TableContainer'
 
 const DisplayUnitsOfMeasure: FC = () => <ModalContextProvider>
     <TableContainer>

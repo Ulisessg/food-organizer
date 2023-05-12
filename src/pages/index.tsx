@@ -1,9 +1,9 @@
 /* eslint-disable max-lines-per-function */
 import IndexContainer, { CardsContainer } from 'styles/pages/index.styles'
-import Card from 'components/Card'
+import Card from 'components/web/Card'
 import Head from 'next/head'
 import { Link } from 'd-system'
-import Title from 'components/common/Title'
+import Title from 'components/web/common/Title'
 
 export default function Home (): JSX.Element {
   return (

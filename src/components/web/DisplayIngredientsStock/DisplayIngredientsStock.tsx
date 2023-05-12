@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { type FC, Fragment } from 'react'
 import { Table, Td, Th } from 'd-system'
-import EditTableButtons from 'components/common/EditTableButtons'
+import EditTableButtons from 'components/web/common/EditTableButtons'
 import { type RootState } from 'redux/store'
-import TableContainer from 'components/common/TableContainer'
+import TableContainer from 'components/web/common/TableContainer'
 import { useSelector } from 'react-redux'
 
 const DisplayIngredientsStock:
