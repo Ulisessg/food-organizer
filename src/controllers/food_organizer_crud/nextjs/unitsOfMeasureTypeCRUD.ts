@@ -3,7 +3,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next'
 import createUnitOfMeasureTypeSql, {
   type CreateUnitOfMeasureType
-} from '../sql/unitsOfMeasureType/createUnitsOfMeasureTyeSql'
+} from '../sql/unitsOfMeasureType/createUnitsOfMeasureTypeSql'
 import capitalize from 'utils/capitalize'
 import prisma from 'lib/prisma'
 import { type response } from 'controllers/response'

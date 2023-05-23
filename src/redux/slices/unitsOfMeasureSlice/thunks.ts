@@ -7,7 +7,7 @@ import {
 } from '@prisma/client'
 import {
   type CreateUnitOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/createUnitsOfMeasureTyeSql'
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/createUnitsOfMeasureTypeSql'
 import {
   type CreateUom
 } from 'controllers/food_organizer_crud/sql/unitsOfMeasure/createUnitsOfMeasureSql'
