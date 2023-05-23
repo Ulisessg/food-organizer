@@ -8,7 +8,7 @@ import axios, { type AxiosResponse } from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
   type GetMenusIngredients
-} from 'controllers/food_organizer_crud/sql/menusIngredients/getMenusIngredientsSql'
+} from 'controllers/food_organizer_crud/sql/menus/getMenusIngredientsSql'
 import { type response } from 'controllers/response'
 
 const initialState: TMenuState = {

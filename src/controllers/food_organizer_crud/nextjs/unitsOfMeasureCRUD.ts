@@ -7,14 +7,14 @@ import
   getUomGroupedByTypeSql
 } from '../sql/unitsOfMeasure/getUnitsOfMeasureGroupedByTypeSql'
 import createUnitOfMeasureSql,
-{ type CreateUom } from '../sql/unitsOfMeasure/createUnitOfMeasureSql'
+{ type CreateUom } from '../sql/unitsOfMeasure/createUnitsOfMeasureSql'
 
 import
 getUnitsOfMeasureTypeSql, {
   type TGetUnitsOfMeasureType
 } from '../sql/unitsOfMeasureType/getUnitsOfMeasureTypeSql'
 import updateUnitOfMeasureSql,
-{ type UpdateUnitOfMeasure } from '../sql/unitsOfMeasure/updateUnitOfMeasureSql'
+{ type UpdateUnitOfMeasure } from '../sql/unitsOfMeasure/updateUnitsOfMeasureSql'
 import { type response } from 'controllers/response'
 import { type units_of_measure } from '@prisma/client'
 

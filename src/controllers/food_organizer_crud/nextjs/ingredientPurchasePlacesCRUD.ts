@@ -3,16 +3,16 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
-import createIngredientPurchasePlaceSql, {
+import createIngredientPurchasePlacesSql, {
   type CreateIngredientPurchasePlace,
   getIngredientPurchasePlacesCreatedSql
-} from '../sql/ingredientPurchasePlaces/createIngredientPurchasePlaceSql'
+} from '../sql/ingredientPurchasePlaces/createIngredientPurchasePlacesSql'
 import { type TIngr_purchase_places } from '../sql/ingredients/getIngredientsSql'
 import type { ingredient_purchase_places } from '@prisma/client'
 import { type response } from 'controllers/response'
 
 import updateIngredientPurchasePlaceSql
-  from '../sql/ingredientPurchasePlaces/updateIngredientPurchasePlaceSql'
+  from '../sql/ingredientPurchasePlaces/updateIngredientPurchasePlacesSql'
 
 export const createIngredientPurchasePlace = async (
   req: CreateIngredientPurchasePlaceRequest,
@@ -26,7 +26,7 @@ export const createIngredientPurchasePlace = async (
       })
       return
     }
-    const ingredientPurchasePlacesCreation = await createIngredientPurchasePlaceSql(req.body)
+    const ingredientPurchasePlacesCreation = await createIngredientPurchasePlacesSql(req.body)
     if (ingredientPurchasePlacesCreation === 0) {
       res.status(400).send({
         data: 'error creating purchase place',

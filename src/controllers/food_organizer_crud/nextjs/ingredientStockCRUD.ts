@@ -7,7 +7,7 @@ import getIngredientsStockSql,
 { type GetIngredientStock } from '../sql/ingredientStock/getIngredientsStockSql'
 import { type ingredient_stock } from '@prisma/client'
 import { type response } from 'controllers/response'
-import updateIngredientStockSql from '../sql/ingredientStock/updateIngredientStockSql'
+import updateIngredientStockSql from '../sql/ingredientStock/updateIngredientsStockSql'
 
 export const createIngredientStock = async (
   req: CreateIngredientStockRequest,

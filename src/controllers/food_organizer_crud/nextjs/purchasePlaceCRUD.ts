@@ -2,12 +2,12 @@
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import createPurchasePlaceSql,
-{ type CreatePurchasePlace } from '../sql/purchasePlaces/createPurchasePlaceSql'
+{ type CreatePurchasePlace } from '../sql/purchasePlaces/createPurchasePlacesSql'
 import getPurchasePlacesSql,
 { type GetPurchasePlaces } from '../sql/purchasePlaces/getPurchasePlacesSql'
 import type { purchase_places } from '@prisma/client'
 import { type response } from 'controllers/response'
-import updatePurchasePlaceSql from '../sql/purchasePlaces/updatePurchasePlaceSql'
+import updatePurchasePlaceSql from '../sql/purchasePlaces/updatePurchasePlacesSql'
 
 // eslint-disable-next-line max-statements
 export const createPurchasePlace = async (

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
-import createMenuPriceSql, { type CreateMenuPrice } from '../sql/menuPrice/createMenuPriceSql'
-import getMenuPriceSql from '../sql/menuPrice/getMenuPriceSql'
+import createMenuPriceSql, { type CreateMenuPrice } from '../sql/menuPrices/createMenuPricesSql'
+import getMenuPriceSql from '../sql/menuPrices/getMenuPricesSql'
 import type { menu_prices } from '@prisma/client'
 import { type response } from 'controllers/response'
-import updateMenuPriceSql from '../sql/menuPrice/updateMenuPriceSql'
+import updateMenuPriceSql from '../sql/menuPrices/updateMenuPricesSql'
 
 export const createMenuPrice = async (
   req: CreateMenuPriceRequest,

@@ -2,10 +2,10 @@
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import createWeeklyMenuPriceSql,
-{ type CreateWeeklyMenuPrice } from '../sql/weeklyMenuPrice/createWeeklyMenuPriceSql'
-import getWeeklyMenuPricesSql from '../sql/weeklyMenuPrice/getWeeklyMenuPricesSql'
+{ type CreateWeeklyMenuPrice } from '../sql/weeklyMenuPrices/createWeeklyMenuPricesSql'
+import getWeeklyMenuPricesSql from '../sql/weeklyMenuPrices/getWeeklyMenuPricesSql'
 import { type response } from 'controllers/response'
-import updateWeeklyMenuPriceSql from '../sql/weeklyMenuPrice/updateWeeklyMenuPriceSql'
+import updateWeeklyMenuPriceSql from '../sql/weeklyMenuPrices/updateWeeklyMenuPricesSql'
 import type { weekly_menu_prices } from '@prisma/client'
 
 export const createWeeklyMenuPrice = async (

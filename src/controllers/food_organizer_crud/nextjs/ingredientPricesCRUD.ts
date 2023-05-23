@@ -2,11 +2,11 @@
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import createIngredientPriceSql,
-{ type CreateIngredientPrice } from '../sql/ingredientPrices/createIngredientPriceSql'
+{ type CreateIngredientPrice } from '../sql/ingredientPrices/createIngredientPricesSql'
 import getIngredientPricesSql from '../sql/ingredientPrices/getIngredientPricesSql'
 import type { ingredient_prices } from '@prisma/client'
 import { type response } from 'controllers/response'
-import updateIngredientPriceSql from '../sql/ingredientPrices/updateIngredientPriceSql'
+import updateIngredientPriceSql from '../sql/ingredientPrices/updateIngredientPricesSql'
 
 export const createIngredientPrice = async (
   req: CreateIngredientPriceRequest,

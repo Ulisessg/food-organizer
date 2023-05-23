@@ -3,7 +3,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
   type CreatePurchasePlace
-} from 'controllers/food_organizer_crud/sql/purchasePlaces/createPurchasePlaceSql'
+} from 'controllers/food_organizer_crud/sql/purchasePlaces/createPurchasePlacesSql'
 import {
   type GetPurchasePlaces
 } from 'controllers/food_organizer_crud/sql/purchasePlaces/getPurchasePlacesSql'

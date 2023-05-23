@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from 'next'
-import createFoodTypeSql, { type CreateFoodType } from '../sql/foodTypes/createFoodTypeSql'
+import createFoodTypeSql, { type CreateFoodType } from '../sql/foodTypes/createFoodTypesSql'
 import getFoodTypesSql, { type GetFoodTypes } from '../sql/foodTypes/getFoodTypesSql'
 import type { food_types } from '@prisma/client'
 import { type response } from 'controllers/response'

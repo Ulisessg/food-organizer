@@ -5,6 +5,7 @@ const nextConfig = {
   },
   distDir: 'build',
   experimental: {
+    // Added to avoid nextjs uses babel config used to React Native
     forceSwcTransforms: true
   },
   // eslint-disable-next-line require-await, space-before-function-paren

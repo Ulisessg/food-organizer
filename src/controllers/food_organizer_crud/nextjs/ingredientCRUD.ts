@@ -4,9 +4,9 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import createingredientSql, {
   type CreateIngredient,
   type CreateIngredientReturn
-} from '../sql/ingredients/createIngredientSql'
+} from '../sql/ingredients/createIngredientsSql'
 import getIngredientsSql, { type GetIngredients } from '../sql/ingredients/getIngredientsSql'
-import updateIngredientSql, { type UpdateIngredient } from '../sql/ingredients/updateIngredientSql'
+import updateIngredientSql, { type UpdateIngredient } from '../sql/ingredients/updateIngredientsSql'
 import { type ingredients } from '@prisma/client'
 import { type response } from 'controllers/response'
 

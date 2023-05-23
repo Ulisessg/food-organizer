@@ -1,5 +1,5 @@
 import prisma from 'lib/prisma'
-import weeklyMenuDaySql from './getWeeklyMenuDaySql'
+import weeklyMenuDaySql from './getWeeklyMenuDaysSql'
 
 const getWeeklyMenusSql = async (): Promise<GetWeeklyMenu> => {
   const weeklyMenus = await prisma.$queryRaw<GetWeeklyMenu>`

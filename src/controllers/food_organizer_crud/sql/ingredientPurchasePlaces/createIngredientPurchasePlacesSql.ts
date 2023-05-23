@@ -2,7 +2,7 @@ import IngredientPurchasePlaceValidations from 'models/ingredientPurchasePlaceVa
 import { type TIngr_purchase_places } from '../ingredients/getIngredientsSql'
 import prisma from 'lib/prisma'
 
-const createIngredientPurchasePlaceSql =
+const createIngredientPurchasesPlaceSql =
  async (ingrPurchasePlaces: CreateIngredientPurchasePlace): Promise<number> => {
    if (ingrPurchasePlaces.length > 10) throw new Error('not more of 10 purchase places')
    for (const purchasePlace of ingrPurchasePlaces) {
@@ -40,4 +40,4 @@ export type CreateIngredientPurchasePlace = Array<{
   creation_date: string
 }>
 
-export default createIngredientPurchasePlaceSql
+export default createIngredientPurchasesPlaceSql

@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { type GetWeeklyMenu } from './getWeeklyMenusSql'
 import prisma from 'lib/prisma'
-import weeklyMenuDaySql from './getWeeklyMenuDaySql'
+import weeklyMenuDaySql from './getWeeklyMenuDaysSql'
 
 const getWeeklyMenuCreated = async (weeklyMenuId: number): Promise<GetWeeklyMenu> => {
   const weeklyMenuCreated = await prisma.$queryRaw<GetWeeklyMenu>`SELECT

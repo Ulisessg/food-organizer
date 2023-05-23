@@ -1,4 +1,4 @@
-import { type CreateIngredient } from './createIngredientSql'
+import { type CreateIngredient } from './createIngredientsSql'
 import capitalize from 'utils/capitalize'
 import { type ingredients } from '@prisma/client'
 import prisma from 'lib/prisma'

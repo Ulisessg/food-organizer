@@ -5,7 +5,7 @@
 import {
   type CreateIngredient,
   type CreateIngredientReturn
-} from 'controllers/food_organizer_crud/sql/ingredients/createIngredientSql'
+} from 'controllers/food_organizer_crud/sql/ingredients/createIngredientsSql'
 import {
   type GetIngredients,
   type TIngr_purchase_places
@@ -14,7 +14,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
   type CreateIngredientPurchasePlace
 } from
-  'controllers/food_organizer_crud/sql/ingredientPurchasePlaces/createIngredientPurchasePlaceSql'
+  'controllers/food_organizer_crud/sql/ingredientPurchasePlaces/createIngredientPurchasePlacesSql'
 import { type RootState } from 'redux/store'
 import axios from 'axios'
 import dayjs from 'dayjs'

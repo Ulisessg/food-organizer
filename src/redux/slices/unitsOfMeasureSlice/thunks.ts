@@ -7,10 +7,10 @@ import {
 } from '@prisma/client'
 import {
   type CreateUnitOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/createUnitOfMeasureTyeSql'
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/createUnitsOfMeasureTyeSql'
 import {
   type CreateUom
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasure/createUnitOfMeasureSql'
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasure/createUnitsOfMeasureSql'
 import {
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'

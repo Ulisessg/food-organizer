@@ -6,7 +6,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import createMenuFoodsSql,
 { type CreateMenuFoods } from '../sql/menuFoods/createMenuFoodsSql'
 import getMenusIngredientsSql,
-{ type GetMenusIngredients } from '../sql/menusIngredients/getMenusIngredientsSql'
+{ type GetMenusIngredients } from '../sql/menus/getMenusIngredientsSql'
 import menuValidations, { validations } from 'models/menuValidations'
 import { type menus } from '@prisma/client'
 import prisma from 'lib/prisma'

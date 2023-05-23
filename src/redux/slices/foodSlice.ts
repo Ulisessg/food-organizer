@@ -10,7 +10,7 @@ import axios, { type AxiosResponse } from 'axios'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
   type CreateFoodType
-} from 'controllers/food_organizer_crud/sql/foodTypes/createFoodTypeSql'
+} from 'controllers/food_organizer_crud/sql/foodTypes/createFoodTypesSql'
 import {
   type GetFoodTypes
 } from 'controllers/food_organizer_crud/sql/foodTypes/getFoodTypesSql'
