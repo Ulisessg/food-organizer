@@ -1,36 +1,34 @@
-import prisma from 'lib/prisma'
 import weeklyMenuDaySql from './getWeeklyMenuDaysSql'
 
-const getWeeklyMenusSql = async (): Promise<GetWeeklyMenu> => {
-  const weeklyMenus = await prisma.$queryRaw<GetWeeklyMenu>`
-  SELECT
+const getWeeklyMenusSql = `
+SELECT
 weekly_menus.id,
 weekly_menus.creation_date,
 ${weeklyMenuDaySql(
 1,
 'monday'
 )},
-  ${weeklyMenuDaySql(
+${weeklyMenuDaySql(
 2,
 'tuesday'
 )},
-  ${weeklyMenuDaySql(
+${weeklyMenuDaySql(
 3,
 'wednesday'
 )},
-  ${weeklyMenuDaySql(
+${weeklyMenuDaySql(
 4,
 'thursday'
 )},
-  ${weeklyMenuDaySql(
+${weeklyMenuDaySql(
 5,
 'friday'
 )},
-  ${weeklyMenuDaySql(
+${weeklyMenuDaySql(
 6,
 'saturday'
 )},
-  ${weeklyMenuDaySql(
+${weeklyMenuDaySql(
 7,
 'sunday'
 )}
@@ -38,9 +36,6 @@ FROM weekly_menus
 GROUP BY weekly_menus.id
 ORDER BY weekly_menus.creation_date
 `
-  return weeklyMenus
-}
-
 export default getWeeklyMenusSql
 
 export type GetWeeklyMenu = Array<{

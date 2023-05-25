@@ -1,23 +1,39 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { type ingredient_prices } from '@prisma/client'
-import priceValidations from 'models/priceValidations'
-import prisma from 'lib/prisma'
+import { DbTablesNames } from 'utils/constants'
+import getParametrizedValuesSqlSentence from 'utils/getParametrizedValuesSqlSentence'
+import { type ingredient_prices } from 'controllers/food_organizer_crud/dbTablesTypes'
 
-const createIngredientPriceSql =
- async (ingredientPrice: CreateIngredientPrice): Promise<ingredient_prices> => {
-   const { creation_date, ingredient_id, price_date, value, purchase_place_id } = ingredientPrice
-   priceValidations({
-     creationDate: creation_date as unknown as string,
-     id: ingredient_id,
-     idName: 'ingredientPrice',
-     priceDate: price_date as unknown as string,
-     value: value as unknown as number
-   })
-   const ingredientPriceCreated = await prisma.ingredient_prices.create({
-     data: { creation_date, ingredient_id, price_date, purchase_place_id, value }
-   })
-   return ingredientPriceCreated
- }
+/**
+ *  Create a register in ingredient_prices table
+ *
+ *  Order and types of params
+ *
+ *  + id - null
+ *  + creation_date - string
+ *  + food_id - number
+ *  + price_date - string
+ *  + value -number
+ *
+ *
+ * @param recordsAmount - Number - How many ingredient_prices will be registered
+ * @returns string
+ */
+const createIngredientPriceSql = (recordsAmount: number): string => {
+  const sqlScript = `
+    INSERT INTO ${DbTablesNames.ingredientPrices} (
+      id,
+      creation_date,
+      ingredient_id,
+      price_date, 
+      value
+    )
+    ${getParametrizedValuesSqlSentence(
+5,
+recordsAmount
+)}
+  `
+
+  return sqlScript
+}
 
 export interface CreateIngredientPrice extends Omit<ingredient_prices, 'id'> {
 

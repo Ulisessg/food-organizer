@@ -1,10 +1,5 @@
-import { type menu_foods } from '@prisma/client'
-import prisma from 'lib/prisma'
+import { DbTablesNames } from 'utils/constants'
 
-const getMenuFoodsSql = async (): Promise<menu_foods[]> => {
-  const menuFoods = await prisma.menu_foods.findMany()
-
-  return menuFoods
-}
+const getMenuFoodsSql = `SELECT * FROM ${DbTablesNames.menuFoods}`
 
 export default getMenuFoodsSql

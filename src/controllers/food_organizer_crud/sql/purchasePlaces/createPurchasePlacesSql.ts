@@ -1,31 +1,28 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import PurchasePlaceValidations from 'models/purchasePlaceValidations'
-import capitalize from 'utils/capitalize'
-import prisma from 'lib/prisma'
-import { type purchase_places } from '@prisma/client'
+import { DbTablesNames } from 'utils/constants'
+import getParametrizedValuesSqlSentence from 'utils/getParametrizedValuesSqlSentence'
 
-const createPurchasePlaceSql = async (purchasePlace: CreatePurchasePlace):
-Promise<purchase_places> => {
-  const { address, creation_date, name } = purchasePlace
-  PurchasePlaceValidations({
-    address,
-    creationDate: creation_date,
-    name
-  })
-  let capitalizedAddress: string | null = null
-  if (typeof address === 'string') {
-    capitalizedAddress = capitalize(address)
-  }
-  const result = await prisma.purchase_places.create({
-    data: {
-      address: capitalizedAddress,
-      creation_date,
-      name: capitalize(name)
-    }
-  })
-  return result
-}
-
+/**
+ * Params order
+ * + id
+ * + name
+ * + address
+ * + creation_date
+ *
+ * @param recordsAmourt number
+ * @returns
+ */
+const createPurchasePlaceSql = (recordsAmourt: number):
+string => `INSERT INTO ${DbTablesNames.purchasePlaces} (
+  id,
+  name,
+  address,
+  creation_date
+)
+${getParametrizedValuesSqlSentence(
+4,
+recordsAmourt
+)}
+`
 export default createPurchasePlaceSql
 
 export interface CreatePurchasePlace {

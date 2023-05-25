@@ -1,3 +1,9 @@
+/**
+ *
+ * @param dayId
+ * @param dayName
+ * @returns
+ */
 const weeklyMenuDaySql = (dayId: number, dayName: string): string => `(SELECT
   JSON_ARRAYAGG(JSON_OBJECT(
     'menu_id', weekly_menu_days.menu_id,

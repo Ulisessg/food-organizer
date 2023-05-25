@@ -1,23 +1,37 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { type food_prices } from '@prisma/client'
-import priceValidations from 'models/priceValidations'
-import prisma from 'lib/prisma'
+import { DbTablesNames } from 'utils/constants'
+import getParametrizedValuesSqlSentence from 'utils/getParametrizedValuesSqlSentence'
 
-const createFoodPriceSql = async (foodPrice: food_prices): Promise<food_prices> => {
-  const { creation_date, food_id, price_date, value } = foodPrice
-  priceValidations({
-    creationDate: creation_date as unknown as string,
-    id: food_id,
-    idName: 'foodPrice',
-    priceDate: price_date as unknown as string,
-    value: value as unknown as number
-  })
-  const foodPriceCreated = await prisma.food_prices.create({
-    data: {
-      creation_date, food_id, price_date, value
-    }
-  })
-  return foodPriceCreated
+/**
+ *  Create a register in food_prices table
+ *
+ *  Order and types of params
+ *
+ *  + id - null
+ *  + creation_date - string
+ *  + food_id - number
+ *  + price_date - string
+ *  + value -number
+ *
+ *
+ * @param recordsAmount - Number - How many food_ingredients will be registered
+ * @returns string
+ */
+const createFoodPriceSql = (recordsAmount: number): string => {
+  const sqlScript = `
+    INSERT INTO ${DbTablesNames.foodPrices} (
+      id,
+      creation_date,
+      food_id,
+      price_date, 
+      value
+    )
+    ${getParametrizedValuesSqlSentence(
+5,
+recordsAmount
+)}
+  `
+
+  return sqlScript
 }
 
 export default createFoodPriceSql

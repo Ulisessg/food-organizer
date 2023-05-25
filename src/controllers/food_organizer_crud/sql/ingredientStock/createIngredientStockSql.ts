@@ -1,30 +1,32 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+import { DbTablesNames } from 'utils/constants'
+import getParametrizedValuesSqlSentence from 'utils/getParametrizedValuesSqlSentence'
+import { type ingredient_stock } from 'controllers/food_organizer_crud/dbTablesTypes'
 
-import ingredientStockValidations from 'models/ingredientStockValidations'
-import { type ingredient_stock } from '@prisma/client'
-import prisma from 'lib/prisma'
-
-const createIngredientStockSql = async (ingredientStock: CreateIngredientStock):
-Promise<ingredient_stock> => {
-  const { comment, ingredient_id, ingredient_qty, creation_date } = ingredientStock
-
-  ingredientStockValidations({
-    comment,
-    creationDate: creation_date as unknown as string,
-    ingredientId: ingredient_id,
-    ingredient_qty
-
-  })
-  const creationresult = await prisma.ingredient_stock.create({
-    data: {
-      comment,
-      creation_date,
-      ingredient_id,
-      ingredient_qty
-    }
-  })
-  return creationresult
-}
+/**
+ * Params order
+ * + id - nulñ
+ * + ingredient_id - number
+ * + ingredient_qty - number
+ * + comment - string
+ * + creation_date - string
+ *
+ * @param recordsAmount
+ * @returns
+ */
+const createIngredientStockSql = (recordsAmount:
+number):
+string => `INSERT INTO ${DbTablesNames.ingredientsStock} (
+  id,
+  ingredient_id,
+  ingredient_qty,
+  comment,
+  creation_date
+)
+${getParametrizedValuesSqlSentence(
+5,
+recordsAmount
+)}
+`
 
 export interface CreateIngredientStock extends Omit<ingredient_stock, 'id' | 'creation_date'> {
   creation_date: string

@@ -1,25 +1,22 @@
 import { type CreateIngredient } from './createIngredientsSql'
-import capitalize from 'utils/capitalize'
-import { type ingredients } from '@prisma/client'
-import prisma from 'lib/prisma'
-import { validations } from 'models/ingredientValidations'
+import { DbTablesNames } from 'utils/constants'
 
-const updateIngredientSql = async (ingredient: UpdateIngredient): Promise<ingredients> => {
-  const { comment, image, name, uomId, id } = ingredient
-  validations.comment(comment)
-  validations.image(image)
-  validations.name(name)
-  validations.uomId(uomId)
-  const ingredientUpdated = await prisma.ingredients.update({
-    data: {
-      comment, image, name: capitalize(name), uom_id: uomId
-    },
-    where: {
-      id
-    }
-  })
-  return ingredientUpdated
-}
+/**
+ * Params order and types
+ * + name - string
+ * + uom_id - number,
+ * + image - string | null
+ * + comment - string | null
+ * + ingredient.id - number
+ */
+const updateIngredientSql = `UPDATE ${DbTablesNames.ingredients} SET
+  name = ?,
+  uom_id = ?,
+  image = ?,
+  comment = ?
+
+  WHERE ${DbTablesNames.ingredients}.id = ?
+`
 
 export interface UpdateIngredient extends CreateIngredient {
   id: number

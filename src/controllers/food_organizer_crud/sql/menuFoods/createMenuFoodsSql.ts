@@ -1,22 +1,29 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { type Prisma, type menu_foods } from '@prisma/client'
-import menuFoodsValidations from 'models/menuFoodsValidations'
-import prisma from 'lib/prisma'
+import { DbTablesNames } from 'utils/constants'
+import getParametrizedValuesSqlSentence from 'utils/getParametrizedValuesSqlSentence'
+import { type menu_foods } from 'controllers/food_organizer_crud/dbTablesTypes'
 
-export const createMenuFoodsSql = async (data: CreateMenuFoods): Promise<Prisma.BatchPayload> => {
-  if (!Array.isArray(data)) throw new Error('Invalid body: not array')
-  for (const { creation_date, menu_id, food_id } of data) {
-    menuFoodsValidations({
-      creationDate: creation_date as unknown as string,
-      food_id,
-      menu_id
-    })
-  }
-  const createMenuFoodsResult = await prisma.menu_foods.createMany({
-    data: [...data]
-  })
-  return createMenuFoodsResult
-}
+/**
+ *  Params order and types
+ *  + id - null
+ *  + menu_id - number
+ *  + food_id - number
+ *  + creation_date - string
+ *
+ * @param recordsAmount - number
+ * @returns string
+ */
+const createMenuFoodsSql = (recordsAmount: number):
+string => `INSERT INTO ${DbTablesNames.menuFoods} (
+  id,
+  menu_id,
+  food_id,
+  creation_date
+)
+${getParametrizedValuesSqlSentence(
+4,
+recordsAmount
+)}
+`
 
 export type CreateMenuFoods = Array<Omit<menu_foods, 'id'>>
 

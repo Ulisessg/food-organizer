@@ -1,26 +1,19 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { type ingredient_stock } from '@prisma/client'
-import prisma from 'lib/prisma'
-import { validations } from 'models/ingredientStockValidations'
+import { DbTablesNames } from 'utils/constants'
 
-const updateIngredientStockSql = async (ingredientStock: ingredient_stock):
-Promise<ingredient_stock> => {
-  const { comment, ingredient_id, ingredient_qty, id } = ingredientStock
+/**
+ * Params order and types
+ *
+ * + ingredient_id - number
+ * + ingredient_qty - number
+ * + comment - string | null
+ * + ingredient_stock.id - number
+ */
+const updateIngredientStockSql = `UPDATE ${DbTablesNames.ingredientsStock} SET
+  ingredient_id = ?,
+  ingredient_qty = ?,
+  comment = ?
 
-  validations.comment(comment)
-  validations.ingredientId(ingredient_id)
-
-  const ingredientStockUpdated = await prisma.ingredient_stock.update({
-    data: {
-      comment,
-      ingredient_id,
-      ingredient_qty
-    },
-    where: {
-      id
-    }
-  })
-  return ingredientStockUpdated
-}
+  WHERE ${DbTablesNames.ingredientsStock}.id = ?
+`
 
 export default updateIngredientStockSql

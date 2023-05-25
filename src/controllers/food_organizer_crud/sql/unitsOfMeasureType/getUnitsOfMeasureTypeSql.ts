@@ -1,13 +1,9 @@
-import prisma from 'lib/prisma'
+const getUnitsOfMeasureTypeSql = `SELECT 
+units_of_measure_types.id,
+units_of_measure_types.name
 
-const getUnitsOfMeasureTypeSql = async (): Promise<TGetUnitsOfMeasureType> => {
-  const unitsOfMeasureType = await prisma.$queryRaw<TGetUnitsOfMeasureType>`SELECT 
-  units_of_measure_types.id,
-  units_of_measure_types.name
-  FROM units_of_measure_types
-  `
-  return unitsOfMeasureType
-}
+FROM units_of_measure_types
+`
 
 export default getUnitsOfMeasureTypeSql
 

@@ -1,13 +1,8 @@
-import prisma from 'lib/prisma'
+import { DbTablesNames } from 'utils/constants'
 
-const getDaysSql = async (): Promise<GetDays> => {
-  const days = await prisma.days.findMany({
-    orderBy: {
-      id: 'asc'
-    }
-  })
-  return days
-}
+const getDaysSql = `
+  SELECT * FROM ${DbTablesNames.days} ORDER BY days.id ASC
+`
 
 export default getDaysSql
 

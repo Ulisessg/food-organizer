@@ -1,13 +1,12 @@
-import prisma from 'lib/prisma'
+import { DbTablesNames } from 'utils/constants'
 
-const getFoodTypesSql = async (): Promise<GetFoodTypes> => {
-  const foodTypes = await prisma.$queryRaw<GetFoodTypes>`SELECT
-  food_types.id, food_types.name
-  FROM food_types
-  ORDER BY food_types.name ASC
-  `
-  return foodTypes
-}
+const getFoodTypesSql = `SELECT
+food_types.id,
+food_types.name
+
+FROM ${DbTablesNames.foodTypes}
+ORDER BY food_types.name ASC
+`
 
 export type GetFoodTypes = Array<{
   id: number

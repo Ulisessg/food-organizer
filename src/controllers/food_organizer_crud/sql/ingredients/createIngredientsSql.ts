@@ -1,41 +1,34 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import capitalize from 'utils/capitalize'
-import ingredientValidations from 'models/ingredientValidations'
-import { type ingredients } from '@prisma/client'
-import prisma from 'lib/prisma'
+import { DbTablesNames } from 'utils/constants'
+import getParametrizedValuesSqlSentence from 'utils/getParametrizedValuesSqlSentence'
+import { type ingredients } from 'controllers/food_organizer_crud/dbTablesTypes'
 
-const createingredientSql = async (ingredient:
-CreateIngredient): Promise<CreateIngredientReturn> => {
-  const { comment, creation_date, image, name, uomId } = ingredient
-  ingredientValidations({
-    comment,
-    creationDate: creation_date as unknown as string,
-    image,
-    name,
-    uomId
-  })
-  const ingredientCreated = await prisma.ingredients.create({
-    data: {
-      comment,
-      creation_date,
-      image,
-      name: capitalize(name),
-      uom_id: uomId
-    }
-  })
-  const uom = await prisma.units_of_measure.findUniqueOrThrow({
-    where: {
-      id: ingredientCreated.uom_id
-    }
-  })
-
-  const uomName = uom.name
-  return {
-    ...ingredientCreated,
-    uomName
-  }
-}
-
+/**
+ * Params order and types
+ *
+ * + id - null,
+ * + name - string
+ * + uom_id - number
+ * + image - string | null
+ * + comment - string | null
+ * + creation_date - string
+ *
+ * @param recordsAmount - number
+ * @returns string
+ */
+const createingredientSql = (recordsAmount: number):
+string => `INSERT INTO ${DbTablesNames.ingredients} (
+  id,
+  name,
+  uom_id,
+  image,
+  comment,
+  creation_date
+)
+${getParametrizedValuesSqlSentence(
+6,
+recordsAmount
+)}
+`
 export interface CreateIngredient {
   comment: string | null
   creation_date: string

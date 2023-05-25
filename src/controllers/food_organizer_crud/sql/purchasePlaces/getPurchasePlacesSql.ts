@@ -1,13 +1,9 @@
-import prisma from 'lib/prisma'
+const getPurchasePlacesSql = `SELECT 
+purchase_places.id, purchase_places.name, purchase_places.address
 
-const getPurchasePlacesSql = async (): Promise<GetPurchasePlaces> => {
-  const purchasePlaces = await prisma.$queryRaw<GetPurchasePlaces>`SELECT 
-  purchase_places.id, purchase_places.name, purchase_places.address
-  FROM purchase_places
-  ORDER BY purchase_places.name
-  `
-  return purchasePlaces
-}
+FROM purchase_places
+ORDER BY purchase_places.name
+`
 
 export type GetPurchasePlaces = Array<{
   id: number
