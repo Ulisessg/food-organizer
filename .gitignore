@@ -38,8 +38,5 @@ next-env.d.ts
 # Env
 *.env*
 
-# DB
-*.db
-
 # React Native
 .expo

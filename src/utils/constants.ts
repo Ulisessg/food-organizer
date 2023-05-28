@@ -37,3 +37,8 @@ export const DbTablesNames = {
   weeklyMenuPrices: 'weekly_menu_prices',
   weeklyMenus: 'weekly_menus'
 }
+
+/**
+ * Includes file extension (.db)
+ */
+export const dbName = 'food_organizer.db'
