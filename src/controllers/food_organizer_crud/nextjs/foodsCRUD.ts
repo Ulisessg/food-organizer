@@ -28,7 +28,6 @@ export const createFood = async (
   // Food
   try {
     const {
-      creation_date,
       food_type_id, image,
       name,
       preparation_time,
@@ -36,7 +35,6 @@ export const createFood = async (
       used_counter
     } = req.body
     foodValidations({
-      creationDate: creation_date as unknown as string,
       foodTypeId: food_type_id,
       image,
       name,
@@ -46,7 +44,6 @@ export const createFood = async (
     })
     const createFoodResult = await prisma.foods.create({
       data: {
-        creation_date,
         food_type_id,
         image,
         name: capitalize(name),
@@ -70,7 +67,7 @@ export const createFood = async (
     const { ingredients } = req.body
     const createIngredientsData = ingredients.map((ingr) => ({
       ...ingr,
-      creation_date: createFoodResponse.creation_date as unknown as any,
+
       food_id: createFoodResponse.id
     }))
     await createFoodIngredient(createIngredientsData)
@@ -182,8 +179,7 @@ export interface CreateFood {
   score: number | null
   food_type_id: number
   image: string | null
-  creation_date: string
-  ingredients: Array<Omit<CreateFoodIngredients[0], 'creation_date' | 'food_id'>>
+  ingredients: Array<Omit<CreateFoodIngredients[0], 'food_id'>>
 }
 
 export type GetFoods = Array<{

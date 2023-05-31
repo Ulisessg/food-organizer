@@ -1,7 +1,7 @@
 const createIngredientPurchasePlaceTableSql = `
   CREATE TABLE IF NOT EXISTS ingredient_purchase_places (
     id INTEGER PRIMARY KEY,
-    creation_date DATETIME NOT NULL,
+    
     
     ingredient_id INTEGER NOT NULL,
     purchase_place_id INT NOT NULL,

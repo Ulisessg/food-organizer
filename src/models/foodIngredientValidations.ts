@@ -1,4 +1,4 @@
-import tableValidations, { type tableProps } from './tableValidations'
+
 import idValidation from './idValidation'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 
@@ -27,9 +27,6 @@ export const validations: verifyObj = {
 }
 
 const foodIngredientValidations = (foodIngredient: foodIngredientParam): void => {
-  tableValidations({
-    creationDate: foodIngredient.creationDate
-  })
   validations.foodId(foodIngredient.foodId)
   validations.ingredientId(foodIngredient.ingredientId)
 }
@@ -37,7 +34,7 @@ const foodIngredientValidations = (foodIngredient: foodIngredientParam): void =>
 export default foodIngredientValidations
 
 type verifyProps = 'foodId' | 'ingredientId' | 'ingredient_qty'
-type foodIngredientParam = tableProps & {
+type foodIngredientParam = {
   [k in verifyProps]: number
 }
 type verifyObj = {

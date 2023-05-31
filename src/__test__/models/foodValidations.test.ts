@@ -5,7 +5,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-statements */
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
-import dayjs from 'dayjs'
 import foodValidations from 'models/foodValidations'
 
 describe(
@@ -13,14 +12,12 @@ describe(
   () => {
     let err: Error | null = null
     const id = 1
-    const creationDate = dayjs().toISOString()
     test(
       'name invalid type',
       () => {
         const nm: string = [] as unknown as string
         try {
           foodValidations({
-            creationDate,
             foodTypeId: id,
             image: null,
             name: nm,
@@ -47,7 +44,6 @@ describe(
         const usedCounter: number = {} as unknown as number
         try {
           foodValidations({
-            creationDate,
             foodTypeId: id,
             image: null,
             name: 'some',
@@ -74,7 +70,7 @@ describe(
         const prepTime: number = null as unknown as number
         try {
           foodValidations({
-            creationDate,
+
             foodTypeId: id,
             image: null,
             name: 'some',
@@ -102,7 +98,7 @@ describe(
         const score: number = null as unknown as number
         try {
           foodValidations({
-            creationDate,
+
             foodTypeId: id,
             image: null,
             name: 'some',
@@ -130,7 +126,7 @@ describe(
         const foodTypeId: number = null as unknown as number
         try {
           foodValidations({
-            creationDate,
+
             foodTypeId,
             image: null,
             name: 'some',
@@ -157,7 +153,7 @@ describe(
         const image: string = {} as unknown as string
         try {
           foodValidations({
-            creationDate,
+
             foodTypeId: id,
             image,
             name: 'some',
@@ -187,7 +183,7 @@ describe(
         const image: string = '!° Invalid Url'
         try {
           foodValidations({
-            creationDate,
+
             foodTypeId: id,
             image,
             name: 'any',
@@ -214,7 +210,7 @@ describe(
         const invalidName: string = '!° Invalid nam3'
         try {
           foodValidations({
-            creationDate,
+
             foodTypeId: id,
             image: null,
             name: invalidName,

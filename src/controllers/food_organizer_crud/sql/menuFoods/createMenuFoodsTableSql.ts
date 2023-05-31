@@ -1,7 +1,7 @@
 const createMenuFoodsTableSql = `
   CREATE TABLE IF NOT EXISTS menu_foods (
     id INTEGER PRIMARY KEY,
-    creation_date DATETIME NOT NULL,
+    
 
     food_id INT NOT NULL,
     menu_id INT NOT NULL,

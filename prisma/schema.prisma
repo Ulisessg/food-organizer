@@ -21,32 +21,32 @@ model food_ingredients {
 }
 
 model food_prices {
-  id            Int      @id @default(autoincrement())
-  value         Decimal  @db.Decimal(10, 2)
-  price_date    DateTime @db.DateTime(0)
-  food_id       Int
-  creation_date DateTime @db.DateTime(0)
-  foods         foods    @relation(fields: [food_id], references: [id], map: "fk_f_prices_food_id")
+  id         Int      @id @default(autoincrement())
+  value      Decimal  @db.Decimal(10, 2)
+  price_date DateTime @db.DateTime(0)
+  food_id    Int
+
+  foods foods @relation(fields: [food_id], references: [id], map: "fk_f_prices_food_id")
 
   @@index([food_id], map: "fk_f_prices_food_id_idx")
 }
 
 model food_types {
-  id            Int      @id @default(autoincrement())
-  name          String   @unique(map: "name") @db.Char(50)
-  creation_date DateTime @db.DateTime(0)
-  foods         foods[]
+  id   Int    @id @default(autoincrement())
+  name String @unique(map: "name") @db.Char(50)
+
+  foods foods[]
 }
 
 model foods {
-  id               Int                @id @default(autoincrement())
-  name             String             @unique(map: "name") @db.VarChar(50)
-  used_counter     Int?               @default(0)
-  preparation_time Int                @db.SmallInt
-  score            Int?               @default(0) @db.SmallInt
+  id               Int     @id @default(autoincrement())
+  name             String  @unique(map: "name") @db.VarChar(50)
+  used_counter     Int?    @default(0)
+  preparation_time Int     @db.SmallInt
+  score            Int?    @default(0) @db.SmallInt
   food_type_id     Int
-  image            String?            @db.Char(50)
-  creation_date    DateTime           @db.DateTime(0)
+  image            String? @db.Char(50)
+
   food_ingredients food_ingredients[]
   food_prices      food_prices[]
   food_types       food_types         @relation(fields: [food_type_id], references: [id], map: "fk_foods_food_type_id_idx")
@@ -56,11 +56,11 @@ model foods {
 }
 
 model ingredient_prices {
-  id                Int             @id @default(autoincrement())
-  value             Decimal         @db.Decimal(10, 2)
-  price_date        DateTime        @db.DateTime(0)
-  ingredient_id     Int
-  creation_date     DateTime        @db.DateTime(0)
+  id            Int      @id @default(autoincrement())
+  value         Decimal  @db.Decimal(10, 2)
+  price_date    DateTime @db.DateTime(0)
+  ingredient_id Int
+
   purchase_place_id Int
   purchase_places   purchase_places @relation(fields: [purchase_place_id], references: [id], map: "fk_ing_pr_purchase_place_id")
   ingredients       ingredients     @relation(fields: [ingredient_id], references: [id], map: "fk_price_ingredient_id")
@@ -70,34 +70,34 @@ model ingredient_prices {
 }
 
 model ingredient_purchase_places {
-  id                Int             @id @default(autoincrement())
+  id                Int @id @default(autoincrement())
   ingredient_id     Int
   purchase_place_id Int
-  creation_date     DateTime        @db.DateTime(0)
-  ingredients       ingredients     @relation(fields: [ingredient_id], references: [id], map: "fk_ingredient_id")
-  purchase_places   purchase_places @relation(fields: [purchase_place_id], references: [id], map: "fk_purchase_place_id")
+
+  ingredients     ingredients     @relation(fields: [ingredient_id], references: [id], map: "fk_ingredient_id")
+  purchase_places purchase_places @relation(fields: [purchase_place_id], references: [id], map: "fk_purchase_place_id")
 
   @@index([ingredient_id], map: "fk_ingredient_id_idx")
   @@index([purchase_place_id], map: "fk_purchase_place_id_idx")
 }
 
 model ingredient_stock {
-  id             Int         @id @default(autoincrement())
-  ingredient_id  Int         @unique(map: "ingredient_id")
-  comment        String?     @db.VarChar(100)
-  ingredient_qty Int         @db.SmallInt
-  creation_date  DateTime?   @db.DateTime(0)
-  ingredients    ingredients @relation(fields: [ingredient_id], references: [id], map: "fk_ing_id")
+  id             Int     @id @default(autoincrement())
+  ingredient_id  Int     @unique(map: "ingredient_id")
+  comment        String? @db.VarChar(100)
+  ingredient_qty Int     @db.SmallInt
+
+  ingredients ingredients @relation(fields: [ingredient_id], references: [id], map: "fk_ing_id")
 
   @@index([ingredient_id], map: "fk_is_ingredient_id")
 }
 
 model ingredients {
-  id                         Int                          @id @default(autoincrement())
-  name                       String                       @unique(map: "name") @db.VarChar(20)
-  uom_id                     Int
-  image                      String?                      @db.Char(50)
-  creation_date              DateTime                     @db.DateTime(0)
+  id     Int     @id @default(autoincrement())
+  name   String  @unique(map: "name") @db.VarChar(20)
+  uom_id Int
+  image  String? @db.Char(50)
+
   comment                    String?                      @db.VarChar(100)
   food_ingredients           food_ingredients[]
   ingredient_prices          ingredient_prices[]
@@ -109,19 +109,19 @@ model ingredients {
 }
 
 model purchase_places {
-  id                         Int                          @id @default(autoincrement())
-  name                       String                       @unique(map: "name") @db.Char(50)
-  address                    String?                      @db.VarChar(50)
-  creation_date              DateTime                     @db.DateTime(0)
+  id      Int     @id @default(autoincrement())
+  name    String  @unique(map: "name") @db.Char(50)
+  address String? @db.VarChar(50)
+
   ingredient_prices          ingredient_prices[]
   ingredient_purchase_places ingredient_purchase_places[]
 }
 
 model units_of_measure {
-  id                     Int                    @id @default(autoincrement())
-  name                   String                 @unique(map: "name") @db.VarChar(20)
-  abbreviation           String                 @unique(map: "abbreviation") @db.Char(5)
-  creation_date          DateTime               @db.DateTime(0)
+  id           Int    @id @default(autoincrement())
+  name         String @unique(map: "name") @db.VarChar(20)
+  abbreviation String @unique(map: "abbreviation") @db.Char(5)
+
   uomt_id                Int
   ingredients            ingredients[]
   units_of_measure_types units_of_measure_types @relation(fields: [uomt_id], references: [id], map: "fk_uomt_id")
@@ -130,9 +130,9 @@ model units_of_measure {
 }
 
 model units_of_measure_types {
-  id               Int                @id @default(autoincrement())
-  name             String             @unique(map: "name") @db.VarChar(20)
-  creation_date    DateTime           @db.DateTime(0)
+  id   Int    @id @default(autoincrement())
+  name String @unique(map: "name") @db.VarChar(20)
+
   units_of_measure units_of_measure[]
 }
 
@@ -150,32 +150,32 @@ model days {
 }
 
 model menu_foods {
-  id            Int       @id @default(autoincrement())
-  menu_id       Int
-  food_id       Int
-  creation_date DateTime? @db.DateTime(0)
-  menus         menus     @relation(fields: [menu_id], references: [id], map: "fk_dmf_daily_menu_id")
-  foods         foods     @relation(fields: [food_id], references: [id], map: "fk_dmf_food_id")
+  id      Int @id @default(autoincrement())
+  menu_id Int
+  food_id Int
+
+  menus menus @relation(fields: [menu_id], references: [id], map: "fk_dmf_daily_menu_id")
+  foods foods @relation(fields: [food_id], references: [id], map: "fk_dmf_food_id")
 
   @@index([menu_id], map: "fk_dmf_daily_menu_id_idx")
   @@index([food_id], map: "fk_dmf_food_id_idx")
 }
 
 model menu_prices {
-  id            Int      @id @default(autoincrement())
-  value         Decimal  @db.Decimal(10, 2)
-  price_date    DateTime @db.DateTime(0)
-  menu_id       Int
-  creation_date DateTime @db.DateTime(0)
-  menus         menus    @relation(fields: [menu_id], references: [id], map: "fk_menu_id")
+  id         Int      @id @default(autoincrement())
+  value      Decimal  @db.Decimal(10, 2)
+  price_date DateTime @db.DateTime(0)
+  menu_id    Int
+
+  menus menus @relation(fields: [menu_id], references: [id], map: "fk_menu_id")
 
   @@index([menu_id], map: "fk_menu_id_idx")
 }
 
 model menus {
-  id               Int                @id @default(autoincrement())
-  comment          String?            @db.VarChar(100)
-  creation_date    DateTime           @db.DateTime(0)
+  id      Int     @id @default(autoincrement())
+  comment String? @db.VarChar(100)
+
   menu_foods       menu_foods[]
   menu_prices      menu_prices[]
   weekly_menu_days weekly_menu_days[]
@@ -196,12 +196,12 @@ model weekly_menu_days {
 }
 
 model weekly_menu_prices {
-  id             Int          @id @default(autoincrement())
-  value          Decimal      @db.Decimal(10, 2)
-  price_date     DateTime     @db.DateTime(0)
+  id             Int      @id @default(autoincrement())
+  value          Decimal  @db.Decimal(10, 2)
+  price_date     DateTime @db.DateTime(0)
   weekly_menu_id Int
-  creation_date  DateTime     @db.DateTime(0)
-  weekly_menus   weekly_menus @relation(fields: [weekly_menu_id], references: [id], map: "fk_weekly_menu_id")
+
+  weekly_menus weekly_menus @relation(fields: [weekly_menu_id], references: [id], map: "fk_weekly_menu_id")
 
   @@index([weekly_menu_id], map: "fk_weekly_menu_id")
 }

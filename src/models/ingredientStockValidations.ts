@@ -1,4 +1,4 @@
-import tableValidations, { type tableProps } from './tableValidations'
+
 import idValidation from './idValidation'
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 
@@ -32,9 +32,6 @@ export const validations: verifyObj = {
 }
 
 const ingredientStockVerifications = (ingredientStock: ingredientStockParam): void => {
-  tableValidations({
-    creationDate: ingredientStock.creationDate
-  })
   validations.comment(ingredientStock.comment)
   validations.ingredientId(ingredientStock.ingredientId)
   validations.ingredient_qty(ingredientStock.ingredient_qty)
@@ -46,7 +43,7 @@ type verifyObj = {
   [k in verifyProps]: (value: any) => void
 }
 
-type ingredientStockParam = tableProps & {
+interface ingredientStockParam {
   ingredientId: number
   ingredient_qty: number
   comment: string | null

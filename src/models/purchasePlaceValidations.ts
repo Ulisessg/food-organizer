@@ -4,7 +4,6 @@ import {
   invalidPropertyErrorMessage,
   invalidPropertyTypeErrorMessage
 } from '../utils/ErrorMessages'
-import tableValidations, { type tableProps } from './tableValidations'
 
 export const validations: verifyObj = {
   address: (address: string | null) => {
@@ -47,9 +46,6 @@ export const validations: verifyObj = {
 }
 
 const PurchasePlaceValidations = (purchasePlace: purchasePlaceParam): void => {
-  tableValidations({
-    creationDate: purchasePlace.creationDate
-  })
   validations.address(purchasePlace.address)
   validations.name(purchasePlace.name)
 }
@@ -57,7 +53,7 @@ const PurchasePlaceValidations = (purchasePlace: purchasePlaceParam): void => {
 export default PurchasePlaceValidations
 
 type verifyProp = 'name' | 'address'
-type purchasePlaceParam = tableProps & {
+interface purchasePlaceParam {
   name: string
   address: string | null
 }

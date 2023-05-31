@@ -7,7 +7,7 @@ export interface food_ingredients {
   food_id: number
   ingredient_id: number
   ingredient_qty: number | null
-  creation_date: string
+
 }
 
 /**
@@ -19,7 +19,7 @@ export interface food_prices {
   value: number
   price_date: string
   food_id: number
-  creation_date: string
+
 }
 
 /**
@@ -29,7 +29,7 @@ export interface food_prices {
 export interface food_types {
   id: number
   name: string
-  creation_date: string
+
 }
 
 /**
@@ -44,7 +44,7 @@ export interface foods {
   score: number | null
   food_type_id: number
   image: string | null
-  creation_date: string
+
 }
 
 /**
@@ -56,7 +56,6 @@ export interface ingredient_prices {
   value: number
   price_date: string
   ingredient_id: number
-  creation_date: string
   purchase_place_id: number
 }
 
@@ -68,7 +67,7 @@ export interface ingredient_purchase_places {
   id: number
   ingredient_id: number
   purchase_place_id: number
-  creation_date: string
+
 }
 
 /**
@@ -80,7 +79,7 @@ export interface ingredient_stock {
   ingredient_id: number
   comment: string | null
   ingredient_qty: number
-  creation_date: string | null
+
 }
 
 /**
@@ -92,7 +91,7 @@ export interface ingredients {
   name: string
   uom_id: number
   image: string | null
-  creation_date: string
+
   comment: string | null
 }
 
@@ -104,7 +103,7 @@ export interface purchase_places {
   id: number
   name: string
   address: string | null
-  creation_date: string
+
 }
 
 /**
@@ -115,7 +114,7 @@ export interface units_of_measure {
   id: number
   name: string
   abbreviation: string
-  creation_date: string
+
   uomt_id: number
 }
 
@@ -126,7 +125,6 @@ export interface units_of_measure {
 export interface units_of_measure_types {
   id: number
   name: string
-  creation_date: string
 }
 
 /**
@@ -155,7 +153,7 @@ export interface menu_foods {
   id: number
   menu_id: number
   food_id: number
-  creation_date: string | null
+
 }
 
 /**
@@ -167,7 +165,7 @@ export interface menu_prices {
   value: number
   price_date: string
   menu_id: number
-  creation_date: string
+
 }
 
 /**
@@ -177,7 +175,7 @@ export interface menu_prices {
 export interface menus {
   id: number
   comment: string | null
-  creation_date: string
+
 }
 
 /**
@@ -200,5 +198,5 @@ export interface weekly_menu_prices {
   value: number
   price_date: string
   weekly_menu_id: number
-  creation_date: string
+
 }

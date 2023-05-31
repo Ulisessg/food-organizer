@@ -6,7 +6,6 @@ import {
 } from 'utils/ErrorMessages'
 import dayjs from 'dayjs'
 import idValidation from './idValidation'
-import { type tableProps } from './tableValidations'
 
 export const validations = {
   id: (id: number, idName: priceTables) => {
@@ -47,7 +46,7 @@ export const priceValidations = (price: priceParam): void => {
 // Current 'price' tables
 type priceTables = 'menuPrice' | 'weeklyMenuPrice' | 'ingredientPrice' | 'foodPrice' | 'none'
 
-type priceParam = tableProps & {
+interface priceParam {
   priceDate: string
   value: number
   idName: priceTables

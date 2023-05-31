@@ -1,11 +1,8 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
-import tableValidations, { type tableProps } from './tableValidations'
+
 import { lettersWithSpaces } from 'utils/RegExps'
 
 const unitOfMeasureTypeVerification = (unitOfMeasureType: unitOfMeasureTypeParam): void => {
-  tableValidations({
-    creationDate: unitOfMeasureType.creationDate
-  })
   if (typeof unitOfMeasureType.name !== 'string') {
     throw new Error(invalidPropertyTypeErrorMessage(
       'name',
@@ -21,7 +18,7 @@ const unitOfMeasureTypeVerification = (unitOfMeasureType: unitOfMeasureTypeParam
   }
 }
 
-type unitOfMeasureTypeParam = tableProps & {
+interface unitOfMeasureTypeParam {
   name: string
 }
 

@@ -1,5 +1,5 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
-import tableValidations, { type tableProps } from './tableValidations'
+
 import idValidation from './idValidation'
 import { lettersWithSpaces } from 'utils/RegExps'
 
@@ -56,9 +56,6 @@ export const validations: verifyObj = {
 }
 
 const ingredientValidations = (ingredient: ingredientParam): void => {
-  tableValidations({
-    creationDate: ingredient.creationDate
-  })
   validations.comment(ingredient.comment)
   validations.image(ingredient.image)
   validations.name(ingredient.name)
@@ -68,7 +65,7 @@ const ingredientValidations = (ingredient: ingredientParam): void => {
 export default ingredientValidations
 
 export type verifyProps = 'image' | 'name' | 'uomId' | 'comment'
-type ingredientParam = tableProps & {
+interface ingredientParam {
   image: string | null
   name: string
   uomId: number

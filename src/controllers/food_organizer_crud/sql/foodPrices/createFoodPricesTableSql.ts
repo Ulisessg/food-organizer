@@ -3,7 +3,7 @@ const createFoodPricesTableSql = `
     id INTEGER PRIMARY KEY,
     value DECIMAL(10,2) NOT NULL,
     price_date DATETIME NOT NULL,
-    creation_date DATETIME NOT NULL,
+    
 
     food_id INT NOT NULL,
 

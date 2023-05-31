@@ -1,4 +1,4 @@
-import tableValidations, { type tableProps } from './tableValidations'
+
 import { invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 
 export const validations: verifyObj = {
@@ -16,16 +16,13 @@ export const validations: verifyObj = {
 }
 
 const menuValidations = (menu: menuParam): void => {
-  tableValidations({
-    creationDate: menu.creationDate
-  })
   validations.comment(menu.comment)
 }
 
 export default menuValidations
 
 type verifyProps = 'comment'
-type menuParam = tableProps & {
+type menuParam = {
   [j in verifyProps]: any
 }
 type verifyObj = {

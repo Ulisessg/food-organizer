@@ -1,4 +1,4 @@
-import tableValidations, { type tableProps } from './tableValidations'
+
 import idValidation from './idValidation'
 
 export const validations: verifyObj = {
@@ -18,9 +18,6 @@ export const validations: verifyObj = {
 
 const IngredientPurchasePlaceValidations = (ingredientPurchasePlace:
 IngredientPurchasePlaceParam): void => {
-  tableValidations({
-    creationDate: ingredientPurchasePlace.creationDate
-  })
   validations.ingredientId(ingredientPurchasePlace.ingredientId)
   validations.purchasePlaceId(ingredientPurchasePlace.purchasePlaceId)
 }
@@ -29,7 +26,7 @@ export default IngredientPurchasePlaceValidations
 
 type verifyProps = 'ingredientId' | 'purchasePlaceId'
 
-type IngredientPurchasePlaceParam = tableProps & {
+type IngredientPurchasePlaceParam = {
   [k in verifyProps]: number
 }
 

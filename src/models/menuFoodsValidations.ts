@@ -1,4 +1,4 @@
-import tableValidations, { type tableProps } from './tableValidations'
+
 import idValidation from './idValidation'
 
 export const validations: verifyObj = {
@@ -15,14 +15,13 @@ export const validations: verifyObj = {
 }
 
 const menuFoodsValidations = (menuFoods: menuFoodsValidationsParam): void => {
-  tableValidations({ creationDate: menuFoods.creationDate })
   validations.menu_id(menuFoods.menu_id)
   validations.food_id(menuFoods.food_id)
 }
 
 export default menuFoodsValidations
 
-type menuFoodsValidationsParam = tableProps & {
+interface menuFoodsValidationsParam {
   food_id: number
   menu_id: number
 }

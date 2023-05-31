@@ -1,6 +1,6 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
 import { lettersAndDegrees, lettersWithSpaces } from 'utils/RegExps'
-import tableValidations, { type tableProps } from './tableValidations'
+
 import idValidation from './idValidation'
 
 export const validations: verifyObj = {
@@ -45,9 +45,6 @@ export const validations: verifyObj = {
 }
 
 const unitOfMeasureValidations = (unitOfMeasure: unitOfMeasureParam): void => {
-  tableValidations({
-    creationDate: unitOfMeasure.creationDate
-  })
   validations.abbreviation(unitOfMeasure.abbreviation)
   validations.name(unitOfMeasure.name)
   validations.uomtId(unitOfMeasure.uomtId)
@@ -56,7 +53,7 @@ const unitOfMeasureValidations = (unitOfMeasure: unitOfMeasureParam): void => {
 export default unitOfMeasureValidations
 
 export type verifyProp = 'name' | 'abbreviation' | 'uomtId'
-type unitOfMeasureParam = tableProps & {
+interface unitOfMeasureParam {
   name: string
   abbreviation: string
   uomtId: number

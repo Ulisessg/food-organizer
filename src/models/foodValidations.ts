@@ -1,5 +1,4 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
-import tableValidations, { type tableProps } from './tableValidations'
 import idValidation from './idValidation'
 import { lettersWithSpaces } from 'utils/RegExps'
 
@@ -79,9 +78,6 @@ export const validations: verifyObj = {
 }
 
 const foodValidations = (food: foodParam): void => {
-  tableValidations({
-    creationDate: food.creationDate
-  })
   validations.foodTypeId(food.foodTypeId)
   validations.image(food.image)
   validations.name(food.name)
@@ -94,7 +90,7 @@ export default foodValidations
 export type verifyProps =
 'name' | 'usedCounter' | 'preparationTime' | 'foodTypeId' | 'image' | 'score'
 
-type foodParam = tableProps & {
+interface foodParam {
   name: string
   usedCounter: number
   preparationTime: number

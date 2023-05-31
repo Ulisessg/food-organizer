@@ -1,6 +1,8 @@
-import tableValidations, { type tableProps } from './tableValidations'
+import tableValidations from './tableValidations'
 
-const weeklyMenuValidations = (weeklyMenu: tableProps): void => {
+const weeklyMenuValidations = (weeklyMenu: {
+  creationDate: string
+}): void => {
   tableValidations({
     creationDate: weeklyMenu.creationDate
   })

@@ -1,11 +1,8 @@
 import { invalidPropertyErrorMessage, invalidPropertyTypeErrorMessage } from 'utils/ErrorMessages'
-import tableValidations, { type tableProps } from './tableValidations'
+
 import { lettersWithSpaces } from '../utils/RegExps'
 
 export const foodTypeValidations = (foodType: foodTypeParam): void => {
-  tableValidations({
-    creationDate: foodType.creationDate
-  })
   if (typeof foodType.name !== 'string') {
     throw new TypeError(invalidPropertyTypeErrorMessage(
       'name',
@@ -22,7 +19,7 @@ export const foodTypeValidations = (foodType: foodTypeParam): void => {
   }
 }
 
-type foodTypeParam = tableProps & {
+interface foodTypeParam {
   name: string
 }
 
