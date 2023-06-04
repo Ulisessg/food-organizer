@@ -7,7 +7,7 @@ import {
 } from '@prisma/client'
 import {
   type CreateUnitOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/createUnitsOfMeasureTypeSql'
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/createUnitsOfMeasureTypeSql'
 import {
   type CreateUom
 } from 'controllers/food_organizer_crud/sql/unitsOfMeasure/createUnitsOfMeasureSql'
@@ -16,7 +16,7 @@ import {
 } from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
 import {
   type TGetUnitsOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/getUnitsOfMeasureTypeSql'
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql'
 import { type TUpdateThunkArgs } from 'Types'
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'

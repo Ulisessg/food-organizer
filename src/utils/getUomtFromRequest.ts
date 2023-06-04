@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 import {
   type TGetUnitsOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/getUnitsOfMeasureTypeSql'
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql'
 
 const getUomtFromRequest = (data: TGetUnitsOfMeasureType): TGetUomtFromRequestReturn => {
   const result: TGetUomtFromRequestReturn = data.map(({ id, name }) => ({

@@ -5,7 +5,7 @@ import {
 } from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
 import {
   type TGetUnitsOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/getUnitsOfMeasureTypeSql'
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql'
 import type { units_of_measure } from '@prisma/client'
 
 /**
