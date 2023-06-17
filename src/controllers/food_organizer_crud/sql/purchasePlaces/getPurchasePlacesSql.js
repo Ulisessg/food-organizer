@@ -5,10 +5,4 @@ FROM purchase_places
 ORDER BY purchase_places.name
 `
 
-export type GetPurchasePlaces = Array<{
-  id: number
-  name: string
-  address: string | null
-}>
-
-export default getPurchasePlacesSql
+module.exports = getPurchasePlacesSql

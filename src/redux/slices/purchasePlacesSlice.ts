@@ -6,7 +6,7 @@ import {
 } from 'controllers/food_organizer_crud/sql/purchasePlaces/createPurchasePlacesSql'
 import {
   type GetPurchasePlaces
-} from 'controllers/food_organizer_crud/sql/purchasePlaces/getPurchasePlacesSql'
+} from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
 import axios from 'axios'
 import { type purchase_places } from '@prisma/client'
 import { type response } from 'controllers/response'

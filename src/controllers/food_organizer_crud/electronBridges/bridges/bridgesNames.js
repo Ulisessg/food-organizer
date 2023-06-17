@@ -1,5 +1,6 @@
 const bridgesNames = {
   getDaysData: 'getDaysData',
+  getPurchasePlacesData: 'getPurchasePlacesData',
   getUomData: 'getUomData'
 }
 
