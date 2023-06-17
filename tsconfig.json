@@ -40,6 +40,7 @@
       ],
     },
     "allowJs": true,
+    "checkJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -62,7 +63,10 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "build/types/**/*.ts"
+    "build/types/**/*.ts",
+    "global.d.ts",
+    "src/controllers/food_organizer_crud/sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql.js",
+    "src/controllers/food_organizer_crud/sql/unitsOfMeasure/getUnitsOfMeasureGroupedByTypeSql.js"
   ],
   "exclude": [
     "node_modules"

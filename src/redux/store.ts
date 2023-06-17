@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit'
-import dbSlice from './slices/dbSlice'
 import foodSlice from './slices/foodSlice'
 import ingredientsSlice from './slices/ingredientsSlice'
 import ingredientsStockSlice from './slices/ingredientsStockSlice'
@@ -10,7 +9,6 @@ import weekSlice from './slices/weekSlice'
 
 export const store = configureStore({
   reducer: {
-    db: dbSlice,
     foods: foodSlice,
     ingredients: ingredientsSlice,
     ingredientsStock: ingredientsStockSlice,

@@ -1,4 +1,4 @@
-import { type AppDispatch, wrapper } from 'redux/store'
+import { type AppDispatch, store } from 'redux/store'
 import { type FC, type ReactNode, useEffect } from 'react'
 import { Provider as ReduxProvider, useDispatch } from 'react-redux'
 import { getDaysThunk, getWeeklyMenusThunk } from 'redux/slices/weekSlice'
@@ -21,7 +21,6 @@ dayjs.extend(dayjsWeekDayPlugin)
 dayjs.locale('es')
 
 export default function MyApp ({ Component, ...pageProps }: AppProps): JSX.Element {
-  const { store } = wrapper.useWrappedStore(pageProps)
   return (
     <ReduxProvider store={store}>
       <ReduxProviderWrapper>
