@@ -4,6 +4,7 @@ const bridgesNames = {
   getFoodsData: 'getFoodsData',
   getIngredientsData: 'getIngredientsData',
   getIngredientsStock: 'getIngredientsStockData',
+  getMenusData: 'getMenusData',
   getPurchasePlacesData: 'getPurchasePlacesData',
   getUomData: 'getUomData'
 }

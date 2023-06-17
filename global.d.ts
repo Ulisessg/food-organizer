@@ -9,8 +9,11 @@ import {
   type GetIngredientStock
 } from 'controllers/food_organizer_crud/sql/ingredientStock/types'
 import {
+  type GetMenus
+} from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
+import {
   type GetUnitsOfMeasureData
-} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
+} from 'controllers/food_organizer_crud/sql/menus/types'
 
 // Electron bridges
 declare global {
@@ -20,5 +23,6 @@ declare global {
     getFoodTypesData: GetFoodTypes
     getFoodsData: GetFoods
     getIngredientsStockData: GetIngredientStock
+    getMenusData: GetMenus
   }
 }
