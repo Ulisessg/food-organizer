@@ -66,7 +66,8 @@
     "build/types/**/*.ts",
     "global.d.ts",
     "src/controllers/food_organizer_crud/sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql.js",
-    "src/controllers/food_organizer_crud/sql/unitsOfMeasure/getUnitsOfMeasureGroupedByTypeSql.js"
+    "src/controllers/food_organizer_crud/sql/unitsOfMeasure/getUnitsOfMeasureGroupedByTypeSql.js",
+    "src/controllers/food_organizer_crud/sql/days/getDaysSql.js"
   ],
   "exclude": [
     "node_modules"
