@@ -3,6 +3,9 @@ import {
   type GetFoodTypes
 } from 'controllers/food_organizer_crud/sql/foodTypes/types'
 import {
+  type GetIngredientStock
+} from 'controllers/food_organizer_crud/sql/ingredientStock/types'
+import {
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
 
@@ -12,5 +15,6 @@ declare global {
     getUomData: GetUnitsOfMeasureData
     getDaysData: GetDays
     getFoodTypesData: GetFoodTypes
+    getIngredientsStockData: GetIngredientStock
   }
 }
