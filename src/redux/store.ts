@@ -5,7 +5,7 @@ import ingredientsStockSlice from './slices/ingredientsStockSlice'
 import menusSlice from './slices/menusSlice'
 import purchasePlacesSlice from './slices/purchasePlacesSlice'
 import unitsOfMeasureSlice from './slices/unitsOfMeasureSlice'
-import weekSlice from './slices/weekSlice'
+import weekSlice from './slices/weeklyMenusSlice/slice'
 
 export const store = configureStore({
   reducer: {

@@ -3,7 +3,7 @@
 import { type AppDispatch, type RootState } from 'redux/store'
 import { type ChangeEvent, type MouseEvent, type RefObject, useState } from 'react'
 import { type TDaysOfTheWeek, dayInMiliseconds } from 'utils/constants'
-import { createWeeklyMenuThunk, restartPostWeeklyMenu } from 'redux/slices/weekSlice'
+import { createWeeklyMenuThunk, restartPostWeeklyMenu } from 'redux/slices/weeklyMenusSlice/slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { type TCreateWeeklyMenus } from 'controllers/food_organizer_crud/nextjs/weeklyMenuCRUD'
 import dayjs from 'dayjs'

@@ -19,12 +19,12 @@ import { type GetWeeklyMenu } from 'controllers/food_organizer_crud/sql/weeklyMe
 // Electron bridges
 declare global {
   interface Window {
-    getUomData: GetUnitsOfMeasureData
-    getDaysData: GetDays
-    getFoodTypesData: GetFoodTypes
-    getFoodsData: GetFoods
-    getIngredientsStockData: GetIngredientStock
-    getMenusData: GetMenus
-    getWeeklyMenusData: GetWeeklyMenu
+    getUomData: () => GetUnitsOfMeasureData
+    getDaysData: () => GetDays
+    getFoodTypesData: () => GetFoodTypes
+    getFoodsData: () => GetFoods
+    getIngredientsStockData: () => GetIngredientStock
+    getMenusData: () => GetMenus
+    getWeeklyMenusData: () => GetWeeklyMenu
   }
 }
