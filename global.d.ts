@@ -14,6 +14,7 @@ import {
 import {
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/sql/menus/types'
+import { type GetWeeklyMenu } from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
 
 // Electron bridges
 declare global {
@@ -24,5 +25,6 @@ declare global {
     getFoodsData: GetFoods
     getIngredientsStockData: GetIngredientStock
     getMenusData: GetMenus
+    getWeeklyMenusData: GetWeeklyMenu
   }
 }

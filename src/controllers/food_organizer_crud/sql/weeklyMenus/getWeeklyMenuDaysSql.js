@@ -1,14 +1,14 @@
 /**
  *
- * @param dayId
- * @param dayName
+ * @param dayId {number}
+ * @param dayName {string}
  * @returns
  */
-const weeklyMenuDaySql = (dayId: number, dayName: string): string => `(SELECT
-  JSON_ARRAYAGG(JSON_OBJECT(
+const weeklyMenuDaySql = (dayId, dayName) => `(SELECT
+  JSON_GROUP_ARRAY(JSON_OBJECT(
     'menu_id', weekly_menu_days.menu_id,
     'foods', (SELECT
-      JSON_ARRAYAGG(JSON_OBJECT(
+      JSON_GROUP_ARRAY(JSON_OBJECT(
         'food_id', foods.id,
         'food_name', foods.name
       ))
@@ -21,4 +21,4 @@ const weeklyMenuDaySql = (dayId: number, dayName: string): string => `(SELECT
     WHERE weekly_menu_days.weekly_menu_id = weekly_menus.id AND weekly_menu_days.day_id = ${dayId}
 ) AS ${dayName}`
 
-export default weeklyMenuDaySql
+module.exports = weeklyMenuDaySql

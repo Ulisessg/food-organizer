@@ -6,7 +6,8 @@ const bridgesNames = {
   getIngredientsStock: 'getIngredientsStockData',
   getMenusData: 'getMenusData',
   getPurchasePlacesData: 'getPurchasePlacesData',
-  getUomData: 'getUomData'
+  getUomData: 'getUomData',
+  getWeeklyMenusData: 'getWeeklyMenusData'
 }
 
 module.exports = bridgesNames

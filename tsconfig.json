@@ -71,7 +71,9 @@
     "src/controllers/food_organizer_crud/sql/purchasePlaces/getPurchasePlacesSql.js",
     "src/controllers/food_organizer_crud/sql/foodTypes/getFoodTypesSql.js",
     "src/controllers/food_organizer_crud/sql/ingredients/getIngredientsSql.js",
-    "src/controllers/food_organizer_crud/sql/ingredientStock/getIngredientsStockSql.js"
+    "src/controllers/food_organizer_crud/sql/ingredientStock/getIngredientsStockSql.js",
+    "src/controllers/food_organizer_crud/sql/weeklyMenus/getWeeklyMenusSql.js",
+    "src/controllers/food_organizer_crud/sql/weeklyMenus/getWeeklyMenuDaysSql.js"
   ],
   "exclude": [
     "node_modules"
