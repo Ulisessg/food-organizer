@@ -4,7 +4,7 @@ import { type MouseEvent, type RefObject } from 'react'
 import {
   createFoodTypeThunk,
   restartPostData
-} from 'redux/slices/foodSlice'
+} from 'redux/slices/foodsSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import transformPostData from 'utils/transformPostData'
 import { useInputs } from 'd-system'

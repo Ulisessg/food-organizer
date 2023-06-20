@@ -12,7 +12,10 @@ import dayjsWeekDayPlugin from 'dayjs/plugin/weekday'
 import
 getDaysElectronCallback
   from 'redux/slices/weeklyMenusSlice/callbacks/electron/getDaysElectronCallback'
-import { getFoodsDataThunk } from 'redux/slices/foodSlice'
+import
+getFoodsDataElectronCallback
+  from 'redux/slices/foodsSlice/callbacks/electron/getFoodsDataElectronCallback'
+import { getFoodsDataThunk } from 'redux/slices/foodsSlice/thunks'
 import { getIngredientsThunk } from 'redux/slices/ingredientsSlice'
 import { getPurchasePlacesThunk } from 'redux/slices/purchasePlacesSlice'
 import
@@ -49,7 +52,10 @@ const ReduxProviderWrapper: FC<{
       void dispatch(getIngredientsThunk(null))
       void dispatch(getPurchasePlacesThunk(null))
       void dispatch(getUomDataThunk(getUomDataElectronCallback))
-      void dispatch(getFoodsDataThunk(null))
+      void dispatch(getFoodsDataThunk({
+        getFoodsData: getFoodsDataElectronCallback.getFoodsData,
+        getFoodsTypesData: getFoodsDataElectronCallback.getFoodTypesData
+      }))
       void dispatch(getMenusDataThunk(null))
       void dispatch(getDaysThunk(getDaysElectronCallback))
       void dispatch(getWeeklyMenusThunk())

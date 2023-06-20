@@ -5,7 +5,7 @@ import {
   type ChangeEvent, type MouseEvent,
   type RefObject, useState
 } from 'react'
-import { createFoodThunk, restartPostData } from 'redux/slices/foodSlice'
+import { createFoodThunk, restartPostData } from 'redux/slices/foodsSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { type CreateFood } from 'controllers/food_organizer_crud/nextjs/foodsCRUD'
 import { defaultSelectValue } from 'utils/constants'
