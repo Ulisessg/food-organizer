@@ -15,22 +15,27 @@ import {
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
 import {
+  type TGetUnitOfMeasureDataThunkCallback
+} from './types'
+import {
   type TGetUnitsOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql'
+} from '../../../controllers/food_organizer_crud/sql/unitsOfMeasureTypes/types.d'
 import { type TUpdateThunkArgs } from 'Types'
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { type response } from 'controllers/response'
 
 // Get data thunk
-export const getUomDataThunk = createAsyncThunk<GetUnitsOfMeasureData, number | null>(
+export const getUomDataThunk = createAsyncThunk<
+GetUnitsOfMeasureData, TGetUnitOfMeasureDataThunkCallback>(
   'uom/getData',
-  async (_limit: any, thunkApi) => {
-    const requestResponse = await axios.get<response<GetUnitsOfMeasureData>>('/api/uom')
-    if (requestResponse.data.error) {
-      thunkApi.rejectWithValue(requestResponse.data.data)
+  async (getData, thunkApi) => {
+    try {
+      const data = await getData()
+      return data
+    } catch (error) {
+      return thunkApi.rejectWithValue(error)
     }
-    return requestResponse.data.data
   }
 )
 

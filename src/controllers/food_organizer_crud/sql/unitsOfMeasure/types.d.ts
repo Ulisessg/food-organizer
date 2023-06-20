@@ -1,3 +1,5 @@
+import { type TGetUnitsOfMeasureType } from '../unitsOfMeasureTypes/types'
+
 export type TGetUnitsOfMeasureGroupedByType = Array<{
   uomt_id: number
   uomt_name: string
@@ -9,3 +11,8 @@ export type TGetUnitsOfMeasureGroupedByType = Array<{
     abbreviation: string
   }>
 }>
+
+export interface GetUnitsOfMeasureData {
+  unitsOfMeasureGroupedByType: TGetUnitsOfMeasureGroupedByType
+  unitsOfMeasureType: TGetUnitsOfMeasureType
+}

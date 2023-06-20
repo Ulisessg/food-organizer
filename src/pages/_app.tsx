@@ -12,6 +12,9 @@ import dayjsWeekDayPlugin from 'dayjs/plugin/weekday'
 import { getFoodsDataThunk } from 'redux/slices/foodSlice'
 import { getIngredientsThunk } from 'redux/slices/ingredientsSlice'
 import { getPurchasePlacesThunk } from 'redux/slices/purchasePlacesSlice'
+import
+getUomDataElectronCallback
+  from 'redux/slices/unitsOfMeasureSlice/callbacks/electron/getUomDataElectronCallback'
 import { getUomDataThunk } from 'redux/slices/unitsOfMeasureSlice/thunks'
 
 // eslint-disable-next-line sort-imports
@@ -42,7 +45,7 @@ const ReduxProviderWrapper: FC<{
        */
       void dispatch(getIngredientsThunk(null))
       void dispatch(getPurchasePlacesThunk(null))
-      void dispatch(getUomDataThunk(null))
+      void dispatch(getUomDataThunk(getUomDataElectronCallback))
       void dispatch(getFoodsDataThunk(null))
       void dispatch(getMenusDataThunk(null))
       void dispatch(getDaysThunk())
