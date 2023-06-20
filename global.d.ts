@@ -8,6 +8,7 @@ import {
 import {
   type GetIngredientStock
 } from 'controllers/food_organizer_crud/sql/ingredientStock/types'
+import { type GetIngredients } from 'controllers/food_organizer_crud/sql/ingredients/types'
 import {
   type GetMenus
 } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
@@ -26,5 +27,6 @@ declare global {
     getIngredientsStockData: () => GetIngredientStock
     getMenusData: () => GetMenus
     getWeeklyMenusData: () => GetWeeklyMenu
+    getIngredientsData: () => GetIngredients
   }
 }

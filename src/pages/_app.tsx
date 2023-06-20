@@ -16,7 +16,10 @@ import
 getFoodsDataElectronCallback
   from 'redux/slices/foodsSlice/callbacks/electron/getFoodsDataElectronCallback'
 import { getFoodsDataThunk } from 'redux/slices/foodsSlice/thunks'
-import { getIngredientsThunk } from 'redux/slices/ingredientsSlice'
+import
+getIngredientsDataElectronCallback
+  from 'redux/slices/ingredientsSlice/callbacks/electron/getIngredientsDataElectronCallback'
+import { getIngredientsThunk } from 'redux/slices/ingredientsSlice/thunks'
 import { getPurchasePlacesThunk } from 'redux/slices/purchasePlacesSlice'
 import
 getUomDataElectronCallback
@@ -49,7 +52,7 @@ const ReduxProviderWrapper: FC<{
       /*
        * Get data, todo: create a limiter or develop a performance improvement
        */
-      void dispatch(getIngredientsThunk(null))
+      void dispatch(getIngredientsThunk(getIngredientsDataElectronCallback))
       void dispatch(getPurchasePlacesThunk(null))
       void dispatch(getUomDataThunk(getUomDataElectronCallback))
       void dispatch(getFoodsDataThunk({
