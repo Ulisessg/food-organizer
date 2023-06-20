@@ -8,7 +8,10 @@ import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
 import type { NextPage } from 'next'
 import Title from 'components/web/common/Title'
-import { getIngredientsStockThunk } from 'redux/slices/ingredientsStockSlice'
+import
+getIngredientStockElectronCallback
+  from 'redux/slices/ingredientsStockSlice/callbacks/electron/getIngredientStockElectronCallback'
+import { getIngredientsStockThunk } from 'redux/slices/ingredientsStockSlice/thunks'
 
 const IngredientsStock: NextPage = () => {
   const ingredientsStockData = useSelector((state: RootState) => state.ingredientsStock)
@@ -16,7 +19,7 @@ const IngredientsStock: NextPage = () => {
 
   useEffect(
     () => {
-      void dispatch(getIngredientsStockThunk(null))
+      void dispatch(getIngredientsStockThunk(getIngredientStockElectronCallback))
     },
     [dispatch]
   )
