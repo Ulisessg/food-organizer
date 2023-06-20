@@ -3,7 +3,7 @@ import {
 } from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
 import {
   type TGetUnitsOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureType/getUnitsOfMeasureTypeSql'
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/types'
 
 const initialState: TUomState = {
   dataIsLoading: false,
