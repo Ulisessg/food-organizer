@@ -9,3 +9,11 @@ export type GetMenus = Array<{
     preparation_time: number
   }>
 }>
+export type GetMenusIngredients = Array<{
+  id: number
+  ingredients: Array<{
+    ingredient_id: number
+    ingredient_name: string
+    ingredient_qty: number
+  }>
+}>

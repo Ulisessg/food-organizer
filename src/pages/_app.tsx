@@ -2,7 +2,7 @@ import { type AppDispatch, store } from 'redux/store'
 import { type FC, type ReactNode, useEffect } from 'react'
 import { Provider as ReduxProvider, useDispatch } from 'react-redux'
 import { getDaysThunk, getWeeklyMenusThunk } from 'redux/slices/weeklyMenusSlice/thunks'
-import { getMenusDataThunk, getMenusIngredientsThunk } from 'redux/slices/menusSlice'
+import { getMenusDataThunk, getMenusIngredientsThunk } from 'redux/slices/menusSlice/thunks'
 import type { AppProps } from 'next/app'
 import { GlobalStyles } from 'd-system'
 import Header from 'components/web/Header'
@@ -28,6 +28,12 @@ import { getUomDataThunk } from 'redux/slices/unitsOfMeasureSlice/thunks'
 
 // eslint-disable-next-line sort-imports
 import 'styles/pages/GlobalStyles.css'
+import
+getMenusDataElectronCallback
+  from 'redux/slices/menusSlice/callbacks/electron/getMenusDataElectronCallback'
+import
+getMenusIngredientsElectronCallback
+  from 'redux/slices/menusSlice/callbacks/electron/getMenusIngredientsElectronCallback'
 dayjs.extend(dayjsCustomParseFormat)
 dayjs.extend(dayjsWeekDayPlugin)
 dayjs.locale('es')
@@ -59,10 +65,10 @@ const ReduxProviderWrapper: FC<{
         getFoodsData: getFoodsDataElectronCallback.getFoodsData,
         getFoodsTypesData: getFoodsDataElectronCallback.getFoodTypesData
       }))
-      void dispatch(getMenusDataThunk(null))
+      void dispatch(getMenusDataThunk(getMenusDataElectronCallback))
       void dispatch(getDaysThunk(getDaysElectronCallback))
       void dispatch(getWeeklyMenusThunk())
-      void dispatch(getMenusIngredientsThunk(null))
+      void dispatch(getMenusIngredientsThunk(getMenusIngredientsElectronCallback))
     },
     [dispatch]
   )

@@ -13,6 +13,9 @@ import {
   type GetMenus
 } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
 import {
+  type GetMenusIngredients
+} from 'controllers/food_organizer_crud/sql/menus/getMenusIngredientsSql'
+import {
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/sql/menus/types'
 import { type GetWeeklyMenu } from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
@@ -28,5 +31,6 @@ declare global {
     getMenusData: () => GetMenus
     getWeeklyMenusData: () => GetWeeklyMenu
     getIngredientsData: () => GetIngredients
+    getMenusIngredients: () => GetMenusIngredients
   }
 }

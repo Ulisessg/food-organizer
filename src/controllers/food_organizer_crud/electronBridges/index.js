@@ -7,6 +7,7 @@ const getIngredientsStockBridge = require('./bridges/getIngredientsStockBridge')
 const getFoodsDataBridge = require('./bridges/getFoodsDataBridge')
 const getMenusDataBridge = require('./bridges/getMenusDataBridge')
 const getWeeklyMenusDataBridge = require('./bridges/getWeeklyMenusDataBridge')
+const getMenusIngredientsBridge = require('./bridges/getMenusIngredientsBridge')
 
 /**
  * Enable all electron bridges to handle database requests
@@ -21,6 +22,7 @@ const openBridges = () => {
   getFoodsDataBridge()
   getMenusDataBridge()
   getWeeklyMenusDataBridge()
+  getMenusIngredientsBridge()
 }
 
 module.exports = openBridges

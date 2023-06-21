@@ -5,6 +5,7 @@ const bridgesNames = {
   getIngredientsData: 'getIngredientsData',
   getIngredientsStock: 'getIngredientsStockData',
   getMenusData: 'getMenusData',
+  getMenusIngredients: 'getMenusIngredients',
   getPurchasePlacesData: 'getPurchasePlacesData',
   getUomData: 'getUomData',
   getWeeklyMenusData: 'getWeeklyMenusData'

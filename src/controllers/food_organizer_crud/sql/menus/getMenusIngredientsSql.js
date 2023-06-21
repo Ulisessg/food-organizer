@@ -1,7 +1,7 @@
 const getMenusIngredientsSql = `SELECT
 menu_foods.menu_id AS id,
 
-(SELECT JSON_ARRAYAGG(JSON_OBJECT(
+(SELECT JSON_GROUP_ARRAY(JSON_OBJECT(
     'ingredient_id', food_ingredients.ingredient_id,
         'ingredient_name', ingredients.name,
         'ingredient_qty', food_ingredients.ingredient_qty
@@ -14,13 +14,4 @@ FROM menu_foods
 GROUP BY menu_foods.menu_id
 ORDER BY menu_foods.menu_id asc;`
 
-export default getMenusIngredientsSql
-
-export type GetMenusIngredients = Array<{
-  id: number
-  ingredients: Array<{
-    ingredient_id: number
-    ingredient_name: string
-    ingredient_qty: number
-  }>
-}>
+module.exports = getMenusIngredientsSql

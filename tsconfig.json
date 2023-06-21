@@ -64,16 +64,7 @@
     "**/*.ts",
     "**/*.tsx",
     "build/types/**/*.ts",
-    "global.d.ts",
-    "src/controllers/food_organizer_crud/sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql.js",
-    "src/controllers/food_organizer_crud/sql/unitsOfMeasure/getUnitsOfMeasureGroupedByTypeSql.js",
-    "src/controllers/food_organizer_crud/sql/days/getDaysSql.js",
-    "src/controllers/food_organizer_crud/sql/purchasePlaces/getPurchasePlacesSql.js",
-    "src/controllers/food_organizer_crud/sql/foodTypes/getFoodTypesSql.js",
-    "src/controllers/food_organizer_crud/sql/ingredients/getIngredientsSql.js",
-    "src/controllers/food_organizer_crud/sql/ingredientStock/getIngredientsStockSql.js",
-    "src/controllers/food_organizer_crud/sql/weeklyMenus/getWeeklyMenusSql.js",
-    "src/controllers/food_organizer_crud/sql/weeklyMenus/getWeeklyMenuDaysSql.js"
+    "global.d.ts"
   ],
   "exclude": [
     "node_modules"
