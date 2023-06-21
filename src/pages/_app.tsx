@@ -20,7 +20,7 @@ import
 getIngredientsDataElectronCallback
   from 'redux/slices/ingredientsSlice/callbacks/electron/getIngredientsDataElectronCallback'
 import { getIngredientsThunk } from 'redux/slices/ingredientsSlice/thunks'
-import { getPurchasePlacesThunk } from 'redux/slices/purchasePlacesSlice'
+import { getPurchasePlacesThunk } from 'redux/slices/purchasePlacesSlice/thunks'
 import
 getUomDataElectronCallback
   from 'redux/slices/unitsOfMeasureSlice/callbacks/electron/getUomDataElectronCallback'
@@ -34,6 +34,9 @@ getMenusDataElectronCallback
 import
 getMenusIngredientsElectronCallback
   from 'redux/slices/menusSlice/callbacks/electron/getMenusIngredientsElectronCallback'
+import
+getPurchasePlacesDataCallback
+  from 'redux/slices/purchasePlacesSlice/callbacks/electron/getPurchasePlacesDataCallback'
 dayjs.extend(dayjsCustomParseFormat)
 dayjs.extend(dayjsWeekDayPlugin)
 dayjs.locale('es')
@@ -59,7 +62,7 @@ const ReduxProviderWrapper: FC<{
        * Get data, todo: create a limiter or develop a performance improvement
        */
       void dispatch(getIngredientsThunk(getIngredientsDataElectronCallback))
-      void dispatch(getPurchasePlacesThunk(null))
+      void dispatch(getPurchasePlacesThunk(getPurchasePlacesDataCallback))
       void dispatch(getUomDataThunk(getUomDataElectronCallback))
       void dispatch(getFoodsDataThunk({
         getFoodsData: getFoodsDataElectronCallback.getFoodsData,

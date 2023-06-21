@@ -16,6 +16,9 @@ import {
   type GetMenusIngredients
 } from 'controllers/food_organizer_crud/sql/menus/getMenusIngredientsSql'
 import {
+  type GetPurchasePlaces
+} from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
+import {
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/sql/menus/types'
 import { type GetWeeklyMenu } from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
@@ -32,5 +35,6 @@ declare global {
     getWeeklyMenusData: () => GetWeeklyMenu
     getIngredientsData: () => GetIngredients
     getMenusIngredients: () => GetMenusIngredients
+    getPurchasePlacesData: () => GetPurchasePlaces
   }
 }
