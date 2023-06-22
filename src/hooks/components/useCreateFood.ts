@@ -5,9 +5,12 @@ import {
   type ChangeEvent, type MouseEvent,
   type RefObject, useState
 } from 'react'
-import { createFoodThunk, restartPostData } from 'redux/slices/foodsSlice'
+import { createFoodThunk, restartPostData } from 'redux/slices/foodsSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
-import { type CreateFood } from 'controllers/food_organizer_crud/nextjs/foodsCRUD'
+import { type CreateFood } from 'redux/slices/foodsSlice/types'
+import
+createFoodelectronCallback
+  from 'redux/slices/foodsSlice/callbacks/electron/createFoodElectronCallback'
 import { defaultSelectValue } from 'utils/constants'
 import getInputNumberData from 'utils/getInputNumberData'
 import transformPostData from 'utils/transformPostData'
@@ -103,11 +106,14 @@ const useCreateFood = (formRef: RefObject<HTMLFormElement>): UseCreateFoodReturn
         10
       )
       ingredients.push({
+        // Food id is setted before food creation
+        food_id: '' as unknown as number,
         ingredient_id: ingredientId,
         ingredient_qty: ingredientQty
       })
     })
-    const postFoodRequestResult = await dispatch(createFoodThunk(transformPostData({
+
+    const dataTransformed: CreateFood = transformPostData({
       food_type_id: foodTypeId as number,
       image: null,
       ingredients,
@@ -118,7 +124,10 @@ const useCreateFood = (formRef: RefObject<HTMLFormElement>): UseCreateFoodReturn
       ),
       score: 0,
       used_counter: 0
-    })))
+    })
+    const postFoodRequestResult = await
+    dispatch(createFoodThunk(createFoodelectronCallback(dataTransformed)))
+
     if (typeof (postFoodRequestResult as any).error === 'undefined') {
       resetIsRepeated()
       formRef.current?.reset()

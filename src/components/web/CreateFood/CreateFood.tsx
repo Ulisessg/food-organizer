@@ -18,6 +18,7 @@ import SelectIngredients from './SelectIngredients'
 const CreateFood: FC = () => {
   const foodsData = useSelector((state: RootState) => state.foods)
   const ingredientsData = useSelector((state: RootState) => state.ingredients)
+
   const formRef = useRef<HTMLFormElement>(null)
   const {
     createFood,

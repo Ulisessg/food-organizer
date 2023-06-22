@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-lines-per-function */
 import { type TFoodState } from '../types'
 import { type TReducerWBuilder } from 'redux/types'
@@ -30,11 +31,22 @@ const createFoodReducer: TReducerWBuilder<TFoodState> = (builder) => {
       state.postFoodsEnd = true
       state.postFoodsIsLoading = false
       state.postFoodsSuccess = true
+      console.log(action.payload)
+
+      // Only 1 food created
+      // eslint-disable-next-line prefer-destructuring
+      const {
+        food_id,
+        food_name,
+        image,
+        preparation_time
+      } = action.payload.foods[0]
+
       state.foods.push({
-        food_id: action.payload.id,
-        food_name: action.payload.name,
-        image: action.payload.image,
-        preparation_time: action.payload.preparation_time
+        food_id,
+        food_name,
+        image,
+        preparation_time
       })
       state.foodsGroupedByType.some((fGByType, index) => {
         if (fGByType.food_type_id === action.payload.food_type_id) {
@@ -42,11 +54,10 @@ const createFoodReducer: TReducerWBuilder<TFoodState> = (builder) => {
             state.foodsGroupedByType,
             index
           )) as any).foods.push({
-            food_id: action.payload.id,
-            food_name: action.payload.name,
-            image: action.payload.image,
-            preparation_time: action.payload.preparation_time
-
+            food_id,
+            food_name,
+            image,
+            preparation_time
           })
           return true
         }

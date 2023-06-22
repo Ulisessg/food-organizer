@@ -51,3 +51,5 @@ export interface CreateFood {
   image: string | null
   ingredients: CreateFoodIngredients
 }
+
+export type CreateFoodCallback = (food: CreateFood) => () => Promise<GetFoods[0]>

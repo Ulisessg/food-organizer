@@ -1,8 +1,5 @@
 import {
-  type CreateFood,
-  type CreateFoodsResponse
-} from 'controllers/food_organizer_crud/nextjs/foodsCRUD'
-import {
+  type CreateFoodCallback,
   type GetFoodsDataThunkReturn,
   type TGetFoodsDataCallback,
   type TGetFoodsTypesDataCallback
@@ -56,18 +53,15 @@ export const getFoodsDataThunk = createAsyncThunk<GetFoodsDataThunkReturn, {
   }
 )
 
-export const createFoodThunk = createAsyncThunk<CreateFoodsResponse, CreateFood>(
+export const createFoodThunk = createAsyncThunk<GetFoods[0], ReturnType<CreateFoodCallback>>(
   'foods/create_food',
-  async (foodData, thunkApi) => {
-    const createFoodRequestResult =
-    await axios.post<CreateFood, AxiosResponse<response<CreateFoodsResponse>>>(
-      '/api/foods',
-      foodData
-    )
-    if (createFoodRequestResult.data.error) {
-      return thunkApi.rejectWithValue('Error creating food')
+  async (createFood, thunkApi) => {
+    try {
+      const createFoodResult = await createFood()
+      return createFoodResult
+    } catch (error) {
+      return thunkApi.rejectWithValue(error)
     }
-    return createFoodRequestResult.data.data
   }
 )
 
