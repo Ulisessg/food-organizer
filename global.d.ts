@@ -1,6 +1,7 @@
 import {
   type CreateIngredient,
-  type GetIngredients
+  type GetIngredients,
+  type TIngr_purchase_places
 } from 'controllers/food_organizer_crud/sql/ingredients/types'
 import {
   type CreateIngredientStock,
@@ -13,6 +14,9 @@ import {
 import {
   type CreateFood
 } from 'redux/slices/foodsSlice/types'
+import {
+  type CreateIngredientPurchasePlace
+} from 'controllers/food_organizer_crud/sql/ingredientPurchasePlaces/types'
 import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
 import {
   type GetFoodTypes
@@ -52,5 +56,7 @@ declare global {
     GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'][0]
 
     createUnitsOfMeasureTypes: (uomType) => GetFoodTypes[0]
+    createIngredientPurchasePlaces:
+    (ingredientPurchasePlace: CreateIngredientPurchasePlace) => TIngr_purchase_places
   }
 }
