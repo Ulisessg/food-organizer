@@ -1,3 +1,6 @@
+import { type CreateMenuFoods } from '../menuFoods/types'
+import { type menus } from 'controllers/food_organizer_crud/dbTablesTypes'
+
 export type GetMenus = Array<{
   id: number
   comment: string | null
@@ -17,3 +20,7 @@ export type GetMenusIngredients = Array<{
     ingredient_qty: number
   }>
 }>
+
+export interface CreateMenu extends Pick<menus, 'comment'> {
+  foods: Array<Omit<CreateMenuFoods[0], 'menu_id'>>
+}

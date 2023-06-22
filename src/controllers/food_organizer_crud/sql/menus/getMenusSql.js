@@ -1,4 +1,4 @@
-const getMenusSql = `SELECT
+const getMenusSql = (filter) => `SELECT
 menus.id, menus.comment,
 JSON_GROUP_ARRAY(JSON_OBJECT(
   'food_id', foods.id,
@@ -9,6 +9,7 @@ JSON_GROUP_ARRAY(JSON_OBJECT(
 FROM menu_foods
 JOIN menus ON menus.id = menu_foods.menu_id
 JOIN foods ON foods.id = menu_foods.food_id
+${filter || ''}
 GROUP BY menus.id
 ORDER BY menus.id asc`
 

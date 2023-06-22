@@ -153,7 +153,6 @@ export interface menu_foods {
   id: number
   menu_id: number
   food_id: number
-
 }
 
 /**
@@ -175,7 +174,6 @@ export interface menu_prices {
 export interface menus {
   id: number
   comment: string | null
-
 }
 
 /**

@@ -1,7 +1,7 @@
 const { contextBridge } = require('electron')
-const { getMenusData } = require('./bridgesNames')
-const electronOpenDb = require('../../db/electronOpenDb')
-const getMenusSql = require('../../sql/menus/getMenusSql')
+const { getMenusData } = require('../bridgesNames')
+const electronOpenDb = require('../../../db/electronOpenDb')
+const getMenusSql = require('../../../sql/menus/getMenusSql')
 
 const getMenusDataBridge = () => {
   const db = electronOpenDb()
@@ -9,9 +9,9 @@ const getMenusDataBridge = () => {
   const getData = () => {
 
     /**
-     * @type {import('../../sql/menus/types').GetMenus}
+     * @type {import('../../../sql/menus/types').GetMenus}
      */
-    const data = db.prepare(getMenusSql).all()
+    const data = db.prepare(getMenusSql()).all()
     const parsedData = data.map((menu) => {
       const foodsParsed = JSON.parse(menu.menu_foods)
       return {
