@@ -5,7 +5,10 @@ const {
 } = require('./bridges/unitsOfMeasure')
 const { createUnitsOfMeasureTypesBridge } = require('./bridges/unitsOfMeasureTypes')
 const getDaysDataBridge = require('./bridges/getDaysDataBridge')
-const getPurchasePlacesDataBridge = require('./bridges/purchasePlacesDataBridge')
+const {
+  createPurchasePlacesBridge,
+  getPurchasePlacesDataBridge
+} = require('./bridges/purchasePlaces')
 const {
   getIngredientsDataBridge,
   createIngredientsBridge
@@ -47,6 +50,7 @@ const openBridges = () => {
   createMenusBridge()
   createUnitsOfMeasureBridge()
   createUnitsOfMeasureTypesBridge()
+  createPurchasePlacesBridge()
 }
 
 module.exports = openBridges

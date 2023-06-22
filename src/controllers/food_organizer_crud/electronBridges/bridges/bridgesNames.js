@@ -3,6 +3,7 @@ const bridgesNames = {
   createIngredients: 'createIngredients',
   createIngredientsStok: 'createIngredientsStock',
   createMenus: 'createMenus',
+  createPurchasePlaces: 'createPurchasePlaces',
   createUnitOfMeasureTypes: 'createUnitOfMeasureTypes',
   createUnitsOfMeausure: 'createUnitsOfMeausure',
 

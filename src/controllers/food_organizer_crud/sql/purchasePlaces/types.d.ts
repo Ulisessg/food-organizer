@@ -3,3 +3,8 @@ export type GetPurchasePlaces = Array<{
   name: string
   address: string | null
 }>
+
+export interface CreatePurchasePlace {
+  address: string | null
+  name: string
+}
