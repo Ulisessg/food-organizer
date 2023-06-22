@@ -21,7 +21,7 @@ const getData = () => {
   /**
    * @type {import('../../../nextjs/unitsOfMeasureCRUD').GetUnitsOfMeasureData['unitsOfMeasureType']}
    */
-  const unitsOfMeasureType = db.prepare(getUnitsOfMeasureTypeSql).all()
+  const unitsOfMeasureType = db.prepare(getUnitsOfMeasureTypeSql()).all()
 
   return {
     unitsOfMeasureGroupedByType: uomGroupedByType.map((uomt) => ({

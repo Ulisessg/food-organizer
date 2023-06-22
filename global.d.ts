@@ -50,5 +50,7 @@ declare global {
     createIngredientsStock: (ingredientsStock: CreateIngredientStock) => GetIngredientStock[0]
     createUnitsOfMeausure: (unitOfMeasure: CreateUom) =>
     GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'][0]
+
+    createUnitsOfMeasureTypes: (uomType) => GetFoodTypes[0]
   }
 }
