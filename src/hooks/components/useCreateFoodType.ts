@@ -4,8 +4,11 @@ import { type MouseEvent, type RefObject } from 'react'
 import {
   createFoodTypeThunk,
   restartPostData
-} from 'redux/slices/foodsSlice'
+} from 'redux/slices/foodsSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
+import
+createFoodTypeElectronCallback
+  from 'redux/slices/foodsSlice/callbacks/electron/createFoodTypeElectronCallback'
 import transformPostData from 'utils/transformPostData'
 import { useInputs } from 'd-system'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
@@ -53,9 +56,11 @@ const useCreateFoodType = (
 
   const createFoodType: UseCreateFoodTypeReturn['createFoodType'] = async () => {
     if (!formIsValid()) return
-    const postFoodTypeResult = await dispatch(createFoodTypeThunk(transformPostData({
+    const dataTransformed = transformPostData({
       name: inputsData.food_type_name
-    })))
+    })
+    const postFoodTypeResult = await
+    dispatch(createFoodTypeThunk(createFoodTypeElectronCallback(dataTransformed)))
     if (typeof (postFoodTypeResult as any).error === 'undefined') {
       resetIsRepeated()
       formRef.current?.reset()

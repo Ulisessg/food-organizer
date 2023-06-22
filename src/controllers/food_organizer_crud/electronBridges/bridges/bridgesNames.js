@@ -1,4 +1,5 @@
 const bridgesNames = {
+  createFoodType: 'createFoodType',
   createFoods: 'createFoods',
   createIngredientPurchasePlaces: 'createIngredientPurchasePlaces',
   createIngredients: 'createIngredients',

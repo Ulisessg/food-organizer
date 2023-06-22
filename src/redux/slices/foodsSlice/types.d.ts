@@ -1,6 +1,9 @@
 import {
   type CreateFoodIngredients
 } from 'controllers/food_organizer_crud/sql/foodIngredients/types'
+import {
+  type CreateFoodType
+} from 'controllers/food_organizer_crud/sql/foodTypes/createFoodTypesSql'
 import { type GetFoodTypes } from 'controllers/food_organizer_crud/sql/foodTypes/types'
 import { type GetFoods } from 'controllers/food_organizer_crud/sql/foods/types'
 
@@ -53,3 +56,4 @@ export interface CreateFood {
 }
 
 export type CreateFoodCallback = (food: CreateFood) => () => Promise<GetFoods[0]>
+export type CreateFoodtypeCallback = (foodType: CreateFoodType) => () => Promise<GetFoodTypes[0]>

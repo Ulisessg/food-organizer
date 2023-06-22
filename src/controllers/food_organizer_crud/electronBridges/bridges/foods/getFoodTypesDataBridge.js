@@ -10,7 +10,7 @@ const getFoodTypesDataBridge = () => {
    * @returns {import('../../../sql/foodTypes/types').GetFoodTypes}
    */
   const getData = () => {
-    const data = db.prepare(getFoodTypesSql).all()
+    const data = db.prepare(getFoodTypesSql()).all()
     return data
   }
 

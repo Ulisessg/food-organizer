@@ -1,4 +1,8 @@
 import {
+  type CreateFoodType,
+  type GetFoodTypes
+} from 'controllers/food_organizer_crud/sql/foodTypes/types'
+import {
   type CreateIngredient,
   type GetIngredients,
   type TIngr_purchase_places
@@ -22,9 +26,6 @@ import {
   type CreateIngredientPurchasePlace
 } from 'controllers/food_organizer_crud/sql/ingredientPurchasePlaces/types'
 import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
-import {
-  type GetFoodTypes
-} from 'controllers/food_organizer_crud/sql/foodTypes/types'
 import {
   type GetFoods
 } from 'controllers/food_organizer_crud/nextjs/foodsCRUD'
@@ -53,6 +54,8 @@ declare global {
     getPurchasePlacesData: () => GetPurchasePlaces
 
     createFoods: (food: CreateFood) => GetFoods[0]
+    createFoodType: (foodType: CreateFoodType) => GetFoodTypes[0]
+
     createIngredients: (ingredient: CreateIngredient) => GetIngredients[0]
     createIngredientsStock: (ingredientsStock: CreateIngredientStock) => GetIngredientStock[0]
     createUnitsOfMeausure: (unitOfMeasure: CreateUom) =>

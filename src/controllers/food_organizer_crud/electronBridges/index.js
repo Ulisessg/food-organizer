@@ -3,34 +3,43 @@ const {
   getUomDataBridge,
   createUnitsOfMeasureBridge
 } = require('./bridges/unitsOfMeasure')
+
 const { createUnitsOfMeasureTypesBridge } = require('./bridges/unitsOfMeasureTypes')
+
 const getDaysDataBridge = require('./bridges/getDaysDataBridge')
+
 const {
   createPurchasePlacesBridge,
   getPurchasePlacesDataBridge
 } = require('./bridges/purchasePlaces')
+
 const {
   createIngredientPurchasePlacesBridge,
   getIngredientsDataBridge,
   createIngredientsBridge
 } = require('./bridges/ingredients')
+
 const {
   createIngredientsStockBridge,
   getIngredientsStockBridge
 } = require('./bridges/ingredientsStock')
+
 const {
   createMenusBridge,
   getMenusDataBridge,
   getMenusIngredientsBridge
 } = require('./bridges/menus')
+
 const {
   createWeeklyMenuBridge,
   getWeeklyMenusDataBridge
 } = require('./bridges/weeklyMenus')
+
 const {
   getFoodsDataBridge,
   getFoodTypesDataBridge,
-  createFoodsBridge
+  createFoodsBridge,
+  createFoodtypeBridge
 } = require('./bridges/foods')
 
 /**
@@ -49,6 +58,7 @@ const openBridges = () => {
   getMenusIngredientsBridge()
 
   createFoodsBridge()
+  createFoodtypeBridge()
   createIngredientsBridge()
   createIngredientsStockBridge()
   createMenusBridge()

@@ -1,20 +1,16 @@
 import {
   type CreateFoodCallback,
+  type CreateFoodtypeCallback,
   type GetFoodsDataThunkReturn,
   type TGetFoodsDataCallback,
   type TGetFoodsTypesDataCallback
 } from './types'
-import axios, { type AxiosResponse } from 'axios'
-import {
-  type CreateFoodType
-} from 'controllers/food_organizer_crud/sql/foodTypes/createFoodTypesSql'
 import { type GetFoodTypes } from 'controllers/food_organizer_crud/sql/foodTypes/types'
 import { type GetFoods } from 'controllers/food_organizer_crud/sql/foods/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
   type food_types
 } from '@prisma/client'
-import { type response } from 'controllers/response'
 
 export const getFoodsDataThunk = createAsyncThunk<GetFoodsDataThunkReturn, {
   getFoodsData: TGetFoodsDataCallback
@@ -79,16 +75,14 @@ export const restartPostData = createAsyncThunk(
   }
 )
 
-export const createFoodTypeThunk = createAsyncThunk<food_types, CreateFoodType>(
+export const createFoodTypeThunk = createAsyncThunk<food_types, ReturnType<CreateFoodtypeCallback>>(
   'food_types/create',
-  async (foodTypeData, thunkApi) => {
-    const postRequestResult = await axios.post<CreateFoodType, AxiosResponse<response<food_types>>>(
-      '/api/foodtypes',
-      foodTypeData
-    )
-    if (postRequestResult.data.error) {
-      return thunkApi.rejectWithValue('')
+  async (createFoodType, thunkApi) => {
+    try {
+      const foodTypeCreated = await createFoodType()
+      return foodTypeCreated
+    } catch (error) {
+      return thunkApi.rejectWithValue(error)
     }
-    return postRequestResult.data.data
   }
 )
