@@ -3,6 +3,14 @@ import {
   type GetIngredients
 } from 'controllers/food_organizer_crud/sql/ingredients/types'
 import {
+  type CreateIngredientStock,
+  type GetIngredientStock
+} from 'controllers/food_organizer_crud/sql/ingredientStock/types'
+import {
+  type CreateUom,
+  type GetUnitsOfMeasureData
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasure/types'
+import {
   type CreateFood
 } from 'redux/slices/foodsSlice/types'
 import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
@@ -13,9 +21,6 @@ import {
   type GetFoods
 } from 'controllers/food_organizer_crud/nextjs/foodsCRUD'
 import {
-  type GetIngredientStock
-} from 'controllers/food_organizer_crud/sql/ingredientStock/types'
-import {
   type GetMenus
 } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
 import {
@@ -24,9 +29,6 @@ import {
 import {
   type GetPurchasePlaces
 } from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
-import {
-  type GetUnitsOfMeasureData
-} from 'controllers/food_organizer_crud/sql/menus/types'
 import { type GetWeeklyMenu } from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
 
 // Electron bridges
@@ -45,6 +47,8 @@ declare global {
 
     createFoods: (food: CreateFood) => GetFoods[0]
     createIngredients: (ingredient: CreateIngredient) => GetIngredients[0]
-    createIngredientsStock: (ingredientsStock) => GetIngredientStock[0]
+    createIngredientsStock: (ingredientsStock: CreateIngredientStock) => GetIngredientStock[0]
+    createUnitsOfMeausure: (unitOfMeasure: CreateUom) =>
+    GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'][0]
   }
 }

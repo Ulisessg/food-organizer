@@ -1,5 +1,8 @@
 /* eslint-disable max-statements */
-const getUomDataBridge = require('./bridges/getUomDataBridge')
+const {
+  getUomDataBridge,
+  createUnitsOfMeasureBridge
+} = require('./bridges/unitsOfMeasure')
 const getDaysDataBridge = require('./bridges/getDaysDataBridge')
 const getPurchasePlacesDataBridge = require('./bridges/purchasePlacesDataBridge')
 const {
@@ -41,6 +44,7 @@ const openBridges = () => {
   createIngredientsBridge()
   createIngredientsStockBridge()
   createMenusBridge()
+  createUnitsOfMeasureBridge()
 }
 
 module.exports = openBridges

@@ -16,3 +16,9 @@ export interface GetUnitsOfMeasureData {
   unitsOfMeasureGroupedByType: TGetUnitsOfMeasureGroupedByType
   unitsOfMeasureType: TGetUnitsOfMeasureType
 }
+
+export interface CreateUom {
+  abbreviation: string
+  name: string
+  uomt_id: number
+}
