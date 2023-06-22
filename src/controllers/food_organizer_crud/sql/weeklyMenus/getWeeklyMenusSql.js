@@ -1,6 +1,10 @@
 const weeklyMenuDaySql = require('./getWeeklyMenuDaysSql')
 
-const getWeeklyMenusSql = `
+/**
+ * @param {string} filter
+ * @returns {string}
+ */
+const getWeeklyMenusSql = (filter = '') => `
 SELECT
 weekly_menus.id,
 weekly_menus.creation_date,
@@ -33,6 +37,7 @@ ${weeklyMenuDaySql(
   'sunday'
 )}
 FROM weekly_menus
+${filter}
 GROUP BY weekly_menus.id
 ORDER BY weekly_menus.creation_date
 `

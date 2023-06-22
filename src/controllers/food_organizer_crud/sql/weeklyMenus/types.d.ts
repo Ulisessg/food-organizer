@@ -19,3 +19,11 @@ interface Food {
   food_id: number
   food_name: string
 }
+
+export interface TCreateWeeklyMenus {
+  creation_date: string
+  menus: Array<{
+    day_id: number
+    menu_id: number
+  }>
+}

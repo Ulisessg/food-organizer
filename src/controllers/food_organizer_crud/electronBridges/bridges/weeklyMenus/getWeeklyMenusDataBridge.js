@@ -1,13 +1,12 @@
 const { contextBridge } = require('electron')
-const { getWeeklyMenusData } = require('./bridgesNames')
-const electronOpenDb = require('../../db/electronOpenDb')
-const getWeeklyMenusSql = require('../../sql/weeklyMenus/getWeeklyMenusSql')
+const { getWeeklyMenusData } = require('../bridgesNames')
+const electronOpenDb = require('../../../db/electronOpenDb')
+const getWeeklyMenusSql = require('../../../sql/weeklyMenus/getWeeklyMenusSql')
 
 /**
  * @param {Array} day
  */
 const parseDayData = (day) => {
-  console.log(day)
   if (day.length === 0) {
     return []
   }
@@ -20,9 +19,9 @@ const getWeeklyMenusDataBridge = () => {
   const getData = () => {
 
     /**
-     * @type {import('../../sql/weeklyMenus/types').GetWeeklyMenu}
+     * @type {import('../../../sql/weeklyMenus/types').GetWeeklyMenu}
      */
-    const data = db.prepare(getWeeklyMenusSql).all()
+    const data = db.prepare(getWeeklyMenusSql()).all()
     const fixedData = data.map((weeklyMenu) => ({
       ...weeklyMenu,
       friday: parseDayData(weeklyMenu.friday),

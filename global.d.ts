@@ -12,6 +12,10 @@ import {
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/sql/unitsOfMeasure/types'
 import {
+  type GetWeeklyMenu,
+  type TCreateWeeklyMenus
+} from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
+import {
   type CreateFood
 } from 'redux/slices/foodsSlice/types'
 import {
@@ -33,7 +37,6 @@ import {
 import {
   type GetPurchasePlaces
 } from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
-import { type GetWeeklyMenu } from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
 
 // Electron bridges
 declare global {
@@ -58,5 +61,6 @@ declare global {
     createUnitsOfMeasureTypes: (uomType) => GetFoodTypes[0]
     createIngredientPurchasePlaces:
     (ingredientPurchasePlace: CreateIngredientPurchasePlace) => TIngr_purchase_places
+    createWeeklyMenu: (weeklyMenu: TCreateWeeklyMenus) => GetWeeklyMenu[0]
   }
 }

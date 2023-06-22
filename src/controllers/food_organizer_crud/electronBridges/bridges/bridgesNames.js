@@ -7,6 +7,7 @@ const bridgesNames = {
   createPurchasePlaces: 'createPurchasePlaces',
   createUnitOfMeasureTypes: 'createUnitOfMeasureTypes',
   createUnitsOfMeausure: 'createUnitsOfMeausure',
+  createWeeklyMenu: 'createWeeklyMenu',
 
   getDaysData: 'getDaysData',
   getFoodTypesData: 'getFoodTypesData',
