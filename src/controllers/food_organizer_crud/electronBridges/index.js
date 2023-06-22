@@ -6,7 +6,10 @@ const {
   getIngredientsDataBridge,
   createIngredientsBridge
 } = require('./bridges/ingredients')
-const getIngredientsStockBridge = require('./bridges/getIngredientsStockBridge')
+const {
+  createIngredientsStockBridge,
+  getIngredientsStockBridge
+} = require('./bridges/ingredientsStock')
 const getMenusDataBridge = require('./bridges/getMenusDataBridge')
 const getWeeklyMenusDataBridge = require('./bridges/getWeeklyMenusDataBridge')
 const getMenusIngredientsBridge = require('./bridges/getMenusIngredientsBridge')
@@ -33,6 +36,7 @@ const openBridges = () => {
 
   createFoodsBridge()
   createIngredientsBridge()
+  createIngredientsStockBridge()
 }
 
 module.exports = openBridges

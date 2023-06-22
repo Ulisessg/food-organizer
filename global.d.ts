@@ -45,5 +45,6 @@ declare global {
 
     createFoods: (food: CreateFood) => GetFoods[0]
     createIngredients: (ingredient: CreateIngredient) => GetIngredients[0]
+    createIngredientsStock: (ingredientsStock) => GetIngredientStock[0]
   }
 }
