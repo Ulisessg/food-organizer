@@ -1,13 +1,17 @@
+/* eslint-disable max-statements */
 const getUomDataBridge = require('./bridges/getUomDataBridge')
 const getDaysDataBridge = require('./bridges/getDaysDataBridge')
 const getPurchasePlacesDataBridge = require('./bridges/purchasePlacesDataBridge')
-const getFoodTypesDataBridge = require('./bridges/getFoodTypesDataBridge')
 const getIngredientsDataBridge = require('./bridges/getIngredientsDataBridge')
 const getIngredientsStockBridge = require('./bridges/getIngredientsStockBridge')
-const getFoodsDataBridge = require('./bridges/getFoodsDataBridge')
 const getMenusDataBridge = require('./bridges/getMenusDataBridge')
 const getWeeklyMenusDataBridge = require('./bridges/getWeeklyMenusDataBridge')
 const getMenusIngredientsBridge = require('./bridges/getMenusIngredientsBridge')
+const {
+  getFoodsDataBridge,
+  getFoodTypesDataBridge,
+  createFoodsBridge
+} = require('./bridges/foods')
 
 /**
  * Enable all electron bridges to handle database requests
@@ -23,6 +27,7 @@ const openBridges = () => {
   getMenusDataBridge()
   getWeeklyMenusDataBridge()
   getMenusIngredientsBridge()
+  createFoodsBridge()
 }
 
 module.exports = openBridges

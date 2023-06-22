@@ -1,4 +1,5 @@
 const bridgesNames = {
+  createFoods: 'createFoods',
   getDaysData: 'getDaysData',
   getFoodTypesData: 'getFoodTypesData',
   getFoodsData: 'getFoodsData',

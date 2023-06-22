@@ -1,3 +1,6 @@
+import {
+  type CreateFoodIngredients
+} from 'controllers/food_organizer_crud/sql/foodIngredients/types'
 import { type GetFoodTypes } from 'controllers/food_organizer_crud/sql/foodTypes/types'
 import { type GetFoods } from 'controllers/food_organizer_crud/sql/foods/types'
 
@@ -39,3 +42,12 @@ interface GetFoodsDataThunkReturn {
 
 export type TGetFoodsDataCallback = () => Promise<GetFoods>
 export type TGetFoodsTypesDataCallback = () => Promise<GetFoodTypes>
+
+export interface CreateFood {
+  name: string
+  used_counter: number | null
+  preparation_time: number
+  food_type_id: number
+  image: string | null
+  ingredients: CreateFoodIngredients
+}

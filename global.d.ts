@@ -1,3 +1,6 @@
+import {
+  type CreateFood
+} from 'redux/slices/foodsSlice/types'
 import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
 import {
   type GetFoodTypes
@@ -36,5 +39,6 @@ declare global {
     getIngredientsData: () => GetIngredients
     getMenusIngredients: () => GetMenusIngredients
     getPurchasePlacesData: () => GetPurchasePlaces
+    createFoods: (food: CreateFood) => GetFoods[0]
   }
 }

@@ -176,7 +176,6 @@ export interface CreateFood {
   name: string
   used_counter: number | null
   preparation_time: number
-  score: number | null
   food_type_id: number
   image: string | null
   ingredients: Array<Omit<CreateFoodIngredients[0], 'food_id'>>

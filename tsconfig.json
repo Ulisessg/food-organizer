@@ -64,7 +64,8 @@
     "**/*.ts",
     "**/*.tsx",
     "build/types/**/*.ts",
-    "global.d.ts"
+    "global.d.ts",
+    "src/controllers/food_organizer_crud/electronBridges/bridges/foods/createFoodsBridge.js"
   ],
   "exclude": [
     "node_modules"
