@@ -1,4 +1,8 @@
 import {
+  type CreateIngredient,
+  type GetIngredients
+} from 'controllers/food_organizer_crud/sql/ingredients/types'
+import {
   type CreateFood
 } from 'redux/slices/foodsSlice/types'
 import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
@@ -11,7 +15,6 @@ import {
 import {
   type GetIngredientStock
 } from 'controllers/food_organizer_crud/sql/ingredientStock/types'
-import { type GetIngredients } from 'controllers/food_organizer_crud/sql/ingredients/types'
 import {
   type GetMenus
 } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
@@ -39,6 +42,8 @@ declare global {
     getIngredientsData: () => GetIngredients
     getMenusIngredients: () => GetMenusIngredients
     getPurchasePlacesData: () => GetPurchasePlaces
+
     createFoods: (food: CreateFood) => GetFoods[0]
+    createIngredients: (ingredient: CreateIngredient) => GetIngredients[0]
   }
 }

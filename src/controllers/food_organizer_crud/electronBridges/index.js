@@ -2,7 +2,10 @@
 const getUomDataBridge = require('./bridges/getUomDataBridge')
 const getDaysDataBridge = require('./bridges/getDaysDataBridge')
 const getPurchasePlacesDataBridge = require('./bridges/purchasePlacesDataBridge')
-const getIngredientsDataBridge = require('./bridges/getIngredientsDataBridge')
+const {
+  getIngredientsDataBridge,
+  createIngredientsBridge
+} = require('./bridges/ingredients')
 const getIngredientsStockBridge = require('./bridges/getIngredientsStockBridge')
 const getMenusDataBridge = require('./bridges/getMenusDataBridge')
 const getWeeklyMenusDataBridge = require('./bridges/getWeeklyMenusDataBridge')
@@ -27,7 +30,9 @@ const openBridges = () => {
   getMenusDataBridge()
   getWeeklyMenusDataBridge()
   getMenusIngredientsBridge()
+
   createFoodsBridge()
+  createIngredientsBridge()
 }
 
 module.exports = openBridges

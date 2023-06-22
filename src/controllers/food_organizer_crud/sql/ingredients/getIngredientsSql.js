@@ -1,4 +1,8 @@
-const getIngredientsSql = `SELECT 
+/**
+ * @param {string} filter
+ * @returns {string}
+ */
+const getIngredientsSql = (filter) => `SELECT 
 ingredients.id AS ingredient_id,
 ingredients.name AS ingredient_name,
 ingredients.image,
@@ -16,6 +20,7 @@ INNER JOIN purchase_places ON purchase_places.id = ingredient_purchase_places.pu
 ) AS ingr_purchase_places
 FROM ingredients
 INNER JOIN units_of_measure ON units_of_measure.id = ingredients.uom_id
+${filter || ''}
 `
 
 module.exports = getIngredientsSql

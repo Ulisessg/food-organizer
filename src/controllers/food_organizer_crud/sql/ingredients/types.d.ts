@@ -1,4 +1,4 @@
-import { type ingredient_purchase_places } from '@prisma/client'
+import { type ingredient_purchase_places, type ingredients } from '@prisma/client'
 
 export type GetIngredients = Array<{
   ingredient_id: number
@@ -11,3 +11,15 @@ export type GetIngredients = Array<{
 
 export type TIngr_purchase_places = Array<
 ingredient_purchase_places & { purchase_place_name: string }>
+
+export interface CreateIngredient {
+  comment: string | null
+  creation_date: string
+  image: string | null
+  name: string
+  uomId: number
+}
+
+export interface CreateIngredientReturn extends ingredients {
+  uomName: string
+}

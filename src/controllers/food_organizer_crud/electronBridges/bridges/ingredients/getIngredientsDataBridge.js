@@ -1,7 +1,7 @@
 const { contextBridge } = require('electron')
-const { getIngredientsData } = require('./bridgesNames')
-const electronOpenDb = require('../../db/electronOpenDb')
-const getIngredientsSql = require('../../sql/ingredients/getIngredientsSql')
+const { getIngredientsData } = require('../bridgesNames')
+const electronOpenDb = require('../../../db/electronOpenDb')
+const getIngredientsSql = require('../../../sql/ingredients/getIngredientsSql')
 
 const getIngredientsDataBridge = () => {
   const db = electronOpenDb()
@@ -9,9 +9,9 @@ const getIngredientsDataBridge = () => {
   const getData = () => {
 
     /**
-     * @type {import('../../sql/ingredients/types.d').GetIngredients}
+     * @type {import('../../../sql/ingredients/types').GetIngredients}
      */
-    const data = db.prepare(getIngredientsSql).all()
+    const data = db.prepare(getIngredientsSql()).all()
     const dataTransformed = data.map((ingr) => ({
       ...ingr,
       ingr_purchase_places: JSON.parse(ingr.ingr_purchase_places)
