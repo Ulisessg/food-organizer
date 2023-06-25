@@ -12,6 +12,10 @@ import {
   type GetIngredientStock
 } from 'controllers/food_organizer_crud/sql/ingredientStock/types'
 import {
+  type CreateMenu,
+  type GetMenus
+} from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
+import {
   type CreateUom,
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/sql/unitsOfMeasure/types'
@@ -26,9 +30,6 @@ import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
 import {
   type GetFoods
 } from 'controllers/food_organizer_crud/nextjs/foodsCRUD'
-import {
-  type GetMenus
-} from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
 import {
   type GetMenusIngredients
 } from 'controllers/food_organizer_crud/sql/menus/getMenusIngredientsSql'
@@ -49,6 +50,8 @@ declare global {
     getIngredientsData: () => GetIngredients
     getMenusIngredients: () => GetMenusIngredients
     getPurchasePlacesData: () => GetPurchasePlaces
+
+    createMenus: (menu: CreateMenu) => GetMenus[0]
 
     createFoods: (food: CreateFood) => GetFoods[0]
     createFoodType: (foodType: CreateFoodType) => GetFoodTypes[0]

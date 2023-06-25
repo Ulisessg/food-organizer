@@ -1,11 +1,12 @@
 /* eslint-disable max-lines-per-function */
 import { type AppDispatch, type RootState } from 'redux/store'
-import { createMenuThunk, restartPostMenuThunk } from 'redux/slices/menusSlice'
+import { createMenuThunk, restartPostMenuThunk } from 'redux/slices/menusSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
 import { type CreateMenu } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
 import { type MouseEvent } from 'react'
-import dayjs from 'dayjs'
-import transformPostData from 'utils/transformPostData'
+import
+createMenuElectronCallback
+  from 'redux/slices/menusSlice/callbacks/electron/createMenuElectronCallback'
 import { useInputs } from 'd-system'
 import type useMultipleSelects from 'hooks/context/useMultipleSelectsContext'
 
@@ -29,6 +30,7 @@ const useCreateMenu = (
 
   const createMenu: TUseCreateMenuReturn['createMenu'] = async (ev) => {
     const foodsSelectedData: CreateMenu['foods'] = []
+
     const formElement = ev.currentTarget.form as HTMLFormElement
     foodsUsed.forEach((foodUsed) => {
       const foodId = parseInt(
@@ -36,15 +38,15 @@ const useCreateMenu = (
           .querySelector(`option[value="${foodUsed}"]`)?.getAttribute('data-food-id') as string,
         10
       )
+
       foodsSelectedData.push({
-        creation_date: dayjs().toISOString() as any,
         food_id: foodId
       })
     })
-    const requestResult = await dispatch(createMenuThunk(transformPostData({
+    const requestResult = await dispatch(createMenuThunk(createMenuElectronCallback({
       comment: inputsData.menu_comment,
       foods: foodsSelectedData
-    }) as any))
+    })))
 
     if (typeof (requestResult as any).error === 'undefined') {
       // Restart form

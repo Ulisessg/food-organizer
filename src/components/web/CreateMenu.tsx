@@ -4,7 +4,6 @@
 import { Button, Form, Input, LoadingSpinner } from 'd-system'
 import {
   ButtonAddSelect,
-  ButtonDeleteSelect,
   Container
 } from './common/MultipleSelects'
 import React, { type FC, Fragment } from 'react'
@@ -30,8 +29,7 @@ const CreateMenu: FC = () => {
     disableButton,
     resetMultipleSelect
   } = useMultipleSelects(
-    // eslint-disable-next-line no-undefined
-    undefined,
+    'menus_creation',
     foodsData.foods.length
   )
   const {
@@ -51,15 +49,20 @@ const CreateMenu: FC = () => {
       <ErrorMessage message="Error obteniendo las comidas" action="intenta de nuevo más tarde"/>}
 
       {foodsData.getFoodsSuccess && <Form formTitle="Información del menú">
-        {selectsData.selects.map(({ selectId }, index) => <Fragment key={selectId}>
+        {selectsData.selects.map(({ selectId, value }, index) => <Fragment key={selectId}>
           {/* Required select */}
           {index === 0 &&
           <Select id={selectId} labelText="Selecciona una comida"
             value={safeArrayGet(
-              selectsData.selectsValues,
+              selectsData.selects,
               index
             ).value}
-            onChange={handleSelects}
+            onChange={(ev) => {
+              handleSelects(
+                ev.currentTarget.value,
+                index
+              )
+            }}
           >
             {foodsData
               .foodsGroupedByType
@@ -83,10 +86,15 @@ typeof selectsData.valuesUsed.find((vUsed) => vUsed === food_name) !== 'undefine
             <Container>
               <Select id={selectId} labelText="Selecciona una comida"
                 value={safeArrayGet(
-                  selectsData.selectsValues,
+                  selectsData.selects,
                   index
                 ).value}
-                onChange={handleSelects}
+                onChange={(ev) => {
+                  handleSelects(
+                    ev.currentTarget.value,
+                    index
+                  )
+                }}
               >
                 {foodsData
                   .foodsGroupedByType
@@ -105,9 +113,20 @@ typeof selectsData.valuesUsed.find((vUsed) => vUsed === food_name) !== 'undefine
               </optgroup>
             </Fragment>)}
               </Select>
-              <ButtonDeleteSelect data-select-id={selectId}
-                onClick={deleteSelect}
+              <Button
+                colorMessage="cancel"
+                size="100%"
+                type="button"
+                text="X"
+                onClick={() => {
+                  deleteSelect(
+                    selectId,
+                    value,
+                    index
+                  )
+                }}
               />
+
             </Container>
           </>}
         </Fragment>)}

@@ -1,19 +1,16 @@
 import {
-  type CreateMenu,
-  type CreateMenuResponse,
-  type GetMenus
-} from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
-import {
+  type CreateMenuCallback,
   type CreateMenuReject,
   type GetMenusDataCallback,
   type GetMenusIngredientsCallback
 } from './types'
-import axios, { type AxiosResponse } from 'axios'
+import {
+  type GetMenus
+} from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
 import {
   type GetMenusIngredients
 } from 'controllers/food_organizer_crud/sql/menus/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { type response } from 'controllers/response'
 
 export const getMenusDataThunk = createAsyncThunk<GetMenus, GetMenusDataCallback>(
   'menus/get_data',
@@ -28,21 +25,27 @@ export const getMenusDataThunk = createAsyncThunk<GetMenus, GetMenusDataCallback
 )
 
 // eslint-disable-next-line max-len
-export const createMenuThunk = createAsyncThunk<GetMenus[0], CreateMenu, { rejectValue: CreateMenuReject }>(
+export const createMenuThunk = createAsyncThunk<GetMenus[0], ReturnType<CreateMenuCallback>, { rejectValue: CreateMenuReject }>(
   'menus/create',
-  async (menuData, thunkApi) => {
-    const createMenuRequest: AxiosResponse<response<CreateMenuResponse>> =
-     await axios.post<CreateMenu, AxiosResponse<response<CreateMenuResponse>>>(
-       '/api/menu',
-       menuData
-     )
-    if (createMenuRequest.data.error) {
+  async (createMenu, thunkApi) => {
+    try {
+      const menuCreated = await createMenu()
+      return menuCreated
+    } catch (error) {
+      console.log(error)
+
+      const err = error as Error
+      if (err.message === 'menu') {
+        return thunkApi.rejectWithValue({
+          createMenuError: true,
+          createMenuFoodsError: false
+        })
+      }
       return thunkApi.rejectWithValue({
-        createMenuError: createMenuRequest.data.data?.errorCreatingMenu,
-        createMenuFoodsError: createMenuRequest.data.data?.errorCreatingFoods
+        createMenuError: false,
+        createMenuFoodsError: true
       })
     }
-    return createMenuRequest.data.data.menu
   }
 )
 

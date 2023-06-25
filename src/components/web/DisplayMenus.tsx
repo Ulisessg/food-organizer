@@ -4,9 +4,12 @@ import React, { type FC, Fragment } from 'react'
 import { Table, Td, Th } from 'd-system'
 import EditTableButtons from './common/EditTableButtons'
 import { type GetMenus } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
+import { type RootState } from 'redux/store'
 import TableContainer from './common/TableContainer'
+import { useSelector } from 'react-redux'
 
-const DisplayDailyMenus: FC<DisplayDailyMenusProps> = ({ menus }) => {
+const DisplayDailyMenus: FC<DisplayDailyMenusProps> = () => {
+  const menus = useSelector((state: RootState) => state.menus)
   const handleUpdate = (): void => {
     console.log('Update!')
   }
@@ -22,7 +25,7 @@ const DisplayDailyMenus: FC<DisplayDailyMenusProps> = ({ menus }) => {
       </tr>
     </thead>
     <tbody>
-      {menus.map(({ id, comment, menu_foods }) => <Fragment key={id}>
+      {menus.menus.map(({ id, comment, menu_foods }) => <Fragment key={id}>
         {menu_foods.map(({ food_id, food_name }, index) => <Fragment key={food_id}>
           {index === 0 && <>
             <tr>

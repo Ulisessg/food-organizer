@@ -32,7 +32,6 @@ const createMenuReducer: TReducerWBuilder<TMenuState> = (builder) => {
       state.createMenuEnd = true
       state.createMenuError = false
       state.createMenuSuccess = true
-      console.log(action.payload)
 
       state.menus = [
         ...state.menus,

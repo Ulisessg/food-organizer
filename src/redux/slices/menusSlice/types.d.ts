@@ -1,4 +1,4 @@
-import { type GetMenus } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
+import { type CreateMenu, type GetMenus } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
 import {
   type GetMenusIngredients
 } from 'controllers/food_organizer_crud/sql/menus/types'
@@ -34,3 +34,4 @@ export interface CreateMenuReject {
 
 export type GetMenusDataCallback = () => Promise<GetMenus>
 export type GetMenusIngredientsCallback = () => Promise<GetMenusIngredients>
+export type CreateMenuCallback = (menu: CreateMenu) => () => Promise<GetMenus[0]>
