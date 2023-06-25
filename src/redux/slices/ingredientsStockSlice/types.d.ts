@@ -1,4 +1,7 @@
-import { type GetIngredientStock } from 'controllers/food_organizer_crud/sql/ingredientStock/types'
+import {
+  type CreateIngredientStock,
+  type GetIngredientStock
+} from 'controllers/food_organizer_crud/sql/ingredientStock/types'
 
 export interface IngredientsStockState {
   ingredientsStock: GetIngredientStock
@@ -15,3 +18,5 @@ export interface IngredientsStockState {
 }
 
 export type TGetIngredientsStockCallback = () => Promise<GetIngredientStock>
+export type CreateIngredientStockCallback =
+(ingredient: CreateIngredientStock) => () => Promise<GetIngredientStock[0]>

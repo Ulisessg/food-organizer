@@ -6,11 +6,14 @@ import { type MouseEvent, type RefObject, useState } from 'react'
 import {
   createIngredientStockThunk,
   restartPostStatusThunk
-} from 'redux/slices/ingredientsStockSlice'
+} from 'redux/slices/ingredientsStockSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   type GetIngredientStock
-} from 'controllers/food_organizer_crud/sql/ingredientStock/getIngredientsStockSql'
+} from 'controllers/food_organizer_crud/sql/ingredientStock/types'
+import
+createIngredientStockElectronCallback
+  from 'redux/slices/ingredientsStockSlice/callbacks/electron/createIngredientStockElectronCallback'
 import getInputNumberData from 'utils/getInputNumberData'
 import { useInputs } from 'd-system'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
@@ -121,17 +124,15 @@ UseCreateIngredientStockReturn => {
     if (!formElement.current?.checkValidity() ||
     formElement.current.querySelector('button')?.disabled === true) return
 
-    const postResult = await dispatch(createIngredientStockThunk({
-      ingredientData: {
-        comment: inputsData.ingredient_stock_comment,
-        ingredient_id: ingredientId as number,
-        ingredient_qty: parseInt(
-          inputsData.ingredient_qty,
-          10
-        )
-      } as any,
-      ingredientList: ingredientsData.ingredients
-    }))
+    const postResult = await
+    dispatch(createIngredientStockThunk(createIngredientStockElectronCallback({
+      comment: inputsData.ingredient_stock_comment,
+      ingredient_id: ingredientId as number,
+      ingredient_qty: parseInt(
+        inputsData.ingredient_qty,
+        10
+      )
+    })))
     // No error in async thunk
     if (typeof (postResult as any).error === 'undefined') {
       formElement.current.reset()

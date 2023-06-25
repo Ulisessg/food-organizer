@@ -1,16 +1,12 @@
 import {
-  type CreateIngredientStock
-} from 'controllers/food_organizer_crud/sql/ingredientStock/createIngredientStockSql'
+  type CreateIngredientStockCallback,
+  type TGetIngredientsStockCallback
+} from './types'
+import { type RootState, store } from 'redux/store'
 import {
   type GetIngredientStock
 } from 'controllers/food_organizer_crud/sql/ingredientStock/types'
-import { type RootState } from 'redux/store'
-import { type TGetIngredientsStockCallback } from './types'
-import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { type ingredient_stock } from '@prisma/client'
-import { type response } from 'controllers/response'
-import transformPostData from 'utils/transformPostData'
 
 export const getIngredientsStockThunk =
  createAsyncThunk<GetIngredientStock, TGetIngredientsStockCallback>(
@@ -25,32 +21,25 @@ export const getIngredientsStockThunk =
    }
  )
 
-export const createIngredientStockThunk = createAsyncThunk<{
-  ingredientCreated: ingredient_stock
-  ingredientsList: RootState['ingredients']['ingredients']
-}, {
-  ingredientData: CreateIngredientStock
-  ingredientList: RootState['ingredients']['ingredients']
-}>(
-  'ingredients_stock/create',
-  async (ingredientStock, thunkApi) => {
-    const ingredientStockData:
-    CreateIngredientStock = transformPostData(ingredientStock.ingredientData)
-    const requestResponse = await axios.post<response<ingredient_stock>>(
-      '/api/ingredientstock',
-      ingredientStockData
-    )
-    if (requestResponse.data.error) {
-      return thunkApi.rejectWithValue('Ocurrió un errro creando el ingrediente disponible')
-    }
-    const returnedData = {
-      ingredientCreated: requestResponse.data.data,
-      ingredientsList: ingredientStock.ingredientList
-    }
-
-    return returnedData
-  }
-)
+export const createIngredientStockThunk =
+ createAsyncThunk<{
+   ingredientCreated: GetIngredientStock[0]
+   ingredientsStored: RootState['ingredients']['ingredients']
+ }, ReturnType<CreateIngredientStockCallback>>(
+   'ingredients_stock/create',
+   async (createIngredient, thunkApi) => {
+     try {
+       const ingredientCreated = await createIngredient()
+       const ingredientsStored = store.getState().ingredients.ingredients
+       return {
+         ingredientCreated,
+         ingredientsStored
+       }
+     } catch (error) {
+       return thunkApi.rejectWithValue('Ocurrió un errro creando el ingrediente disponible')
+     }
+   }
+ )
 
 export const restartPostStatusThunk = createAsyncThunk(
   'ingredients_stock/restart_post_status',

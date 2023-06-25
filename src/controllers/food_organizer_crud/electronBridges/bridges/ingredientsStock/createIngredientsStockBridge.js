@@ -12,6 +12,7 @@ const createIngredientsStokBridge = () => {
    */
   const create = (ingredientStock) => {
     const ingredientStockCreatedId = db.prepare(createIngredientStockSql(1)).run([
+      null,
       ingredientStock.ingredient_id,
       ingredientStock.ingredient_qty,
       ingredientStock.comment

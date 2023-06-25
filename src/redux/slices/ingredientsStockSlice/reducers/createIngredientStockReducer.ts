@@ -29,25 +29,25 @@ const createIngredientStockReducer: TReducerWBuilder<IngredientsStockState> = (b
       state.postRequestError = false
       state.postRequestIsLoading = false
       state.postRequestSuccess = true
+      const { ingredientsStored, ingredientCreated } = action.payload
       let ingredientStockCreated:
       RootState['ingredientsStock']['ingredientsStock'][0] = null as any
-      action.payload.ingredientsList
-        .forEach((ingr) => {
-          const ingredientPots = action.payload.ingredientCreated
-          if (ingr.ingredient_id === ingredientPots.ingredient_id) {
-            const ingredientSelected = {
-              comment: ingredientPots.comment,
-              // eslint-disable-next-line no-undefined
-              image: ingr.image ?? undefined,
-              ingredient: ingr.ingredient_name,
-              ingredient_id: ingredientPots.ingredient_id,
-              ingredient_qty: ingredientPots.ingredient_qty,
-              ingredient_stock_id: ingredientPots.id,
-              uom: ingr.uom_name
-            }
-            ingredientStockCreated = ingredientSelected as any
+
+      ingredientsStored.forEach((ingr) => {
+        if (ingr.ingredient_id === ingredientCreated.ingredient_id) {
+          const ingredientSelected = {
+            comment: ingredientCreated.comment,
+            // eslint-disable-next-line no-undefined
+            image: ingr.image ?? '',
+            ingredient: ingr.ingredient_name,
+            ingredient_id: ingredientCreated.ingredient_id,
+            ingredient_qty: ingredientCreated.ingredient_qty,
+            ingredient_stock_id: ingredientCreated.ingredient_stock_id,
+            uom: ingr.uom_name
           }
-        })
+          ingredientStockCreated = ingredientSelected as any
+        }
+      })
       state.ingredientsStock.push(ingredientStockCreated)
     }
   )
