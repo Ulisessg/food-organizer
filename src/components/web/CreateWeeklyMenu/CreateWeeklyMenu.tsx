@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux'
 const CreateWeeklyMenu: FC = () => {
   const days = useSelector((state: RootState) => state.weeklyMenus.days)
   const weeklyMenusData = useSelector((state: RootState) => state.weeklyMenus)
+
   const formRef = useRef<HTMLFormElement>(null)
   const {
     onChange,

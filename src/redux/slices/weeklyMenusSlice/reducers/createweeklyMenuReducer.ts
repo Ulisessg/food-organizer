@@ -31,12 +31,12 @@ const createWeeklyMenuReducer: TReducerWBuilder<TWeeklyMenusState> = (builder) =
       state.createWeeklySuccess = true
       state.weeklyMenus = [
         ...state.weeklyMenus,
-        { ...action.payload.weeklyMenu[0] }
+        { ...action.payload }
       ]
       state.sundaysOfWeeksWithMenus = [
         ...state.sundaysOfWeeksWithMenus,
         {
-          date: action.payload.weeklyMenu[0].creation_date,
+          date: action.payload.creation_date,
           index: state.weeklyMenus.length - 1
         }
       ]

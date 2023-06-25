@@ -1,13 +1,11 @@
 import {
-  type TCreateWeeklyMenus,
-  type TCreateWeeklyMenusResponse
-} from 'controllers/food_organizer_crud/nextjs/weeklyMenuCRUD'
-import axios, { type AxiosResponse } from 'axios'
+  type CreateWeeklyMenusCallback,
+  type GetWeeklyMenusCallback,
+  type TGetDaysCallack
+} from './types'
 import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
 import { type GetWeeklyMenu } from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
-import { type TGetDaysCallack } from './types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { type response } from 'controllers/response'
 
 export const getDaysThunk = createAsyncThunk<GetDays, TGetDaysCallack>(
   'days/get_days',
@@ -21,30 +19,28 @@ export const getDaysThunk = createAsyncThunk<GetDays, TGetDaysCallack>(
   }
 )
 
-export const getWeeklyMenusThunk = createAsyncThunk(
+export const getWeeklyMenusThunk = createAsyncThunk<GetWeeklyMenu, GetWeeklyMenusCallback>(
   'weekly_menus/get_weekly_menus',
-  async (_limit, thunkApi) => {
-    const weeklyMenusRequestResult = await axios.get<response<GetWeeklyMenu>>('/api/weeklymenu')
-    if (weeklyMenusRequestResult.data.error) {
-      return thunkApi.rejectWithValue('')
+  async (getData, thunkApi) => {
+    try {
+      const weeklyMenus = await getData()
+      return weeklyMenus
+    } catch (error) {
+      return thunkApi.rejectWithValue(error)
     }
-    return weeklyMenusRequestResult.data.data
   }
 )
 
 // eslint-disable-next-line max-len
-export const createWeeklyMenuThunk = createAsyncThunk<TCreateWeeklyMenusResponse, TCreateWeeklyMenus>(
+export const createWeeklyMenuThunk = createAsyncThunk<GetWeeklyMenu[0], ReturnType<CreateWeeklyMenusCallback>>(
   'weekly_menus/create_weekly_menu',
-  async (weeklyMenu, thunkApi) => {
-    const createWeeklyMenuRequestResult =
-     await axios.post<TCreateWeeklyMenus, AxiosResponse<response<TCreateWeeklyMenusResponse>>>(
-       '/api/weeklymenu',
-       weeklyMenu
-     )
-    if (createWeeklyMenuRequestResult.data.error) {
-      return thunkApi.rejectWithValue('')
+  async (createWeeklyMenu, thunkApi) => {
+    try {
+      const weeklyMenuCreated = await createWeeklyMenu()
+      return weeklyMenuCreated
+    } catch (error) {
+      return thunkApi.rejectWithValue(error)
     }
-    return createWeeklyMenuRequestResult.data.data
   }
 )
 

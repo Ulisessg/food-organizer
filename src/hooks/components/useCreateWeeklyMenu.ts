@@ -3,9 +3,12 @@
 import { type AppDispatch, type RootState } from 'redux/store'
 import { type ChangeEvent, type MouseEvent, type RefObject, useState } from 'react'
 import { type TDaysOfTheWeek, dayInMiliseconds } from 'utils/constants'
-import { createWeeklyMenuThunk, restartPostWeeklyMenu } from 'redux/slices/weeklyMenusSlice/slice'
+import { createWeeklyMenuThunk, restartPostWeeklyMenu } from 'redux/slices/weeklyMenusSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
 import { type TCreateWeeklyMenus } from 'controllers/food_organizer_crud/nextjs/weeklyMenuCRUD'
+import
+createWeeklyMenusElectronCallback
+  from 'redux/slices/weeklyMenusSlice/callbacks/electron/createWeeklyMenusElectronCallback'
 import dayjs from 'dayjs'
 import getDayNameFromEnglish from 'utils/getDayNameFromEnglish'
 import getDayNameFromSpanish from 'utils/getDayNameFromSpanish'
@@ -174,18 +177,7 @@ const useCreateWeeklyMenu = (formRef: RefObject<HTMLFormElement>): TUseCreateWee
       const fixedDate = dateInNumbers + dayInMiliseconds
       const sundayOfDateSelected = getWeekRangeOfDates(dayjs(fixedDate).toDate()).sundayDate
       const result = weeklyMenusData
-        .sundaysOfWeeksWithMenus.some((sunday) => {
-          console.log(
-            'Monday: ',
-            sunday
-          )
-          console.log(
-            'sundayOfDateSelected: ',
-            sundayOfDateSelected
-          )
-
-          return sunday.date === sundayOfDateSelected
-        })
+        .sundaysOfWeeksWithMenus.some((sunday) => sunday.date === sundayOfDateSelected)
       return result
     }
     return false
@@ -219,7 +211,8 @@ const useCreateWeeklyMenu = (formRef: RefObject<HTMLFormElement>): TUseCreateWee
         })
       }
     }
-    const createWeeklyMenuResponse = await dispatch(createWeeklyMenuThunk(createWeeklyMenuData))
+    const createWeeklyMenuResponse = await
+    dispatch(createWeeklyMenuThunk(createWeeklyMenusElectronCallback(createWeeklyMenuData)))
 
     if (typeof (createWeeklyMenuResponse as any).error === 'undefined') {
       restartFilters()

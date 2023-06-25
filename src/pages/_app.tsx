@@ -37,6 +37,9 @@ getMenusIngredientsElectronCallback
 import
 getPurchasePlacesDataCallback
   from 'redux/slices/purchasePlacesSlice/callbacks/electron/getPurchasePlacesDataCallback'
+import
+getWeeklyMenusElectronCallback
+  from 'redux/slices/weeklyMenusSlice/callbacks/electron/getWeeklyMenusElectronCallback'
 dayjs.extend(dayjsCustomParseFormat)
 dayjs.extend(dayjsWeekDayPlugin)
 dayjs.locale('es')
@@ -70,7 +73,7 @@ const ReduxProviderWrapper: FC<{
       }))
       void dispatch(getMenusDataThunk(getMenusDataElectronCallback))
       void dispatch(getDaysThunk(getDaysElectronCallback))
-      void dispatch(getWeeklyMenusThunk())
+      void dispatch(getWeeklyMenusThunk(getWeeklyMenusElectronCallback))
       void dispatch(getMenusIngredientsThunk(getMenusIngredientsElectronCallback))
     },
     [dispatch]

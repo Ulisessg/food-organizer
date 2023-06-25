@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import createWeeklyMenuReducer from './reducers/createweeklyMenuThunk'
+import createWeeklyMenuReducer from './reducers/createweeklyMenuReducer'
 import getDaysReducer from './reducers/getDaysReducer'
 import getWeeklyMenusReducer from './reducers/getWeeklyMenusReducer'
 import initialState from './weeklyMenusState'
