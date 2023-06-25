@@ -6,13 +6,26 @@ import React, { type FC, Fragment, useRef } from 'react'
 import Details from '../common/Details'
 import ErrorMessage from '../common/ErrorMessage'
 import { LoadingSpinnerContainer } from 'components/web/common/FormInDetailsStyles'
-import PurchasePlaces from './PurchasePlaces'
+import {
+  MultipleSelectsContextProvider
+} from 'context/MultipleSelectsContext'
 import RequestResultStyles from 'components/web/common/RequestResultStyles'
 import { type RootState } from 'redux/store'
 import { defaultSelectValue } from 'utils/constants'
+import dynamic from 'next/dynamic'
 import randomId from 'utils/randomId'
-import useCreateIngredient from 'hooks/components/useCreateIngredient'
+import useCreateIngredient from 'hooks/components/useCreateIngredient/useCreateIngredientWeb'
 import { useSelector } from 'react-redux'
+
+const PurchasePlaces = dynamic(
+  async () => {
+    const Component = await import('./PurchasePlaces')
+    return Component
+  },
+  {
+    ssr: false
+  }
+)
 
 // eslint-disable-next-line max-lines-per-function
 const CreateIngredient: FC = () => {
@@ -22,7 +35,6 @@ const CreateIngredient: FC = () => {
   const purchasePlacesData = useSelector((state: RootState) => state.purchasePlaces)
   const unitsOfMeasureData = useSelector((state: RootState) => state.unitsOfMeasure)
   const ingredientsData = useSelector((state: RootState) => state.ingredients)
-
   const {
     disableButton,
     inputsData,
@@ -72,8 +84,10 @@ const CreateIngredient: FC = () => {
       {purchasePlacesData.dataIsLoading && <LoadingSpinner size="small" />}
       {(!purchasePlacesData.dataIsLoading &&
       !purchasePlacesData.getRequestError) && <PurchasePlaces
-        restartMultipleSelects={ingredientsData.postIngredientPurchaseSuccess ||
-        ingredientsData.postIngredientPurchaseSuccess } />}
+            restartMultipleSelects={ingredientsData.postIngredientPurchaseSuccess ||
+            ingredientsData.postIngredientPurchaseSuccess}
+          />
+        }
 
       {/* Unit Of Measure */}
 
@@ -162,4 +176,15 @@ const CreateIngredient: FC = () => {
 </>
 }
 
-export default CreateIngredient
+const CreateIngredientWrapper: FC = () => {
+  const purchasePlacesLenght = useSelector((state: RootState) => state
+    .purchasePlaces.purchasePlaces.length)
+  return <MultipleSelectsContextProvider
+    idPrefix="purchase_places"
+    optionsLenght={purchasePlacesLenght}
+  >
+   <CreateIngredient />
+  </MultipleSelectsContextProvider>
+}
+
+export default CreateIngredientWrapper

@@ -1,29 +1,24 @@
+/* eslint-disable max-lines-per-function */
+import { Button, Select } from 'd-system'
 import {
-  ButtonAddSelect,
-  ButtonDeleteSelect, Container
+  ButtonAddSelect, Container
 } from 'components/web/common/MultipleSelects'
-import React, { type ChangeEvent, type FC, Fragment, useEffect } from 'react'
-import { Select, useInputs } from 'd-system'
+import React, { type FC, Fragment, useContext, useEffect } from 'react'
+import {
+  MultipleSelectsContext
+} from 'context/MultipleSelectsContext'
 import { type RootState } from 'redux/store'
 import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
-import safeObjectGet from 'utils/safeObjectGet'
-import useMultipleSelects from 'hooks/useMultipleSelects'
 import { useSelector } from 'react-redux'
 
 const PurchasePlaces: FC<PurchasePlacesProps> = ({ restartMultipleSelects }) => {
-  const purchasePlacesData = useSelector((state: RootState) => state.purchasePlaces)
   const {
-    addSelect,
+    resetMultipleSelect,
     data,
-    deleteSelect,
     disableButton,
-    onChange: UseMultipleSelectsOnChange,
-    resetMultipleSelect
-  } = useMultipleSelects(
-    'purchase_places',
-    purchasePlacesData.purchasePlaces.length
-  )
+    addSelect
+  } = useContext(MultipleSelectsContext)
 
   useEffect(
     () => {
@@ -34,13 +29,11 @@ const PurchasePlaces: FC<PurchasePlacesProps> = ({ restartMultipleSelects }) => 
     [restartMultipleSelects]
   )
   return <>
-    {data.selects.map(({ selectId }) => <Fragment key={selectId}>
+    {data.selects.map(({ selectId, value }, index) => <Fragment key={selectId}>
     <PurchasePlace
-      id={selectId}
-      purchasePlaces={purchasePlacesData.purchasePlaces}
-      deleteSelect={deleteSelect}
-      valuesUsed={data.valuesUsed}
-      UseMultipleSelectsOnChange={UseMultipleSelectsOnChange}
+      selectId={selectId}
+      selectValue={value}
+      selectIndex={index}
     />
     </Fragment>)}
     <ButtonAddSelect
@@ -52,54 +45,56 @@ const PurchasePlaces: FC<PurchasePlacesProps> = ({ restartMultipleSelects }) => 
 }
 
 const PurchasePlace: FC<PurchasePlaceProps> = ({
-  id,
-  purchasePlaces,
-  deleteSelect,
-  valuesUsed,
-  UseMultipleSelectsOnChange
+  selectId,
+  selectValue,
+  selectIndex
 }) => {
-  const { inputsData, onChange: UseInputsOnChange } = useInputs(
-    {
-      [id]: defaultSelectValue
-    },
-    false
-  )
-  const onChange = (ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
-    UseMultipleSelectsOnChange(ev)
-    UseInputsOnChange(ev as any)
-  }
+  const { deleteSelect, onChange, data } = useContext(MultipleSelectsContext)
+  const purchasePlaces = useSelector((state: RootState) => state.purchasePlaces.purchasePlaces)
 
   return <Container>
     <Select
-    id={id}
+    id={selectId}
     label="Selecciona un lugar de compra"
-    name={id}
-    value={safeObjectGet(
-      inputsData,
-      id
-    )}
-    onChange={onChange}
+    name={selectId}
+    value={data.selects[Number(selectIndex)].value}
+    onChange={(ev) => {
+      onChange(
+        ev.currentTarget.value,
+        selectIndex
+      )
+    }}
   >
   <option value={defaultSelectValue} disabled>{defaultSelectValue}</option>
   {purchasePlaces.map((purchasePlace) => <Fragment key={randomId('purchase_place')}>
       <option
         value={purchasePlace.name}
-        disabled={valuesUsed.some((value) => value === purchasePlace.name)}
+        disabled={data.valuesUsed.some((value) => value === purchasePlace.name)}
       >
         {purchasePlace.name}
       </option>
   </Fragment>)}
   </Select>
-  <ButtonDeleteSelect data-select-id={id} onClick={deleteSelect} />
+  <Button
+    colorMessage="cancel"
+    size="100%"
+    type="button"
+    text="X"
+    onClick={() => {
+      deleteSelect(
+        selectId,
+        selectValue,
+        selectIndex
+      )
+    }}
+  />
 </Container>
 }
 
 interface PurchasePlaceProps {
-  id: string
-  purchasePlaces: RootState['purchasePlaces']['purchasePlaces']
-  deleteSelect: ReturnType<typeof useMultipleSelects>['deleteSelect']
-  valuesUsed: string[]
-  UseMultipleSelectsOnChange: ReturnType<typeof useMultipleSelects>['onChange']
+  selectId: string
+  selectValue: string
+  selectIndex: number
 }
 
 interface PurchasePlacesProps {

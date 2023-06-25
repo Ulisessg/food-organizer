@@ -17,7 +17,7 @@ import Select from './common/Select'
 import randomId from 'utils/randomId'
 import safeArrayGet from 'utils/safeArrayGet'
 import useCreateMenu from 'hooks/components/useCreateMenu'
-import useMultipleSelects from 'hooks/useMultipleSelects'
+import useMultipleSelects from 'hooks/context/useMultipleSelectsContext'
 import { useSelector } from 'react-redux'
 
 // eslint-disable-next-line max-lines-per-function

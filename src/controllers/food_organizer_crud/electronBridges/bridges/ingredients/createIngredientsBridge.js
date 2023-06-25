@@ -13,14 +13,14 @@ const createIngredientsBridge = () => {
    */
   const create = (ingredient) => {
     const ingredientCreatedId = db.prepare(createIngredientsSql(1)).run([
+      null,
       ingredient.name,
       ingredient.uomId,
       ingredient.image || '',
-      ingredient.comment
+      ingredient.comment || ''
     ]).lastInsertRowid
     const ingredientCreated = db.prepare(getIngredientsSql('WHERE ingredients.id = ?'))
       .get([ingredientCreatedId])
-
     return ingredientCreated
   }
   contextBridge.exposeInMainWorld(

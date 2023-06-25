@@ -7,7 +7,7 @@ import { type MouseEvent } from 'react'
 import dayjs from 'dayjs'
 import transformPostData from 'utils/transformPostData'
 import { useInputs } from 'd-system'
-import type useMultipleSelects from 'hooks/useMultipleSelects'
+import type useMultipleSelects from 'hooks/context/useMultipleSelectsContext'
 
 const useCreateMenu = (
   foodsUsed: string[],

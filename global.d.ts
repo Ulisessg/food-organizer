@@ -22,9 +22,6 @@ import {
 import {
   type CreateFood
 } from 'redux/slices/foodsSlice/types'
-import {
-  type CreateIngredientPurchasePlace
-} from 'controllers/food_organizer_crud/sql/ingredientPurchasePlaces/types'
 import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
 import {
   type GetFoods
@@ -63,7 +60,7 @@ declare global {
 
     createUnitsOfMeasureTypes: (uomType) => GetFoodTypes[0]
     createIngredientPurchasePlaces:
-    (ingredientPurchasePlace: CreateIngredientPurchasePlace) => TIngr_purchase_places
+    (ingredientId: number, purchasePlacesid: number[]) => TIngr_purchase_places
     createWeeklyMenu: (weeklyMenu: TCreateWeeklyMenus) => GetWeeklyMenu[0]
   }
 }

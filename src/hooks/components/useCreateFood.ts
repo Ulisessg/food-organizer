@@ -15,7 +15,7 @@ import { defaultSelectValue } from 'utils/constants'
 import getInputNumberData from 'utils/getInputNumberData'
 import transformPostData from 'utils/transformPostData'
 import { useInputs } from 'd-system'
-import useMultipleSelects from 'hooks/useMultipleSelects'
+import useMultipleSelects from 'hooks/context/useMultipleSelectsContext'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
 const useCreateFood = (formRef: RefObject<HTMLFormElement>): UseCreateFoodReturn => {

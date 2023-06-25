@@ -3,7 +3,7 @@ import { ButtonAddSelect, ButtonDeleteSelect } from 'components/web/common/Multi
 import { Input, useInputs } from 'd-system'
 import React, { type ChangeEvent, type FC, Fragment, useState } from 'react'
 import { type RootState } from 'redux/store'
-import { type UseMultipleSelectsReturn } from 'hooks/useMultipleSelects'
+import { type UseMultipleSelectsReturn } from 'hooks/context/useMultipleSelectsContext'
 import randomId from 'utils/randomId'
 import safeObjectGet from 'utils/safeObjectGet'
 import styled from 'styled-components'

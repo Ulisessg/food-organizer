@@ -1,16 +1,20 @@
+/* eslint-disable max-params */
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
 import { type AppDispatch, type RootState } from 'redux/store'
-import { type MouseEvent, type RefObject } from 'react'
+import { type MouseEvent, type RefObject, useContext } from 'react'
 import {
   createIngredientThunk,
   restartPostStatusThunk
-} from 'redux/slices/ingredientsSlice'
+} from 'redux/slices/ingredientsSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
+import { MultipleSelectsContext } from 'context/MultipleSelectsContext'
+import
+createIngredientsElectronCallback
+  from 'redux/slices/ingredientsSlice/callbacks/electron/createIngredientsElectronCallback'
 import { defaultSelectValue } from 'utils/constants'
-import transformPostData from 'utils/transformPostData'
+import { formIsValid } from './common'
 import { useInputs } from 'd-system'
-import useMultipleSelects from 'hooks/useMultipleSelects'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
 const useCreateIngredient = (
@@ -18,13 +22,10 @@ const useCreateIngredient = (
   formElement: RefObject<HTMLFormElement>,
   selectUomElement: RefObject<HTMLSelectElement>
 ): UseCreateIngredientReturn => {
+  const multipleSelectsContext = useContext(MultipleSelectsContext)
   const ingredientsData = useSelector((state: RootState) => state.ingredients)
   const purchasePlaces = useSelector((state: RootState) => state.purchasePlaces.purchasePlaces)
   const dispatch: AppDispatch = useDispatch()
-  const {
-    data: purchasePlacesSelected,
-    resetMultipleSelect
-  } = useMultipleSelects()
   const {
     isRepeated: ingredientNameIsRepeated,
     searchIsRepeated: searchNameIsRepeated
@@ -38,19 +39,6 @@ const useCreateIngredient = (
     true
   )
 
-  const formIsValid = (): boolean => {
-    if (
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-      !inputsErrors.ingredient_name &&
-      !ingredientNameIsRepeated &&
-      inputsData.ingredient_name.length >= 2 &&
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-      !inputsErrors.ingredient_uom &&
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-      !inputsData.ingredient_uom.includes(defaultSelectValue)) return true
-    return false
-  }
-
   const handleOnChange: typeof onChange = (ev) => {
     onChange(ev)
     if (ev.currentTarget.name === 'ingredient_name') {
@@ -63,7 +51,11 @@ const useCreateIngredient = (
   }
 
   const createIngredient: UseCreateIngredientReturn['createIngredient'] = async () => {
-    const allowSend: boolean = formIsValid()
+    const allowSend: boolean = formIsValid(
+      inputsData,
+      inputsErrors,
+      ingredientNameIsRepeated
+    )
     if (!allowSend) return
     const uomId: number = parseInt(
       (selectUomElement.current?.selectedOptions[0]
@@ -71,22 +63,28 @@ const useCreateIngredient = (
       10
     )
 
-    const postResult = await dispatch(createIngredientThunk({
-      ingredient: transformPostData({
+    const purchasePlacesids: number[] = []
+    multipleSelectsContext.data.valuesUsed.forEach((ppSelected) => {
+      purchasePlacesids
+        .push(purchasePlaces.find((pp) => pp.name === ppSelected)?.id as unknown as number)
+    })
+
+    const postResult = await dispatch(createIngredientThunk(createIngredientsElectronCallback({
+      ingredient: {
         comment: inputsData.ingredient_comment,
         image: null,
         name: inputsData.ingredient_name,
         uomId
-      }),
-      purchasePlaces,
-      purchasePlacesSelected: purchasePlacesSelected.valuesUsed
-    }))
+      },
+      purchasePlaces: purchasePlacesids
+    })))
+
     if ((postResult as any).createIngredientPurchasePlacesError === true &&
       (postResult as any).createIngredientsError === true) {
       return
     }
     // Reset inputs
-    resetMultipleSelect()
+    multipleSelectsContext.resetMultipleSelect()
     restartInputs('all')
     formElement.current?.reset()
     detailsElement.current?.focus()
@@ -95,7 +93,11 @@ const useCreateIngredient = (
 
   return {
     createIngredient,
-    disableButton: !formIsValid() || ingredientsData.postIsLoading,
+    disableButton: !formIsValid(
+      inputsData,
+      inputsErrors,
+      ingredientNameIsRepeated
+    ) || ingredientsData.postIsLoading,
     ingredientNameIsRepeated,
     inputsData,
     inputsErrors,

@@ -1,13 +1,14 @@
 import {
+  type GetIngredients,
+  type TIngr_purchase_places
+} from 'controllers/food_organizer_crud/sql/ingredients/types'
+import {
   type CreateIngredient
 } from 'controllers/food_organizer_crud/sql/ingredients/createIngredientsSql'
-import { type GetIngredients } from 'controllers/food_organizer_crud/sql/ingredients/types'
-import { type RootState } from 'redux/store'
 
 interface CreateIngredientThunkParam {
   ingredient: CreateIngredient
-  purchasePlacesSelected: string[]
-  purchasePlaces: RootState['purchasePlaces']['purchasePlaces']
+  purchasePlaces: number[]
 }
 
 interface TIngredientsState {
@@ -51,3 +52,10 @@ interface TIngredientsState {
 }
 
 export type TGetIngredientsDataCallback = () => Promise<GetIngredients>
+export type CreateIngredientCallback =
+  (ingredientData: CreateIngredientThunkParam) => {
+    createIngredientCallback: () => Promise<GetIngredients[0]>
+    createIngredientPurchasePlaces:
+    (ingredient_id: number, purchasePlacesIds: number[]) => Promise<TIngr_purchase_places>
+    callbackData: CreateIngredientThunkParam
+  }
