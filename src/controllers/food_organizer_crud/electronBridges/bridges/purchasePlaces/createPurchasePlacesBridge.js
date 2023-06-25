@@ -14,8 +14,8 @@ const createPurchasePlacesBridge = () => {
     const purchasePlaceCreatedId = db.prepare(createPurchasePlacesSql(1)).run([
       null,
       purchasePlace.name,
-      purchasePlace.address
-    ])
+      purchasePlace.address || ''
+    ]).lastInsertRowid
     const purchasePlacecreated = db
       .prepare(createIngredientsSql('WHERE purchase_places.id = ?')).get([purchasePlaceCreatedId])
     return purchasePlacecreated

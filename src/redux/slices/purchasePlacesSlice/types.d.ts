@@ -1,4 +1,7 @@
-import { type GetPurchasePlaces } from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
+import {
+  type CreatePurchasePlace,
+  type GetPurchasePlaces
+} from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
 
 export interface TPurchasePlacesState {
   // Get data
@@ -14,3 +17,5 @@ export interface TPurchasePlacesState {
 }
 
 export type GetPurchasePlacesDataCallback = () => Promise<GetPurchasePlaces>
+export type CreatePurchasePlacesCallback =
+(purchasePlace: CreatePurchasePlace) => () => Promise<GetPurchasePlaces[0]>

@@ -1,14 +1,8 @@
-import {
-  type CreatePurchasePlace
-} from 'controllers/food_organizer_crud/sql/purchasePlaces/createPurchasePlacesSql'
+import { type CreatePurchasePlacesCallback, type GetPurchasePlacesDataCallback } from './types'
 import {
   type GetPurchasePlaces
 } from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
-import { type GetPurchasePlacesDataCallback } from './types'
-import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { type purchase_places } from '@prisma/client'
-import { type response } from 'controllers/response'
 
 // Get purchase places thunk
 export const getPurchasePlacesThunk =
@@ -25,17 +19,17 @@ export const getPurchasePlacesThunk =
  )
 
 // Create purchase place thunk
-export const createPurchasePlaceThunk = createAsyncThunk<purchase_places, CreatePurchasePlace>(
+export const createPurchasePlaceThunk = createAsyncThunk<
+GetPurchasePlaces[0], ReturnType<CreatePurchasePlacesCallback
+>>(
   'purchase_places/create',
-  async (purchasePlace, thunkApi) => {
-    const requestResponse = await axios.post<response<purchase_places>>(
-      '/api/purchase',
-      purchasePlace
-    )
-    if (requestResponse.data.error) {
-      thunkApi.rejectWithValue(requestResponse.data.data)
+  async (createPurchasePlace, thunkApi) => {
+    try {
+      const purchasePlaceCreated = await createPurchasePlace()
+      return purchasePlaceCreated
+    } catch (error) {
+      return thunkApi.rejectWithValue(error)
     }
-    return requestResponse.data.data
   }
 )
 

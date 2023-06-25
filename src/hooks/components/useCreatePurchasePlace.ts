@@ -3,10 +3,12 @@ import { type AppDispatch, type RootState } from 'redux/store'
 import {
   createPurchasePlaceThunk,
   restartPurchasePlacePostStateThunk
-} from 'redux/slices/purchasePlacesSlice'
+} from 'redux/slices/purchasePlacesSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
 import { type RefObject } from 'react'
-import transformPostData from 'utils/transformPostData'
+import
+createPurchasePlacesElectronCallback
+  from 'redux/slices/purchasePlacesSlice/callbacks/electron/createPurchasePlacesElectronCallack'
 import { useInputs } from 'd-system'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
@@ -44,7 +46,7 @@ const useCreatePurchasePlace = (
       address = inputsData.pp_address
     }
     // Dispatch pp creation
-    await dispatch(createPurchasePlaceThunk(transformPostData({
+    await dispatch(createPurchasePlaceThunk(createPurchasePlacesElectronCallback({
       address,
       name: inputsData.p_place_name
     })))

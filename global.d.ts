@@ -16,6 +16,10 @@ import {
   type GetMenus
 } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
 import {
+  type CreatePurchasePlace,
+  type GetPurchasePlaces
+} from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
+import {
   type CreateUom,
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/sql/unitsOfMeasure/types'
@@ -33,9 +37,6 @@ import {
 import {
   type GetMenusIngredients
 } from 'controllers/food_organizer_crud/sql/menus/getMenusIngredientsSql'
-import {
-  type GetPurchasePlaces
-} from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
 
 // Electron bridges
 declare global {
@@ -65,5 +66,7 @@ declare global {
     createIngredientPurchasePlaces:
     (ingredientId: number, purchasePlacesid: number[]) => TIngr_purchase_places
     createWeeklyMenu: (weeklyMenu: TCreateWeeklyMenus) => GetWeeklyMenu[0]
+
+    createPurchasePlaces: (purchasePlace: CreatePurchasePlace) => GetPurchasePlaces[0]
   }
 }

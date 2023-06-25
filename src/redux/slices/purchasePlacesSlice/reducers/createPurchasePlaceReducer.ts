@@ -30,7 +30,11 @@ const createPurchasePlaceReducer: TReducerWBuilder<TPurchasePlacesState> = (buil
       state.postPPSuccess = true
       state.purchasePlaces = [
         ...state.purchasePlaces,
-        action.payload
+        {
+          address: action.payload.address,
+          id: action.payload.id,
+          name: action.payload.name
+        }
       ]
     }
   )
