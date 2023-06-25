@@ -37,6 +37,7 @@ import {
 import {
   type GetMenusIngredients
 } from 'controllers/food_organizer_crud/sql/menus/getMenusIngredientsSql'
+import { type units_of_measure } from '@prisma/client'
 
 // Electron bridges
 declare global {
@@ -59,8 +60,7 @@ declare global {
 
     createIngredients: (ingredient: CreateIngredient) => GetIngredients[0]
     createIngredientsStock: (ingredientsStock: CreateIngredientStock) => GetIngredientStock[0]
-    createUnitsOfMeausure: (unitOfMeasure: CreateUom) =>
-    GetUnitsOfMeasureData['unitsOfMeasureGroupedByType'][0]
+    createUnitsOfMeausure: (unitOfMeasure: CreateUom) => units_of_measure
 
     createUnitsOfMeasureTypes: (uomType) => GetFoodTypes[0]
     createIngredientPurchasePlaces:

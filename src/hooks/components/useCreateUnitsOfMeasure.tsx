@@ -12,8 +12,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
+import
+createUomElectronCallback
+  from 'redux/slices/unitsOfMeasureSlice/callbacks/electron/createUomElectronCallback'
 import { defaultSelectValue } from 'utils/constants'
-import transformPostData from 'utils/transformPostData'
 import { useInputs } from 'd-system'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
@@ -84,7 +86,7 @@ const useCreateUnitsOfMeasure =
       unitsOfMeasureData.unitsOfMeasureType
         .find((el) => el.name === inputsData.select_uomt)?.id as number
 
-      const res = await dispatch(createUnitOfMeasureThunk(transformPostData({
+      const res = await dispatch(createUnitOfMeasureThunk(createUomElectronCallback({
         abbreviation: inputsData.abbreviation,
         name: inputsData.uom_name,
         uomt_id: uomtId

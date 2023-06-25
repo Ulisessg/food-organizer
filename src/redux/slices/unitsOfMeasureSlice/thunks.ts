@@ -2,24 +2,20 @@
 /* eslint-disable camelcase */
 
 import {
+  type CreateUnitsOfMeasureCallback,
+  type CreateUnitsOfMeasureTypesCallback,
+  type TGetUnitOfMeasureDataThunkCallback
+} from './types'
+import {
   type units_of_measure,
   type units_of_measure_types
-} from '@prisma/client'
-import {
-  type CreateUnitOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/createUnitsOfMeasureTypeSql'
-import {
-  type CreateUom
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasure/createUnitsOfMeasureSql'
+} from 'controllers/food_organizer_crud/dbTablesTypes'
 import {
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
 import {
-  type TGetUnitOfMeasureDataThunkCallback
-} from './types'
-import {
   type TGetUnitsOfMeasureType
-} from '../../../controllers/food_organizer_crud/sql/unitsOfMeasureTypes/types.d'
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/types'
 import { type TUpdateThunkArgs } from 'Types'
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
@@ -40,34 +36,31 @@ GetUnitsOfMeasureData, TGetUnitOfMeasureDataThunkCallback>(
 )
 
 // Create Unit of measure thunk
-export const createUnitOfMeasureThunk = createAsyncThunk<units_of_measure, CreateUom>(
+export const createUnitOfMeasureThunk =
+createAsyncThunk<units_of_measure, ReturnType<CreateUnitsOfMeasureCallback>>(
   'uom/createUom',
-  async (uom, thunkApi) => {
-    const requestResponse = await axios.post<response<units_of_measure>>(
-      '/api/uom',
-      uom
-    )
-    if (requestResponse.data.error) {
-      thunkApi.rejectWithValue(requestResponse.data.data)
+  async (createUom, thunkApi) => {
+    try {
+      const uomCreated = await createUom()
+      return uomCreated
+    } catch (error) {
+      return thunkApi.rejectWithValue(error)
     }
-    return requestResponse.data.data
   }
 )
 
 // Create Unit of measure type thunk
 export const createUnitOfMeasureTypeThunk =
-createAsyncThunk<TGetUnitsOfMeasureType[0], CreateUnitOfMeasureType>(
+createAsyncThunk<TGetUnitsOfMeasureType[0], ReturnType<CreateUnitsOfMeasureTypesCallback>>(
   'uom/createUomt',
-  async (unitOfMeasureType, thunkApi) => {
-    const requestResult = await axios.post<response<TGetUnitsOfMeasureType[0]>>(
-      '/api/uomt',
-      unitOfMeasureType
-    )
+  async (createUnitOfMeasureType, thunkApi) => {
+    try {
+      const uomtCreated = await createUnitOfMeasureType()
 
-    if (requestResult.data.error) {
-      thunkApi.rejectWithValue(requestResult.data.data)
+      return uomtCreated
+    } catch (error) {
+      return thunkApi.rejectWithValue(error)
     }
-    return requestResult.data.data
   }
 )
 

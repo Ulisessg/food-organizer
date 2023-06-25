@@ -1,5 +1,5 @@
 const { contextBridge } = require('electron')
-const { createUnitOfMeasureTypes } = require('../bridgesNames')
+const { createUnitsOfMeasureTypes } = require('../bridgesNames')
 const electronOpenDb = require('../../../db/electronOpenDb')
 const createUnitsOfMeasureTypeSql =
   require('../../../sql/unitsOfMeasureTypes/createUnitsOfMeasureTypeSql')
@@ -17,6 +17,7 @@ const createUnitOfMeasureTypesBridge = () => {
       null,
       uomType.name
     ]).lastInsertRowid
+
     const unitOfMeasureTypeCreated = db
       .prepare(getUnitsOfMeasureTypeSql('WHERE units_of_measure_types.id = ?'))
       .get([unitOfMeasureTypeCreatedId])
@@ -24,7 +25,7 @@ const createUnitOfMeasureTypesBridge = () => {
   }
 
   contextBridge.exposeInMainWorld(
-    createUnitOfMeasureTypes,
+    createUnitsOfMeasureTypes,
     create
   )
 }

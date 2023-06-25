@@ -11,7 +11,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   type GetUnitsOfMeasureData
 } from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
-import transformPostData from 'utils/transformPostData'
+import
+createUnitsOfMeasureTypeElectronCallback
+  // eslint-disable-next-line max-len
+  from 'redux/slices/unitsOfMeasureSlice/callbacks/electron/createUnitsOfMeasureTypeElectronCallback'
 import { useInputs } from 'd-system'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
@@ -55,7 +58,8 @@ UseCreateUnitsOfMeasureTypeFormReturn => {
   const createUomt: UseCreateUnitsOfMeasureTypeFormReturn['createUomt'] = async (ev) => {
     ev.preventDefault()
     if (ev.currentTarget.form?.checkValidity() === true) {
-      const result = await dispatch(createUnitOfMeasureTypeThunk(transformPostData({
+      const result =
+      await dispatch(createUnitOfMeasureTypeThunk(createUnitsOfMeasureTypeElectronCallback({
         name: inputsData.uomt
       })))
 

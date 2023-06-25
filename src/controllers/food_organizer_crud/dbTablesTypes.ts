@@ -114,7 +114,6 @@ export interface units_of_measure {
   id: number
   name: string
   abbreviation: string
-
   uomt_id: number
 }
 
