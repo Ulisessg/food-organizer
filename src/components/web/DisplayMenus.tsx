@@ -1,8 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+import { Button, Table, Td, Th } from 'd-system'
 import React, { type FC, Fragment } from 'react'
-import { Table, Td, Th } from 'd-system'
-import EditTableButtons from './common/EditTableButtons'
 import { type GetMenus } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
 import { type RootState } from 'redux/store'
 import TableContainer from './common/TableContainer'
@@ -32,7 +31,11 @@ const DisplayDailyMenus: FC<DisplayDailyMenusProps> = () => {
               <Td rowSpan={menu_foods.length}>{id}</Td>
               <Td>{food_name}</Td>
               <Td>{comment}</Td>
-              <EditTableButtons onUpdate={handleUpdate} />
+              <Button
+                colorMessage="info"
+                size="small"
+                text="Editar"
+                onClick={handleUpdate} />
             </tr>
           </>}
 
@@ -40,7 +43,11 @@ const DisplayDailyMenus: FC<DisplayDailyMenusProps> = () => {
             <tr>
               <Td>{food_name}</Td>
               <Td>{comment}</Td>
-              <EditTableButtons onUpdate={handleUpdate} />
+              <Button
+                colorMessage="info"
+                size="small"
+                text="Editar"
+                onClick={handleUpdate} />
             </tr>
 
           </>}

@@ -1,9 +1,9 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+import { Button, Table, Td, Th } from 'd-system'
 import React, { type FC, Fragment } from 'react'
-import { Table, Td, Th } from 'd-system'
-import EditTableButtons from 'components/web/common/EditTableButtons'
 import { type RootState } from 'redux/store'
 import TableContainer from 'components/web/common/TableContainer'
 import randomId from 'utils/randomId'
@@ -16,6 +16,7 @@ const onUpdate = (): void => {
 
 const DisplayIngredients: FC = () => {
   const ingredients = useSelector((state: RootState) => state.ingredients.ingredients)
+
   return <TableContainer>
   <Table caption="Ingredientes">
     <thead>
@@ -37,20 +38,29 @@ const DisplayIngredients: FC = () => {
             <TrStyles className="table-content">
               <Td>{ingredient_name}</Td>
               <Td>
-                {typeof image === 'string' && <img src={image} alt={`${ingredient_name} image`} />}
-                {typeof image !== 'string' && <p>N/A</p>}
+                <img src={image} alt={`${ingredient_name} image`} />
               </Td>
-              { comment?.length as number > 0 && <Td>{comment}</Td>}
-              { comment?.length === 0 && <Td>N/A</Td>}
+              <Td>{comment ?? ''}</Td>
               <Td>{uom_name}</Td>
-              {/* Purchase places */}
-              {ingr_purchase_places?.map((pp) => <Fragment key={randomId()}>
+              {(() => {
+                if (ingr_purchase_places.length >= 1) {
+                  return ingr_purchase_places?.map((pp) => <Fragment key={randomId()}>
                   <Td
-                  className="ingredient_purchase_places"
+                    className="ingredient_purchase_places"
                   >{pp.purchase_place_name}</Td>
-                </Fragment>)}
-                {!Array.isArray(ingr_purchase_places) && <Td>N/A</Td>}
-                <EditTableButtons className="no_grid" onUpdate={onUpdate} />
+                </Fragment>)
+                }
+                return <Td></Td>
+              })()}
+              {/* Purchase places */}
+                <Td>
+                  <Button
+                    colorMessage="info"
+                    size="small"
+                    text="Editar"
+                    onClick={onUpdate}
+                  />
+                </Td>
             </TrStyles>
           </Fragment>)}
     </tbody>
