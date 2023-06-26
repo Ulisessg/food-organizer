@@ -1,6 +1,11 @@
-import { type TDaysOfTheWeek } from './constants'
+import { type TDaysOfTheWeek, type TDaysOfTheWeekInSpanish } from './constants'
 
-const getDayNameFromSpanish = (day: string): TDaysOfTheWeek => {
+/**
+ * Get day name from spanish to english
+ * @param {TDaysOfTheWeekInSpanish} day
+ * @returns {string}
+ */
+const getDayNameFromSpanish = (day: TDaysOfTheWeekInSpanish): TDaysOfTheWeek => {
   switch (day.toLowerCase()) {
     case 'lunes':
       return 'monday'
