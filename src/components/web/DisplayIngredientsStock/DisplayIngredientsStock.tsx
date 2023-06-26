@@ -1,8 +1,8 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+import { Button, Table, Td, Th } from 'd-system'
 import React, { type FC, Fragment } from 'react'
-import { Table, Td, Th } from 'd-system'
-import EditTableButtons from 'components/web/common/EditTableButtons'
 import { type RootState } from 'redux/store'
 import TableContainer from 'components/web/common/TableContainer'
 import { useSelector } from 'react-redux'
@@ -46,8 +46,13 @@ FC = () => {
                 N/A
               </Td>
 
-              <EditTableButtons onUpdate={() => { console.log('Update') }
-              } />
+              <Td>
+                <Button
+                  colorMessage="info"
+                  size="small"
+                  text="Editar"
+                />
+              </Td>
             </tr>
             </Fragment>)
           }
