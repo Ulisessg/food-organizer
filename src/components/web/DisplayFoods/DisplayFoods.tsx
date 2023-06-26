@@ -17,7 +17,6 @@ const DisplayFoods: FC = () => {
             <Th>Tipo de comida</Th>
             <Th>Comida</Th>
             <Th>Tiempo de preparacion</Th>
-            <Th>Puntuación</Th>
             <Th>Imagen</Th>
             <Th>Acciones</Th>
           </tr>
@@ -32,21 +31,19 @@ const DisplayFoods: FC = () => {
               food_id,
               food_name,
               image,
-              preparation_time,
-              score
+              preparation_time
             }, index) => <Fragment key={food_id}>{index === 0 && <>
                   <Rows food_name={food_name} food_type_name={food_type_name}
                     image={image}
                     preparation_time={preparation_time}
-                    score={score}
-                    rowSpan={foods.length} />
+                    rowSpan={foods.length}
+                  />
                 </>}
                 {index !== 0 && <>
                   <Rows food_name={food_name} food_type_name={food_type_name}
                     image={image}
                     preparation_time={preparation_time}
-                    score={score}
-                     />
+                  />
                 </>}
             </Fragment>)}
           </Fragment>)}
