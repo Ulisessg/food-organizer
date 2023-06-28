@@ -25,7 +25,6 @@ FC = () => {
         {
           ingredientsStockData.ingredientsStock.map(({
             comment,
-            image,
             ingredient,
             ingredient_id,
             ingredient_qty,

@@ -46,7 +46,8 @@ const DisplayIngredients: FC = () => {
                 if (ingr_purchase_places.length >= 1) {
                   return ingr_purchase_places?.map((pp) => <Fragment key={randomId()}>
                   <Td
-                    className="ingredient_purchase_places"
+                    className={
+                      (ingr_purchase_places.length > 1) && 'ingredient_purchase_places' as any}
                   >{pp.purchase_place_name}</Td>
                 </Fragment>)
                 }

@@ -20,7 +20,7 @@ const Rows: FC<RowsProps> = ({
             alt={`${food_name} imagen`}
           />
         </Td>
-        <Td>
+        <Td rowSpan={rowSpan}>
           <Button
             colorMessage="info"
             size="small"
@@ -40,13 +40,6 @@ const Rows: FC<RowsProps> = ({
           alt={`${food_name} imagen`}
         />
       </Td>
-      <Td>
-        <Button
-          colorMessage="info"
-          size="small"
-          text="Editar"
-        />
-        </Td>
     </tr>
 </>
 }

@@ -30,24 +30,21 @@ const DisplayDailyMenus: FC<DisplayDailyMenusProps> = () => {
             <tr>
               <Td rowSpan={menu_foods.length}>{id}</Td>
               <Td>{food_name}</Td>
-              <Td>{comment}</Td>
-              <Button
-                colorMessage="info"
-                size="small"
-                text="Editar"
-                onClick={handleUpdate} />
+              <Td rowSpan={menu_foods.length}>{comment}</Td>
+              <Td rowSpan={menu_foods.length}>
+                <Button
+                  colorMessage="info"
+                  size="small"
+                  text="Editar"
+                  onClick={handleUpdate}
+                />
+              </Td>
             </tr>
           </>}
 
           {index !== 0 && <>
             <tr>
               <Td>{food_name}</Td>
-              <Td>{comment}</Td>
-              <Button
-                colorMessage="info"
-                size="small"
-                text="Editar"
-                onClick={handleUpdate} />
             </tr>
 
           </>}
