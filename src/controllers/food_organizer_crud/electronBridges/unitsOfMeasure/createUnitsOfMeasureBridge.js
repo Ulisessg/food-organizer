@@ -3,6 +3,7 @@ const { createUnitsOfMeausure } = require('../bridgesNames')
 const electronOpenDb = require('../../db/electronOpenDb')
 const createUnitsOfMeasureSql = require('../../sql/unitsOfMeasure/createUnitsOfMeasureSql')
 const getUnitsOfMeasureSql = require('../../sql/unitsOfMeasure/getunitsOfmeasureSql')
+const capitalize = require('../../../../utils/capitalize')
 
 const createUnitsOfMeasureBridge = () => {
   const db = electronOpenDb()
@@ -14,8 +15,8 @@ const createUnitsOfMeasureBridge = () => {
     const uomCreatedId = db.prepare(createUnitsOfMeasureSql(1))
       .run([
         null,
-        unitOfMeasure.name,
-        unitOfMeasure.abbreviation,
+        capitalize(unitOfMeasure.name),
+        capitalize(unitOfMeasure.abbreviation),
         unitOfMeasure.uomt_id
       ]).lastInsertRowid
     const uomcreated = db

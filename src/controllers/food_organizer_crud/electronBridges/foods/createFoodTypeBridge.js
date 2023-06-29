@@ -3,6 +3,7 @@ const { createFoodType } = require('../bridgesNames')
 const electronOpenDb = require('../../db/electronOpenDb')
 const createFoodTypesSql = require('../../sql/foodTypes/createFoodTypesSql')
 const getFoodTypesSql = require('../../sql/foodTypes/getFoodTypesSql')
+const capitalize = require('../../../../utils/capitalize')
 
 const createFoodTypeElectronBridge = () => {
   const db = electronOpenDb()
@@ -13,7 +14,7 @@ const createFoodTypeElectronBridge = () => {
   const create = (foodType) => {
     const foodtypeCreatedId = db.prepare(createFoodTypesSql(1)).run([
       null,
-      foodType.name
+      capitalize(foodType.name)
     ]).lastInsertRowid
     const foodTypeCreated = db.prepare(getFoodTypesSql('WHERE food_types.id = ?'))
       .get([foodtypeCreatedId])

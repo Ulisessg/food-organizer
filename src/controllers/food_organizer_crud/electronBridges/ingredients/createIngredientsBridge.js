@@ -3,6 +3,7 @@ const { createIngredients } = require('../bridgesNames')
 const electronOpenDb = require('../../db/electronOpenDb')
 const createIngredientsSql = require('../../sql/ingredients/createIngredientsSql')
 const getIngredientsSql = require('../../sql/ingredients/getIngredientsSql')
+const capitalize = require('../../../../utils/capitalize')
 
 const createIngredientsBridge = () => {
   const db = electronOpenDb()
@@ -14,7 +15,7 @@ const createIngredientsBridge = () => {
   const create = (ingredient) => {
     const ingredientCreatedId = db.prepare(createIngredientsSql(1)).run([
       null,
-      ingredient.name,
+      capitalize(ingredient.name),
       ingredient.uomId,
       ingredient.image || '',
       ingredient.comment || ''

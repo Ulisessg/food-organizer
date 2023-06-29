@@ -6,6 +6,7 @@ const electronOpenDb = require('../../db/electronOpenDb')
 const createFoodsSql = require('../../sql/foods/createFoodsSql')
 const createFoodIngredientsSql = require('../../sql/foodIngredients/createFoodIngredientsSql')
 const getFoodsGroupedByTypeSql = require('../../sql/foods/getFoodsGroupedByTypeSql')
+const capitalize = require('../../../../utils/capitalize')
 
 const createFoodsBridge = () => {
   const db = electronOpenDb()
@@ -16,7 +17,7 @@ const createFoodsBridge = () => {
   const createFood = (food) => {
     const food_id = db.prepare(createFoodsSql(1)).run([
       null,
-      food.name,
+      capitalize(food.name),
       food.preparation_time || 0,
       food.food_type_id,
       food.image
@@ -42,6 +43,7 @@ const createFoodsBridge = () => {
     /**
      * @type {import('../../sql/foods/types').GetFoods[0]}
      */
+    // @ts-ignore
     const foodCreated = db.prepare(getFoodsGroupedByTypeSql('WHERE foods.id = ?'))
       .get([Number(food_id)])
 
