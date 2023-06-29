@@ -1,15 +1,15 @@
 const { contextBridge } = require('electron')
 const { createMenus } = require('../bridgesNames')
-const electronOpenDb = require('../../../db/electronOpenDb')
-const getMenusSql = require('../../../sql/menus/getMenusSql')
-const createMenusSql = require('../../../sql/menus/createMenusSql')
-const createMenuFoodsSql = require('../../../sql/menuFoods/createMenuFoodsSql')
+const electronOpenDb = require('../../db/electronOpenDb')
+const getMenusSql = require('../../sql/menus/getMenusSql')
+const createMenusSql = require('../../sql/menus/createMenusSql')
+const createMenuFoodsSql = require('../../sql/menuFoods/createMenuFoodsSql')
 
 const createMenusBridge = () => {
   const db = electronOpenDb()
 
   /**
-   * @param {import('../../../sql/menus/types').CreateMenu} menu
+   * @param {import('../../sql/menus/types').CreateMenu} menu
    */
   const create = (menu) => {
     let menuCreatedId = null
@@ -35,7 +35,7 @@ const createMenusBridge = () => {
     }
 
     /**
-     * @type {import('../../../sql/menus/types').GetMenus[0]}
+     * @type {import('../../sql/menus/types').GetMenus[0]}
      */
     const menuCreated = db.prepare(getMenusSql('WHERE menus.id = ?')).get([menuCreatedId])
 

@@ -1,7 +1,7 @@
 const { contextBridge } = require('electron')
 const { getWeeklyMenusData } = require('../bridgesNames')
-const electronOpenDb = require('../../../db/electronOpenDb')
-const getWeeklyMenusSql = require('../../../sql/weeklyMenus/getWeeklyMenusSql')
+const electronOpenDb = require('../../db/electronOpenDb')
+const getWeeklyMenusSql = require('../../sql/weeklyMenus/getWeeklyMenusSql')
 
 /**
  * @param {Array} day
@@ -19,7 +19,7 @@ const getWeeklyMenusDataBridge = () => {
   const getData = () => {
 
     /**
-     * @type {import('../../../sql/weeklyMenus/types').GetWeeklyMenu}
+     * @type {import('../../sql/weeklyMenus/types').GetWeeklyMenu}
      */
     const data = db.prepare(getWeeklyMenusSql()).all()
     const fixedData = data.map((weeklyMenu) => ({

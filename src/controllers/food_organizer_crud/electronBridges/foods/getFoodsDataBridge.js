@@ -1,7 +1,7 @@
 const { contextBridge } = require('electron')
 const { getFoodsData } = require('../bridgesNames')
-const electronOpenDb = require('../../../db/electronOpenDb')
-const getFoodsGroupedByTypeSql = require('../../../sql/foods/getFoodsGroupedByTypeSql')
+const electronOpenDb = require('../../db/electronOpenDb')
+const getFoodsGroupedByTypeSql = require('../../sql/foods/getFoodsGroupedByTypeSql')
 
 const getFoodsDataBridge = () => {
   const db = electronOpenDb()
@@ -10,7 +10,7 @@ const getFoodsDataBridge = () => {
   const getData = () => {
 
     /**
-     * @type {import('../../../sql/foods/types').GetFoods}
+     * @type {import('../../sql/foods/types').GetFoods}
      */
     const data = db.prepare(getFoodsGroupedByTypeSql()).all()
     const dataParsed = data.map((foodGroup) => {

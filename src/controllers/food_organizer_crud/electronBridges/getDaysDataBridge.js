@@ -1,7 +1,7 @@
 const { contextBridge } = require('electron')
-const electronOpenDb = require('../../db/electronOpenDb')
+const electronOpenDb = require('../db/electronOpenDb')
 const { getDaysData } = require('./bridgesNames')
-const getDaysSql = require('../../sql/days/getDaysSql')
+const getDaysSql = require('../sql/days/getDaysSql')
 
 const getDaysDataBridge = () => {
   const db = electronOpenDb()

@@ -2,45 +2,45 @@
 const {
   getUomDataBridge,
   createUnitsOfMeasureBridge
-} = require('./bridges/unitsOfMeasure')
+} = require('./unitsOfMeasure')
 
-const { createUnitsOfMeasureTypesBridge } = require('./bridges/unitsOfMeasureTypes')
+const { createUnitsOfMeasureTypesBridge } = require('./unitsOfMeasureTypes')
 
-const getDaysDataBridge = require('./bridges/getDaysDataBridge')
+const getDaysDataBridge = require('./getDaysDataBridge')
 
 const {
   createPurchasePlacesBridge,
   getPurchasePlacesDataBridge
-} = require('./bridges/purchasePlaces')
+} = require('./purchasePlaces')
 
 const {
   createIngredientPurchasePlacesBridge,
   getIngredientsDataBridge,
   createIngredientsBridge
-} = require('./bridges/ingredients')
+} = require('./ingredients')
 
 const {
   createIngredientsStockBridge,
   getIngredientsStockBridge
-} = require('./bridges/ingredientsStock')
+} = require('./ingredientsStock')
 
 const {
   createMenusBridge,
   getMenusDataBridge,
   getMenusIngredientsBridge
-} = require('./bridges/menus')
+} = require('./menus')
 
 const {
   createWeeklyMenuBridge,
   getWeeklyMenusDataBridge
-} = require('./bridges/weeklyMenus')
+} = require('./weeklyMenus')
 
 const {
   getFoodsDataBridge,
   getFoodTypesDataBridge,
   createFoodsBridge,
   createFoodtypeBridge
-} = require('./bridges/foods')
+} = require('./foods')
 
 /**
  * Enable all electron bridges to handle database requests

@@ -1,16 +1,16 @@
 const { contextBridge } = require('electron')
 const { createWeeklyMenu } = require('../bridgesNames')
-const electronOpenDb = require('../../../db/electronOpenDb')
+const electronOpenDb = require('../../db/electronOpenDb')
 const createWeeklyMenuSql =
-  require('../../../sql/weeklyMenus/createWeeklyMenuSql')
-const createWeeklyMenuDaysSql = require('../../../sql/weeklyMenuDays/createWeeklyMenuDaysSql')
-const getWeeklyMenusSql = require('../../../sql/weeklyMenus/getWeeklyMenusSql')
+  require('../../sql/weeklyMenus/createWeeklyMenuSql')
+const createWeeklyMenuDaysSql = require('../../sql/weeklyMenuDays/createWeeklyMenuDaysSql')
+const getWeeklyMenusSql = require('../../sql/weeklyMenus/getWeeklyMenusSql')
 
 const createWeeklyMenuBridge = () => {
   const db = electronOpenDb()
 
   /**
-   * @param {import('../../../sql/weeklyMenus/types').TCreateWeeklyMenus} weeklyMenu
+   * @param {import('../../sql/weeklyMenus/types').TCreateWeeklyMenus} weeklyMenu
    */
   const create = (weeklyMenu) => {
     const createWmDays = db.prepare(createWeeklyMenuDaysSql(1))

@@ -1,16 +1,16 @@
 /* eslint-disable max-len */
 const { contextBridge } = require('electron')
 const { createIngredientPurchasePlaces } = require('../bridgesNames')
-const electronOpenDb = require('../../../db/electronOpenDb')
+const electronOpenDb = require('../../db/electronOpenDb')
 const createIngredientPurchasePlacesSql =
-  require('../../../sql/ingredientPurchasePlaces/createIngredientPurchasePlacesSql')
-const getIngredientPurchasePlaces = require('../../../sql/ingredientPurchasePlaces/getIngredientPurchasePlaces')
+  require('../../sql/ingredientPurchasePlaces/createIngredientPurchasePlacesSql')
+const getIngredientPurchasePlaces = require('../../sql/ingredientPurchasePlaces/getIngredientPurchasePlaces')
 
 const createIngredientPurchasePlacesBridge = () => {
   const db = electronOpenDb()
 
   /**
-   * @type {import('../../../sql/ingredientPurchasePlaces/types').CreateIngredientPurchasePlaceFunc}
+   * @type {import('../../sql/ingredientPurchasePlaces/types').CreateIngredientPurchasePlaceFunc}
    */
   const create = (ingredient_id, purchasePlaces) => {
     if (purchasePlaces.length === 0) {
@@ -19,7 +19,7 @@ const createIngredientPurchasePlacesBridge = () => {
     const createingredientPP = db.prepare(createIngredientPurchasePlacesSql(1))
 
     /**
-     * @type {import('../../../sql/ingredients/types').TIngr_purchase_places}
+     * @type {import('../../sql/ingredients/types').TIngr_purchase_places}
      */
 
     purchasePlaces.forEach((purchase_place_id) => {

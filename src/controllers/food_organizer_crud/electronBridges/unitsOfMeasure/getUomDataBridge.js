@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
 const { contextBridge } = require('electron')
 const bridgesNames = require('../bridgesNames')
-const electronOpenDb = require('../../../db/electronOpenDb')
-const getUomGroupedByTypeSql = require('../../../sql/unitsOfMeasure/getUnitsOfMeasureGroupedByTypeSql')
-const getUnitsOfMeasureTypeSql = require('../../../sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql')
+const electronOpenDb = require('../../db/electronOpenDb')
+const getUomGroupedByTypeSql = require('../../sql/unitsOfMeasure/getUnitsOfMeasureGroupedByTypeSql')
+const getUnitsOfMeasureTypeSql = require('../../sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql')
 
 /**
  * @returns {import('../../../nextjs/unitsOfMeasureCRUD').GetUnitsOfMeasureData}

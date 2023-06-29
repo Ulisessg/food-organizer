@@ -1,16 +1,16 @@
 const { contextBridge } = require('electron')
 const { createUnitsOfMeasureTypes } = require('../bridgesNames')
-const electronOpenDb = require('../../../db/electronOpenDb')
+const electronOpenDb = require('../../db/electronOpenDb')
 const createUnitsOfMeasureTypeSql =
-  require('../../../sql/unitsOfMeasureTypes/createUnitsOfMeasureTypeSql')
+  require('../../sql/unitsOfMeasureTypes/createUnitsOfMeasureTypeSql')
 const getUnitsOfMeasureTypeSql =
-  require('../../../sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql')
+  require('../../sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql')
 
 const createUnitOfMeasureTypesBridge = () => {
   const db = electronOpenDb()
 
   /**
-   * @param {import('../../../sql/unitsOfMeasureTypes/types').CreateUnitOfMeasureType} uomType
+   * @param {import('../../sql/unitsOfMeasureTypes/types').CreateUnitOfMeasureType} uomType
    */
   const create = (uomType) => {
     const unitOfMeasureTypeCreatedId = db.prepare(createUnitsOfMeasureTypeSql(1)).run([
