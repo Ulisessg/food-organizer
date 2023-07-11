@@ -23,8 +23,10 @@ export default menuValidations
 
 type verifyProps = 'comment'
 type menuParam = {
+  // eslint-disable-next-line no-unused-vars
   [j in verifyProps]: any
 }
 type verifyObj = {
+  // eslint-disable-next-line no-unused-vars
   [k in verifyProps]: (p: any) => void
 }

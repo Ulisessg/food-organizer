@@ -72,5 +72,6 @@ interface ingredientParam {
   comment: string | null
 }
 type verifyObj = {
+  // eslint-disable-next-line no-unused-vars
   [k in verifyProps]: (prop: any) => void
 }

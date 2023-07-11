@@ -59,5 +59,6 @@ interface unitOfMeasureParam {
   uomtId: number
 }
 type verifyObj = {
+  // eslint-disable-next-line no-unused-vars
   [k in verifyProp]: (value: any) => void
 }

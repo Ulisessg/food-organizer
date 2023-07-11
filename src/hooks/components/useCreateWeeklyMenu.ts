@@ -2,7 +2,11 @@
 /* eslint-disable max-lines-per-function */
 import { type AppDispatch, type RootState } from 'redux/store'
 import { type ChangeEvent, type MouseEvent, type RefObject, useState } from 'react'
-import { type TDaysOfTheWeek, dayInMiliseconds } from 'utils/constants'
+import {
+  type TDaysOfTheWeek,
+  type TDaysOfTheWeekInSpanish,
+  dayInMiliseconds
+} from 'utils/constants'
 import { createWeeklyMenuThunk, restartPostWeeklyMenu } from 'redux/slices/weeklyMenusSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
 import { type TCreateWeeklyMenus } from 'controllers/food_organizer_crud/nextjs/weeklyMenuCRUD'
@@ -64,7 +68,7 @@ const useCreateWeeklyMenu = (formRef: RefObject<HTMLFormElement>): TUseCreateWee
   ] = useState<TUseCreateWeeklyMenuReturn['filters']>([])
   const { onChange: UseInputsOnChange, inputsData, restartInputs } = useInputs(
     {
-      day: 'Lunes',
+      day: 'Lunes' as TDaysOfTheWeekInSpanish,
       wm_date_picker: ''
     },
     true
@@ -201,7 +205,8 @@ const useCreateWeeklyMenu = (formRef: RefObject<HTMLFormElement>): TUseCreateWee
     for (const day in menusSelected) {
       if (menusSelected[day as TDaysOfTheWeek].length !== 0) {
         const dayId = weeklyMenusData
-          .days.find((dy) => dy.name.toLowerCase() === getDayNameFromEnglish(day))?.id as number
+          .days.find((dy) => dy.name.toLowerCase() ===
+           getDayNameFromEnglish(day as any))?.id as number
 
         menusSelected[day as TDaysOfTheWeek].forEach((menu) => {
           createWeeklyMenuData.menus.push({
@@ -245,9 +250,7 @@ const useCreateWeeklyMenu = (formRef: RefObject<HTMLFormElement>): TUseCreateWee
 export default useCreateWeeklyMenu
 
 export interface TUseCreateWeeklyMenuReturn {
-  menusSelected: {
-    [k in TDaysOfTheWeek]: Array<RootState['menus']['menus'][0]>
-  }
+  menusSelected: Record<TDaysOfTheWeek, Array<RootState['menus']['menus'][0]>>
   onChange: ReturnType<typeof useInputs>['onChange']
   daySelected: ReturnType<typeof getDayNameFromSpanish>
   filters: Array<{
@@ -271,9 +274,7 @@ export interface TUseCreateWeeklyMenuReturn {
   weekIsUsed: boolean
   onMenusSelected: (ev: ChangeEvent<HTMLInputElement>) => void
   onMenuDeselected: (ev: ChangeEvent) => void
-  menusIdsUsed: {
-    [k in TDaysOfTheWeek]: number[]
-  }
+  menusIdsUsed: Record<TDaysOfTheWeek, number[]>
   disableButton: boolean
   createWeeklyMenu: (ev: MouseEvent<HTMLButtonElement>) => Promise<void>
 }

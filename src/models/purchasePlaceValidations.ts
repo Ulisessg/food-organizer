@@ -58,5 +58,6 @@ interface purchasePlaceParam {
   address: string | null
 }
 type verifyObj = {
+  // eslint-disable-next-line no-unused-vars
   [k in verifyProp]: (value: any) => void
 }

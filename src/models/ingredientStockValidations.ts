@@ -40,6 +40,7 @@ const ingredientStockVerifications = (ingredientStock: ingredientStockParam): vo
 export default ingredientStockVerifications
 
 type verifyObj = {
+  // eslint-disable-next-line no-unused-vars
   [k in verifyProps]: (value: any) => void
 }
 

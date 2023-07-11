@@ -100,5 +100,6 @@ interface foodParam {
 }
 
 type verifyObj = {
+  // eslint-disable-next-line no-unused-vars
   [k in verifyProps]: (p: any) => void
 }

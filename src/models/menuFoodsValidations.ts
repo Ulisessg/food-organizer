@@ -27,5 +27,6 @@ interface menuFoodsValidationsParam {
 }
 type verifyProps = 'food_id' | 'menu_id'
 type verifyObj = {
+  // eslint-disable-next-line no-unused-vars
   [k in verifyProps]: (value: any) => void
 }

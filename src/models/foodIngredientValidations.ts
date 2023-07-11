@@ -34,9 +34,5 @@ const foodIngredientValidations = (foodIngredient: foodIngredientParam): void =>
 export default foodIngredientValidations
 
 type verifyProps = 'foodId' | 'ingredientId' | 'ingredient_qty'
-type foodIngredientParam = {
-  [k in verifyProps]: number
-}
-type verifyObj = {
-  [k in verifyProps]: (p: any) => void
-}
+type foodIngredientParam = Record<verifyProps, number>
+type verifyObj = Record<verifyProps, (p: any) => void>
