@@ -1,4 +1,5 @@
 import React, { type FC, type ReactNode, useContext } from 'react'
+import ButtonCloseModal from './ButtonCloseModal'
 import Modal from '../Modal'
 import { type Props as ModalProps } from 'react-modal'
 import { ModalUpdateDataContext } from 'context/ModalUpdateDataContext'
@@ -10,6 +11,7 @@ const ModalUpdateData: FC<ModalUpdateDataProps> = (props) => {
   {...props.modalProps}
   isOpen={modalContext.modalIsOpen}
   onRequestClose={modalContext.closeModal}>
+    <ButtonCloseModal />
     {props.children}
 </Modal>
 }

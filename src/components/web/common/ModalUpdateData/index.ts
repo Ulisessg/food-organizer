@@ -1,12 +1,9 @@
-import InputModalUpdateData, {
-  InputsSectionTitle
-} from './InputModalUpdateData'
-import InputsContainer from './InputsContainer'
+import ButtonOpenModal from './ButtonOpenModal'
+import ButtonsUpdate from './ButtonsUpdate'
 import ModalUpdateData from './ModalUpdateData'
 
 export {
-  InputModalUpdateData,
   ModalUpdateData,
-  InputsContainer,
-  InputsSectionTitle
+  ButtonsUpdate,
+  ButtonOpenModal
 }
