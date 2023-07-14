@@ -1,11 +1,11 @@
 /* eslint-disable max-lines-per-function */
 import React, { type FC } from 'react'
 import { Table, Th } from 'd-system'
-import { ModalContextProvider } from 'context/ModalContext'
+import { ModalUpdateDataContextProvider } from 'context/ModalUpdateDataContext'
 import Rows from './Rows'
 import TableContainer from 'components/web/common/TableContainer'
 
-const DisplayUnitsOfMeasure: FC = () => <ModalContextProvider>
+const DisplayUnitsOfMeasure: FC = () => <>
     <TableContainer>
   <Table caption="Unidades de medida">
     <thead>
@@ -25,10 +25,12 @@ const DisplayUnitsOfMeasure: FC = () => <ModalContextProvider>
       </tr>
     </thead>
     <tbody>
-      <Rows />
+      <ModalUpdateDataContextProvider>
+        <Rows />
+      </ModalUpdateDataContextProvider>
     </tbody>
     </Table>
   </TableContainer>
-  </ModalContextProvider>
+  </>
 
 export default DisplayUnitsOfMeasure

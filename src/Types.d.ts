@@ -4,9 +4,8 @@ export type TGetKeysFromArrayOfStrings<T extends readonly string[]> =
 T extends readonly string[] ? T[number] : never
 
 /** All update thunks must have this params */
-export interface TUpdateThunkArgs {
-  elementId: string
-  data: HTMLInputElement[]
-  groupingElementIndex: string | null
-  elementIndex: string
+export interface TUpdateThunkArgs<T> {
+  data: T
+  groupingElementIndex: number | null
+  elementIndex: number | null
 }

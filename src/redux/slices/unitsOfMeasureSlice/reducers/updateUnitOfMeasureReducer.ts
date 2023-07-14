@@ -1,8 +1,11 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
+import {
+  restartUpdateUnitsOfMeasureStatusThunk,
+  updateUnitOfMeasureThunk
+} from '../thunks'
 import { type TReducerWBuilder } from 'redux/types'
 import { type TUomState } from '../unitsOfMeasureSliceState'
-import { updateUnitOfMeasureThunk } from '../thunks'
 
 const updateUnitOfMeasureReducer: TReducerWBuilder<TUomState> = (builder) => {
   builder.addCase(
@@ -17,46 +20,69 @@ const updateUnitOfMeasureReducer: TReducerWBuilder<TUomState> = (builder) => {
 
   builder.addCase(
     updateUnitOfMeasureThunk.rejected,
-    (state, action) => {
-      state.updateUomtIsLoading = false
-      state.updateUomtEnd = true
-      state.updateUomtError = true
-      state.updateUomtSuccess = false
-      console.error(action.payload)
+    (state) => {
+      state.updateUomIsLoading = false
+      state.updateUomEnd = true
+      state.updateUomError = true
+      state.updateUomSuccess = false
     }
   )
 
   builder.addCase(
     updateUnitOfMeasureThunk.fulfilled,
     (state, action) => {
-      state.updateUomtIsLoading = false
-      state.updateUomtEnd = true
-      state.updateUomtError = false
-      state.updateUomtSuccess = true
+      state.updateUomIsLoading = false
+      state.updateUomEnd = true
+      state.updateUomError = false
+      state.updateUomSuccess = true
+      const {
+        isUomtIdChanged,
+        data,
 
-      const uomt = state.uomGroupedByType
-        .at(action.payload.groupingElementIndex as any) as TUomState['uomGroupedByType'][0]
+        /**
+         * Even if the unit of measure type changes,
+         * the groupingElementIndex & elementIndex references prev one
+         */
+        elementIndex,
+        groupingElementIndex
+      } = action.payload
 
-      const { uomNames, uomAbbreviations } = uomt
+      const unitOfMeasureType = state.uomGroupedByType
+        .at(groupingElementIndex as number) as TUomState['uomGroupedByType'][0]
 
-      const uom = uomt
-        .uom
-        .at(action.payload.elementIndex as any) as TUomState['uomGroupedByType'][0]['uom'][0]
+      if (isUomtIdChanged) {
+        const newUnitOfMeasureType = state
+          .uomGroupedByType
+          .find(({ uomt_id }) => uomt_id === data.uomt_id) as TUomState['uomGroupedByType'][0]
 
-      uom.abbreviation = action.payload.data.abbreviation
-      uom.name = action.payload.data.name
+        // Remove unit of measure from prev unit of measure type
+        unitOfMeasureType.uom.splice(
+          elementIndex as number,
+          1
+        )
+        // Add into new unit of measure type
+        newUnitOfMeasureType.uom.push({
+          ...data
+        })
+      } else {
+        const { uom } = unitOfMeasureType
+        const uomChanged = uom
+          .at(elementIndex as number) as TUomState['uomGroupedByType'][0]['uom'][0]
 
-      // Update uom names
-      uomNames.splice(
-        action.payload.elementIndex as any,
-        1,
-        action.payload.data.name
-      )
-      uomAbbreviations.splice(
-        action.payload.elementIndex as any,
-        1,
-        action.payload.data.abbreviation
-      )
+        uomChanged.abbreviation = data.abbreviation
+        uomChanged.name = data.name
+      }
+    }
+  )
+
+  // Restart post status
+  builder.addCase(
+    restartUpdateUnitsOfMeasureStatusThunk.fulfilled,
+    (state) => {
+      state.updateUomIsLoading = false
+      state.updateUomEnd = false
+      state.updateUomError = false
+      state.updateUomSuccess = false
     }
   )
 }

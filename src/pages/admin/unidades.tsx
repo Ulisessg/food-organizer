@@ -1,17 +1,31 @@
 /* eslint-disable max-lines-per-function */
+import { type AppDispatch, type RootState } from 'redux/store'
 import { Description, DescriptionContainer, Title } from 'styles/pages/unidades.styles'
-import React, { type FC } from 'react'
+import React, { type FC, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import CreateUnitsOfMeasure from 'components/web/CreateUnitsOfMeasure'
 import CreateUnitsOfMeasureType from 'components/web/CreateUnitsOfMeasureType'
 import DisplayUnitsOfMeasure from 'components/web/DisplayUnitsOfMeasure'
 import ErrorMessage from 'components/web/common/ErrorMessage'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'
-import { type RootState } from 'redux/store'
-import { useSelector } from 'react-redux'
+import getUnitsOfMeasureTypeWithoutUomAction
+  from 'redux/slices/unitsOfMeasureSlice/actions/getUnitsOfMeasureTypeWithoutUomAction'
 
 const Unidades: FC = () => {
   const unitsOfMeasureData = useSelector((state: RootState) => state.unitsOfMeasure)
+  const dispatch: AppDispatch = useDispatch()
+
+  useEffect(
+    () => {
+      void dispatch(getUnitsOfMeasureTypeWithoutUomAction())
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      unitsOfMeasureData.unitsOfMeasureType,
+      unitsOfMeasureData.uomGroupedByType
+    ]
+  )
   return <>
   <Head>
      <title>Administrar unidades de medida</title>

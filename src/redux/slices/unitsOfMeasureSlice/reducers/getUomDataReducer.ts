@@ -29,19 +29,11 @@ const getUomDataReducer: TReducerWBuilder<TUomState> = (builder) => {
       state.uomGroupedByType = [...unitsOfMeasureGroupedByType]
       state.unitsOfMeasureType = [...unitsOfMeasureType]
 
-      const uomT: TUomState['unitsOfMeasureType'] = []
       const uom: TUomState['uom'] = []
-      unitsOfMeasureType.forEach((uomt) => {
-        uomT.push({
-          id: uomt.id,
-          name: uomt.name
-        })
-      })
       unitsOfMeasureGroupedByType.forEach((unitOM) => {
         uom.push(...unitOM.uom)
       })
       state.uom = [...uom]
-      state.unitsOfMeasureType = [...uomT]
     }
   )
 }

@@ -17,9 +17,10 @@ const RequestResultStyles = styled.span<{
   }};
   font-size: 20px;
   text-align: center;
+  margin-bottom: 24px;
   margin-top: ${({ marginTop }) => {
     if (typeof marginTop === 'string') return marginTop
-    return '20px'
+    return '24px'
   }};
 `
 export default RequestResultStyles

@@ -19,7 +19,10 @@ const bridgesNames = {
   getMenusIngredients: 'getMenusIngredients',
   getPurchasePlacesData: 'getPurchasePlacesData',
   getUomData: 'getUomData',
-  getWeeklyMenusData: 'getWeeklyMenusData'
+  getWeeklyMenusData: 'getWeeklyMenusData',
+
+  updateUnitsOfMeasure: 'updateUnitsOfMeasure',
+  updateUnitsOfMeasureTypes: 'updateUnitsOfMeasureTypes'
 }
 
 module.exports = bridgesNames

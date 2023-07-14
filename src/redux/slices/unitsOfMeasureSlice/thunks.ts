@@ -4,7 +4,10 @@
 import {
   type CreateUnitsOfMeasureCallback,
   type CreateUnitsOfMeasureTypesCallback,
-  type TGetUnitOfMeasureDataThunkCallback
+  type TGetUnitOfMeasureDataThunkCallback,
+  type UpdateUnitsOfMeasureCallback,
+  type UpdateUnitsOfMeasureReturn,
+  type UpdateUnitsOfMeasureTypesCallback
 } from './types'
 import {
   type units_of_measure,
@@ -12,18 +15,15 @@ import {
 } from 'controllers/food_organizer_crud/dbTablesTypes'
 import {
   type GetUnitsOfMeasureData
-} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasure/types'
 import {
   type TGetUnitsOfMeasureType
 } from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/types'
-import { type TUpdateThunkArgs } from 'Types'
-import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { type response } from 'controllers/response'
 
 // Get data thunk
 export const getUomDataThunk = createAsyncThunk<
-GetUnitsOfMeasureData, TGetUnitOfMeasureDataThunkCallback>(
+GetUnitsOfMeasureData, ReturnType<TGetUnitOfMeasureDataThunkCallback>>(
   'uom/getData',
   async (getData, thunkApi) => {
     try {
@@ -75,30 +75,20 @@ createAsyncThunk<TGetUnitsOfMeasureType[0], ReturnType<CreateUnitsOfMeasureTypes
  * The computational complexity of reducer is O(n)
  */
 export const updateUomtThunk = createAsyncThunk<{
-  elementIndex: string
+  // Index in Uom Grouped By type
+  groupingElementIndex: number
   data: units_of_measure_types
-}, TUpdateThunkArgs>(
+}, ReturnType<UpdateUnitsOfMeasureTypesCallback>>(
   'uomt/update',
-  async (uomtData, thunkApi) => {
-    const { elementId, data } = uomtData
-    let uomtName: string = ''
-    uomtName = data[0].value
-    const updateResult = await axios.patch<response<units_of_measure_types>>(
-      '/api/uomt',
-      {
-        id: parseInt(
-          elementId,
-          10
-        ),
-        name: uomtName
+  async (update, thunkApi) => {
+    try {
+      const { groupingElementIndex, data } = await update()
+      return {
+        data,
+        groupingElementIndex: groupingElementIndex as number
       }
-    )
-    if (updateResult.data.error) {
-      return thunkApi.rejectWithValue(updateResult.data.data)
-    }
-    return {
-      data: updateResult.data.data,
-      elementIndex: uomtData.elementIndex
+    } catch (error) {
+      return thunkApi.rejectWithValue(error)
     }
   }
 )
@@ -109,58 +99,31 @@ export const updateUomtThunk = createAsyncThunk<{
  *
  * This thunk
  * returns 'element index' and 'grouping element index'
- * to change computational complexity from O(n + m) to O(1)
+ * to change computational complexity from O(n + m) to O(n)
  */
 
-export const updateUnitOfMeasureThunk = createAsyncThunk<{
-  data: units_of_measure
-  groupingElementIndex: string
-  elementIndex: string
-}, TUpdateThunkArgs>(
+export const updateUnitOfMeasureThunk =
+createAsyncThunk<UpdateUnitsOfMeasureReturn, ReturnType<UpdateUnitsOfMeasureCallback>>(
   'uom/update',
-  async (uomData, thunkApi) => {
-    const { elementId, data } = uomData
+  async (update, thunkApi) => {
+    try {
+      const {
+        data,
+        elementIndex,
+        groupingElementIndex,
+        initialUomtId
+      } = await update()
 
-    let uomName = ''
-    let uomAbbreviation = ''
-    let fieldInvalid: boolean = false
-
-    data.forEach((input) => {
-      const dbField = input.getAttribute('data-db-field') as 'name' | 'abbreviation'
-      console.log(dbField)
-
-      if (dbField === 'abbreviation') {
-        uomAbbreviation = input.value
-      } else if (dbField === 'name') {
-        uomName = input.value
-      } else {
-        fieldInvalid = true
+      const isUomtIdChanged = data.uomt_id !== initialUomtId
+      return {
+        data,
+        elementIndex,
+        groupingElementIndex,
+        initialUomtId,
+        isUomtIdChanged
       }
-    })
-    if (fieldInvalid) {
-      return thunkApi.rejectWithValue('Invalid field')
-    }
-
-    const updateResult = await axios.patch<response<units_of_measure>>(
-      '/api/uom',
-      {
-        abbreviation: uomAbbreviation,
-        id: parseInt(
-          elementId,
-          10
-        ),
-        name: uomName
-      }
-    )
-
-    if (updateResult.data.error) {
-      return thunkApi.rejectWithValue(updateResult.data.data)
-    }
-
-    return {
-      data: updateResult.data.data,
-      elementIndex: uomData.elementIndex,
-      groupingElementIndex: uomData.groupingElementIndex as string
+    } catch (error) {
+      return thunkApi.rejectWithValue(error)
     }
   }
 )
@@ -189,6 +152,30 @@ export const restartCreateUomPostStatusThunk = createAsyncThunk(
         () => {
           resolve('')
         },
+        3000
+      )
+    })
+  }
+)
+
+export const restartUpdateUnitOfMeasureTypeStatusThunk = createAsyncThunk(
+  'uomt/restart_update_status',
+  async () => {
+    await new Promise((resolve) => {
+      setTimeout(
+        resolve,
+        3000
+      )
+    })
+  }
+)
+
+export const restartUpdateUnitsOfMeasureStatusThunk = createAsyncThunk(
+  'uom/restart_update_status',
+  async () => {
+    await new Promise((resolve) => {
+      setTimeout(
+        resolve,
         3000
       )
     })

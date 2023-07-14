@@ -26,9 +26,7 @@ const getData = () => {
   return {
     unitsOfMeasureGroupedByType: uomGroupedByType.map((uomt) => ({
       ...uomt,
-      uom: JSON.parse(uomt.uom),
-      uomAbbreviations: JSON.parse(uomt.uomAbbreviations),
-      uomNames: JSON.parse(uomt.uomNames)
+      uom: JSON.parse(uomt.uom)
     }
     )),
     unitsOfMeasureType

@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { createSlice } from '@reduxjs/toolkit'
 import createUnitOfMeasureReducer from './reducers/createUnitOfMeasureReducer'
 import createUnitOfMeasureTypeReducer from './reducers/createUnitOfMeasureTypeReducer'
+import
+getUnitsOfMeasureTypeWithoutUomReducer
+  from './reducers/getUnitsOfMeasureTypeWithoutUomReducer'
 import getUomDataReducer from './reducers/getUomDataReducer'
 import initialState from './unitsOfMeasureSliceState'
 import updateUnitOfMeasureReducer from './reducers/updateUnitOfMeasureReducer'
@@ -15,13 +19,16 @@ const UnitsOfMeasureSlice = createSlice({
   extraReducers: (builder) => {
     // Get data
     getUomDataReducer(builder)
-
+    getUnitsOfMeasureTypeWithoutUomReducer(builder)
     // Create
     createUnitOfMeasureReducer(builder)
     createUnitOfMeasureTypeReducer(builder)
 
     // Update
+
+    // Units of measure types
     updateUnitOfMeasureTypeReducer(builder)
+
     updateUnitOfMeasureReducer(builder)
   }
 })

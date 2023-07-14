@@ -5,7 +5,7 @@ import {
 } from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
 import {
   type TGetUnitsOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/getUnitsOfMeasureTypeSql'
+} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/types'
 import type { units_of_measure } from '@prisma/client'
 
 /**
@@ -28,7 +28,6 @@ const insertUnitOfMeasure = (
       return {
         ...uomt,
         uom: [
-          ...uomt.uom,
           {
             abbreviation: unitOfMeasure.abbreviation,
             id: unitOfMeasure.id,

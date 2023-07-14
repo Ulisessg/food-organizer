@@ -19,5 +19,6 @@ FROM units_of_measure_types
 INNER JOIN units_of_measure ON units_of_measure_types.id = units_of_measure.uomt_id
 ${filter || ''}
 GROUP BY uomt_name
+ORDER BY units_of_measure_types.id ASC
 `
 module.exports = getUomGroupedByTypeSql

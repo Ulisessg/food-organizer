@@ -38,6 +38,7 @@ import {
   type GetMenusIngredients
 } from 'controllers/food_organizer_crud/sql/menus/getMenusIngredientsSql'
 import { type units_of_measure } from '@prisma/client'
+import { type units_of_measure_types } from 'controllers/food_organizer_crud/dbTablesTypes'
 
 // Electron bridges
 declare global {
@@ -68,5 +69,10 @@ declare global {
     createWeeklyMenu: (weeklyMenu: TCreateWeeklyMenus) => GetWeeklyMenu[0]
 
     createPurchasePlaces: (purchasePlace: CreatePurchasePlace) => GetPurchasePlaces[0]
+
+    updateUnitsOfMeasureTypes:
+    (unitsOfMeasureTypes: units_of_measure_types) => units_of_measure_types
+
+    updateUnitsOfMeasure: (unitsOfMeasure: units_of_measure) => units_of_measure
   }
 }

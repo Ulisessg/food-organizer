@@ -1,4 +1,3 @@
-import { Form, type FormProps } from 'd-system'
 import React, { type FC, type ReactNode, createContext, useState } from 'react'
 
 const initialState: FormUpdateDataContextState = {
@@ -14,9 +13,8 @@ const initialState: FormUpdateDataContextState = {
 
 export const FormUpdateDataContext = createContext(initialState)
 
-export const FormUpdateDataContextProvider: FC<{ children: ReactNode, formProps: FormProps }> = ({
-  children,
-  formProps
+export const FormUpdateDataContextProvider: FC<{ children: ReactNode }> = ({
+  children
 }) => {
   const [
     formIsValid,
@@ -44,9 +42,7 @@ export const FormUpdateDataContextProvider: FC<{ children: ReactNode, formProps:
       updateGroupsOfInputsWithChanges
     }}
   >
-    <Form {...formProps}>
-      {children}
-    </Form>
+    {children}
   </FormUpdateDataContext.Provider>
 }
 

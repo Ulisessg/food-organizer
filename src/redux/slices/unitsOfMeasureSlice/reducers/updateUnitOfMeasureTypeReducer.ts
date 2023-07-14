@@ -1,8 +1,11 @@
 /* eslint-disable max-lines-per-function */
+import {
+  restartUpdateUnitOfMeasureTypeStatusThunk,
+  updateUomtThunk
+} from '../thunks'
 import { type TReducerWBuilder } from 'redux/types'
 import { type TUomState } from '../unitsOfMeasureSliceState'
 import safeArrayGet from 'utils/safeArrayGet'
-import { updateUomtThunk } from '../thunks'
 
 const updateUnitOfMeasureTypeReducer: TReducerWBuilder<TUomState> = (builder) => {
   builder.addCase(
@@ -33,25 +36,24 @@ const updateUnitOfMeasureTypeReducer: TReducerWBuilder<TUomState> = (builder) =>
       state.updateUomtError = false
       state.updateUomtSuccess = true
 
-      const unitsOfmeasureType: typeof state.unitsOfMeasureType = []
+      state.unitsOfMeasureType[Number(action.payload.groupingElementIndex)].name =
+        action.payload.data.name
 
-      state.unitsOfMeasureType.some((unitOfMeasureType) => {
-        if (unitOfMeasureType.id === action.payload.data.id) {
-          unitsOfmeasureType.push({
-            ...unitOfMeasureType,
-            name: action.payload.data.name
-          })
-          return true
-        }
-        unitsOfmeasureType.push(unitOfMeasureType)
-        return false
-      })
-
-      state.unitsOfMeasureType = [...unitsOfmeasureType]
       safeArrayGet(
         state.uomGroupedByType,
-        action.payload.elementIndex as unknown as number
+        action.payload.groupingElementIndex
       ).uomt_name = action.payload.data.name
+    }
+  )
+
+  // Restart update status
+  builder.addCase(
+    restartUpdateUnitOfMeasureTypeStatusThunk.fulfilled,
+    (state) => {
+      state.updateUomtIsLoading = false
+      state.updateUomtEnd = false
+      state.updateUomtError = false
+      state.updateUomtSuccess = false
     }
   )
 }

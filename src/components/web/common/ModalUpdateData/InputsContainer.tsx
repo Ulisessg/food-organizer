@@ -121,7 +121,7 @@ interface InputsContainerProps {
   children?: ReactNode
   dbTable: string
   elementIndex: number
-  groupingElementIndex?: number
+  groupingElementIndex: number | null
   inputsNames: string[]
   elementId: number
 }
