@@ -1,5 +1,5 @@
-import CreateMenu from 'components/web/CreateMenu'
-import DisplayDailyMenus from 'components/web/DisplayMenus'
+import CreateMenu from 'components/web/menus/CreateMenu'
+import DisplayDailyMenus from 'components/web/menus/DisplayMenus'
 import ErrorMessage from 'components/web/common/ErrorMessage'
 import Head from 'next/head'
 import { LoadingSpinner } from 'd-system'

@@ -4,7 +4,7 @@ import React, { type FC, Fragment } from 'react'
 import { Table, Th } from 'd-system'
 import { type RootState } from 'redux/store'
 import Rows from './Rows'
-import TableContainer from '../common/TableContainer'
+import TableContainer from '../../common/TableContainer'
 import { useSelector } from 'react-redux'
 
 const DisplayFoods: FC = () => {

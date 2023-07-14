@@ -1,7 +1,7 @@
 import { Form, Input, Select } from 'd-system'
 import React, { type FC, Fragment } from 'react'
-import ButtonsUpdate from '../common/ModalUpdateData/ButtonsUpdate'
-import RequestResultStyles from '../common/RequestResultStyles'
+import ButtonsUpdate from '../../common/ModalUpdateData/ButtonsUpdate'
+import RequestResultStyles from '../../common/RequestResultStyles'
 import { type RootState } from 'redux/store'
 import {
   type TGetUnitsOfMeasureType

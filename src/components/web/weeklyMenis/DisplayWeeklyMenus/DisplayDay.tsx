@@ -1,9 +1,9 @@
 /* eslint-disable max-lines-per-function */
 import { Td as DSystemTd, Table, Th } from 'd-system'
 import React, { type FC, Fragment } from 'react'
-import EditTableButtonsComponent from '../common/EditTableButtons'
+import EditTableButtonsComponent from '../../common/EditTableButtons'
 import { type TDay } from 'controllers/food_organizer_crud/sql/weeklyMenus/getWeeklyMenusSql'
-import TableContainer from '../common/TableContainer'
+import TableContainer from '../../common/TableContainer'
 import randomId from 'utils/randomId'
 import styled from 'styled-components'
 

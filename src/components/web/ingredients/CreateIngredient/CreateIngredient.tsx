@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Button, Form, Input, LoadingSpinner, Select } from 'd-system'
 import React, { type FC, Fragment, useRef } from 'react'
-import Details from '../common/Details'
-import ErrorMessage from '../common/ErrorMessage'
+import Details from '../../common/Details'
+import ErrorMessage from '../../common/ErrorMessage'
 import { LoadingSpinnerContainer } from 'components/web/common/FormInDetailsStyles'
 import {
   MultipleSelectsContextProvider

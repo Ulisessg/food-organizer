@@ -1,9 +1,9 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Form, Input, LoadingSpinner } from 'd-system'
 import React, { type FC, useRef } from 'react'
-import Details from './common/Details'
-import { LoadingSpinnerContainer } from './common/FormInDetailsStyles'
-import RequestResultStyles from './common/RequestResultStyles'
+import Details from '../common/Details'
+import { LoadingSpinnerContainer } from '../common/FormInDetailsStyles'
+import RequestResultStyles from '../common/RequestResultStyles'
 import { type RootState } from 'redux/store'
 import useCreateFoodType from 'hooks/components/useCreateFoodType'
 import { useSelector } from 'react-redux'

@@ -1,16 +1,16 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable sort-imports */
-import Details from '../common/Details'
+import Details from '../../common/Details'
 import React, { type FC, Fragment, useRef } from 'react'
 import { Button, Form, LoadingSpinner, Input, Select } from 'd-system'
-import ErrorMessage from '../common/ErrorMessage'
+import ErrorMessage from '../../common/ErrorMessage'
 import { defaultSelectValue } from 'utils/constants'
 import { useSelector } from 'react-redux'
 import { type RootState } from 'redux/store'
 import useCreateFood from 'hooks/components/useCreateFood'
-import RequestResultStyles from '../common/RequestResultStyles'
-import { LoadingSpinnerContainer } from '../common/FormInDetailsStyles'
+import RequestResultStyles from '../../common/RequestResultStyles'
+import { LoadingSpinnerContainer } from '../../common/FormInDetailsStyles'
 import { PrepTimeContainer } from './CreateFoodStyles'
 import SelectIngredients from './SelectIngredients'
 

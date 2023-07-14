@@ -1,5 +1,5 @@
 import CreateWeeklyMenu from 'components/web/CreateWeeklyMenu'
-import DisplayWeeklyMenus from 'components/web/DisplayWeeklyMenus'
+import DisplayWeeklyMenus from 'components/web/weeklyMenis/DisplayWeeklyMenus'
 import Head from 'next/head'
 import type { NextPage } from 'next'
 import React from 'react'

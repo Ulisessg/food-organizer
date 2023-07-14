@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Form, Input, LoadingSpinner, Select } from 'd-system'
 import React, { type FC, useRef } from 'react'
-import CreateMenu from 'components/web/CreateMenu'
+import CreateMenu from 'components/web/menus/CreateMenu'
 import Details from '../common/Details'
 import { LoadingSpinnerContainer } from 'components/web/common/FormInDetailsStyles'
 import MenuFilters from './MenuFilters'
