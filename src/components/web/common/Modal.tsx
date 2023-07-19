@@ -5,14 +5,14 @@ ModalComponent.setAppElement('#__next')
 
 const modalStyles: Styles = {
   content: {
-    alignContent: 'space-between',
+    alignContent: 'baseline',
     borderRadius: '30px',
     display: 'grid',
     gridRowGap: '15px',
     inset: '10px',
     justifyContent: 'center',
     justifyItems: 'center',
-    overflow: 'auto',
+    overflow: 'scroll',
     position: 'fixed'
   },
   overlay: {
