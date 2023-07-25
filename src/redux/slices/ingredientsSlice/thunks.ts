@@ -8,7 +8,7 @@ import {
 import {
   type GetIngredients,
   type TIngr_purchase_places
-} from 'controllers/food_organizer_crud/sql/ingredients/types'
+} from 'controllers/sql/ingredients/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 // Get ingrediets

@@ -5,8 +5,8 @@ import {
   type TGetFoodsDataCallback,
   type TGetFoodsTypesDataCallback
 } from './types'
-import { type GetFoodTypes } from 'controllers/food_organizer_crud/sql/foodTypes/types'
-import { type GetFoods } from 'controllers/food_organizer_crud/sql/foods/types'
+import { type GetFoodTypes } from 'controllers/sql/foodTypes/types'
+import { type GetFoods } from 'controllers/sql/foods/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
   type food_types

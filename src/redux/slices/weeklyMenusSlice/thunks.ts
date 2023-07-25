@@ -3,8 +3,8 @@ import {
   type GetWeeklyMenusCallback,
   type TGetDaysCallack
 } from './types'
-import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
-import { type GetWeeklyMenu } from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
+import { type GetDays } from 'controllers/sql/days/types'
+import { type GetWeeklyMenu } from 'controllers/sql/weeklyMenus/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export const getDaysThunk = createAsyncThunk<GetDays, TGetDaysCallack>(

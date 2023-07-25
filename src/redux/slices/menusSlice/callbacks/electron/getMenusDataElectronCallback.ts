@@ -1,4 +1,4 @@
-import { type GetMenus } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
+import { type GetMenus } from 'controllers/nextjs/MenuCRUD'
 import { type GetMenusDataCallback } from '../../types'
 
 const getMenusDataElectronCallback: GetMenusDataCallback = async () => {

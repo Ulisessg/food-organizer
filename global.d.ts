@@ -1,44 +1,44 @@
 import {
   type CreateFoodType,
   type GetFoodTypes
-} from 'controllers/food_organizer_crud/sql/foodTypes/types'
+} from 'controllers/sql/foodTypes/types'
 import {
   type CreateIngredient,
   type GetIngredients,
   type TIngr_purchase_places
-} from 'controllers/food_organizer_crud/sql/ingredients/types'
+} from 'controllers/sql/ingredients/types'
 import {
   type CreateIngredientStock,
   type GetIngredientStock
-} from 'controllers/food_organizer_crud/sql/ingredientStock/types'
+} from 'controllers/sql/ingredientStock/types'
 import {
   type CreateMenu,
   type GetMenus
-} from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
+} from 'controllers/nextjs/MenuCRUD'
 import {
   type CreatePurchasePlace,
   type GetPurchasePlaces
-} from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
+} from 'controllers/sql/purchasePlaces/types'
 import {
   type CreateUom,
   type GetUnitsOfMeasureData
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasure/types'
+} from 'controllers/sql/unitsOfMeasure/types'
 import {
   type GetWeeklyMenu,
   type TCreateWeeklyMenus
-} from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
+} from 'controllers/sql/weeklyMenus/types'
 import {
   type CreateFood
 } from 'redux/slices/foodsSlice/types'
-import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
+import { type GetDays } from 'controllers/sql/days/types'
 import {
   type GetFoods
-} from 'controllers/food_organizer_crud/nextjs/foodsCRUD'
+} from 'controllers/nextjs/foodsCRUD'
 import {
   type GetMenusIngredients
-} from 'controllers/food_organizer_crud/sql/menus/getMenusIngredientsSql'
+} from 'controllers/sql/menus/getMenusIngredientsSql'
 import { type units_of_measure } from '@prisma/client'
-import { type units_of_measure_types } from 'controllers/food_organizer_crud/dbTablesTypes'
+import { type units_of_measure_types } from 'controllers/dbTablesTypes'
 
 // Electron bridges
 declare global {

@@ -1,4 +1,4 @@
-import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
+import { type GetDays } from 'controllers/sql/days/types'
 import { type TGetDaysCallack } from '../../types'
 
 const getDaysElectronCallback: TGetDaysCallack = async () => {

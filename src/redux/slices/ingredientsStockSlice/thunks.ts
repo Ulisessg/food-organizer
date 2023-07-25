@@ -5,7 +5,7 @@ import {
 import { type RootState, store } from 'redux/store'
 import {
   type GetIngredientStock
-} from 'controllers/food_organizer_crud/sql/ingredientStock/types'
+} from 'controllers/sql/ingredientStock/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export const getIngredientsStockThunk =

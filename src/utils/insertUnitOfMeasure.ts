@@ -2,10 +2,10 @@
 /* eslint-disable camelcase */
 import {
   type GetUnitsOfMeasureData
-} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
+} from 'controllers/nextjs/unitsOfMeasureCRUD'
 import {
   type TGetUnitsOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/types'
+} from 'controllers/sql/unitsOfMeasureTypes/types'
 import type { units_of_measure } from '@prisma/client'
 
 /**

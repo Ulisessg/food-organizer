@@ -1,11 +1,11 @@
 import {
   type CreateFoodIngredients
-} from 'controllers/food_organizer_crud/sql/foodIngredients/types'
+} from 'controllers/sql/foodIngredients/types'
 import {
   type CreateFoodType
-} from 'controllers/food_organizer_crud/sql/foodTypes/createFoodTypesSql'
-import { type GetFoodTypes } from 'controllers/food_organizer_crud/sql/foodTypes/types'
-import { type GetFoods } from 'controllers/food_organizer_crud/sql/foods/types'
+} from 'controllers/sql/foodTypes/createFoodTypesSql'
+import { type GetFoodTypes } from 'controllers/sql/foodTypes/types'
+import { type GetFoods } from 'controllers/sql/foods/types'
 
 export interface TFoodState {
   foods: GetFoods[0]['foods']

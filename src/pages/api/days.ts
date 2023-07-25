@@ -1,5 +1,5 @@
 import { type NextApiRequest, type NextApiResponse } from 'next'
-import { getDays } from 'controllers/food_organizer_crud/nextjs/daysCRUD'
+import { getDays } from 'controllers/nextjs/daysCRUD'
 import { type response } from 'controllers/response'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<response<any>>): Promise<void> => {

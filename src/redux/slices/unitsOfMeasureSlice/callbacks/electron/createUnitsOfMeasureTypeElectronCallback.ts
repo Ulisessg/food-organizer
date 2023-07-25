@@ -1,5 +1,5 @@
 import { type CreateUnitsOfMeasureTypesCallback } from '../../types'
-import { type units_of_measure_types } from 'controllers/food_organizer_crud/dbTablesTypes'
+import { type units_of_measure_types } from 'controllers/dbTablesTypes'
 
 const createUnitsOfMeasureTypeElectronCallback: CreateUnitsOfMeasureTypesCallback =
 (uomTData) => async () => {

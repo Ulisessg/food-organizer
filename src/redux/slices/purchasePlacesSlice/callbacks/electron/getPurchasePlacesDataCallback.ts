@@ -1,4 +1,4 @@
-import { type GetPurchasePlaces } from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
+import { type GetPurchasePlaces } from 'controllers/sql/purchasePlaces/types'
 import { type GetPurchasePlacesDataCallback } from '../../types'
 
 const getPurchasePlacesDataCallback: GetPurchasePlacesDataCallback = async () => {

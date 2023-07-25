@@ -3,7 +3,7 @@
 // Electron entry point
 const { BrowserWindow, app } = require('electron')
 const { join } = require('path')
-const electronOpenDb = require('./src/controllers/food_organizer_crud/db/electronOpenDb')
+const electronOpenDb = require('./src/controllers/db/electronOpenDb')
 
 const createInitialWindow = () => {
   const win = new BrowserWindow({

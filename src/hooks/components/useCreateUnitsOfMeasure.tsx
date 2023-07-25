@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import {
   type GetUnitsOfMeasureData
-} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
+} from 'controllers/nextjs/unitsOfMeasureCRUD'
 import
 createUomElectronCallback
   from 'redux/slices/unitsOfMeasureSlice/callbacks/electron/createUomElectronCallback'

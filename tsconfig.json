@@ -65,7 +65,7 @@
     "**/*.tsx",
     "build/types/**/*.ts",
     "global.d.ts",
-    "src/controllers/food_organizer_crud/sql/ingredientStock/createIngredientStockSql.js"
+    "src/controllers/sql/ingredientStock/createIngredientStockSql.js"
   ],
   "exclude": [
     "node_modules"

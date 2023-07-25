@@ -1,7 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next'
 import {
   createUnitOfMeasureType, updateUOMT
-} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureTypeCRUD'
+} from 'controllers/nextjs/unitsOfMeasureTypeCRUD'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   const { method } = req

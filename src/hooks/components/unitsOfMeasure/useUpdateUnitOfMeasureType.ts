@@ -9,7 +9,7 @@ import
 UpdateUnitsOfMeasureTypesElectronCallback
   from
   'redux/slices/unitsOfMeasureSlice/callbacks/electron/updateUnitsOfMeasureTypesElectonCallback'
-import { type units_of_measure_types } from 'controllers/food_organizer_crud/dbTablesTypes'
+import { type units_of_measure_types } from 'controllers/dbTablesTypes'
 import { useInputs } from 'd-system'
 import useValueIsRepeated from 'hooks/useValueIsRepeated'
 

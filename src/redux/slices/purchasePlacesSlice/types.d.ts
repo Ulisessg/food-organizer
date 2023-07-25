@@ -1,7 +1,7 @@
 import {
   type CreatePurchasePlace,
   type GetPurchasePlaces
-} from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
+} from 'controllers/sql/purchasePlaces/types'
 
 export interface TPurchasePlacesState {
   // Get data

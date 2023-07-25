@@ -1,7 +1,7 @@
 import { type CreateIngredientStockCallback } from '../../types'
 import {
   type GetIngredientStock
-} from 'controllers/food_organizer_crud/sql/ingredientStock/types'
+} from 'controllers/sql/ingredientStock/types'
 
 const createIngredientStockElectronCallback:
 CreateIngredientStockCallback = (ingredient) => async () => {

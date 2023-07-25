@@ -1,7 +1,7 @@
 import {
   type CreateIngredientStock,
   type GetIngredientStock
-} from 'controllers/food_organizer_crud/sql/ingredientStock/types'
+} from 'controllers/sql/ingredientStock/types'
 
 export interface IngredientsStockState {
   ingredientsStock: GetIngredientStock

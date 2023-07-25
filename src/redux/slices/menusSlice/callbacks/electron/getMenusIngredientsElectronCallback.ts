@@ -1,4 +1,4 @@
-import { type GetMenusIngredients } from 'controllers/food_organizer_crud/sql/menus/types'
+import { type GetMenusIngredients } from 'controllers/sql/menus/types'
 import { type GetMenusIngredientsCallback } from '../../types'
 
 const getMenusIngredientsElectronCallback: GetMenusIngredientsCallback = async () => {

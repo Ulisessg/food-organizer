@@ -1,6 +1,6 @@
 import { type UpdateUnitsOfMeasureCallback } from '../../types'
 import unitOfMeasureValidations from 'models/unitOfMeasureValidations'
-import { type units_of_measure } from 'controllers/food_organizer_crud/dbTablesTypes'
+import { type units_of_measure } from 'controllers/dbTablesTypes'
 
 const updateUnitsOfMeasureElectronCallback: UpdateUnitsOfMeasureCallback = (uom) => async () => {
   const uomUpdatedData = await new Promise<units_of_measure>((resolve, reject) => {

@@ -6,10 +6,10 @@ import {
 } from './types'
 import {
   type GetMenus
-} from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
+} from 'controllers/nextjs/MenuCRUD'
 import {
   type GetMenusIngredients
-} from 'controllers/food_organizer_crud/sql/menus/types'
+} from 'controllers/sql/menus/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export const getMenusDataThunk = createAsyncThunk<GetMenus, GetMenusDataCallback>(

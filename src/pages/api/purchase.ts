@@ -3,7 +3,7 @@ import {
   createPurchasePlace,
   getPurchasePlaces,
   updatePurchasePlace
-} from 'controllers/food_organizer_crud/nextjs/purchasePlaceCRUD'
+} from 'controllers/nextjs/purchasePlaceCRUD'
 
 const handler = async (
   req: NextApiRequest,

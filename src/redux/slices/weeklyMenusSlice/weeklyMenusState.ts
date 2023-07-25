@@ -1,5 +1,5 @@
-import { type GetDays } from 'controllers/food_organizer_crud/sql/days/types'
-import { type GetWeeklyMenu } from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
+import { type GetDays } from 'controllers/sql/days/types'
+import { type GetWeeklyMenu } from 'controllers/sql/weeklyMenus/types'
 
 const initialState: TWeeklyMenusState = {
   createWeeklyEnd: false,

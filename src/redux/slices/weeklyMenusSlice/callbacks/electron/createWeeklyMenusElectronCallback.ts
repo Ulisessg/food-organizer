@@ -1,5 +1,5 @@
 import { type CreateWeeklyMenusCallback } from '../../types'
-import { type GetWeeklyMenu } from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
+import { type GetWeeklyMenu } from 'controllers/sql/weeklyMenus/types'
 
 const createWeeklyMenusElectronCallback: CreateWeeklyMenusCallback = (weeklyMenu) => async () => {
   const weeklyMenuCreated = await new Promise<GetWeeklyMenu[0]>((resolve, reject) => {

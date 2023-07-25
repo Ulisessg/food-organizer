@@ -1,6 +1,6 @@
 import {
   type GetUnitsOfMeasureData
-} from 'controllers/food_organizer_crud/nextjs/unitsOfMeasureCRUD'
+} from 'controllers/nextjs/unitsOfMeasureCRUD'
 import { type TGetUnitOfMeasureDataThunkCallback } from '../../types'
 
 const getUomDataElectronCallback: TGetUnitOfMeasureDataThunkCallback = async () => {

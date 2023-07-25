@@ -1,5 +1,5 @@
 import { type CreateMenuCallback } from '../../types'
-import { type GetMenus } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
+import { type GetMenus } from 'controllers/nextjs/MenuCRUD'
 
 const createMenuElectronCallback: CreateMenuCallback = (menu) => async () => {
   const menuCreated = await new Promise<GetMenus[0]>((resolve, reject) => {

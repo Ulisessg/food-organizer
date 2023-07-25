@@ -1,3 +1,3 @@
-const openBridges = require('./src/controllers/food_organizer_crud/electronBridges/index')
+const openBridges = require('./src/controllers/electronBridges/index')
 
 openBridges()

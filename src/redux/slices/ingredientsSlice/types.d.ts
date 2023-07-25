@@ -1,10 +1,10 @@
 import {
   type GetIngredients,
   type TIngr_purchase_places
-} from 'controllers/food_organizer_crud/sql/ingredients/types'
+} from 'controllers/sql/ingredients/types'
 import {
   type CreateIngredient
-} from 'controllers/food_organizer_crud/sql/ingredients/createIngredientsSql'
+} from 'controllers/sql/ingredients/createIngredientsSql'
 
 interface CreateIngredientThunkParam {
   ingredient: CreateIngredient

@@ -1,5 +1,5 @@
 import { type CreatePurchasePlacesCallback } from '../../types'
-import { type GetPurchasePlaces } from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
+import { type GetPurchasePlaces } from 'controllers/sql/purchasePlaces/types'
 
 const createPurchasePlacesElectronCallback: CreatePurchasePlacesCallback =
 (purchasePlace) => async () => {

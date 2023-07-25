@@ -1,9 +1,9 @@
 import {
   type GetUnitsOfMeasureData
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasure/types'
+} from 'controllers/sql/unitsOfMeasure/types'
 import {
   type TGetUnitsOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/types'
+} from 'controllers/sql/unitsOfMeasureTypes/types'
 
 const initialState: TUomState = {
   dataIsLoading: false,

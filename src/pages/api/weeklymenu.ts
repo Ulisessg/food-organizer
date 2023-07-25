@@ -1,7 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next'
 import {
   createWeeklyMenu, getWeeklyMenu
-} from 'controllers/food_organizer_crud/nextjs/weeklyMenuCRUD'
+} from 'controllers/nextjs/weeklyMenuCRUD'
 import { type response } from 'controllers/response'
 
 const handler = async (

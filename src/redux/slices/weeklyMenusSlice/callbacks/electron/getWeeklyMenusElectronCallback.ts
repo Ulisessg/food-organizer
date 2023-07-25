@@ -1,4 +1,4 @@
-import { type GetWeeklyMenu } from 'controllers/food_organizer_crud/sql/weeklyMenus/types'
+import { type GetWeeklyMenu } from 'controllers/sql/weeklyMenus/types'
 import { type GetWeeklyMenusCallback } from '../../types'
 
 const getWeeklyMenusElectronCallback: GetWeeklyMenusCallback = async () => {

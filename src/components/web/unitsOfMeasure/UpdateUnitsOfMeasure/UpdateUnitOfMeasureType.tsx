@@ -4,7 +4,7 @@ import ButtonsUpdate from '../../common/ModalUpdateData/ButtonsUpdate'
 import { LoadingSpinnerContainer } from '../../common/FormInDetailsStyles'
 import RequestResultStyles from '../../common/RequestResultStyles'
 import { type RootState } from 'redux/store'
-import { type units_of_measure_types } from 'controllers/food_organizer_crud/dbTablesTypes'
+import { type units_of_measure_types } from 'controllers/dbTablesTypes'
 import { useSelector } from 'react-redux'
 import useUpdateUnitOfMeasureType from 'hooks/components/unitsOfMeasure/useUpdateUnitOfMeasureType'
 

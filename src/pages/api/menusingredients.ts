@@ -1,5 +1,5 @@
 import { type NextApiRequest, type NextApiResponse } from 'next'
-import { getMenusIngredients } from 'controllers/food_organizer_crud/nextjs/MenuCRUD'
+import { getMenusIngredients } from 'controllers/nextjs/MenuCRUD'
 import { type response } from 'controllers/response'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<response<any>>): Promise<void> => {

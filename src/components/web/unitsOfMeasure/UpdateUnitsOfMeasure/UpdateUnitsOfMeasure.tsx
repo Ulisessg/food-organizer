@@ -5,9 +5,9 @@ import RequestResultStyles from '../../common/RequestResultStyles'
 import { type RootState } from 'redux/store'
 import {
   type TGetUnitsOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/types'
+} from 'controllers/sql/unitsOfMeasureTypes/types'
 import randomId from 'utils/randomId'
-import { type units_of_measure } from 'controllers/food_organizer_crud/dbTablesTypes'
+import { type units_of_measure } from 'controllers/dbTablesTypes'
 import { useSelector } from 'react-redux'
 import useUpdateUnitsOfMeasure from 'hooks/components/unitsOfMeasure/useUpdateUnitsOfMeasure'
 

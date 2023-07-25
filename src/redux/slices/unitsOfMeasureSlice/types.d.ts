@@ -1,15 +1,15 @@
 import {
   type CreateUnitOfMeasureType,
   type TGetUnitsOfMeasureType
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasureTypes/types'
+} from 'controllers/sql/unitsOfMeasureTypes/types'
 import {
   type CreateUom,
   type GetUnitsOfMeasureData
-} from 'controllers/food_organizer_crud/sql/unitsOfMeasure/types'
+} from 'controllers/sql/unitsOfMeasure/types'
 import {
   type units_of_measure,
   type units_of_measure_types
-} from 'controllers/food_organizer_crud/dbTablesTypes'
+} from 'controllers/dbTablesTypes'
 import { type TUpdateThunkArgs } from 'Types'
 
 export type TGetUnitOfMeasureDataThunkCallback = () => () => Promise<GetUnitsOfMeasureData>

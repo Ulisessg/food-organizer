@@ -9,7 +9,7 @@ import {
 } from 'utils/constants'
 import { createWeeklyMenuThunk, restartPostWeeklyMenu } from 'redux/slices/weeklyMenusSlice/thunks'
 import { useDispatch, useSelector } from 'react-redux'
-import { type TCreateWeeklyMenus } from 'controllers/food_organizer_crud/nextjs/weeklyMenuCRUD'
+import { type TCreateWeeklyMenus } from 'controllers/nextjs/weeklyMenuCRUD'
 import
 createWeeklyMenusElectronCallback
   from 'redux/slices/weeklyMenusSlice/callbacks/electron/createWeeklyMenusElectronCallback'

@@ -1,7 +1,7 @@
 import { type CreatePurchasePlacesCallback, type GetPurchasePlacesDataCallback } from './types'
 import {
   type GetPurchasePlaces
-} from 'controllers/food_organizer_crud/sql/purchasePlaces/types'
+} from 'controllers/sql/purchasePlaces/types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 // Get purchase places thunk

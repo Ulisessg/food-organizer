@@ -1,5 +1,5 @@
 import { type CreateFoodCallback } from '../../types'
-import { type GetFoods } from 'controllers/food_organizer_crud/nextjs/foodsCRUD'
+import { type GetFoods } from 'controllers/nextjs/foodsCRUD'
 
 const createFoodelectronCallback: CreateFoodCallback = (food) => async () => {
   const foodCreated = await new Promise<GetFoods[0]>((resolve, reject) => {
