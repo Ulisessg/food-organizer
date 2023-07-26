@@ -1,9 +1,10 @@
 // @ts-check
 
 // Electron entry point
-const { BrowserWindow, app } = require('electron')
+const { BrowserWindow, app, ipcMain, dialog } = require('electron')
 const { join } = require('path')
 const electronOpenDb = require('./src/controllers/db/electronOpenDb')
+const { selectImage } = require('./src/controllers/electronBridges/bridgesNames')
 
 const createInitialWindow = () => {
   const win = new BrowserWindow({
@@ -26,6 +27,28 @@ const createInitialWindow = () => {
     }
   )
 }
+
+ipcMain.handle(
+  selectImage,
+  async (ev) => {
+    const image = await dialog.showOpenDialog({
+      filters: [
+        {
+          extensions: [
+            'jpg',
+            'png',
+            'gif',
+            'jpeg',
+            'webp'
+          ],
+          name: 'Images'
+        }
+      ],
+      properties: ['openFile']
+    })
+    return image
+  }
+)
 
 app.on(
   'ready',

@@ -9,7 +9,7 @@ const bridgesNames = {
   createUnitsOfMeasureTypes: 'createUnitsOfMeasureTypes',
   createUnitsOfMeausure: 'createUnitsOfMeausure',
   createWeeklyMenu: 'createWeeklyMenu',
-
+  getBase64Image: 'getBase64Image',
   getDaysData: 'getDaysData',
   getFoodTypesData: 'getFoodTypesData',
   getFoodsData: 'getFoodsData',
@@ -21,8 +21,11 @@ const bridgesNames = {
   getUomData: 'getUomData',
   getWeeklyMenusData: 'getWeeklyMenusData',
 
+  selectImage: 'selectImage',
+
   updateUnitsOfMeasure: 'updateUnitsOfMeasure',
   updateUnitsOfMeasureTypes: 'updateUnitsOfMeasureTypes'
+
 }
 
 module.exports = bridgesNames

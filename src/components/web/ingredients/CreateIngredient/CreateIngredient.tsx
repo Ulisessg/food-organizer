@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable max-statements */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -14,6 +15,7 @@ import { type RootState } from 'redux/store'
 import { defaultSelectValue } from 'utils/constants'
 import dynamic from 'next/dynamic'
 import randomId from 'utils/randomId'
+import styled from 'styled-components'
 import useCreateIngredient from 'hooks/components/useCreateIngredient/useCreateIngredientWeb'
 import { useSelector } from 'react-redux'
 
@@ -42,7 +44,8 @@ const CreateIngredient: FC = () => {
     onBlur,
     onChange,
     createIngredient,
-    ingredientNameIsRepeated
+    ingredientNameIsRepeated, selectImage,
+    base64Image
   } = useCreateIngredient(
     detailsRef,
     formRef,
@@ -128,6 +131,20 @@ const CreateIngredient: FC = () => {
       </Select>
       }
       <Input
+        id="ingredient_img"
+        name="ingredient_img"
+        label="Selecciona una imagen"
+        acceptanceCriteria="Opcional"
+        onClick={selectImage}
+        value={inputsData.ingredient_image}
+        type="image"
+      />
+      <IngredientImage
+        src={base64Image}
+        imageLength={inputsData.ingredient_image.length}
+        alt=""
+      />
+      <Input
         id="ingredient_comment"
         inputMode="text"
         label="Comentario"
@@ -175,6 +192,16 @@ const CreateIngredient: FC = () => {
   </Details>
 </>
 }
+
+const IngredientImage = styled.img<{ imageLength: number }>`
+  width: 170px;
+  height: 150px;
+  margin-bottom: 16px;
+  display: ${({ imageLength }) => {
+    if (imageLength === 0) return 'none'
+    return 'initial'
+  }};
+`
 
 const CreateIngredientWrapper: FC = () => {
   const purchasePlacesLenght = useSelector((state: RootState) => state

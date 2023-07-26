@@ -37,12 +37,14 @@ import {
 import {
   type GetMenusIngredients
 } from 'controllers/sql/menus/getMenusIngredientsSql'
+import { type OpenDialogReturnValue } from 'electron'
 import { type units_of_measure } from '@prisma/client'
 import { type units_of_measure_types } from 'controllers/dbTablesTypes'
 
 // Electron bridges
 declare global {
   interface Window {
+    // Database
     getUomData: () => GetUnitsOfMeasureData
     getDaysData: () => GetDays
     getFoodTypesData: () => GetFoodTypes
@@ -74,5 +76,11 @@ declare global {
     (unitsOfMeasureTypes: units_of_measure_types) => units_of_measure_types
 
     updateUnitsOfMeasure: (unitsOfMeasure: units_of_measure) => units_of_measure
+
+    // Os
+    selectImage: () => Promise<OpenDialogReturnValue & {
+      base64Image: string
+    }>
+    getBase64Image: (filePath) => Promise<string>
   }
 }

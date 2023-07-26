@@ -46,10 +46,16 @@ const {
   createFoodtypeBridge
 } = require('./foods')
 
+const {
+  selectImageBridge,
+  getBase64Image
+} = require('./os')
+
 /**
  * Enable all electron bridges to handle database requests
  */
 const openBridges = () => {
+  // Database
   getUomDataBridge()
   getDaysDataBridge()
   getPurchasePlacesDataBridge()
@@ -74,6 +80,10 @@ const openBridges = () => {
 
   updateUnitsOfMeasureTypesBridge()
   updateUnitsOfMeasureBridge()
+
+  // Os
+  selectImageBridge()
+  getBase64Image()
 }
 
 module.exports = openBridges

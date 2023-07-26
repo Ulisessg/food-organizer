@@ -22,11 +22,14 @@ const PurchasePlaces: FC<PurchasePlacesProps> = ({ restartMultipleSelects }) => 
 
   useEffect(
     () => {
-      if (restartMultipleSelects) {
+      if (restartMultipleSelects && data.selects.length > 0) {
         resetMultipleSelect()
       }
     },
-    [restartMultipleSelects]
+    [
+      restartMultipleSelects,
+      data.selects.length
+    ]
   )
   return <>
     {data.selects.map(({ selectId, value }, index) => <Fragment key={selectId}>

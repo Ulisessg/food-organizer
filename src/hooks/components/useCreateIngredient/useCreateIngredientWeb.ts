@@ -2,7 +2,7 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
 import { type AppDispatch, type RootState } from 'redux/store'
-import { type MouseEvent, type RefObject, useContext } from 'react'
+import { type MouseEvent, type RefObject, useContext, useState } from 'react'
 import {
   createIngredientThunk,
   restartPostStatusThunk
@@ -22,6 +22,10 @@ const useCreateIngredient = (
   formElement: RefObject<HTMLFormElement>,
   selectUomElement: RefObject<HTMLSelectElement>
 ): UseCreateIngredientReturn => {
+  const [
+    base64Image,
+    setBase64Image
+  ] = useState<string>('')
   const multipleSelectsContext = useContext(MultipleSelectsContext)
   const ingredientsData = useSelector((state: RootState) => state.ingredients)
   const purchasePlaces = useSelector((state: RootState) => state.purchasePlaces.purchasePlaces)
@@ -30,9 +34,10 @@ const useCreateIngredient = (
     isRepeated: ingredientNameIsRepeated,
     searchIsRepeated: searchNameIsRepeated
   } = useValueIsRepeated()
-  const { inputsData, inputsErrors, onBlur, onChange, restartInputs } = useInputs(
+  const { inputsData, inputsErrors, onBlur, onChange, restartInputs, updateInput } = useInputs(
     {
       ingredient_comment: '',
+      ingredient_image: '',
       ingredient_name: '',
       ingredient_uom: defaultSelectValue
     },
@@ -72,7 +77,7 @@ const useCreateIngredient = (
     const postResult = await dispatch(createIngredientThunk(createIngredientsElectronCallback({
       ingredient: {
         comment: inputsData.ingredient_comment,
-        image: null,
+        image: inputsData.ingredient_image,
         name: inputsData.ingredient_name,
         uomId
       },
@@ -84,14 +89,30 @@ const useCreateIngredient = (
       return
     }
     // Reset inputs
-    multipleSelectsContext.resetMultipleSelect()
+    if (multipleSelectsContext.data.selects.length !== 0) {
+      multipleSelectsContext.resetMultipleSelect()
+    }
     restartInputs('all')
     formElement.current?.reset()
     detailsElement.current?.focus()
     void await dispatch(restartPostStatusThunk())
   }
+  const selectImage: UseCreateIngredientReturn['selectImage'] = async (ev) => {
+    ev.preventDefault()
+    const image = await window.selectImage()
+    if (!image.canceled) {
+      console.log(image)
+
+      updateInput(
+        'ingredient_image',
+        image.filePaths[0]
+      )
+      setBase64Image(image.base64Image)
+    }
+  }
 
   return {
+    base64Image,
     createIngredient,
     disableButton: !formIsValid(
       inputsData,
@@ -102,7 +123,8 @@ const useCreateIngredient = (
     inputsData,
     inputsErrors,
     onBlur,
-    onChange: handleOnChange
+    onChange: handleOnChange,
+    selectImage
   }
 }
 
@@ -111,15 +133,18 @@ interface UseCreateIngredientReturn {
   inputsErrors: Record<keyof InputsData, boolean>
   onBlur: ReturnType<typeof useInputs>['onBlur']
   onChange: ReturnType<typeof useInputs>['onChange']
+  selectImage: (ev: MouseEvent<HTMLInputElement>) => Promise<void>
   disableButton: boolean
   createIngredient: (ev: MouseEvent<HTMLButtonElement>) => Promise<void>
   ingredientNameIsRepeated: boolean
+  base64Image: string
 }
 
 interface InputsData {
   ingredient_comment: string
   ingredient_name: string
   ingredient_uom: string
+  ingredient_image: string
 }
 
 export default useCreateIngredient
