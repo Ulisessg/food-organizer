@@ -1,5 +1,6 @@
-import { type ComponentProps, type FC } from 'react'
+import { type ComponentProps, type FC, useContext } from 'react'
 import { Button } from 'd-system'
+import { MultipleSelectsContext } from 'context/MultipleSelectsContext'
 import styled from 'styled-components'
 
 export const Container = styled.div`
@@ -34,15 +35,19 @@ export const Container = styled.div`
   }
 `
 
-export const ButtonAddSelect: FC<ButtonAddSelectProps> = (props) => <ButtonAddSelectStyles
-    {...props}
-    colorMessage="info"
-    size="100%"
-    type="button"
-  />
-
+export const ButtonAddSelect: FC<ButtonAddSelectProps> = (props) => {
+  const { addSelect } = useContext(MultipleSelectsContext)
+  return <ButtonAddSelectStyles
+  {...props}
+  colorMessage="info"
+  size="100%"
+  type="button"
+  onClick={() => { addSelect() }}
+/>
+}
 const ButtonAddSelectStyles = styled(Button)`
-  margin-bottom: 30px;
+  margin-bottom: 32px;
+  margin-top: 16px;
   &:disabled {
     &:active {
       transform: none;

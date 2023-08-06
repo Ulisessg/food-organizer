@@ -12,10 +12,10 @@ import {
 } from 'context/MultipleSelectsContext'
 import RequestResultStyles from 'components/web/common/RequestResultStyles'
 import { type RootState } from 'redux/store'
+import SystemImage from 'components/web/common/SystemImage'
 import { defaultSelectValue } from 'utils/constants'
 import dynamic from 'next/dynamic'
 import randomId from 'utils/randomId'
-import styled from 'styled-components'
 import useCreateIngredient from 'hooks/components/useCreateIngredient/useCreateIngredientWeb'
 import { useSelector } from 'react-redux'
 
@@ -44,8 +44,7 @@ const CreateIngredient: FC = () => {
     onBlur,
     onChange,
     createIngredient,
-    ingredientNameIsRepeated, selectImage,
-    base64Image
+    ingredientNameIsRepeated, selectImage
   } = useCreateIngredient(
     detailsRef,
     formRef,
@@ -136,12 +135,11 @@ const CreateIngredient: FC = () => {
         label="Selecciona una imagen"
         acceptanceCriteria="Opcional"
         onClick={selectImage}
-        value={inputsData.ingredient_image}
         type="image"
       />
-      <IngredientImage
-        src={base64Image}
-        imageLength={inputsData.ingredient_image.length}
+      <SystemImage
+        fileName={inputsData.ingredient_image}
+        imageIsInTemporal
         alt=""
       />
       <Input
@@ -192,16 +190,6 @@ const CreateIngredient: FC = () => {
   </Details>
 </>
 }
-
-const IngredientImage = styled.img<{ imageLength: number }>`
-  width: 170px;
-  height: 150px;
-  margin-bottom: 16px;
-  display: ${({ imageLength }) => {
-    if (imageLength === 0) return 'none'
-    return 'initial'
-  }};
-`
 
 const CreateIngredientWrapper: FC = () => {
   const purchasePlacesLenght = useSelector((state: RootState) => state

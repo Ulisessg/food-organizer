@@ -78,9 +78,14 @@ declare global {
     updateUnitsOfMeasure: (unitsOfMeasure: units_of_measure) => units_of_measure
 
     // Os
-    selectImage: () => Promise<OpenDialogReturnValue & {
-      base64Image: string
-    }>
-    getBase64Image: (filePath) => Promise<string>
+    selectImage: () => Promise<SelectImageResult>
+    getBase64Image: (fileName: string, imageIsTemporal: boolean) => Promise<string>
   }
+}
+interface SelectImageResult {
+  canceled: boolean
+  fileName: string
+}
+interface SelectImageResultMainProcess extends OpenDialogReturnValue {
+  fileName: string
 }

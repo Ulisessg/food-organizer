@@ -1,38 +1,47 @@
+/* eslint-disable lines-around-comment */
+// @ts-check
+const { copyFile } = require('fs')
 const { contextBridge, ipcRenderer } = require('electron')
 const { selectImage } = require('../bridgesNames')
-const fs = require('fs')
+const { join } = require('path')
 
 const selectImageBridge = () => {
   // eslint-disable-next-line padded-blocks
+  /**
+   * @returns {Promise<import('../../../../global').SelectImageResult>}
+   */
   const openDialogToSelectImage = async () => {
-
     /**
-     * @type {Awaited<ReturnType<import('electron').Dialog['showOpenDialog']>>}
+     * @type {import('../../../../global').SelectImageResultMainProcess}
      */
     const image = await ipcRenderer.invoke(selectImage)
-    if (!image.canceled) {
-      const imageBase64 = await new Promise((resolve, reject) => {
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
-        fs.readFile(
+    const tempFolder = await ipcRenderer.invoke(
+      'imagesPath',
+      'temp'
+    )
+    console.log(tempFolder)
+    console.log(image)
+    await new Promise((resolve, reject) => {
+      try {
+        copyFile(
           image.filePaths[0],
-          {
-            encoding: 'base64'
-          },
-          (err, img) => {
+          join(
+            tempFolder,
+            image.fileName
+          ),
+          (err) => {
             if (err) reject(err)
-            resolve(img)
+            resolve('')
           }
         )
-      })
-      return {
-        ...image,
-        base64Image: `data:image/jpeg;base64,${imageBase64}`
+      } catch (error) {
+        console.log(error)
+        reject(error)
       }
-    }
-
+    })
     return {
-      ...image,
-      base64Image: ''
+      canceled: image.canceled,
+      fileName: image.fileName
     }
   }
   contextBridge.exposeInMainWorld(

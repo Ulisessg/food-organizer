@@ -6,6 +6,7 @@ export type GetIngredients = Array<{
   image?: string
   comment?: string
   uom_name: string
+  uom_id: number
   ingr_purchase_places: TIngr_purchase_places
 }>
 

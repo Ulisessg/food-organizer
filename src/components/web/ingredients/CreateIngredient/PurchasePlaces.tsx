@@ -42,7 +42,7 @@ const PurchasePlaces: FC<PurchasePlacesProps> = ({ restartMultipleSelects }) => 
     <ButtonAddSelect
       disabled={disableButton}
       text="Añadir lugar de compra"
-      onClick={addSelect}
+      onClick={ () => { addSelect() }}
     />
   </>
 }

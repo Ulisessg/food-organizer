@@ -1,44 +1,53 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
+import { useRef, useState } from 'react'
 import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
-import { useState } from 'react'
 
-const initialSelectId = randomId()
 const useMultipleSelectsContext = (
   idPrefix?: string,
 
   /** Required to correct function of 'disableButton' value */
   optionsLenght?: number
 ): UseMultipleSelectsReturn => {
+  const initialValues = useRef<Map<string, string>>(new Map<string, string>())
+
   const [
     data,
     setData
   ] = useState<SelectsState>({
-    selects: [
-      {
-        prevValue: defaultSelectValue,
-        selectId: initialSelectId,
-        value: defaultSelectValue
-      }
-    ],
+    selects: [],
 
     valuesUsed: []
   })
 
-  const addSelect = (): void => {
+  const addSelect = (initialValue?: string): void => {
     const newId = randomId(idPrefix)
-    setData((prev) => ({
-      ...prev,
-      selects: [
-        ...prev.selects,
-        {
-          prevValue: defaultSelectValue,
-          selectId: newId,
-          value: defaultSelectValue
-        }
-      ]
-    }))
+    let value = defaultSelectValue
+    setData((prev) => {
+      const valuesUsed = [...prev.valuesUsed]
+      if (typeof initialValue === 'string') {
+        valuesUsed.push(initialValue)
+        value = initialValue
+      }
+      initialValues.current.set(
+        newId,
+        value
+      )
+
+      return ({
+        ...prev,
+        selects: [
+          ...prev.selects,
+          {
+            prevValue: defaultSelectValue,
+            selectId: newId,
+            value
+          }
+        ],
+        valuesUsed
+      })
+    })
   }
 
   const deleteSelect: UseMultipleSelectsReturn['deleteSelect'] =
@@ -90,6 +99,7 @@ const useMultipleSelectsContext = (
     data,
     deleteSelect,
     disableButton: data.selects.length === optionsLenght,
+    initialValues: initialValues.current,
     onChange,
     resetMultipleSelect
   }
@@ -108,9 +118,10 @@ export interface SelectsState {
 
 export interface UseMultipleSelectsReturn {
   onChange: (newValue: string, selectIndex: number) => void
-  addSelect: () => void
+  addSelect: (value?: string) => void
   deleteSelect: (selectId: string, selectValue: string, selectIndex: number) => void
   data: SelectsState
   resetMultipleSelect: () => void
   disableButton: boolean
+  initialValues: Map<string, string>
 }

@@ -4,6 +4,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { type FC } from 'react'
 import { Table, Th } from 'd-system'
+import { ModalUpdateDataContextProvider } from 'context/ModalUpdateDataContext'
+import ModalUpdateIngredients from '../UpdateIngredients'
 import Rows from './Rows'
 import TableContainer from 'components/web/common/TableContainer'
 
@@ -20,7 +22,10 @@ const DisplayIngredients: FC = () => <TableContainer>
       </tr>
     </thead>
     <tbody>
+    <ModalUpdateDataContextProvider>
+      <ModalUpdateIngredients />
       <Rows />
+    </ModalUpdateDataContextProvider>
     </tbody>
   </Table>
 </TableContainer>

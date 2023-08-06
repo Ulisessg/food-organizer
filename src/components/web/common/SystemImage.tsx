@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useState
 } from 'react'
+import styled from 'styled-components'
 
 const SystemImage: FC<SystemImageProps> = (props) => {
   const [
@@ -15,19 +16,40 @@ const SystemImage: FC<SystemImageProps> = (props) => {
   useEffect(
     () => {
       const setImage = async (): Promise<void> => {
-        const image = await window.getBase64Image(props.filepath)
+        const image = await window.getBase64Image(
+          props.fileName,
+          props.imageIsInTemporal
+        )
         setBase64Image(image)
       }
       void setImage()
     },
-    [props.filepath]
+    [
+      props.fileName,
+      props.imageIsInTemporal
+    ]
   )
-  return <img {...props} alt={props.alt} src={base64Image} />
+  return <SystemImageStyles
+    {...props as any}
+    alt={props.alt}
+    src={base64Image}
+    imageLength={base64Image.length} />
 }
+
+const SystemImageStyles = styled.img<{ imageLength: number }>`
+  object-fit: contain;
+  width: 120px;
+  height: 120px;
+  display: ${({ imageLength }) => {
+    if (imageLength === 0) return 'none'
+    return 'initial'
+  }};
+`
 
 export default SystemImage
 
 interface SystemImageProps extends
   Omit<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, 'src'> {
-  filepath: string
+  fileName: string
+  imageIsInTemporal: boolean
 }

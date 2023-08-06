@@ -16,6 +16,7 @@ const initialState: UseMultipleSelectsReturn = {
     //
   },
   disableButton: true,
+  initialValues: new Map(),
   onChange: () => {
     //
   },

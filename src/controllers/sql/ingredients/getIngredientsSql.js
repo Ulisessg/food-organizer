@@ -7,6 +7,7 @@ ingredients.id AS ingredient_id,
 ingredients.name AS ingredient_name,
 ingredients.image,
 ingredients.comment,
+units_of_measure.id AS uom_id,
 units_of_measure.name AS uom_name,
 (SELECT
   json_group_array(JSON_OBJECT(

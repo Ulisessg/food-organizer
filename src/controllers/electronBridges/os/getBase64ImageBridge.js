@@ -1,17 +1,39 @@
-const { contextBridge } = require('electron')
+/* eslint-disable max-statements */
+const { contextBridge, ipcRenderer } = require('electron')
 const fs = require('fs')
 const { getBase64Image } = require('../bridgesNames')
+const { join } = require('path')
 
 const getBase64ImageBridge = () => {
-  const getImage = async (filePath) => {
-    if (typeof filePath !== 'string' || filePath.length === 0) {
+  const getImage = async (fileName, imageIsInTemporal) => {
+    if (typeof fileName !== 'string' || fileName.length === 0) {
       return ''
+    }
+    let imagePath = ''
+    if (imageIsInTemporal) {
+      const temPath = await ipcRenderer.invoke(
+        'imagesPath',
+        'temp'
+      )
+      imagePath = join(
+        temPath,
+        fileName
+      )
+    } else {
+      const picturesPath = await ipcRenderer.invoke(
+        'imagesPath',
+        'pictures'
+      )
+      imagePath = join(
+        picturesPath,
+        fileName
+      )
     }
     try {
       const base64Image = await new Promise((resolve, reject) => {
         // eslint-disable-next-line security/detect-non-literal-fs-filename
         fs.readFile(
-          filePath,
+          imagePath,
           {
             encoding: 'base64'
           },
@@ -21,7 +43,7 @@ const getBase64ImageBridge = () => {
           }
         )
       })
-      return `data:image/jpeg;base64,${base64Image}`
+      return `data:image;base64,${base64Image}`
     } catch (error) {
       return ''
     }

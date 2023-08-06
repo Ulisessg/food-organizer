@@ -19,7 +19,7 @@ const Rows: FC = () => {
         <TrStyles className="table-content">
             <Td>{ingredient_name}</Td>
             <Td>
-              <SystemImageStyles filepath={image as string} />
+              <SystemImage fileName={image as string} imageIsInTemporal={false} />
             </Td>
             <Td>{comment ?? ''}</Td>
             <Td>{uom_name}</Td>
@@ -63,12 +63,6 @@ const TrStyles = styled.tr`
     & button {margin-top: 10px}
   }
 }
-`
-
-const SystemImageStyles = styled(SystemImage)`
-  object-fit: contain;
-  width: 120px;
-  height: 120px;
 `
 
 export default Rows
