@@ -9,8 +9,7 @@ const electronOpenDb = require('./src/controllers/db/electronOpenDb')
 const { selectImage } = require('./src/controllers/electronBridges/bridgesNames')
 const { rmSync } = require('fs')
 const checkImagesStorage = require('./src/utils/electronCheckImagesStorage')
-console.log(app.getPath('userData'))
-console.log(app.getPath('exe'))
+
 const createInitialWindow = () => {
   const win = new BrowserWindow({
     webPreferences: {
