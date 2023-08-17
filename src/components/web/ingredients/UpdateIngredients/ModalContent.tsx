@@ -50,7 +50,11 @@ const ModalUpdateIngredientsContent: FC<ModalUpdateIngredientsContentProps> =
     type="file"
     onClick={onClickSelectImage}
   />
-  <SystemImage fileName={ingredient.image as string} alt="Sin imagen" />
+  <SystemImage
+    table="ingredients"
+    imageIsInTemporal={false}
+    fileName={ingredient.image as string}
+    alt="Sin imagen" />
   <Input
     id="update_ingredient_comment"
     name="update_ingredient_comment"

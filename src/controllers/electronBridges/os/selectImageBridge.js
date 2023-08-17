@@ -10,17 +10,16 @@ const selectImageBridge = () => {
   /**
    * @returns {Promise<import('../../../../global').SelectImageResult>}
    */
-  const openDialogToSelectImage = async () => {
+  const openDialogToSelectImage = async (table) => {
     /**
      * @type {import('../../../../global').SelectImageResultMainProcess}
      */
     const image = await ipcRenderer.invoke(selectImage)
     const tempFolder = await ipcRenderer.invoke(
       'imagesPath',
-      'temp'
+      'temp',
+      table
     )
-    console.log(tempFolder)
-    console.log(image)
     await new Promise((resolve, reject) => {
       try {
         copyFile(

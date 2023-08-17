@@ -5,7 +5,7 @@ const { getBase64Image } = require('../bridgesNames')
 const { join } = require('path')
 
 const getBase64ImageBridge = () => {
-  const getImage = async (fileName, imageIsInTemporal) => {
+  const getImage = async (fileName, imageIsInTemporal, table) => {
     if (typeof fileName !== 'string' || fileName.length === 0) {
       return ''
     }
@@ -13,7 +13,8 @@ const getBase64ImageBridge = () => {
     if (imageIsInTemporal) {
       const temPath = await ipcRenderer.invoke(
         'imagesPath',
-        'temp'
+        'temp',
+        table
       )
       imagePath = join(
         temPath,
@@ -22,7 +23,8 @@ const getBase64ImageBridge = () => {
     } else {
       const picturesPath = await ipcRenderer.invoke(
         'imagesPath',
-        'pictures'
+        'pictures',
+        table
       )
       imagePath = join(
         picturesPath,

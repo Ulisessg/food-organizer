@@ -140,6 +140,7 @@ const CreateIngredient: FC = () => {
       <SystemImage
         fileName={inputsData.ingredient_image}
         imageIsInTemporal
+        table="ingredients"
         alt=""
       />
       <Input

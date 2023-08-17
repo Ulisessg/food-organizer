@@ -95,7 +95,7 @@ const useCreateIngredient = (
   }
   const selectImage: UseCreateIngredientReturn['selectImage'] = async (ev) => {
     ev.preventDefault()
-    const image = await window.selectImage()
+    const image = await window.selectImage('ingredients')
     if (!image.canceled) {
       updateInput(
         'ingredient_image',

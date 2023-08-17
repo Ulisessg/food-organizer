@@ -78,8 +78,8 @@ declare global {
     updateUnitsOfMeasure: (unitsOfMeasure: units_of_measure) => units_of_measure
 
     // Os
-    selectImage: () => Promise<SelectImageResult>
-    getBase64Image: (fileName: string, imageIsTemporal: boolean) => Promise<string>
+    selectImage: (table: string) => Promise<SelectImageResult>
+    getBase64Image: (fileName: string, imageIsTemporal: boolean, table: string) => Promise<string>
   }
 }
 interface SelectImageResult {

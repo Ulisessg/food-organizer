@@ -19,7 +19,10 @@ const Rows: FC = () => {
         <TrStyles className="table-content">
             <Td>{ingredient_name}</Td>
             <Td>
-              <SystemImage fileName={image as string} imageIsInTemporal={false} />
+              <SystemImage
+                fileName={image as string}
+                table="ingredients"
+                imageIsInTemporal={false} />
             </Td>
             <Td>{comment ?? ''}</Td>
             <Td>{uom_name}</Td>

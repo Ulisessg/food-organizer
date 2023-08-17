@@ -4,6 +4,7 @@ const electronOpenDb = require('../../db/electronOpenDb')
 const createIngredientsSql = require('../../sql/ingredients/createIngredientsSql')
 const getIngredientsSql = require('../../sql/ingredients/getIngredientsSql')
 const capitalize = require('../../../utils/capitalize')
+const electronCopyImageFromTemp = require('../../../utils/electronCopyImageFromTemp')
 
 const createIngredientsBridge = () => {
   const db = electronOpenDb()
@@ -12,7 +13,7 @@ const createIngredientsBridge = () => {
    * @returns {import('../../sql/ingredients/types').GetIngredients[0]}
    * @param {import('../../sql/ingredients/types').CreateIngredient} ingredient
    */
-  const create = (ingredient) => {
+  const create = async (ingredient) => {
     const ingredientCreatedId = db.prepare(createIngredientsSql(1)).run([
       null,
       capitalize(ingredient.name),
@@ -22,6 +23,11 @@ const createIngredientsBridge = () => {
     ]).lastInsertRowid
     const ingredientCreated = db.prepare(getIngredientsSql('WHERE ingredients.id = ?'))
       .get([ingredientCreatedId])
+
+    await electronCopyImageFromTemp(
+      'ingredients',
+      ingredient.image
+    )
     return ingredientCreated
   }
   contextBridge.exposeInMainWorld(

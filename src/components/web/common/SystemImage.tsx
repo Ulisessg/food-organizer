@@ -18,7 +18,8 @@ const SystemImage: FC<SystemImageProps> = (props) => {
       const setImage = async (): Promise<void> => {
         const image = await window.getBase64Image(
           props.fileName,
-          props.imageIsInTemporal
+          props.imageIsInTemporal,
+          props.table
         )
         setBase64Image(image)
       }
@@ -26,7 +27,8 @@ const SystemImage: FC<SystemImageProps> = (props) => {
     },
     [
       props.fileName,
-      props.imageIsInTemporal
+      props.imageIsInTemporal,
+      props.table
     ]
   )
   return <SystemImageStyles
@@ -52,4 +54,5 @@ interface SystemImageProps extends
   Omit<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, 'src'> {
   fileName: string
   imageIsInTemporal: boolean
+  table: string
 }
