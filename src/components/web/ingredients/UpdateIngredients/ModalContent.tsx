@@ -1,22 +1,40 @@
-import { Form, Input, Select } from 'd-system'
+import { Button, Form, Input, Select } from 'd-system'
 import React, { type FC, Fragment, useContext } from 'react'
 import { ModalUpdateDataContext } from 'context/ModalUpdateDataContext'
 import {
   MultipleSelectsContextProvider
 } from 'context/MultipleSelectsContext'
+import RequestResultStyles from 'components/web/common/RequestResultStyles'
 import { type RootState } from 'redux/store'
 import SystemImage from 'components/web/common/SystemImage'
 import UpdateIngredientPurchasePlaces from './UpdateIngredientPurchasePlaces'
+import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 import useUpdateIngredient from 'hooks/components/ingredients/useUpdateIngredient'
 
 const ModalUpdateIngredientsContent: FC<ModalUpdateIngredientsContentProps> =
  ({ ingredient }) => {
-   const { inputsData, onChange, formHasChanged, onClickSelectImage } = useUpdateIngredient({
+   const { elementIndex: ingredientIndex } = useContext(ModalUpdateDataContext)
+   const {
+     inputsData,
+     onChange,
+     formHasChanged,
+     onClickSelectImage,
+     formIsValid,
+     inputsInitialValues,
+     restartForm,
+     checkFormValidity,
+     updateIngredient
+   } = useUpdateIngredient({
      ingredient,
+     ingredientIndex,
      purchasePlacesInIngredient: ingredient.ingr_purchase_places
    })
-   console.log(formHasChanged)
+   const {
+     updateIngredientIsLoading,
+     updateIngredientSuccess,
+     updateIngredientError
+   } = useSelector((state: RootState) => state.ingredients)
 
    const unitsOfMeasure = useSelector((state: RootState) => state.unitsOfMeasure.uom)
    return <Form formTitle="Actualizar ingrediente">
@@ -25,11 +43,13 @@ const ModalUpdateIngredientsContent: FC<ModalUpdateIngredientsContentProps> =
     name="update_ingredient_name"
     label="Nombre"
     value={inputsData.update_ingredient_name}
+    pattern="^[\p{L}\s]+$"
     onChange={onChange}
   />
 
   <UpdateIngredientPurchasePlaces
     purchasePlacesInIngredient={ingredient.ingr_purchase_places}
+    checkFormValidity={checkFormValidity}
   />
 
   <Select
@@ -47,13 +67,14 @@ const ModalUpdateIngredientsContent: FC<ModalUpdateIngredientsContentProps> =
     id="update_ingredient_image"
     name="update_ingredient_image"
     label="Imagen"
-    type="file"
+    type="image"
     onClick={onClickSelectImage}
   />
   <SystemImage
     table="ingredients"
-    imageIsInTemporal={false}
-    fileName={ingredient.image as string}
+    imageIsInTemporal={inputsData.update_ingredient_image !==
+      inputsInitialValues.get('update_ingredient_image') as string}
+    fileName={inputsData.update_ingredient_image}
     alt="Sin imagen" />
   <Input
     id="update_ingredient_comment"
@@ -62,6 +83,38 @@ const ModalUpdateIngredientsContent: FC<ModalUpdateIngredientsContentProps> =
     value={inputsData.update_ingredient_comment}
     onChange={onChange}
   />
+  <FormButtonsContainer>
+    <Button
+      colorMessage="cancel"
+      size="small"
+      text="Deshacer cambios"
+      type="button"
+      disabled={!formHasChanged ||
+        updateIngredientSuccess ||
+        updateIngredientIsLoading}
+      onClick={restartForm}
+    />
+    <Button
+      colorMessage="continue"
+      size="small"
+      text={'Actualizar'}
+      type="button"
+      disabled={
+        !formHasChanged ||
+        !formIsValid ||
+        updateIngredientSuccess ||
+        updateIngredientIsLoading}
+      onClick={updateIngredient}
+    />
+  </FormButtonsContainer>
+  <RequestResultStyles
+    hidden={!updateIngredientError}
+    isError={true}
+  >Ocurrio un error actualizando el ingrediente</RequestResultStyles>
+  <RequestResultStyles
+    hidden={!updateIngredientSuccess}
+    isError={false}
+  >Ingrediente actualizado</RequestResultStyles>
 </Form>
  }
 
@@ -77,6 +130,12 @@ const ContentWrapper: FC = () => {
     <ModalUpdateIngredientsContent ingredient={ingredient} />
   </MultipleSelectsContextProvider>
 }
+
+const FormButtonsContainer = styled.div`
+margin-top: 24px;
+  display: flex;
+  justify-content: space-around;
+`
 
 interface ModalUpdateIngredientsContentProps {
   ingredient: RootState['ingredients']['ingredients'][0]

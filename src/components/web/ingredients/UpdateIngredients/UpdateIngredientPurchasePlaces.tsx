@@ -12,10 +12,14 @@ import { defaultSelectValue } from 'utils/constants'
 import randomId from 'utils/randomId'
 import { useSelector } from 'react-redux'
 
-const UpdatePurchasePlaces: FC<UpdatePurchasePlacesProps> = ({ purchasePlacesInIngredient }) => {
+const UpdatePurchasePlaces: FC<UpdatePurchasePlacesProps> = ({
+  purchasePlacesInIngredient,
+  checkFormValidity
+}) => {
   const isFirstRender = useRef(true)
   const {
     addSelect,
+    addInitialValueUsed,
     data,
     deleteSelect,
     disableButton,
@@ -29,9 +33,8 @@ const UpdatePurchasePlaces: FC<UpdatePurchasePlacesProps> = ({ purchasePlacesInI
       if (isFirstRender.current) {
         isFirstRender.current = false
         purchasePlacesInIngredient.forEach((pp) => {
-          console.log(pp.purchase_place_id)
-
           addSelect(`${pp.purchase_place_id}`)
+          addInitialValueUsed(`${pp.purchase_place_id}`)
         })
       }
     },
@@ -45,12 +48,15 @@ const UpdatePurchasePlaces: FC<UpdatePurchasePlacesProps> = ({ purchasePlacesInI
         id={select.selectId}
         name={select.selectId}
         label="Selecciona un lugar de compra"
+        allowDefaultValue={false}
+        defValue={defaultSelectValue}
         value={select.value}
         onChange={(ev) => {
           onChange(
             ev.currentTarget.value,
             selectIndex
           )
+          checkFormValidity()
         }}
       >
         <option value={defaultSelectValue} disabled>{defaultSelectValue}</option>
@@ -68,6 +74,7 @@ const UpdatePurchasePlaces: FC<UpdatePurchasePlacesProps> = ({ purchasePlacesInI
             select.value,
             selectIndex
           )
+          checkFormValidity()
         }}
       />
     </Container>
@@ -81,6 +88,7 @@ const UpdatePurchasePlaces: FC<UpdatePurchasePlacesProps> = ({ purchasePlacesInI
 
 interface UpdatePurchasePlacesProps {
   purchasePlacesInIngredient: TIngr_purchase_places
+  checkFormValidity: () => void
 }
 
 export default UpdatePurchasePlaces

@@ -49,6 +49,12 @@ interface TIngredientsState {
 
   /** Ingredient purchase places creation ends successfull */
   postIngredientPurchaseSuccess: boolean
+
+  // Update Ingredient. Includes ingredient-purchase places
+  updateIngredientIsLoading: boolean
+  updateIngredientEnd: boolean
+  updateIngredientSuccess: boolean
+  updateIngredientError: boolean
 }
 
 export type TGetIngredientsDataCallback = () => Promise<GetIngredients>
@@ -59,3 +65,15 @@ export type CreateIngredientCallback =
     (ingredient_id: number, purchasePlacesIds: number[]) => Promise<TIngr_purchase_places>
     callbackData: CreateIngredientThunkParam
   }
+
+export type UpdateIngredientCallback =
+(ingredient: UpdateIngredientParams, elementIndex: number) =>
+() => Promise<UpdateIngredientCallbackResult>
+
+export type UpdateIngredientCallbackResult = GetIngredients[0] & {
+  elementIndex: number
+}
+export type UpdateIngredientParams = Omit<
+GetIngredients[0], 'ingr_purchase_places' | 'uom_name'> & {
+  ingr_purchase_places: string[]
+}

@@ -20,8 +20,8 @@ const selectImageBridge = () => {
       'temp',
       table
     )
-    await new Promise((resolve, reject) => {
-      try {
+    if (!image.canceled) {
+      await new Promise((resolve, reject) => {
         copyFile(
           image.filePaths[0],
           join(
@@ -33,11 +33,9 @@ const selectImageBridge = () => {
             resolve('')
           }
         )
-      } catch (error) {
-        console.log(error)
-        reject(error)
-      }
-    })
+      })
+    }
+
     return {
       canceled: image.canceled,
       fileName: image.fileName

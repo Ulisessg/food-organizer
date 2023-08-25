@@ -38,6 +38,7 @@ import {
   type GetMenusIngredients
 } from 'controllers/sql/menus/getMenusIngredientsSql'
 import { type OpenDialogReturnValue } from 'electron'
+import { type UpdateIngredientParams } from 'redux/slices/ingredientsSlice/types'
 import { type units_of_measure } from '@prisma/client'
 import { type units_of_measure_types } from 'controllers/dbTablesTypes'
 
@@ -45,6 +46,8 @@ import { type units_of_measure_types } from 'controllers/dbTablesTypes'
 declare global {
   interface Window {
     // Database
+
+    // Get
     getUomData: () => GetUnitsOfMeasureData
     getDaysData: () => GetDays
     getFoodTypesData: () => GetFoodTypes
@@ -56,6 +59,7 @@ declare global {
     getMenusIngredients: () => GetMenusIngredients
     getPurchasePlacesData: () => GetPurchasePlaces
 
+    // Create
     createMenus: (menu: CreateMenu) => GetMenus[0]
 
     createFoods: (food: CreateFood) => GetFoods[0]
@@ -72,10 +76,13 @@ declare global {
 
     createPurchasePlaces: (purchasePlace: CreatePurchasePlace) => GetPurchasePlaces[0]
 
+    // Update
+
     updateUnitsOfMeasureTypes:
     (unitsOfMeasureTypes: units_of_measure_types) => units_of_measure_types
-
     updateUnitsOfMeasure: (unitsOfMeasure: units_of_measure) => units_of_measure
+
+    updateIngredient: (ingredient: UpdateIngredientParams) => GetIngredients[0]
 
     // Os
     selectImage: (table: string) => Promise<SelectImageResult>

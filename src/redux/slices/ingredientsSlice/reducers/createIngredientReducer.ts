@@ -54,6 +54,7 @@ const createIngredientReducer: TReducerWBuilder<TIngredientsState> = (builder) =
           ingr_purchase_places: payload.ingr_purchase_places,
           ingredient_id: payload.ingredient_id,
           ingredient_name: payload.ingredient_name,
+          uom_id: payload.uom_id,
           uom_name: payload.uom_name
         }
       ]

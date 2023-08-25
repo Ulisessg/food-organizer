@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import getIngredientsDataReducer from './reducers/getIngredientsDataReducer'
 import initialState from './initialState'
 import restartPostStatusReducer from './reducers/restartPostStatusReducer'
+import restartUpdateIngredientStatusReducer from './reducers/restartUpdateStatusReducer'
+import updateIngredientReducer from './reducers/updateIngredientReducer'
 
 const ingredientsSlice = createSlice({
   initialState,
@@ -14,6 +16,8 @@ const ingredientsSlice = createSlice({
     getIngredientsDataReducer(builder)
     createIngredientReducer(builder)
     restartPostStatusReducer(builder)
+    updateIngredientReducer(builder)
+    restartUpdateIngredientStatusReducer(builder)
   }
 })
 

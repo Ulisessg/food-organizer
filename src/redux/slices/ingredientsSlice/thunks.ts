@@ -3,7 +3,9 @@
 // eslint-disable-next-line sort-imports
 import {
   type CreateIngredientCallback,
-  type TGetIngredientsDataCallback
+  type TGetIngredientsDataCallback,
+  type UpdateIngredientCallback,
+  type UpdateIngredientCallbackResult
 } from './types'
 import {
   type GetIngredients,
@@ -73,15 +75,19 @@ ReturnType<CreateIngredientCallback>,
         ingr_purchase_places: purchasePlaces,
         ingredient_id: ingredientCreated.ingredient_id,
         ingredient_name: ingredientCreated.ingredient_name,
+        uom_id: ingredientCreated.uom_id,
         uom_name: ingredientCreated.uom_name
       }
     }
+
+    // If no ingredient purchase places, just return ingredient created
     return {
       comment: ingredientCreated.comment,
       image: ingredientCreated.image,
       ingr_purchase_places: [],
       ingredient_id: ingredientCreated.ingredient_id,
       ingredient_name: ingredientCreated.ingredient_name,
+      uom_id: ingredientCreated.uom_id,
       uom_name: ingredientCreated.uom_name
     }
   }
@@ -98,6 +104,33 @@ export const restartPostStatusThunk = createAsyncThunk(
         () => {
           resolve('')
         },
+        3000
+      )
+    })
+  }
+)
+
+// Update Ingredient
+export const updateIngredientThunk =
+ createAsyncThunk<UpdateIngredientCallbackResult, ReturnType<UpdateIngredientCallback>>(
+   'update_ingredient',
+   async (createIngredientCb, thunkApi) => {
+     try {
+       const updateIngredientResult = await createIngredientCb()
+       return updateIngredientResult
+     } catch (error) {
+       return thunkApi.rejectWithValue('')
+     }
+   }
+ )
+
+// Restart update ingredient update status
+export const restartUpdateIngredientStatus = createAsyncThunk(
+  'restart/update-ingredient',
+  async () => {
+    await new Promise((resolve) => {
+      setTimeout(
+        resolve,
         3000
       )
     })

@@ -21,6 +21,18 @@ const useMultipleSelectsContext = (
     valuesUsed: []
   })
 
+  const [
+    initialValuesUsed,
+    setInitialValuesUsed
+  ] = useState<string[]>([])
+
+  const addInitialValueUsed = (valueUsed: string): void => {
+    setInitialValuesUsed((prev) => ([
+      ...prev,
+      valueUsed
+    ]))
+  }
+
   const addSelect = (initialValue?: string): void => {
     const newId = randomId(idPrefix)
     let value = defaultSelectValue
@@ -60,18 +72,27 @@ const useMultipleSelectsContext = (
   }
 
   const resetMultipleSelect = (): void => {
-    const resetSelectsData: SelectsState['selects'] = [
-      {
-        prevValue: defaultSelectValue,
-        selectId: data.selects[0].selectId,
-        value: defaultSelectValue
-      }
-    ]
-    setData((prev) => ({
-      ...prev,
-      selects: resetSelectsData,
+    // Clear initialValues to set new "selectId" key
+    initialValues.current.clear()
+    const initialDataRestored: typeof data = {
+      selects: [],
       valuesUsed: []
-    }))
+    }
+
+    initialValuesUsed.forEach((valueUsed) => {
+      const newId = randomId(idPrefix)
+      initialValues.current.set(
+        newId,
+        valueUsed
+      )
+      initialDataRestored.selects.push({
+        prevValue: defaultSelectValue,
+        selectId: newId,
+        value: valueUsed
+      })
+    })
+
+    setData(initialDataRestored)
   }
 
   const onChange: UseMultipleSelectsReturn['onChange'] =
@@ -94,14 +115,31 @@ const useMultipleSelectsContext = (
      }))
    }
 
+  const setCurrentValuesAsInitialValues = (): void => {
+    initialValues.current.clear()
+    if (data.selects.length === 0) {
+      setInitialValuesUsed([])
+      return
+    }
+    data.selects.forEach(({ selectId, value }) => {
+      initialValues.current.set(
+        selectId,
+        value
+      )
+    })
+  }
+
   return {
+    addInitialValueUsed,
     addSelect,
     data,
     deleteSelect,
     disableButton: data.selects.length === optionsLenght,
     initialValues: initialValues.current,
+    initialValuesUsed,
     onChange,
-    resetMultipleSelect
+    resetMultipleSelect,
+    setCurrentValuesAsInitialValues
   }
 }
 
@@ -124,4 +162,7 @@ export interface UseMultipleSelectsReturn {
   resetMultipleSelect: () => void
   disableButton: boolean
   initialValues: Map<string, string>
+  initialValuesUsed: string[]
+  addInitialValueUsed: (value: string) => void
+  setCurrentValuesAsInitialValues: () => void
 }

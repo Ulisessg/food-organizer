@@ -65,7 +65,8 @@
     "**/*.tsx",
     "build/types/**/*.ts",
     "global.d.ts",
-    "src/controllers/sql/ingredientStock/createIngredientStockSql.js"
+    "src/controllers/sql/ingredientStock/createIngredientStockSql.js",
+    "src/utils/copyImageFromTempToPictures.js"
   ],
   "exclude": [
     "node_modules"

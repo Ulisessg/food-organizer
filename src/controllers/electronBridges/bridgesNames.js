@@ -23,6 +23,7 @@ const bridgesNames = {
 
   selectImage: 'selectImage',
 
+  updateIngredient: 'updateIngredient',
   updateUnitsOfMeasure: 'updateUnitsOfMeasure',
   updateUnitsOfMeasureTypes: 'updateUnitsOfMeasureTypes'
 

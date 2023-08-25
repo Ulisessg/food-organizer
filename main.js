@@ -24,20 +24,24 @@ const createInitialWindow = () => {
   win.loadURL('http://localhost:3000')
 
   win.on(
-    'close',
+    'closed',
     () => {
       const db = electronOpenDb()
       db.close()
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
-      rmSync(
-        join(
-          app.getPath('temp'),
-          'Food Organizer'
-        ),
-        {
-          recursive: true
-        }
-      )
+      try {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
+        rmSync(
+          join(
+            app.getPath('temp'),
+            'Food Organizer'
+          ),
+          {
+            recursive: true
+          }
+        )
+      } catch {
+        //
+      }
     }
   )
 }
@@ -78,7 +82,15 @@ ipcMain.handle(
       ],
       properties: ['openFile']
     })
-    const fileName = basename(image.filePaths[0])
+
+    /**
+     * If cancelled use an empty string to avoid error
+     *
+     * If your function sets new image directly from 'fileName' property
+     * and "select image" is cancelled, the original image will disappear
+     */
+
+    const fileName = basename(image.filePaths[0] ?? '')
     return {
       ...image,
       fileName

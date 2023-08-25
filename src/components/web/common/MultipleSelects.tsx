@@ -42,7 +42,10 @@ export const ButtonAddSelect: FC<ButtonAddSelectProps> = (props) => {
   colorMessage="info"
   size="100%"
   type="button"
-  onClick={() => { addSelect() }}
+  onClick={(ev) => {
+    props.onClick?.(ev)
+    addSelect()
+  }}
 />
 }
 const ButtonAddSelectStyles = styled(Button)`

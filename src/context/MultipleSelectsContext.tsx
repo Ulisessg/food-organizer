@@ -5,6 +5,9 @@ useMultipleSelectsContext,
 { type UseMultipleSelectsReturn } from 'hooks/context/useMultipleSelectsContext'
 
 const initialState: UseMultipleSelectsReturn = {
+  addInitialValueUsed: () => {
+    //
+  },
   addSelect: () => {
     //
   },
@@ -17,10 +20,14 @@ const initialState: UseMultipleSelectsReturn = {
   },
   disableButton: true,
   initialValues: new Map(),
+  initialValuesUsed: [],
   onChange: () => {
     //
   },
   resetMultipleSelect: () => {
+    //
+  },
+  setCurrentValuesAsInitialValues: () => {
     //
   }
 }

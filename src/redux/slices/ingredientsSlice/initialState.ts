@@ -6,6 +6,7 @@ const initialState: TIngredientsState = {
   getIngredientsSuccess: false,
   getIsLoading: false,
   ingredients: [],
+
   postEnd: false,
   postError: false,
   postIngredientPurchaseEnd: false,
@@ -13,7 +14,13 @@ const initialState: TIngredientsState = {
   postIngredientPurchaseIsLoading: false,
   postIngredientPurchaseSuccess: false,
   postIsLoading: false,
-  postSuccess: false
+  postSuccess: false,
+
+  // Update
+  updateIngredientEnd: false,
+  updateIngredientError: false,
+  updateIngredientIsLoading: false,
+  updateIngredientSuccess: false
 }
 
 export default initialState
