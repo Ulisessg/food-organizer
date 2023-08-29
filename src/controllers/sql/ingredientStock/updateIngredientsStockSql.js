@@ -1,5 +1,3 @@
-import { DbTablesNames } from 'utils/constants'
-
 /**
  * Params order and types
  *
@@ -8,12 +6,12 @@ import { DbTablesNames } from 'utils/constants'
  * + comment - string | null
  * + ingredient_stock.id - number
  */
-const updateIngredientStockSql = `UPDATE ${DbTablesNames.ingredientsStock} SET
+const updateIngredientsStockSql = `UPDATE ingredient_stock SET
   ingredient_id = ?,
   ingredient_qty = ?,
   comment = ?
 
-  WHERE ${DbTablesNames.ingredientsStock}.id = ?
+  WHERE ingredient_stock.id = ?
 `
 
-export default updateIngredientStockSql
+module.exports = updateIngredientsStockSql

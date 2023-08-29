@@ -26,7 +26,8 @@ const {
 
 const {
   createIngredientsStockBridge,
-  getIngredientsStockBridge
+  getIngredientsStockBridge,
+  updateIngredientsStockBridge
 } = require('./ingredientsStock')
 
 const {
@@ -82,6 +83,7 @@ const openBridges = () => {
   updateUnitsOfMeasureTypesBridge()
   updateUnitsOfMeasureBridge()
   updateIngredientBridge()
+  updateIngredientsStockBridge()
 
   // Os
   selectImageBridge()

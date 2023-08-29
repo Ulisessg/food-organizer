@@ -39,6 +39,7 @@ import {
 } from 'controllers/sql/menus/getMenusIngredientsSql'
 import { type OpenDialogReturnValue } from 'electron'
 import { type UpdateIngredientParams } from 'redux/slices/ingredientsSlice/types'
+import { type UpdateIngredientStockCallbackReturn } from 'redux/slices/ingredientsStockSlice/types'
 import { type units_of_measure } from '@prisma/client'
 import { type units_of_measure_types } from 'controllers/dbTablesTypes'
 
@@ -83,6 +84,9 @@ declare global {
     updateUnitsOfMeasure: (unitsOfMeasure: units_of_measure) => units_of_measure
 
     updateIngredient: (ingredient: UpdateIngredientParams) => GetIngredients[0]
+
+    updateIngredientStock: (
+      ingredientsStock: UpdateIngredientStockCallbackReturn) => UpdateIngredientStockCallbackReturn
 
     // Os
     selectImage: (table: string) => Promise<SelectImageResult>

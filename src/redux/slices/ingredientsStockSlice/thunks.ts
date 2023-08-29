@@ -1,6 +1,8 @@
 import {
   type CreateIngredientStockCallback,
-  type TGetIngredientsStockCallback
+  type TGetIngredientsStockCallback,
+  type UpdateIngredientStockCallback,
+  type UpdateIngredientStockCallbackReturn
 } from './types'
 import { type RootState, store } from 'redux/store'
 import {
@@ -52,5 +54,19 @@ export const restartPostStatusThunk = createAsyncThunk(
         3000
       )
     })
+  }
+)
+
+// Update
+export const updateIngredientStockThunk =
+createAsyncThunk<UpdateIngredientStockCallbackReturn, ReturnType<UpdateIngredientStockCallback> >(
+  'ingredients_stock/update_ingredients_stock',
+  async (update, thunkApi) => {
+    try {
+      const ingredientStockUpdated = await update()
+      return ingredientStockUpdated
+    } catch (err) {
+      return thunkApi.rejectWithValue('')
+    }
   }
 )

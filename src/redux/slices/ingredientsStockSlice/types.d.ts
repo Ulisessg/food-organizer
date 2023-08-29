@@ -3,6 +3,8 @@ import {
   type GetIngredientStock
 } from 'controllers/sql/ingredientStock/types'
 
+type SingleIngredientStock = GetIngredientStock[0]
+
 export interface IngredientsStockState {
   ingredientsStock: GetIngredientStock
   // Get
@@ -15,8 +17,21 @@ export interface IngredientsStockState {
   postRequestEnd: boolean
   postRequestSuccess: boolean
   postRequestError: boolean
+  // Update
+  updateRequestIsLoading: boolean
+  updateRequestEnd: boolean
+  updateRequestSuccess: boolean
+  updateRequestError: boolean
 }
 
 export type TGetIngredientsStockCallback = () => Promise<GetIngredientStock>
 export type CreateIngredientStockCallback =
-(ingredient: CreateIngredientStock) => () => Promise<GetIngredientStock[0]>
+(ingredient: CreateIngredientStock) => () => Promise<SingleIngredientStock>
+
+interface UpdateIngredientStockCallbackReturn extends SingleIngredientStock {
+  elementIndex: number
+}
+
+export type UpdateIngredientStockCallback = (
+  ingredientStock: UpdateIngredientStockCallbackReturn) =>
+() => Promise<UpdateIngredientStockCallbackReturn>

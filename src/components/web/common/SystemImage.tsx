@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useState
 } from 'react'
+import { type DbTablesNames } from 'Types'
 import styled from 'styled-components'
 
 const SystemImage: FC<SystemImageProps> = (props) => {
@@ -54,5 +55,5 @@ interface SystemImageProps extends
   Omit<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, 'src'> {
   fileName: string
   imageIsInTemporal: boolean
-  table: string
+  table: DbTablesNames
 }

@@ -1,3 +1,4 @@
+import UpdateIngredientStockReducer from './reducers/updateIngredientStockReducer'
 import createIngredientStockReducer from './reducers/createIngredientStockReducer'
 import { createSlice } from '@reduxjs/toolkit'
 import getIngredientsStockReducer from './reducers/getIngredientsStockReducer'
@@ -13,6 +14,7 @@ const ingredientsStockSlice = createSlice({
     getIngredientsStockReducer(builder)
     createIngredientStockReducer(builder)
     restartPostDataReducer(builder)
+    UpdateIngredientStockReducer(builder)
   }
 })
 
