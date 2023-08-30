@@ -5,7 +5,7 @@ import Details from '../common/Details'
 import { LoadingSpinnerContainer } from '../common/FormInDetailsStyles'
 import RequestResultStyles from '../common/RequestResultStyles'
 import { type RootState } from 'redux/store'
-import useCreateFoodType from 'hooks/components/useCreateFoodType'
+import useCreateFoodType from 'hooks/components/foods/useCreateFoodType'
 import { useSelector } from 'react-redux'
 
 const CreateFoodType: FC = () => {
