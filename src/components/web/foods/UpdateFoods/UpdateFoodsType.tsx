@@ -14,7 +14,7 @@ const UpdateFoodsType: FC = () => {
     restartInputs,
     updateFoodType,
     disableUpdateButton,
-    inputsErrors
+    inputsErrors, foodTypeIsRepeated
   } = useUpdateFoodsType()
 
   const {
@@ -49,11 +49,19 @@ const UpdateFoodsType: FC = () => {
       {updateFoodTypesIsLoading &&
         <LoadingSpinner size="small"
       />}
+      {/* Success */}
       <RequestResultStyles
         hidden={!updateFoodTypesSuccess}
         isError={false}
       >
         Tipo de comida actualizada
+      </RequestResultStyles>
+      {/* Repeated */}
+      <RequestResultStyles
+        hidden={!foodTypeIsRepeated}
+        isError={true}
+      >
+        Ese tipo de comida ya existe
       </RequestResultStyles>
     </Form>
 }

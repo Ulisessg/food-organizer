@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import { type AppDispatch, type RootState } from 'redux/store'
 import {
   UpdateFoodTypeThunk,
@@ -11,6 +12,7 @@ updateFoodTypeElectronCallback
   from 'redux/slices/foodsSlice/callbacks/electron/updateFoodTypeElectronCallback'
 import { useContext } from 'react'
 import { useInputs } from 'd-system'
+import useValueIsRepeated from 'hooks/useValueIsRepeated'
 
 const useUpdateFoodsType =
 (): UseUpdateFoodsTypeReturn => {
@@ -18,9 +20,12 @@ const useUpdateFoodsType =
   const foodTypeSelected = useSelector((state: RootState) => state
     .foods.foodsGroupedByType[Number(groupingElementIndex)])
 
+  const { isRepeated, resetIsRepeated, searchIsRepeated } =
+    useValueIsRepeated(foodTypeSelected.food_type_name)
   const {
     updateFoodTypesIsLoading,
-    updateFoodTypesSuccess
+    updateFoodTypesSuccess,
+    foodTypes
   } = useSelector((state: RootState) => state.foods)
 
   const dispatch: AppDispatch = useDispatch()
@@ -29,13 +34,21 @@ const useUpdateFoodsType =
       update_food_type: foodTypeSelected.food_type_name.toLowerCase()
     },
     true,
-    (_ev, inputValue) => inputValue.toLowerCase()
+    (_ev, inputValue) => {
+      searchIsRepeated(
+        foodTypes,
+        'name',
+        inputValue
+      )
+      return inputValue.toLowerCase()
+    }
   )
   const inputHasChanged: boolean = inputs.inputsInitialValues.get('update_food_type') !==
    inputs.inputsData.update_food_type
 
   const restartInputs = (): void => {
     inputs.restartInputs('all')
+    resetIsRepeated()
     setFocusInElement('update_food_type')
   }
   const updateFoodType = async (): Promise<void> => {
@@ -53,20 +66,21 @@ const useUpdateFoodsType =
         newFoodTypeName
       )
       inputs.restartInputs('all')
+      resetIsRepeated()
       await dispatch(restartUpdateFoodTypeData())
     }
   }
   const disableUpdateButton: boolean = !inputHasChanged ||
   inputs.inputsErrors.update_food_type || updateFoodTypesIsLoading ||
-   updateFoodTypesSuccess || inputs.inputsErrors.update_food_type
+   updateFoodTypesSuccess || inputs.inputsErrors.update_food_type || isRepeated
 
   return {
     ...inputs,
     disableRestartButton: !inputHasChanged || updateFoodTypesSuccess || updateFoodTypesIsLoading,
     disableUpdateButton,
+    foodTypeIsRepeated: isRepeated,
     restartInputs,
     updateFoodType
-
   }
 }
 
@@ -77,6 +91,7 @@ interface UseUpdateFoodsTypeReturn extends ReturnType<typeof useInputs<Inputs>> 
   restartInputs: () => void
   updateFoodType: () => Promise<void>
   disableUpdateButton: boolean
+  foodTypeIsRepeated: boolean
 }
 
 export default useUpdateFoodsType
