@@ -19,7 +19,11 @@ const initialState: TFoodState = {
   postFoodsEnd: false,
   postFoodsError: false,
   postFoodsIsLoading: false,
-  postFoodsSuccess: false
+  postFoodsSuccess: false,
+  updateFoodTypesEnd: false,
+  updateFoodTypesError: false,
+  updateFoodTypesIsLoading: false,
+  updateFoodTypesSuccess: false
 }
 
 export default initialState

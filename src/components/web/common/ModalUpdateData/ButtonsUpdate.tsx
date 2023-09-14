@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from 'd-system'
+import { Button, type ButtonProps, spaceSize } from 'd-system'
 import React, { type FC } from 'react'
 import styled from 'styled-components'
 
@@ -13,22 +13,22 @@ const ButtonsUpdate: FC<ButtonsUpdateProps> = (props) => {
   }
 
   return <ButtonsContainer>
-<Button
-  {...props.buttonContinueProps}
-  onClick={onClickContinue}
-  colorMessage="continue"
-  size="small"
-  text="Actualizar"
-  type="button"
-/>
-<Button
-  {...props.buttonRestartProps}
-  onClick={onClickRestart}
-  colorMessage="info"
-  size="small"
-  text="Deshacer cambios"
-  type="button"
-/>
+  <Button
+    {...props.buttonRestartProps}
+    onClick={onClickRestart}
+    colorMessage="info"
+    size="small"
+    text="Deshacer cambios"
+    type="button"
+  />
+  <Button
+    {...props.buttonContinueProps}
+    onClick={onClickContinue}
+    colorMessage="continue"
+    size="small"
+    text="Actualizar"
+    type="button"
+  />
 </ButtonsContainer>
 }
 
@@ -43,8 +43,6 @@ export default ButtonsUpdate
 
 const ButtonsContainer = styled.div`
 display: flex;
-margin-top: 8px;
-& :first-child {
-  margin-right: 24px;
-}
+margin-top: ${spaceSize as any * 3}px;
+justify-content: space-around;
 `

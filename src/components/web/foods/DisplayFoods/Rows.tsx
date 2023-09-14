@@ -1,12 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Button, Td } from 'd-system'
 import React, { type FC } from 'react'
+import { ButtonOpenModal } from 'components/web/common/ModalUpdateData'
+import { Td } from 'd-system'
 
 const Rows: FC<RowsProps> = ({
   food_name,
-  food_type_name, image, preparation_time, rowSpan
+  food_type_name,
+  image,
+  preparation_time,
+  rowSpan,
+  elementIndex,
+  groupingElementIndex
 }) => {
   if (typeof rowSpan === 'number') {
     return <>
@@ -21,10 +27,11 @@ const Rows: FC<RowsProps> = ({
           />
         </Td>
         <Td rowSpan={rowSpan}>
-          <Button
-            colorMessage="info"
-            size="small"
+          <ButtonOpenModal
             text="Editar"
+            elementIndex={elementIndex}
+            groupingElementIndex={groupingElementIndex}
+            size="small"
           />
         </Td>
       </tr>
@@ -50,6 +57,9 @@ interface RowsProps {
   food_name: string
   preparation_time: number
   rowSpan?: number
+  elementIndex: number
+  groupingElementIndex: number | null
+
 }
 
 export default Rows

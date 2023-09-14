@@ -1,6 +1,11 @@
 import {
+  type CreateFood,
+  type SingleFoodType
+} from 'redux/slices/foodsSlice/types'
+import {
   type CreateFoodType,
-  type GetFoodTypes
+  type GetFoodTypes,
+  type UpdateFoodType
 } from 'controllers/sql/foodTypes/types'
 import {
   type CreateIngredient,
@@ -27,9 +32,6 @@ import {
   type GetWeeklyMenu,
   type TCreateWeeklyMenus
 } from 'controllers/sql/weeklyMenus/types'
-import {
-  type CreateFood
-} from 'redux/slices/foodsSlice/types'
 import { type GetDays } from 'controllers/sql/days/types'
 import {
   type GetFoods
@@ -87,6 +89,8 @@ declare global {
 
     updateIngredientStock: (
       ingredientsStock: UpdateIngredientStockCallbackReturn) => UpdateIngredientStockCallbackReturn
+
+    updateFoodTypes: (foodType: UpdateFoodType) => SingleFoodType
 
     // Os
     selectImage: (table: string) => Promise<SelectImageResult>

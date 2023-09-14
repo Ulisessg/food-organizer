@@ -4,6 +4,10 @@ import { createSlice } from '@reduxjs/toolkit'
 import getFoodsDataReducer from './reducers/getFoodsDataReducer'
 import initialState from './initialState'
 import restartPostDataReducer from './reducers/restartPostDataReducer'
+import
+restartUpdateFoodTypeDataReducer
+  from './reducers/restartUpdateFoodTypeDataReducer'
+import updateFoodTypeReducer from './reducers/updateFoodTypeReducer'
 
 const foodsSlice = createSlice({
   initialState,
@@ -15,6 +19,9 @@ const foodsSlice = createSlice({
     createFoodReducer(builder)
     restartPostDataReducer(builder)
     createFoodTypeReducer(builder)
+    updateFoodTypeReducer(builder)
+
+    restartUpdateFoodTypeDataReducer(builder)
   }
 })
 
