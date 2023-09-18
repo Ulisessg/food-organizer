@@ -5,6 +5,7 @@ const { updateFoodTypes } = require('../bridgesNames')
 const openDb = require('../../db/electronOpenDb')
 const updateFoodTypesSql = require('../../sql/foodTypes/updateFoodTypesSql')
 const getFoodTypesSql = require('../../sql/foodTypes/getFoodTypesSql')
+const capitalize = require('../../../utils/capitalize')
 
 const updateFoodTypesBridge = () => {
   /** 
@@ -13,7 +14,7 @@ const updateFoodTypesBridge = () => {
   const update = (foodType) => {
     const db = openDb()
     db.prepare(updateFoodTypesSql).run([
-      foodType.name,
+      capitalize(foodType.name),
       foodType.id
     ])
     const updatedFoodType = db.prepare(getFoodTypesSql('WHERE food_types.id = ?'))
