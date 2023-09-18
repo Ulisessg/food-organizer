@@ -9,3 +9,7 @@ export type GetFoods = Array<{
     preparation_time: number
   }>
 }>
+
+type GetFoodsSingle = GetFoods[0]
+
+export interface UpdateFoods extends GetFoodsSingle {}

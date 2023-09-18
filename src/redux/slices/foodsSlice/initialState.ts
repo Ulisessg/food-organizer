@@ -23,7 +23,11 @@ const initialState: TFoodState = {
   updateFoodTypesEnd: false,
   updateFoodTypesError: false,
   updateFoodTypesIsLoading: false,
-  updateFoodTypesSuccess: false
+  updateFoodTypesSuccess: false,
+  updateFoodsEnd: false,
+  updateFoodsError: false,
+  updateFoodsIsLoading: false,
+  updateFoodsSuccess: false
 }
 
 export default initialState

@@ -46,7 +46,8 @@ const {
   getFoodTypesDataBridge,
   createFoodsBridge,
   createFoodtypeBridge,
-  updateFoodTypesBridge
+  updateFoodTypesBridge,
+  updateFoodsBridge
 } = require('./foods')
 
 const {
@@ -86,6 +87,7 @@ const openBridges = () => {
   updateIngredientBridge()
   updateIngredientsStockBridge()
   updateFoodTypesBridge()
+  updateFoodsBridge()
 
   // Os
   selectImageBridge()

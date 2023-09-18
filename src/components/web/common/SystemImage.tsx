@@ -35,7 +35,7 @@ const SystemImage: FC<SystemImageProps> = (props) => {
   return <SystemImageStyles
     {...props as any}
     alt={props.alt}
-    src={base64Image}
+    src={base64Image ?? ''}
     imageLength={base64Image.length} />
 }
 
@@ -43,9 +43,10 @@ const SystemImageStyles = styled.img<{ imageLength: number }>`
   object-fit: contain;
   width: 120px;
   height: 120px;
-  display: ${({ imageLength }) => {
-    if (imageLength === 0) return 'none'
-    return 'initial'
+  margin:  0 auto;
+  border: ${({ imageLength }) => {
+    if (imageLength === 0) return '1px solid black'
+    return 'none'
   }};
 `
 

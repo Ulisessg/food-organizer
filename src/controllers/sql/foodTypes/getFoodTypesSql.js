@@ -4,7 +4,7 @@ food_types.name
 
 FROM food_types
 ${filter}
-ORDER BY food_types.name ASC
+ORDER BY food_types.id ASC
 `
 
 module.exports = getFoodTypesSql

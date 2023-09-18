@@ -4,15 +4,20 @@ import {
   , type UpdateFoodType
 } from 'controllers/sql/foodTypes/types'
 import {
+  type GetFoods,
+  type UpdateFoods
+} from 'controllers/sql/foods/types'
+import {
   type CreateFoodIngredients
 } from 'controllers/sql/foodIngredients/types'
-import { type GetFoods } from 'controllers/sql/foods/types'
+import { type foods } from 'controllers/dbTablesTypes'
 
 export type SingleFoodType = GetFoodTypes[0]
-export type SingleFood = GetFoods[0]
+export type SingleFoodGroupedByType = GetFoods[0]
+export type SingleFood = SingleFoodGroupedByType['foods'][0]
 
 export interface TFoodState {
-  foods: SingleFood['foods']
+  foods: SingleFoodGroupedByType['foods']
   foodsGroupedByType: GetFoods
   foodTypes: GetFoodTypes
   // Foods
@@ -41,11 +46,17 @@ export interface TFoodState {
   postFoodTypesError: boolean
   postFoodTypesEnd: boolean
 
-  // Update
+  // Update food types
   updateFoodTypesIsLoading: boolean
   updateFoodTypesSuccess: boolean
   updateFoodTypesError: boolean
   updateFoodTypesEnd: boolean
+
+  // Update foods
+  updateFoodsIsLoading: boolean
+  updateFoodsSuccess: boolean
+  updateFoodsError: boolean
+  updateFoodsEnd: boolean
 }
 
 interface GetFoodsDataThunkReturn {
@@ -69,10 +80,21 @@ interface UpdateFoodTypeCallbackReturn extends SingleFoodType {
   elementIndex: number
 }
 
-export type CreateFoodCallback = (food: CreateFood) => () => Promise<SingleFood>
+interface UpdateFoodCallbackReturn extends UpdateFoods {
+  elementIndex: number
+  groupingElementIndex: number
+}
+
+export type CreateFoodCallback = (food: CreateFood) => () => Promise<SingleFoodGroupedByType>
 export type CreateFoodtypeCallback = (foodType: CreateFoodType) => () => Promise<SingleFoodType>
 
 export type UpdateFoodTypeCallback = (
   foodType: UpdateFoodType,
   elementIndex: number
 ) => () => Promise<UpdateFoodTypeCallbackReturn>
+
+export type UpdateFoodCallback = (
+  food: foods,
+  groupingElementIndex: number,
+  elementIndex: number
+) => () => Promise<UpdateFoodCallbackReturn>

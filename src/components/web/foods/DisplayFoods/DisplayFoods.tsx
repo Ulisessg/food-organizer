@@ -38,7 +38,7 @@ const DisplayFoods: FC = () => {
                 food_name,
                 image,
                 preparation_time
-              }, index) => <Fragment key={food_id}>{index === 0 && <>
+              }, index) => <Fragment key={`${food_id}${food_name}`}>{index === 0 && <>
                     <Rows
                       food_name={food_name} food_type_name={food_type_name}
                       image={image}

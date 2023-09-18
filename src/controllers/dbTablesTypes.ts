@@ -39,9 +39,7 @@ export interface food_types {
 export interface foods {
   id: number
   name: string
-  used_counter: number | null
   preparation_time: number
-  score: number | null
   food_type_id: number
   image: string | null
 

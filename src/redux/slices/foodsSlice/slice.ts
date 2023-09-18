@@ -8,6 +8,7 @@ import
 restartUpdateFoodTypeDataReducer
   from './reducers/restartUpdateFoodTypeDataReducer'
 import updateFoodTypeReducer from './reducers/updateFoodTypeReducer'
+import updateFoodsReducer from './reducers/updateFoodsReducer'
 
 const foodsSlice = createSlice({
   initialState,
@@ -20,8 +21,8 @@ const foodsSlice = createSlice({
     restartPostDataReducer(builder)
     createFoodTypeReducer(builder)
     updateFoodTypeReducer(builder)
-
     restartUpdateFoodTypeDataReducer(builder)
+    updateFoodsReducer(builder)
   }
 })
 

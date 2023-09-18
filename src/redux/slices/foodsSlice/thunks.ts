@@ -4,6 +4,8 @@ import {
   type GetFoodsDataThunkReturn,
   type TGetFoodsDataCallback,
   type TGetFoodsTypesDataCallback,
+  type UpdateFoodCallback,
+  type UpdateFoodCallbackReturn,
   type UpdateFoodTypeCallback,
   type UpdateFoodTypeCallbackReturn
 } from './types'
@@ -89,6 +91,7 @@ export const createFoodTypeThunk = createAsyncThunk<food_types, ReturnType<Creat
   }
 )
 
+// Update food type
 export const UpdateFoodTypeThunk =
 createAsyncThunk<UpdateFoodTypeCallbackReturn, ReturnType<UpdateFoodTypeCallback>>(
   'food_types/update',
@@ -113,3 +116,18 @@ export const restartUpdateFoodTypeData = createAsyncThunk(
     })
   }
 )
+
+// Update food
+
+export const updateFoodThunk =
+ createAsyncThunk<UpdateFoodCallbackReturn, ReturnType<UpdateFoodCallback>>(
+   'foods/update',
+   async (update, thunkApi) => {
+     try {
+       const updatedFood = await update()
+       return updatedFood
+     } catch {
+       return thunkApi.rejectWithValue('')
+     }
+   }
+ )

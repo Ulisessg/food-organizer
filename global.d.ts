@@ -32,6 +32,10 @@ import {
   type GetWeeklyMenu,
   type TCreateWeeklyMenus
 } from 'controllers/sql/weeklyMenus/types'
+import {
+  type foods,
+  type units_of_measure_types
+} from 'controllers/dbTablesTypes'
 import { type GetDays } from 'controllers/sql/days/types'
 import {
   type GetFoods
@@ -40,10 +44,12 @@ import {
   type GetMenusIngredients
 } from 'controllers/sql/menus/getMenusIngredientsSql'
 import { type OpenDialogReturnValue } from 'electron'
+import {
+  type UpdateFoods
+} from 'controllers/sql/foods/types'
 import { type UpdateIngredientParams } from 'redux/slices/ingredientsSlice/types'
 import { type UpdateIngredientStockCallbackReturn } from 'redux/slices/ingredientsStockSlice/types'
 import { type units_of_measure } from '@prisma/client'
-import { type units_of_measure_types } from 'controllers/dbTablesTypes'
 
 // Electron bridges
 declare global {
@@ -91,6 +97,7 @@ declare global {
       ingredientsStock: UpdateIngredientStockCallbackReturn) => UpdateIngredientStockCallbackReturn
 
     updateFoodTypes: (foodType: UpdateFoodType) => SingleFoodType
+    updateFoods: (food: foods) => UpdateFoods
 
     // Os
     selectImage: (table: string) => Promise<SelectImageResult>

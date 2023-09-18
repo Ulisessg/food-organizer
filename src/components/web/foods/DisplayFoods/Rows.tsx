@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { type FC } from 'react'
 import { ButtonOpenModal } from 'components/web/common/ModalUpdateData'
+import SystemImage from 'components/web/common/SystemImage'
 import { Td } from 'd-system'
 
 const Rows: FC<RowsProps> = ({
@@ -21,9 +22,11 @@ const Rows: FC<RowsProps> = ({
         <Td>{food_name}</Td>
         <Td>{preparation_time}</Td>
         <Td>
-          <img
-            src={image as string}
+          <SystemImage
+            fileName={image as string}
+            imageIsInTemporal={false}
             alt={`${food_name} imagen`}
+            table="foods"
           />
         </Td>
         <Td rowSpan={rowSpan}>
@@ -42,9 +45,11 @@ const Rows: FC<RowsProps> = ({
       <Td>{food_name}</Td>
       <Td>{preparation_time}</Td>
       <Td>
-        <img
-          src={image as any}
-          alt={`${food_name} imagen`}
+        <SystemImage
+            fileName={image as string}
+            imageIsInTemporal={false}
+            alt={`${food_name} imagen`}
+            table="foods"
         />
       </Td>
     </tr>

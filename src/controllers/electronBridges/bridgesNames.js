@@ -24,11 +24,11 @@ const bridgesNames = {
   selectImage: 'selectImage',
 
   updateFoodTypes: 'updateFoodTypes',
+  updateFoods: 'updateFoods',
   updateIngredient: 'updateIngredient',
   updateIngredientsStock: 'updateIngredientStock',
   updateUnitsOfMeasure: 'updateUnitsOfMeasure',
   updateUnitsOfMeasureTypes: 'updateUnitsOfMeasureTypes'
-
 }
 
 module.exports = bridgesNames
