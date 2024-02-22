@@ -4,8 +4,10 @@ import {
 import {
   type TGetUnitsOfMeasureType
 } from 'controllers/sql/unitsOfMeasureTypes/types'
+import { databaseSlicesCommonState } from '../databaseSlice/state'
 
 const initialState: TUomState = {
+  ...databaseSlicesCommonState,
   dataIsLoading: false,
   errorGettingData: false,
   postUomEnd: false,

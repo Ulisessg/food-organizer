@@ -2,6 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import createUnitOfMeasureReducer from './reducers/createUnitOfMeasureReducer'
 import createUnitOfMeasureTypeReducer from './reducers/createUnitOfMeasureTypeReducer'
+import databaseReducers from '../databaseSlice/databaseReducers'
 import
 getUnitsOfMeasureTypeWithoutUomReducer
   from './reducers/getUnitsOfMeasureTypeWithoutUomReducer'
@@ -14,9 +15,14 @@ const UnitsOfMeasureSlice = createSlice({
   initialState,
   name: 'units_of_measure',
   reducers: {
+
   },
   // eslint-disable-next-line sort-keys
   extraReducers: (builder) => {
+    databaseReducers({
+      builder: builder as any,
+      name: 'units_of_measure'
+    })
     // Get data
     getUomDataReducer(builder)
     getUnitsOfMeasureTypeWithoutUomReducer(builder)
