@@ -1,5 +1,6 @@
 import createIngredientReducer from './reducers/createIngredientReducer'
 import { createSlice } from '@reduxjs/toolkit'
+import databaseReducers from '../databaseSlice/databaseReducers'
 import getIngredientsDataReducer from './reducers/getIngredientsDataReducer'
 import initialState from './initialState'
 import restartPostStatusReducer from './reducers/restartPostStatusReducer'
@@ -13,6 +14,7 @@ const ingredientsSlice = createSlice({
   },
   // eslint-disable-next-line sort-keys
   extraReducers: (builder) => {
+    databaseReducers({ builder: builder as any, name: 'ingredients' })
     getIngredientsDataReducer(builder)
     createIngredientReducer(builder)
     restartPostStatusReducer(builder)

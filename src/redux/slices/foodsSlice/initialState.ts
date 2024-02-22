@@ -1,6 +1,8 @@
 import { type TFoodState } from './types'
+import { databaseSlicesCommonState } from '../databaseSlice/state'
 
 const initialState: TFoodState = {
+  ...databaseSlicesCommonState,
   foodTypes: [],
   foods: [],
   foodsGroupedByType: [],

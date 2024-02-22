@@ -1,6 +1,8 @@
 import { type TMenuState } from './types'
+import { databaseSlicesCommonState } from '../databaseSlice/state'
 
 const initialState: TMenuState = {
+  ...databaseSlicesCommonState,
   createMenuEnd: false,
   createMenuError: false,
   createMenuIsLoading: false,

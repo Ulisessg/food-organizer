@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import createWeeklyMenuReducer from './reducers/createweeklyMenuReducer'
+import databaseReducers from '../databaseSlice/databaseReducers'
 import getDaysReducer from './reducers/getDaysReducer'
 import getWeeklyMenusReducer from './reducers/getWeeklyMenusReducer'
 import initialState from './weeklyMenusState'
@@ -11,6 +12,7 @@ const weeklyMenusSlice = createSlice({
   reducers: {},
   // eslint-disable-next-line sort-keys
   extraReducers: (builder) => {
+    databaseReducers({ builder: builder as any, name: 'weekly_menus' })
     getDaysReducer(builder)
     getWeeklyMenusReducer(builder)
     createWeeklyMenuReducer(builder)

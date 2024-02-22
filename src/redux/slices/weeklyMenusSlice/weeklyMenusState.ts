@@ -1,7 +1,9 @@
 import { type GetDays } from 'controllers/sql/days/types'
 import { type GetWeeklyMenu } from 'controllers/sql/weeklyMenus/types'
+import { databaseSlicesCommonState } from '../databaseSlice/state'
 
 const initialState: TWeeklyMenusState = {
+  ...databaseSlicesCommonState,
   createWeeklyEnd: false,
   createWeeklyError: false,
   createWeeklyIsLoading: false,

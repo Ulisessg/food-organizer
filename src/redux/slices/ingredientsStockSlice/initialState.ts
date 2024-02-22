@@ -1,6 +1,8 @@
 import { type IngredientsStockState } from './types'
+import { databaseSlicesCommonState } from '../databaseSlice/state'
 
 const initialState: IngredientsStockState = {
+  ...databaseSlicesCommonState,
   getRequestEnd: false,
   getRequestError: false,
   getRequestIsLoading: false,
